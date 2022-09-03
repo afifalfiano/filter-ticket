@@ -3,8 +3,9 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
+    "cypress/globals": true,
   },
-  extends: ["plugin:react/recommended", "airbnb"],
+  extends: ["plugin:react/recommended", "airbnb", "plugin:cypress/recommended"],
   overrides: [],
   parserOptions: {
     ecmaVersion: "latest",
@@ -13,12 +14,13 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ["react", "prettier"],
+  plugins: ["react", "prettier", "cypress"],
   rules: {
     semi: 0,
     "comma-dangle": 0,
     "prettier/prettier": ["error", { singleQuote: true }],
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
+    "no-unused-expressions": "off",
   },
 };
