@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { decrement, increment } from "./counterSlice";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { decrement, increment } from './counterSlice';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Counter() {
