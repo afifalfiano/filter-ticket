@@ -1,24 +1,26 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from './counterSlice'
+/* eslint-disable react/button-has-type */
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { decrement, increment } from "./counterSlice";
 
+// eslint-disable-next-line import/prefer-default-export
 export function Counter() {
-  const count = useSelector((state) => state.counter.value)
-  const dispatch = useDispatch()
+  const count = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
 
   return (
     <div>
-      <div className='text-center py-4'>
+      <div className="text-center py-4">
         <button
-         className='btn btn-secondary'
+          className="btn btn-secondary"
           aria-label="Increment value"
           onClick={() => dispatch(increment())}
         >
           Increment
         </button>
-        <span className='mx-5 text-4xl'>{count}</span>
+        <span className="mx-5 text-4xl">{count}</span>
         <button
-          className='btn btn-primary'
+          className="btn btn-primary"
           aria-label="Decrement value"
           onClick={() => dispatch(decrement())}
         >
@@ -26,5 +28,5 @@ export function Counter() {
         </button>
       </div>
     </div>
-  )
+  );
 }

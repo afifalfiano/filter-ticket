@@ -21,6 +21,8 @@ module.exports = {
     "prettier/prettier": ["error", { singleQuote: true }],
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
-    "no-unused-expressions": "off",
+    "no-unused-expressions": 0,
+    "import/no-named-as-default": 0,
+    "eol-last": 0,
   },
 };

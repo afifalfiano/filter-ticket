@@ -1,2 +1,2 @@
-export * from './store';
-export * from './features/counter/Counter'
+export * from "./store";
+export * from "./features/counter/Counter";
