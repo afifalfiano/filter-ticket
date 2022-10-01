@@ -20,7 +20,12 @@ function SignIn() {
 
   const onSubmitLogin = (e) => {
     e.preventDefault();
-    const user = { email, password };
+    const user = {
+      email,
+      password,
+      role: 'HELPDESK',
+      pop: 'Yogyakarta',
+    };
     const local = JSON.stringify(user);
     localStorage.setItem('user', local);
     navigate('/dashboard', { replace: true });
