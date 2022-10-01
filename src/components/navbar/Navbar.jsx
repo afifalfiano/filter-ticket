@@ -9,19 +9,19 @@ const  Navbar = () => {
         <Link className="btn btn-ghost normal-case text-base" to="/">
           Filtering Ticket
         </Link>
-        <Link className="btn btn-ghost normal-case text-base" to="dasbor">
+        <Link className="btn btn-ghost normal-case text-base" to="dashboard">
           Dasbor
         </Link>
         <Link className="btn btn-ghost normal-case text-base" to="reason_of_outage">
           Reason of Outage
         </Link>
-        <Link className="btn btn-ghost normal-case text-base" to="laporan">
+        <Link className="btn btn-ghost normal-case text-base" to="report">
           Laporan
         </Link>
-        <Link className="btn btn-ghost normal-case text-base" to="riwayat_dasbor">
+        <Link className="btn btn-ghost normal-case text-base" to="history_dashboard">
           Riwayat Dasbor
         </Link>
-        <Link className="btn btn-ghost normal-case text-base" to="bts">
+        <Link className="btn btn-ghost normal-case text-base" to="base_transceiver_station">
           BTS
         </Link>
       </div>
