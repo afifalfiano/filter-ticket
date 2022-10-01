@@ -21,7 +21,7 @@ function Notification() {
             />
           </svg>
           <span className="indicator-item badge badge-sm badge-secondary">
-            8
+            3
           </span>
         </div>
       </label>

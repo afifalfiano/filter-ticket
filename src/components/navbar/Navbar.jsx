@@ -6,7 +6,6 @@ const  Navbar = () => {
   return (
     <div className="navbar bg-neutral text-neutral-content ">
       <Menu />
-
       <div className="flex-none">
         <Notification />
         <DropdownMenu />
