@@ -3,25 +3,38 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 function SignIn() {
-  const [username, setUserName] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [valid, setValid] = useState(false);
+
   const navigate = useNavigate();
+
+  // eslint-disable-next-line consistent-return
+  const handleValidation = () => {
+    if (email.trim().includes('@') && password.trim().length > 0) {
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  };
 
   const onSubmitLogin = (e) => {
     e.preventDefault();
-    const user = { email: username, password };
+    const user = { email, password };
     const local = JSON.stringify(user);
     localStorage.setItem('user', local);
     navigate('/dashboard', { replace: true });
     window.location.reload();
   };
 
-  const handleUsername = (event) => {
-    setUserName(event.target.value);
+  const handleEmail = (event) => {
+    setEmail(event.target.value);
+    handleValidation();
   };
 
   const handlePassword = (event) => {
     setPassword(event.target.value);
+    handleValidation();
   };
 
   return (
@@ -41,27 +54,27 @@ function SignIn() {
             <h4 className="text-4xl text-center">Silahkan Masuk</h4>
           </div>
           <div className="form-control pt-4">
-            <label htmlFor={username} className="label">
+            <label htmlFor="email" className="label">
               <span className="label-text"> Email:</span>
             </label>
 
             <input
               type="email"
-              name={username}
-              id={username}
-              onChange={handleUsername}
+              value={email}
+              id="email"
+              onChange={handleEmail}
               className="input input-md input-bordered  max-w-full"
             />
           </div>
 
           <div className="form-control pt-4 ">
-            <label htmlFor={password} className="label">
+            <label htmlFor="password" className="label">
               <span className="label-text"> Password:</span>
             </label>
             <input
               type="password"
-              name={password}
-              id={password}
+              value={password}
+              id="password"
               onChange={handlePassword}
               className="input input-md input-bordered  max-w-full"
             />
@@ -75,6 +88,7 @@ function SignIn() {
             <button
               type="submit"
               className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md btn-block"
+              disabled={!valid}
             >
               Masuk
             </button>
