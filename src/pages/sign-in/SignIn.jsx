@@ -50,8 +50,12 @@ function SignIn() {
           className="flex-row pt-10 pb-10 pl-16 pr-16 min-h-screen"
         >
           <div className="pt-20">
-            <h4 className="text-4xl text-center">Selamat Datang!</h4>
-            <h4 className="text-4xl text-center">Silahkan Masuk</h4>
+            <h4 className="text-2xl text-center font-semibold">
+              Selamat Datang!
+            </h4>
+            <h4 className="text-2xl text-center font-semibold">
+              Silahkan Masuk
+            </h4>
           </div>
           <div className="form-control pt-4">
             <label htmlFor="email" className="label">
