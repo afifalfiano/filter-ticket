@@ -1,12 +1,17 @@
 /* eslint-disable */
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 
 const DropdownMenu = () => {
+
+  const navigate = useNavigate();
 
   const onLogout = (e) => {
     e.preventDefault();
     console.log('logout');
     alert('Logout done');
+    localStorage.clear();
+    navigate('/sign_in');
+    window.location.reload();
   }
   return (
     <>
