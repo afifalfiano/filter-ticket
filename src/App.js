@@ -35,6 +35,7 @@ function App() {
       <Routes>
         {login ? (
           <>
+            <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
             <Route path="/report" element={<Report />} />
@@ -48,9 +49,9 @@ function App() {
           </>
         ) : (
           <>
+            <Route path="/" element={<SignIn />} />
             <Route path="/sign_in" element={<SignIn />} />
             <Route path="/sign_up" element={<SignUp />} />
-            <Route path="*" element={<NotFound />} />
           </>
         )}
       </Routes>
