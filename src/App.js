@@ -12,6 +12,7 @@ import Profile from './pages/profile/Profile';
 import BaseTransceiverStation from './pages/base_transceiver_station/BaseTransceiverStation';
 import Container from './components/common/Container';
 import VerificationEmail from './pages/verification_email/VerificationEmail';
+import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
 
 function App() {
   const [login, isLogin] = useState(false);
@@ -41,6 +42,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/detail/:id" element={<DashboardDetail />} />
             <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
             <Route path="/report" element={<Report />} />
             <Route path="/history_dashboard" element={<HistoryDashboard />} />
