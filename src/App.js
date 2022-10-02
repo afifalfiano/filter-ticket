@@ -3,7 +3,6 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import SignIn from './pages/sign_in/SignIn';
 import SignUp from './pages/sign_up/SignUp';
-import NotFound from './pages/not_found/NotFound';
 import Navbar from './components/navbar/Navbar';
 import Dashboard from './pages/dashboard/Dashboard';
 import ReasonOfOutage from './pages/reason_of_outage/ReasonOfOutage';
@@ -20,7 +19,6 @@ function App() {
   const navigate = useNavigate();
 
   const getAuth = () => {
-    console.log('renderer');
     const user = localStorage.getItem('user');
     console.log(user, 'usr');
     if (user) {
@@ -51,7 +49,6 @@ function App() {
               path="/base_transceiver_station"
               element={<BaseTransceiverStation />}
             />
-            <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>
       )}
