@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { HiOutlineCloudUpload } from 'react-icons/hi';
+import { HiOutlineCloudUpload, HiSearch } from 'react-icons/hi';
 import styles from './Dashboard.module.css';
 
 function Dashboard() {
@@ -15,6 +15,40 @@ function Dashboard() {
         >
           Tambah
         </label>
+      </div>
+
+      <div className="flex gap-5 mt-5">
+        <div className="form-control">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> Status Keluhan</span>
+          </label>
+
+          <select className="select w-full max-w-full input-bordered">
+            <option disabled>Pilih Status</option>
+            <option>Open Case</option>
+            <option>Closed Case</option>
+          </select>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> Cari</span>
+          </label>
+          <div className="flex items-center">
+            <div class="relative w-full">
+              <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                <HiSearch />
+              </div>
+              <input
+                type="text"
+                id="voice-search"
+                class="input input-md input-bordered pl-10 p-2.5 "
+                placeholder="Cari data keluhan..."
+                required
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
