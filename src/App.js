@@ -38,9 +38,9 @@ function App() {
   return (
     <div className="App">
       {login && <Navbar />}
-      <Routes>
-        {login ? (
-          <Container>
+      {login && (
+        <Container>
+          <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
@@ -52,16 +52,17 @@ function App() {
               element={<BaseTransceiverStation />}
             />
             <Route path="*" element={<NotFound />} />
-          </Container>
-        ) : (
-          <>
-            <Route path="/" element={<SignIn />} />
-            <Route path="/sign_in" element={<SignIn />} />
-            <Route path="/sign_up" element={<SignUp />} />
-            <Route path="/verification_email" element={<VerificationEmail />} />
-          </>
-        )}
-      </Routes>
+          </Routes>
+        </Container>
+      )}
+      {!login && (
+        <Routes>
+          <Route path="/" element={<SignIn />} />
+          <Route path="/sign_in" element={<SignIn />} />
+          <Route path="/sign_up" element={<SignUp />} />
+          <Route path="/verification_email" element={<VerificationEmail />} />
+        </Routes>
+      )}
     </div>
   );
 }
