@@ -2,7 +2,8 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 function SignUp() {
   const [fullName, setFullName] = useState('');
@@ -19,10 +20,14 @@ function SignUp() {
   const handleValidation = () => {
     if (
       email.trim().includes('@') &&
-      password.trim().length > 0 &&
       fullName.trim().length > 0 &&
+      password.trim().length > 0 &&
       confirmPassword.trim().length > 0
     ) {
+      const compare = password.trim() === confirmPassword.trim();
+      console.log(compare, 'cmp');
+      console.log(password.trim(), 'paswd');
+      console.log(confirmPassword.trim(), 'paswd cnf');
       setValid(true);
     } else {
       setValid(false);
@@ -40,10 +45,25 @@ function SignUp() {
       team,
     };
     console.log(user, 'user');
-    // const local = JSON.stringify(user);
-    // localStorage.setItem('user', local);
-    navigate('/verification_email', { replace: true });
-    // window.location.reload();
+    const local = JSON.stringify(user);
+    localStorage.setItem('user', local);
+
+    toast.success('Berhasil buat akun baru.', {
+      style: {
+        padding: '16px',
+        backgroundColor: '#36d399',
+        color: 'white',
+      },
+      duration: 2000,
+      position: 'top-right',
+      id: 'success',
+      icon: false,
+    });
+
+    setTimeout(() => {
+      navigate('/verification_email', { replace: true });
+    }, 2000);
+    window.location.reload();
   };
 
   const handleEmail = (event) => {
@@ -53,14 +73,17 @@ function SignUp() {
 
   const handleFullName = (event) => {
     setFullName(event.target.value);
+    handleValidation();
   };
 
   const handleTeam = (event) => {
     setTeam(event.target.value);
+    handleValidation();
   };
 
   const handleLocation = (event) => {
     setLocation(event.target.value);
+    handleValidation();
   };
 
   const handlePassword = (event) => {
@@ -125,7 +148,6 @@ function SignUp() {
               id="team"
               value={team}
               onChange={handleTeam}
-              defaultValue="Pilih Tim"
             >
               <option disabled>Pilih Tim</option>
               <option>HELPDESK</option>
@@ -142,7 +164,6 @@ function SignUp() {
               className="select w-full max-w-full input-bordered"
               value={location}
               onChange={handleLocation}
-              defaultValue="Pilih Lokasi"
             >
               <option disabled>Pilih Lokasi</option>
               <option>Yogyakarta</option>
@@ -193,6 +214,7 @@ function SignUp() {
               <Link to="/sign_in">&nbsp; Masuk</Link>
             </span>
           </div>
+          <Toaster />
         </form>
       </div>
     </div>
