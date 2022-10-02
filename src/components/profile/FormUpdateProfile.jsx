@@ -99,6 +99,7 @@ function FormUpdateProfile({ handleForm }) {
                     id="email"
                     onChange={handleEmail}
                     className="input input-md input-bordered  max-w-full"
+                    disabled="true"
                   />
                 </div>
 

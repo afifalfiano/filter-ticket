@@ -5,8 +5,9 @@ function Menu({ handleBreadcrumb }) {
   return (
     <div className="flex-1">
       <Link
-        className="btn btn-ghost normal-case text-sm active"
+        className="btn btn-ghost normal-case text-sm"
         to="/dashboard"
+        activeClassName="btn-active"
         onClick={handleBreadcrumb}
       >
         Filtering Ticket
@@ -14,6 +15,7 @@ function Menu({ handleBreadcrumb }) {
       <Link
         className="btn btn-ghost normal-case text-sm"
         to="/dashboard"
+        activeClassName="btn-active"
         onClick={handleBreadcrumb}
       >
         Dasbor
@@ -21,6 +23,7 @@ function Menu({ handleBreadcrumb }) {
       <Link
         className="btn btn-ghost normal-case text-sm"
         to="/reason_of_outage"
+        activeClassName="btn-active"
         onClick={handleBreadcrumb}
       >
         Reason of Outage
@@ -28,6 +31,7 @@ function Menu({ handleBreadcrumb }) {
       <Link
         className="btn btn-ghost normal-case text-sm"
         to="/report"
+        activeClassName="btn-active"
         onClick={handleBreadcrumb}
       >
         Laporan
@@ -35,6 +39,7 @@ function Menu({ handleBreadcrumb }) {
       <Link
         className="btn btn-ghost normal-case text-sm"
         to="/history_dashboard"
+        activeClassName="btn-active"
         onClick={handleBreadcrumb}
       >
         Riwayat Dasbor
@@ -42,6 +47,7 @@ function Menu({ handleBreadcrumb }) {
       <Link
         className="btn btn-ghost normal-case text-sm"
         to="/base_transceiver_station"
+        activeClassName="btn-active"
         onClick={handleBreadcrumb}
       >
         BTS

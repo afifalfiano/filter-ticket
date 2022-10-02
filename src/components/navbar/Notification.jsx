@@ -7,8 +7,8 @@ function Notification() {
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle">
         <div className="indicator">
-          <HiOutlineBell size="20" />
-          <span className="indicator-item badge badge-sm badge-secondary">
+          <HiOutlineBell size="24" />
+          <span className="indicator-item badge badge-sm badge-accent">
             3
           </span>
         </div>
