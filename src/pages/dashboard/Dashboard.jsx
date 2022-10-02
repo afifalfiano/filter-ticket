@@ -1,6 +1,8 @@
+/* eslint-disable react/no-unknown-property */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { HiOutlineCloudUpload } from 'react-icons/hi';
 import styles from './Dashboard.module.css';
 
 function Dashboard() {
@@ -132,17 +134,26 @@ function Dashboard() {
               <span className="label-text"> Unggah Lampiran:</span>
             </label>
 
-            <label
-              htmlFor="file"
-              className="btn btn-info btn-md text-white w-32"
-            >
-              <span className="label-text text-white"> Pilih file:</span>
-            </label>
-
-            <input type="file" hidden id="file" />
+            <div className="flex justify-center items-center w-full">
+              <label
+                htmlFor="dropzone-file"
+                className="flex flex-col justify-center items-center w-full h-32 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer "
+              >
+                <div className="flex flex-col justify-center items-center pt-5 pb-6">
+                  <HiOutlineCloudUpload size={28} />
+                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold">Click to upload</span>
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    PDF, WORD, JPG, JPEG
+                  </p>
+                </div>
+                <input id="dropzone-file" type="file" className="hidden" />
+              </label>
+            </div>
           </div>
 
-          <hr className="my-2 mt-10" />
+          <hr className="my-2 mt-5" />
           <div className="modal-action justify-center">
             <label htmlFor="my-modal-3" className="btn btn-md">
               Batal
