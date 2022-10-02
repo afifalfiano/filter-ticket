@@ -27,7 +27,7 @@ function App() {
       isLogin(true);
     } else {
       isLogin(false);
-      navigate('/');
+      navigate('/', { replace: true });
     }
   };
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable operator-linebreak */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -15,7 +17,12 @@ function SignUp() {
 
   // eslint-disable-next-line consistent-return
   const handleValidation = () => {
-    if (email.trim().includes('@') && password.trim().length > 0) {
+    if (
+      email.trim().includes('@') &&
+      password.trim().length > 0 &&
+      fullName.trim().length > 0 &&
+      confirmPassword.trim().length > 0
+    ) {
       setValid(true);
     } else {
       setValid(false);
@@ -24,7 +31,15 @@ function SignUp() {
 
   const onSubmitLogin = (e) => {
     e.preventDefault();
-    // const user = { email, password };
+    const user = {
+      email,
+      password,
+      confirmPassword,
+      fullName,
+      location,
+      team,
+    };
+    console.log(user, 'user');
     // const local = JSON.stringify(user);
     // localStorage.setItem('user', local);
     navigate('/verification_email', { replace: true });
@@ -105,13 +120,17 @@ function SignUp() {
               <span className="label-text"> Tim:</span>
             </label>
 
-            <input
-              type="text"
-              value={team}
+            <select
+              className="select w-full max-w-full input-bordered"
               id="team"
+              value={team}
               onChange={handleTeam}
-              className="input input-md input-bordered  max-w-full"
-            />
+              defaultValue="Pilih Tim"
+            >
+              <option disabled>Pilih Tim</option>
+              <option>HELPDESK</option>
+              <option>NOC</option>
+            </select>
           </div>
 
           <div className="form-control pt-4">
@@ -119,13 +138,17 @@ function SignUp() {
               <span className="label-text"> POP(Lokasi):</span>
             </label>
 
-            <input
-              type="text"
+            <select
+              className="select w-full max-w-full input-bordered"
               value={location}
-              id="location"
               onChange={handleLocation}
-              className="input input-md input-bordered  max-w-full"
-            />
+              defaultValue="Pilih Lokasi"
+            >
+              <option disabled>Pilih Lokasi</option>
+              <option>Yogyakarta</option>
+              <option>Solo</option>
+              <option>Surakarta</option>
+            </select>
           </div>
 
           <div className="form-control pt-4 ">
