@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import { useEffect, useState } from 'react';
-import SignIn from './pages/sign-in/SignIn';
-import SignUp from './pages/sign-up/SignUp';
-import NotFound from './pages/not-found/NotFound';
+import SignIn from './pages/sign_in/SignIn';
+import SignUp from './pages/sign_up/SignUp';
+import NotFound from './pages/not_found/NotFound';
 import Navbar from './components/navbar/Navbar';
 import Dashboard from './pages/dashboard/Dashboard';
 import ReasonOfOutage from './pages/reason_of_outage/ReasonOfOutage';
@@ -12,9 +12,13 @@ import HistoryDashboard from './pages/history_dashboard/HistoryDashboard';
 import Profile from './pages/profile/Profile';
 import BaseTransceiverStation from './pages/base_transceiver_station/BaseTransceiverStation';
 import Container from './components/common/Container';
+import VerificationEmail from './pages/verification_email/VerificationEmail';
 
 function App() {
   const [login, isLogin] = useState(false);
+
+  const navigate = useNavigate();
+
   const getAuth = () => {
     console.log('renderer');
     const user = localStorage.getItem('user');
@@ -23,6 +27,7 @@ function App() {
       isLogin(true);
     } else {
       isLogin(false);
+      navigate('/');
     }
   };
 
@@ -33,31 +38,30 @@ function App() {
   return (
     <div className="App">
       {login && <Navbar />}
-      <Container>
-        <Routes>
-          {login ? (
-            <>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
-              <Route path="/report" element={<Report />} />
-              <Route path="/history_dashboard" element={<HistoryDashboard />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route
-                path="/base_transceiver_station"
-                element={<BaseTransceiverStation />}
-              />
-              <Route path="*" element={<NotFound />} />
-            </>
-          ) : (
-            <>
-              <Route path="/" element={<SignIn />} />
-              <Route path="/sign_in" element={<SignIn />} />
-              <Route path="/sign_up" element={<SignUp />} />
-            </>
-          )}
-        </Routes>
-      </Container>
+      <Routes>
+        {login ? (
+          <Container>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/history_dashboard" element={<HistoryDashboard />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route
+              path="/base_transceiver_station"
+              element={<BaseTransceiverStation />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Container>
+        ) : (
+          <>
+            <Route path="/" element={<SignIn />} />
+            <Route path="/sign_in" element={<SignIn />} />
+            <Route path="/sign_up" element={<SignUp />} />
+            <Route path="/verification_email" element={<VerificationEmail />} />
+          </>
+        )}
+      </Routes>
     </div>
   );
 }

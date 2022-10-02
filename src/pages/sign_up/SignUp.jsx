@@ -24,11 +24,11 @@ function SignUp() {
 
   const onSubmitLogin = (e) => {
     e.preventDefault();
-    const user = { email, password };
-    const local = JSON.stringify(user);
-    localStorage.setItem('user', local);
-    navigate('/dashboard', { replace: true });
-    window.location.reload();
+    // const user = { email, password };
+    // const local = JSON.stringify(user);
+    // localStorage.setItem('user', local);
+    navigate('/verification_email', { replace: true });
+    // window.location.reload();
   };
 
   const handleEmail = (event) => {
