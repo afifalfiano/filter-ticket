@@ -10,8 +10,12 @@ const  Navbar = () => {
 
   const getBreadcrumb = (event) => {
     console.log(event, 'log');
+    let title = event.target.innerText;
+    if (event.target.innerText === 'Filtering Ticket') {
+      title = 'Dasbor';
+    }
     setBreadcrumb([{
-      title: event.target.innerText,
+      title,
       path: event.target.pathname
     }]);
   }
