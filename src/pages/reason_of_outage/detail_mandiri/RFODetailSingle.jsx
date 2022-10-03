@@ -159,7 +159,6 @@ function RFODetailSingle() {
 
         <div className=" border-gray-100 border-2" />
 
-        {/* className="w-full overflow-auto mt-6" style={{ height: '35rem' }} */}
         <div
           className="flex-1 overflow-auto mt-6 w-full"
           style={{ height: '40rem' }}
