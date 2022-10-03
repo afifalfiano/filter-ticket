@@ -44,6 +44,7 @@ function RFODetailMass() {
               value="deskripsi baru"
             />
           </div>
+
           <div className="flex gap-5">
             <div className="form-control flex-1">
               <label htmlFor="email" className="label">
@@ -95,37 +96,56 @@ function RFODetailMass() {
             />
           </div>
         </div>
+
+        <div className="modal-action justify-center mt-10">
+          <label className="btn btn-md">Kembali</label>
+        </div>
       </div>
       <div className="flex-1 w-full">
         <h1 className="text-center font-semibold">
           Daftar Data Keluhan Terdampak
         </h1>
 
-        <div className="border-2 border-gray-100 rounded-md p-3 mt-9">
-          <table className="border-none items-center w-full">
-            <tbody>
-              <tr className="text-left">
-                <td>ID Pelanggan</td>
-                <td>:</td>
-                <td>123123</td>
-              </tr>
-              <tr className="text-left">
-                <td>Nama Pelanggan</td>
-                <td>:</td>
-                <td>Putra saja</td>
-              </tr>
-              <tr className="text-left">
-                <td>Kontak</td>
-                <td>:</td>
-                <td>Putri - 08123123123</td>
-              </tr>
-              <tr className="text-left">
-                <td>Sumber Keluhan</td>
-                <td>:</td>
-                <td>Twitter - 08123123123</td>
-              </tr>
-            </tbody>
-          </table>
+        <div
+          className="w-full overflow-auto mt-6"
+          style={{ minHeight: '100px', height: '35rem' }}
+        >
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+            <div className="border-2 border-gray-100 rounded-md mt-3 p-3">
+              <table className="border-none items-center w-full">
+                <tbody>
+                  <tr className="text-left">
+                    <td>ID Pelanggan</td>
+                    <td>:</td>
+                    <td>
+                      123123
+                      {item}
+                    </td>
+                  </tr>
+                  <tr className="text-left">
+                    <td>Nama Pelanggan</td>
+                    <td>:</td>
+                    <td>Putra saja</td>
+                  </tr>
+                  <tr className="text-left">
+                    <td>Kontak</td>
+                    <td>:</td>
+                    <td>Putri - 08123123123</td>
+                  </tr>
+                  <tr className="text-left">
+                    <td>Sumber Keluhan</td>
+                    <td>:</td>
+                    <td>Twitter - @putra</td>
+                  </tr>
+                  <tr className="text-left">
+                    <td>Keluhan</td>
+                    <td>:</td>
+                    <td>Internet sangat lambat</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          ))}
         </div>
       </div>
     </div>
