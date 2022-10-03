@@ -13,6 +13,7 @@ import BaseTransceiverStation from './pages/base_transceiver_station/BaseTransce
 import Container from './components/common/Container';
 import VerificationEmail from './pages/verification_email/VerificationEmail';
 import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
+import RFODetailMass from './pages/reason_of_outage/detail_masal/RFODetailMass';
 // eslint-disable-next-line import/no-unresolved
 // import 'node_modules/leaflet-geosearch/dist/geosearch.css';
 
@@ -46,6 +47,10 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/dashboard/detail/:id" element={<DashboardDetail />} />
             <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
+            <Route
+              path="/reason_of_outage/detail_masal/:id"
+              element={<RFODetailMass />}
+            />
             <Route path="/report" element={<Report />} />
             <Route path="/history_dashboard" element={<HistoryDashboard />} />
             <Route path="/profile" element={<Profile />} />
