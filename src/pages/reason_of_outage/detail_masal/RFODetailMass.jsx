@@ -101,15 +101,15 @@ function RFODetailMass() {
           <label className="btn btn-md">Kembali</label>
         </div>
       </div>
+
+      <div className=" border-gray-100 border-2" />
+
       <div className="flex-1 w-full">
         <h1 className="text-center font-semibold">
           Daftar Data Keluhan Terdampak
         </h1>
 
-        <div
-          className="w-full overflow-auto mt-6"
-          style={{ minHeight: '100px', height: '35rem' }}
-        >
+        <div className="w-full overflow-auto mt-6" style={{ height: '35rem' }}>
           {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
             <div className="border-2 border-gray-100 rounded-md mt-3 p-3">
               <table className="border-none items-center w-full">

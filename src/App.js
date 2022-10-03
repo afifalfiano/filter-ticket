@@ -14,6 +14,7 @@ import Container from './components/common/Container';
 import VerificationEmail from './pages/verification_email/VerificationEmail';
 import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
 import RFODetailMass from './pages/reason_of_outage/detail_masal/RFODetailMass';
+import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSingle';
 // eslint-disable-next-line import/no-unresolved
 // import 'node_modules/leaflet-geosearch/dist/geosearch.css';
 
@@ -50,6 +51,10 @@ function App() {
             <Route
               path="/reason_of_outage/detail_masal/:id"
               element={<RFODetailMass />}
+            />
+            <Route
+              path="/reason_of_outage/detail_single/:id"
+              element={<RFODetailSingle />}
             />
             <Route path="/report" element={<Report />} />
             <Route path="/history_dashboard" element={<HistoryDashboard />} />
