@@ -14,7 +14,7 @@ import Container from './components/common/Container';
 import VerificationEmail from './pages/verification_email/VerificationEmail';
 import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
 // eslint-disable-next-line import/no-unresolved
-import 'node_modules/leaflet-geosearch/dist/geosearch.css';
+// import 'node_modules/leaflet-geosearch/dist/geosearch.css';
 
 function App() {
   const [login, isLogin] = useState(false);
