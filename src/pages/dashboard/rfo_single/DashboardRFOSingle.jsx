@@ -1,7 +1,9 @@
 import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 function DashboardRFOSingle() {
+  const navigate = useNavigate();
   return (
     <>
       <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md">
@@ -166,8 +168,14 @@ function DashboardRFOSingle() {
           </div>
 
           <div className="modal-action justify-center mt-10">
-            <button type="button" className="btn btn-md mr-5">
-              Batal
+            <button
+              type="button"
+              className="btn btn-md mr-5"
+              onClick={() => {
+                navigate('/dashboard');
+              }}
+            >
+              Kembali
             </button>
             <button type="button" className="btn btn-md btn-success">
               Simpan

@@ -1,11 +1,90 @@
+/* eslint-disable react/button-has-type */
 /* eslint-disable react/no-unknown-property */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { HiOutlineCloudUpload, HiSearch } from 'react-icons/hi';
+import {
+  HiOutlineCloudUpload,
+  HiSearch,
+  HiPencil,
+  HiTrash,
+  HiEye,
+  HiOutlineClipboardCheck,
+  HiOutlineClipboardList,
+} from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 
 function Dashboard() {
+  const navigate = useNavigate();
+  const columns = [
+    'No',
+    'ID Pelanggan',
+    'Nama Pelanggan',
+    'Kontak',
+    'Keluhan',
+    'Progress',
+    'Waktu',
+    'Status',
+    'Aksi',
+  ];
+  const rows = [
+    {
+      uuid: '12123',
+      id_pelanggan: '3123123',
+      nama_pelanggan: 'putra',
+      kontak: 'Ardi - 08123123',
+      keluhan: 'internet lemot',
+      progress: 'router perlu dicek kembali',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_diubah: new Date().toLocaleString('id-ID'),
+      status: 'open',
+    },
+    {
+      uuid: '12123',
+      id_pelanggan: '3123123',
+      nama_pelanggan: 'putra',
+      kontak: 'Ardi - 08123123',
+      keluhan: 'internet lemot',
+      progress: 'router perlu dicek kembali',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_diubah: new Date().toLocaleString('id-ID'),
+      status: 'open',
+    },
+    {
+      uuid: '12123',
+      id_pelanggan: '3123123',
+      nama_pelanggan: 'putra',
+      kontak: 'Ardi - 08123123',
+      keluhan: 'internet lemot',
+      progress: 'router perlu dicek kembali',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_diubah: new Date().toLocaleString('id-ID'),
+      status: 'open',
+    },
+    {
+      uuid: '12123',
+      id_pelanggan: '3123123',
+      nama_pelanggan: 'putra',
+      kontak: 'Ardi - 08123123',
+      keluhan: 'internet lemot',
+      progress: 'router perlu dicek kembali',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_diubah: new Date().toLocaleString('id-ID'),
+      status: 'open',
+    },
+    {
+      uuid: '12123',
+      id_pelanggan: '3123123',
+      nama_pelanggan: 'putra',
+      kontak: 'Ardi - 08123123',
+      keluhan: 'internet lemot',
+      progress: 'router perlu dicek kembali',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_diubah: new Date().toLocaleString('id-ID'),
+      status: 'open',
+    },
+  ];
   return (
     <div>
       <div>
@@ -195,6 +274,107 @@ function Dashboard() {
             <label htmlFor="my-modal-3" className="btn btn-md btn-success">
               Simpan
             </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-x-auto mt-8">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              {columns.map((item) => (
+                <th className="text-center">{item}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((item, index) => (
+              <tr className="text-center">
+                <td>{index + 1}</td>
+                <td>{item.id_pelanggan}</td>
+                <td>{item.nama_pelanggan}</td>
+                <td>{item.kontak}</td>
+                <td>{item.keluhan}</td>
+                <td>{item.progress}</td>
+                <td className="text-left">
+                  <p>
+                    Dibuat:
+                    {item.waktu_dibuat}
+                  </p>
+                  <p>
+                    Diubah:
+                    {item.waktu_diubah}
+                  </p>
+                </td>
+                <td>
+                  <span className="badge badge-accent text-white">
+                    {item.status}
+                  </span>
+                </td>
+                <td>
+                  <div className="flex flex-row gap-3 justify-center">
+                    <HiPencil
+                      className="cursor-pointer"
+                      size={20}
+                      color="#D98200"
+                      onClick={() => {
+                        document.getElementById('my-modal-3').click();
+                      }}
+                    />
+                    <HiTrash
+                      size={20}
+                      color="#FF2E00"
+                      className="cursor-pointer"
+                    />
+                    <HiEye
+                      size={20}
+                      color="#0D68F1"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        navigate(`/dashboard/detail/${item.uuid}`);
+                      }}
+                    />
+                    <HiOutlineClipboardCheck
+                      size={20}
+                      color="#065F46"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        navigate(`/dashboard/rfo_single/${item.uuid}`);
+                      }}
+                    />
+                    <HiOutlineClipboardList
+                      size={20}
+                      color="#0007A3"
+                      className="cursor-pointer"
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-between mt-5 pb-20">
+        <div className="flex flex-row gap-1">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> Halaman 1 dari 1</span>
+          </label>
+          <div className="form-control">
+            <select className="select input-bordered">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+        </div>
+        <div className="">
+          <div className="btn-group">
+            <button className="btn btn-active">1</button>
+            <button className="btn">2</button>
+            <button className="btn">3</button>
+            <button className="btn">4</button>
           </div>
         </div>
       </div>
