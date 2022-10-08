@@ -25,7 +25,7 @@ function BaseTransceiverStation() {
   const rows = [
     {
       uuid: '12123',
-      nama: 'Putra',
+      nama: 'BTS Yogyakarta',
       penanggung_jawab: 'Putra',
       no_penanggung_jawab: '08123123',
       lokasi: 'Yogyakarta',
@@ -34,7 +34,7 @@ function BaseTransceiverStation() {
     },
     {
       uuid: '12123',
-      nama: 'Putra',
+      nama: 'BTS Yogyakarta',
       penanggung_jawab: 'Putra',
       no_penanggung_jawab: '08123123',
       lokasi: 'Yogyakarta',
@@ -43,7 +43,7 @@ function BaseTransceiverStation() {
     },
     {
       uuid: '12123',
-      nama: 'Putra',
+      nama: 'BTS Yogyakarta',
       penanggung_jawab: 'Putra',
       no_penanggung_jawab: '08123123',
       lokasi: 'Yogyakarta',
@@ -52,7 +52,7 @@ function BaseTransceiverStation() {
     },
     {
       uuid: '12123',
-      nama: 'Putra',
+      nama: 'BTS Yogyakarta',
       penanggung_jawab: 'Putra',
       no_penanggung_jawab: '08123123',
       lokasi: 'Yogyakarta',
@@ -61,7 +61,7 @@ function BaseTransceiverStation() {
     },
     {
       uuid: '12123',
-      nama: 'Putra',
+      nama: 'BTS Yogyakarta',
       penanggung_jawab: 'Putra',
       no_penanggung_jawab: '08123123',
       lokasi: 'Yogyakarta',
