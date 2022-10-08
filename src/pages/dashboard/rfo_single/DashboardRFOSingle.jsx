@@ -1,7 +1,7 @@
-import { HiDocumentText } from 'react-icons/hi';
+import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-function RFODetailSingle() {
+function DashboardRFOSingle() {
   return (
     <>
       <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md">
@@ -61,7 +61,6 @@ function RFODetailSingle() {
               <textarea
                 className="textarea textarea-bordered h-24"
                 placeholder="masalah..."
-                disabled
                 value="masalah baru"
               />
             </div>
@@ -74,7 +73,6 @@ function RFODetailSingle() {
               <textarea
                 className="textarea textarea-bordered h-24"
                 placeholder="aksi..."
-                disabled
                 value="aksi baru"
               />
             </div>
@@ -87,7 +85,6 @@ function RFODetailSingle() {
               <textarea
                 className="textarea textarea-bordered h-24"
                 placeholder="deskripsi..."
-                disabled
                 value="deskripsi baru"
               />
             </div>
@@ -128,7 +125,6 @@ function RFODetailSingle() {
               <input
                 type="text"
                 className="input input-md input-bordered  max-w-full"
-                disabled
               />
             </div>
 
@@ -145,15 +141,37 @@ function RFODetailSingle() {
             </div>
           </div>
 
-          <div className="pt-5">
-            <p className="link inline">
-              <HiDocumentText size={24} color="blue" className="inline mr-2" />
-              file_lampiran_rfo.pdf
-            </p>
+          <div className="form-control">
+            <label htmlFor="email" className="label">
+              <span className="label-text"> Unggah Lampiran:</span>
+            </label>
+
+            <div className="flex justify-center items-center w-full">
+              <label
+                htmlFor="dropzone-file"
+                className="flex flex-col justify-center items-center w-full h-32 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer "
+              >
+                <div className="flex flex-col justify-center items-center pt-5 pb-6">
+                  <HiOutlineCloudUpload size={28} />
+                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                    <span className="font-semibold">Click to upload</span>
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    PDF, WORD, JPG, JPEG
+                  </p>
+                </div>
+                <input id="dropzone-file" type="file" className="hidden" />
+              </label>
+            </div>
           </div>
 
           <div className="modal-action justify-center mt-10">
-            <label className="btn btn-md">Kembali</label>
+            <button type="button" className="btn btn-md mr-5">
+              Batal
+            </button>
+            <button type="button" className="btn btn-md btn-success">
+              Simpan
+            </button>
           </div>
         </div>
 
@@ -161,7 +179,7 @@ function RFODetailSingle() {
 
         <div
           className="flex-1 overflow-auto mt-6 w-full"
-          style={{ height: '40rem' }}
+          style={{ height: '50rem' }}
         >
           <h1 className="text-center font-semibold">
             Riwayat Follow Up Keluhan
@@ -252,4 +270,4 @@ function RFODetailSingle() {
     </>
   );
 }
-export default RFODetailSingle;
+export default DashboardRFOSingle;
