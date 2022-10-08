@@ -1,8 +1,74 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { HiOutlineCloudUpload, HiSearch } from 'react-icons/hi';
+import { useState } from 'react';
+import {
+  HiOutlineCloudUpload,
+  HiSearch,
+  HiPencil,
+  HiTrash,
+  HiEye,
+  HiQuestionMarkCircle,
+} from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 import styles from './ReasonOfOutage.module.css';
 
 function ReasonOfOutage() {
+  const [statusData, setStatusData] = useState('all');
+
+  const navigate = useNavigate();
+
+  const handleStatus = (event) => {
+    setStatusData(event.target.value);
+  };
+
+  const columns = [
+    'No',
+    'Pelanggan',
+    'Waktu Gangguan',
+    'Durasi',
+    'Masalah',
+    'Lampiran',
+    'Keterangan',
+    'Status RFO',
+    'Aksi',
+  ];
+  const rows = [
+    {
+      uuid: '12123',
+      pelanggan: 'Putra',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_selesai: new Date().toLocaleString('id-ID'),
+      durasi: '3 hari',
+      masalah: 'internet lambat',
+      lampiran: 'file_lampiran_gangguan_single.pdf',
+      keterangan: '-',
+      status: 'sendiri',
+    },
+    {
+      uuid: '12123',
+      pelanggan: '-',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_selesai: new Date().toLocaleString('id-ID'),
+      durasi: '7 hari',
+      masalah: 'cut off FO janti',
+      lampiran: 'file_lampiran_gangguan_masal.pdf',
+      keterangan: '-',
+      status: 'masal',
+    },
+    {
+      uuid: '12123',
+      pelanggan: 'Putra',
+      waktu_dibuat: new Date().toLocaleString('id-ID'),
+      waktu_selesai: new Date().toLocaleString('id-ID'),
+      durasi: '3 hari',
+      masalah: 'internet lambat',
+      lampiran: 'file_lampiran_gangguan_single.pdf',
+      keterangan: '-',
+      status: 'sendiri',
+    },
+  ];
   return (
     <div>
       <div>
@@ -20,11 +86,14 @@ function ReasonOfOutage() {
             <span className="label-text"> Status Keluhan</span>
           </label>
 
-          <select className="select w-full max-w-full input-bordered">
+          <select
+            className="select w-full max-w-full input-bordered"
+            onChange={handleStatus}
+          >
             <option disabled>Pilih Status</option>
-            <option>Semua</option>
-            <option>Mandiri</option>
-            <option>Masal</option>
+            <option value="all">Semua</option>
+            <option value="sendiri">Sendiri</option>
+            <option value="masal">Masal</option>
           </select>
         </div>
 
@@ -49,6 +118,38 @@ function ReasonOfOutage() {
         </div>
       </div>
 
+      {/* modal delete */}
+      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <div className="modal">
+        <div className={`${styles['modal-box-custom']}`}>
+          <label
+            htmlFor="my-modal-delete"
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+          >
+            ✕
+          </label>
+          <h3 className="text-lg font-bold">Hapus Data RFO</h3>
+          <hr className="my-2" />
+
+          <div className="flex flex-col justify-center align-middle items-center">
+            <HiQuestionMarkCircle size={50} color="#FF2E00" />
+
+            <p className="py-4">Apakah anda yakin akan menghapus data RFO?</p>
+          </div>
+
+          <hr className="my-2 mt-5" />
+          <div className="modal-action justify-center">
+            <label htmlFor="my-modal-delete" className="btn btn-md">
+              Batal
+            </label>
+            <label htmlFor="my-modal-delete" className="btn btn-md btn-error">
+              Hapus
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {/* modal add or edit  */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
       <div className="modal">
         <div className={`${styles['modal-box-custom']}`}>
@@ -178,6 +279,190 @@ function ReasonOfOutage() {
           </div>
         </div>
       </div>
+
+      {/* start table */}
+      <div className="overflow-x-auto mt-8">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              {columns.map((item) => (
+                <th className="text-center">{item}</th>
+              ))}
+            </tr>
+          </thead>
+          {/* rows.map((item) => {}) */}
+          <tbody>
+            {rows.map((item, index) => {
+              if (statusData === 'all') {
+                return (
+                  <tr className="text-center">
+                    <td>{index + 1}</td>
+                    <td>{item.pelanggan}</td>
+                    <td className="text-left">
+                      <p>
+                        Dibuat:
+                        {item.waktu_dibuat}
+                      </p>
+                      <p>
+                        Diubah:
+                        {item.waktu_selesai}
+                      </p>
+                    </td>
+                    <td>{item.durasi}</td>
+                    <td>{item.masalah}</td>
+                    <td className="link-primary link">{item.lampiran}</td>
+                    <td>{item.keterangan}</td>
+                    <td>
+                      {item.status === 'sendiri' ? (
+                        <span className="badge badge-accent text-white">
+                          {item.status}
+                        </span>
+                      ) : (
+                        <span className="badge badge-info text-white">
+                          {item.status}
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      <div className="flex flex-row gap-3 justify-center">
+                        <HiPencil
+                          className="cursor-pointer"
+                          size={20}
+                          color="#D98200"
+                          onClick={() => {
+                            document.getElementById('my-modal-3').click();
+                          }}
+                        />
+                        <HiTrash
+                          size={20}
+                          color="#FF2E00"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            document.getElementById('my-modal-delete').click();
+                          }}
+                        />
+                        <HiEye
+                          size={20}
+                          color="#0D68F1"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            if (item.status === 'sendiri') {
+                              navigate(
+                                `/reason_of_outage/detail_single/${item.uuid}`
+                              );
+                            }
+                            if (item.status === 'masal') {
+                              navigate(
+                                `/reason_of_outage/detail_masal/${item.uuid}`
+                              );
+                            }
+                          }}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              }
+
+              if (item.status === statusData) {
+                return (
+                  <tr className="text-center">
+                    <td>{index + 1}</td>
+                    <td>{item.pelanggan}</td>
+                    <td className="text-left">
+                      <p>
+                        Dibuat:
+                        {item.waktu_dibuat}
+                      </p>
+                      <p>
+                        Diubah:
+                        {item.waktu_selesai}
+                      </p>
+                    </td>
+                    <td>{item.durasi}</td>
+                    <td>{item.masalah}</td>
+                    <td className="link-primary link">{item.lampiran}</td>
+                    <td>{item.keterangan}</td>
+                    <td>
+                      {item.status === 'sendiri' ? (
+                        <span className="badge badge-accent text-white">
+                          {item.status}
+                        </span>
+                      ) : (
+                        <span className="badge badge-info text-white">
+                          {item.status}
+                        </span>
+                      )}
+                    </td>
+                    <td>
+                      <div className="flex flex-row gap-3 justify-center">
+                        <HiPencil
+                          className="cursor-pointer"
+                          size={20}
+                          color="#D98200"
+                          onClick={() => {
+                            document.getElementById('my-modal-3').click();
+                          }}
+                        />
+                        <HiTrash
+                          size={20}
+                          color="#FF2E00"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            document.getElementById('my-modal-delete').click();
+                          }}
+                        />
+                        <HiEye
+                          size={20}
+                          color="#0D68F1"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            if (item.status === 'sendiri') {
+                              navigate(
+                                `/reason_of_outage/detail_single/${item.uuid}`
+                              );
+                            }
+                            if (item.status === 'masal') {
+                              navigate(
+                                `/reason_of_outage/detail_masal/${item.uuid}`
+                              );
+                            }
+                          }}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              }
+            })}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-between mt-5 pb-20">
+        <div className="flex flex-row gap-1">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> Halaman 1 dari 1</span>
+          </label>
+          <div className="form-control">
+            <select className="select input-bordered">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+        </div>
+        <div className="">
+          <div className="btn-group">
+            <button className="btn btn-outline btn-active">1</button>
+            <button className="btn btn-outline">2</button>
+            <button className="btn btn-outline">3</button>
+            <button className="btn btn-outline">4</button>
+          </div>
+        </div>
+      </div>
+      {/* end table */}
     </div>
   );
 }

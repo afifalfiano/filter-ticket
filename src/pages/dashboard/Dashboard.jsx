@@ -447,6 +447,7 @@ function Dashboard() {
         </div>
       </div>
 
+      {/* start table */}
       <div className="overflow-x-auto mt-8">
         <table className="table w-full">
           <thead>
@@ -541,7 +542,7 @@ function Dashboard() {
                             <FaUndoAlt
                               size={20}
                               color="#D98200"
-                              className="cursor-name"
+                              className="cursor-pointer"
                               onClick={() => {
                                 document
                                   .getElementById('my-modal-revert')
@@ -599,6 +600,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
+      {/* end table */}
     </div>
   );
 }

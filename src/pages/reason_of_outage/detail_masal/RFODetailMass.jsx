@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom';
+
 /* eslint-disable jsx-a11y/label-has-associated-control */
 function RFODetailMass() {
+  const navigate = useNavigate();
   return (
     <div className="flex w-full gap-5">
       <div className="flex-1 w-full">
@@ -98,7 +101,15 @@ function RFODetailMass() {
         </div>
 
         <div className="modal-action justify-center mt-10">
-          <label className="btn btn-md">Kembali</label>
+          <button
+            type="button"
+            className="btn btn-md mr-5"
+            onClick={() => {
+              navigate('/reason_of_outage');
+            }}
+          >
+            Kembali
+          </button>
         </div>
       </div>
 

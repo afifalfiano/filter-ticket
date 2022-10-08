@@ -1,7 +1,9 @@
 import { HiDocumentText } from 'react-icons/hi';
+import { useNavigate } from 'react-router-dom';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 function RFODetailSingle() {
+  const navigate = useNavigate();
   return (
     <>
       <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md">
@@ -153,7 +155,15 @@ function RFODetailSingle() {
           </div>
 
           <div className="modal-action justify-center mt-10">
-            <label className="btn btn-md">Kembali</label>
+            <button
+              type="button"
+              className="btn btn-md mr-5"
+              onClick={() => {
+                navigate('/reason_of_outage');
+              }}
+            >
+              Kembali
+            </button>
           </div>
         </div>
 
