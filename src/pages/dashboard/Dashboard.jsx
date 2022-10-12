@@ -129,14 +129,14 @@ function Dashboard() {
             <span className="label-text"> Cari</span>
           </label>
           <div className="flex items-center">
-            <div class="relative w-full">
-              <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <div className="relative w-full">
+              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <HiSearch />
               </div>
               <input
                 type="text"
                 id="voice-search"
-                class="input input-md input-bordered pl-10 p-2.5 "
+                className="input input-md input-bordered pl-10 p-2.5 "
                 placeholder="Cari data keluhan..."
                 required
               />

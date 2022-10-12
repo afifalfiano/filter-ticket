@@ -1,18 +1,40 @@
 /* eslint-disable */
+import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom'
-
+import { useLogoutMutation } from '../../store/features/auth/authApiSlice';
+import { selectCurrentUser, setLogOut } from '../../store/features/auth/authSlice';
 
 const DropdownMenu = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const onLogout = (e) => {
+  // eslint-disable-next-line no-unused-vars
+  const [logout, { isLoading }] = useLogoutMutation();
+  const user = useSelector(selectCurrentUser);
+  console.log(user, 'user');
+
+  const onLogout = async (e) => {
     e.preventDefault();
-    console.log('logout');
-    alert('Logout done');
-    localStorage.clear();
-    navigate('/sign_in');
-    window.location.reload();
+
+    try {
+      const userData = await logout().unwrap();
+      dispatch(setLogOut());
+      console.log(userData, 'log');
+      localStorage.clear();
+      setTimeout(() => {
+        navigate('/sign_in');
+        window.location.reload();
+      }, 1000)
+
+    } catch (err) {
+      localStorage.clear();
+      setTimeout(() => {
+        navigate('/sign_in');
+        window.location.reload();
+      }, 1000)
+    }
+
   }
   return (
     <>

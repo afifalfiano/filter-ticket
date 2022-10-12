@@ -1,10 +1,13 @@
-/* eslint-disable import/no-named-as-default */
+/* eslint-disable prettier/prettier */
 import { configureStore } from '@reduxjs/toolkit';
-import counterSlice from './features/counter/counterSlice';
-
+import { apiSlice } from '../api/apiSlice';
+import authReducer from './features/auth/authSlice';
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore({
   reducer: {
-    counter: counterSlice,
+    [apiSlice.reducerPath]: apiSlice.reducer,
+    auth: authReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+  devTools: true,
 });

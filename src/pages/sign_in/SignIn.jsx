@@ -1,11 +1,19 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
+import { useLoginMutation } from '../../store/features/auth/authApiSlice';
+import { setCredentials } from '../../store/features/auth/authSlice';
 
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [valid, setValid] = useState(false);
+
+  const dispatch = useDispatch();
+
+  // eslint-disable-next-line no-unused-vars
+  const [login, { isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
 
@@ -18,18 +26,38 @@ function SignIn() {
     }
   };
 
-  const onSubmitLogin = (e) => {
+  const onSubmitLogin = async (e) => {
     e.preventDefault();
-    const user = {
-      email,
-      password,
-      role: 'HELPDESK',
-      pop: 'Yogyakarta',
-    };
-    const local = JSON.stringify(user);
-    localStorage.setItem('user', local);
-    navigate('/dashboard', { replace: true });
-    window.location.reload();
+
+    try {
+      const userData = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...userData }));
+      setEmail('');
+      setPassword('');
+      const local = JSON.stringify(userData);
+      localStorage.setItem('user', local);
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+        window.location.reload();
+      }, 1000);
+    } catch (err) {
+      console.log(err);
+      const dummy = {
+        email: null,
+        bearer_token: null,
+        username: null,
+        role_id: null,
+        pop_id: null,
+        id_user: null,
+        expires_in: null,
+      };
+      const local = JSON.stringify(dummy);
+      localStorage.setItem('user', local);
+      setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+        window.location.reload();
+      }, 1000);
+    }
   };
 
   const handleEmail = (event) => {
@@ -98,6 +126,7 @@ function SignIn() {
               type="submit"
               className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md btn-block"
               disabled={!valid}
+              onClick
             >
               Masuk
             </button>
