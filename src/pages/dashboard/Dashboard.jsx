@@ -1,3 +1,7 @@
+/* eslint-disable prefer-template */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/button-has-type */
@@ -5,7 +9,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   HiOutlineCloudUpload,
   HiSearch,
@@ -19,16 +23,12 @@ import {
 } from 'react-icons/hi';
 import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styles from './Dashboard.module.css';
+import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
+import { setComplain } from '../../store/features/complain/complainSlice';
 
 function Dashboard() {
-  const [statusData, setStatusData] = useState('open');
-  const navigate = useNavigate();
-
-  const handleStatus = (event) => {
-    setStatusData(event.target.value);
-  };
-
   const columns = [
     'No',
     'ID Pelanggan',
@@ -40,63 +40,55 @@ function Dashboard() {
     'Status',
     'Aksi',
   ];
-  const rows = [
-    {
-      uuid: '12123',
-      id_pelanggan: '3123123',
-      nama_pelanggan: 'putra',
-      kontak: 'Ardi - 08123123',
-      keluhan: 'internet lemot',
-      progress: 'router perlu dicek kembali',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_diubah: new Date().toLocaleString('id-ID'),
-      status: 'open',
-    },
-    {
-      uuid: '12123',
-      id_pelanggan: '3123123',
-      nama_pelanggan: 'putra',
-      kontak: 'Ardi - 08123123',
-      keluhan: 'internet lemot',
-      progress: 'router perlu dicek kembali',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_diubah: new Date().toLocaleString('id-ID'),
-      status: 'open',
-    },
-    {
-      uuid: '12123',
-      id_pelanggan: '3123123',
-      nama_pelanggan: 'putra',
-      kontak: 'Ardi - 08123123',
-      keluhan: 'internet lemot',
-      progress: 'router perlu dicek kembali',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_diubah: new Date().toLocaleString('id-ID'),
-      status: 'open',
-    },
-    {
-      uuid: '12123',
-      id_pelanggan: '3123123',
-      nama_pelanggan: 'putra',
-      kontak: 'Ardi - 08123123',
-      keluhan: 'internet lemot',
-      progress: 'router perlu dicek kembali',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_diubah: new Date().toLocaleString('id-ID'),
-      status: 'open',
-    },
-    {
-      uuid: '12123',
-      id_pelanggan: '3123123',
-      nama_pelanggan: 'putrazzz',
-      kontak: 'Ardi - 08123123',
-      keluhan: 'internet lemot',
-      progress: 'router perlu dicek kembali',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_diubah: new Date().toLocaleString('id-ID'),
-      status: 'closed',
-    },
-  ];
+  const [statusData, setStatusData] = useState('open');
+  const navigate = useNavigate();
+  const [rows, setRows] = useState([]);
+  const [allComplain, { ...status }] = useAllComplainMutation();
+  const dispatch = useDispatch();
+
+  const getAllComplain = async () => {
+    try {
+      const data = await allComplain().unwrap();
+      dispatch(setComplain({ ...data }));
+      setRows(data.data);
+      console.log(data, 'data complain');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllComplain();
+  }, []);
+
+  const handleStatus = (event) => {
+    setStatusData(event.target.value);
+  };
+
+  // const rows = [
+  //   {
+  //     uuid: '12123',
+  //     id_pelanggan: '3123123',
+  //     nama_pelanggan: 'putra',
+  //     kontak: 'Ardi - 08123123',
+  //     keluhan: 'internet lemot',
+  //     progress: 'router perlu dicek kembali',
+  //     waktu_dibuat: new Date().toLocaleString('id-ID'),
+  //     waktu_diubah: new Date().toLocaleString('id-ID'),
+  //     status: 'open',
+  //   },
+  //   {
+  //     uuid: '12123',
+  //     id_pelanggan: '3123123',
+  //     nama_pelanggan: 'putra',
+  //     kontak: 'Ardi - 08123123',
+  //     keluhan: 'internet lemot',
+  //     progress: 'router perlu dicek kembali',
+  //     waktu_dibuat: new Date().toLocaleString('id-ID'),
+  //     waktu_diubah: new Date().toLocaleString('id-ID'),
+  //     status: 'open',
+  //   },
+  // ];
   return (
     <div>
       <div>
@@ -466,17 +458,19 @@ function Dashboard() {
                     <td>{index + 1}</td>
                     <td>{item.id_pelanggan}</td>
                     <td>{item.nama_pelanggan}</td>
-                    <td>{item.kontak}</td>
-                    <td>{item.keluhan}</td>
-                    <td>{item.progress}</td>
+                    <td>{item.nama_pelapor} - {item.nomor_pelapor}</td>
+                    <td className="text-left">{item.nomor_keluhan} - {item.keluhan}</td>
+                    <td className="text-left">{item.balasan.length > 0 ? item.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan'}</td>
                     <td className="text-left">
                       <p>
                         Dibuat:
-                        {item.waktu_dibuat}
+                        {new Date(item.created_at).toLocaleString('id-ID')}
                       </p>
                       <p>
                         Diubah:
-                        {item.waktu_diubah}
+                        {item.balasan.length > 0
+                          ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleDateString('id-ID')
+                          : new Date(item.created_at).toLocaleString('id-ID')}
                       </p>
                     </td>
                     <td>

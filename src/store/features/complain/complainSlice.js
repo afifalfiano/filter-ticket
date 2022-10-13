@@ -6,19 +6,19 @@ const initialState = {
   data: [],
 };
 
-const btsSlice = createSlice({
-  name: 'bts',
+const complainSlice = createSlice({
+  name: 'complain',
   initialState,
   reducers: {
-    setBTS: (state, action) => {
+    setComplain: (state, action) => {
       const { data } = action.payload;
       state.data = data;
     },
   },
 });
 
-export const { setBTS } = btsSlice.actions;
+export const { setComplain } = complainSlice.actions;
 
-export default btsSlice.reducer;
+export default complainSlice.reducer;
 
-export const selectAllBTS = (state) => state.bts;
+export const selectAllComplain = (state) => state.complain;

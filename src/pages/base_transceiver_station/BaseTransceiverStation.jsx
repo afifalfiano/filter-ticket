@@ -30,9 +30,7 @@ function BaseTransceiverStation() {
   ];
 
   const [rows, setRows] = useState([]);
-  // const dataBTS = useSelector(selectAllBTS);
   const [allBts, { ...status }] = useAllBtsMutation();
-  // console.log(status, 'cek loding');
   const dispatch = useDispatch();
 
   const getAllBTS = async () => {

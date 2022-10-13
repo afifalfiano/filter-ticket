@@ -9,12 +9,38 @@ export const btsApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     btsById: builder.mutation({
-      query: ({ id }) => ({
+      query: (id) => ({
         url: `/bts/${id}`,
         method: 'GET',
+      }),
+    }),
+    addBts: builder.mutation({
+      query: (body) => ({
+        url: '/bts',
+        method: 'POST',
+        body: { ...body },
+      }),
+    }),
+    updateBts: builder.mutation({
+      query: (id, body) => ({
+        url: `/bts/${id}`,
+        method: 'PUT',
+        body: { ...body },
+      }),
+    }),
+    deleteBts: builder.mutation({
+      query: (id) => ({
+        url: `/bts/${id}`,
+        method: 'DELETE',
       }),
     }),
   }),
 });
 
-export const { useAllBtsMutation, useBtsById } = btsApiSlice;
+export const {
+  useAllBtsMutation,
+  useBtsByIdMutation,
+  useAddBtsMutation,
+  useUpdateBtsMutation,
+  useDeleteBtsMutation,
+} = btsApiSlice;
