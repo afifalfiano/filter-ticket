@@ -1,3 +1,5 @@
+/* eslint-disable operator-linebreak */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unescaped-entities */
@@ -9,7 +11,11 @@ import {
   HiEye,
   HiPencil,
 } from 'react-icons/hi';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { selectAllBTS, setBTS } from '../../store/features/bts/btsSlice';
 import styles from './BaseTransceiverStation.module.css';
+import { useAllBtsMutation } from '../../store/features/bts/btsApiSlice';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -22,53 +28,28 @@ function BaseTransceiverStation() {
     'POP',
     'Aksi',
   ];
-  const rows = [
-    {
-      uuid: '12123',
-      nama: 'BTS Yogyakarta',
-      penanggung_jawab: 'Putra',
-      no_penanggung_jawab: '08123123',
-      lokasi: 'Yogyakarta',
-      koordinat: '-1231211112312, 123123123',
-      pop: '-',
-    },
-    {
-      uuid: '12123',
-      nama: 'BTS Yogyakarta',
-      penanggung_jawab: 'Putra',
-      no_penanggung_jawab: '08123123',
-      lokasi: 'Yogyakarta',
-      koordinat: '-1231211112312, 123123123',
-      pop: '-',
-    },
-    {
-      uuid: '12123',
-      nama: 'BTS Yogyakarta',
-      penanggung_jawab: 'Putra',
-      no_penanggung_jawab: '08123123',
-      lokasi: 'Yogyakarta',
-      koordinat: '-1231211112312, 123123123',
-      pop: '-',
-    },
-    {
-      uuid: '12123',
-      nama: 'BTS Yogyakarta',
-      penanggung_jawab: 'Putra',
-      no_penanggung_jawab: '08123123',
-      lokasi: 'Yogyakarta',
-      koordinat: '-1231211112312, 123123123',
-      pop: '-',
-    },
-    {
-      uuid: '12123',
-      nama: 'BTS Yogyakarta',
-      penanggung_jawab: 'Putra',
-      no_penanggung_jawab: '08123123',
-      lokasi: 'Yogyakarta',
-      koordinat: '-1231211112312, 123123123',
-      pop: '-',
-    },
-  ];
+
+  const [rows, setRows] = useState([]);
+  // const dataBTS = useSelector(selectAllBTS);
+  const [allBts, { ...status }] = useAllBtsMutation();
+  // console.log(status, 'cek loding');
+  const dispatch = useDispatch();
+
+  const getAllBTS = async () => {
+    try {
+      const data = await allBts().unwrap();
+      dispatch(setBTS({ ...data }));
+      setRows(data.data);
+      console.log(data, 'data');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllBTS();
+  }, []);
+
   return (
     <div>
       <div>
@@ -79,7 +60,6 @@ function BaseTransceiverStation() {
           Tambah
         </label>
       </div>
-
       <div className="mt-4">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
@@ -238,45 +218,45 @@ function BaseTransceiverStation() {
               ))}
             </tr>
           </thead>
-          {/* rows.map((item) => {}) */}
           <tbody>
-            {rows.map((item, index) => (
-              <tr className="text-center">
-                <td>{index + 1}</td>
-                <td>{item.nama}</td>
-                <td>{item.penanggung_jawab}</td>
-                <td>{item.no_penanggung_jawab}</td>
-                <td>{item.lokasi}</td>
-                <td>{item.koordinat}</td>
-                <td>{item.pop}</td>
-                <td>
-                  <div className="flex flex-row gap-3 justify-center">
-                    <HiPencil
-                      className="cursor-pointer"
-                      size={20}
-                      color="#D98200"
-                      onClick={() => {
-                        document.getElementById('my-modal-3').click();
-                      }}
-                    />
-                    <HiTrash
-                      size={20}
-                      color="#FF2E00"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        document.getElementById('my-modal-delete').click();
-                      }}
-                    />
-                    <HiEye
-                      size={20}
-                      color="#0D68F1"
-                      className="cursor-pointer"
-                      onClick={() => {}}
-                    />
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {rows.length > 0 &&
+              rows.map((item, index) => (
+                <tr className="text-center" id={item.id}>
+                  <td id={item.id}>{index + 1}</td>
+                  <td>{item.nama_bts}</td>
+                  <td>{item.nama_pic}</td>
+                  <td>{item.nomor_pic}</td>
+                  <td>{item.lokasi}</td>
+                  <td>{item.kordinat}</td>
+                  <td>{item.pop.pop}</td>
+                  <td>
+                    <div className="flex flex-row gap-3 justify-center">
+                      <HiPencil
+                        className="cursor-pointer"
+                        size={20}
+                        color="#D98200"
+                        onClick={() => {
+                          document.getElementById('my-modal-3').click();
+                        }}
+                      />
+                      <HiTrash
+                        size={20}
+                        color="#FF2E00"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          document.getElementById('my-modal-delete').click();
+                        }}
+                      />
+                      <HiEye
+                        size={20}
+                        color="#0D68F1"
+                        className="cursor-pointer"
+                        onClick={() => {}}
+                      />
+                    </div>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
