@@ -469,7 +469,7 @@ function Dashboard() {
                       <p>
                         Diubah:
                         {item.balasan.length > 0
-                          ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleDateString('id-ID')
+                          ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
                           : new Date(item.created_at).toLocaleString('id-ID')}
                       </p>
                     </td>
@@ -511,7 +511,7 @@ function Dashboard() {
                               color="#0D68F1"
                               className="cursor-pointer"
                               onClick={() => {
-                                navigate(`/dashboard/detail/${item.uuid}`);
+                                navigate(`/dashboard/detail/${item.id_keluhan}`);
                               }}
                             />
                             <HiOutlineClipboardCheck
@@ -519,7 +519,7 @@ function Dashboard() {
                               color="#065F46"
                               className="cursor-pointer"
                               onClick={() => {
-                                navigate(`/dashboard/rfo_single/${item.uuid}`);
+                                navigate(`/dashboard/rfo_single/${item.id_keluhan}`);
                               }}
                             />
                             <HiOutlineClipboardList

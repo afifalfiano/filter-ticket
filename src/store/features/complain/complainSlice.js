@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   data: [],
+  detail: {},
 };
 
 const complainSlice = createSlice({
@@ -14,10 +15,14 @@ const complainSlice = createSlice({
       const { data } = action.payload;
       state.data = data;
     },
+    setComplainById: (state, action) => {
+      const { data } = action.payload;
+      state.detail = data;
+    },
   },
 });
 
-export const { setComplain } = complainSlice.actions;
+export const { setComplain, setComplainById } = complainSlice.actions;
 
 export default complainSlice.reducer;
 

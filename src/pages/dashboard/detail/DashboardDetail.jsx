@@ -1,9 +1,37 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { useState, useEffect } from 'react';
 import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useComplainByIdMutation } from '../../../store/features/complain/complainApiSlice';
+import { setComplainById } from '../../../store/features/complain/complainSlice';
 
 function DashboardDetail() {
+  const [detailComplain, setDetailComplain] = useState(null);
+  const { id } = useParams();
+  console.log(id, 'param');
   const navigate = useNavigate();
+  const [complainById, { ...status }] = useComplainByIdMutation();
+  const dispatch = useDispatch();
+
+  const getComplainById = async () => {
+    try {
+      const data = await complainById(id).unwrap();
+      dispatch(setComplainById({ ...data }));
+      setDetailComplain(data.data);
+      console.log(data, 'data');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getComplainById();
+  }, []);
+
   return (
     <div>
       <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md">
@@ -13,17 +41,17 @@ function DashboardDetail() {
               <tr className="text-left">
                 <td>Referensi Keluhan</td>
                 <td>:</td>
-                <td>123123</td>
+                <td>{detailComplain?.nomor_keluhan}</td>
               </tr>
               <tr className="text-left">
                 <td>Pelanggan</td>
                 <td>:</td>
-                <td>3123123 - Pratama</td>
+                <td>{detailComplain?.id_pelanggan} - {detailComplain?.nama_pelanggan}</td>
               </tr>
               <tr className="text-left">
                 <td>Kontak</td>
                 <td>:</td>
-                <td>Putri - 08123123123</td>
+                <td>{detailComplain?.nama_pelapor} - {detailComplain?.nomor_pelapor}</td>
               </tr>
             </tbody>
           </table>
@@ -34,17 +62,21 @@ function DashboardDetail() {
               <tr className="text-left">
                 <td>Waktu Dibuat</td>
                 <td>:</td>
-                <td>{new Date().toLocaleString('id-ID')}</td>
+                <td>{new Date(detailComplain?.created_at).toLocaleString('id-ID')}</td>
               </tr>
               <tr className="text-left">
                 <td>Waktu Diubah</td>
                 <td>:</td>
-                <td>{new Date().toLocaleString('id-ID')}</td>
+                <td>
+                  {detailComplain?.balasan.length > 0
+                    ? new Date(detailComplain?.balasan[detailComplain.balasan.length - 1].created_at).toLocaleString('id-ID')
+                    : new Date(detailComplain?.created_at).toLocaleString('id-ID')}
+                </td>
               </tr>
               <tr className="text-left">
                 <td>Status Keluhan</td>
                 <td>:</td>
-                <td>Open</td>
+                <td>{detailComplain?.status}</td>
               </tr>
             </tbody>
           </table>
