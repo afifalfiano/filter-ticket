@@ -31,6 +31,7 @@ import { setComplain } from '../../store/features/complain/complainSlice';
 function Dashboard() {
   const columns = [
     'No',
+    'POP',
     'ID Pelanggan',
     'Nama Pelanggan',
     'Kontak',
@@ -41,6 +42,7 @@ function Dashboard() {
     'Aksi',
   ];
   const [statusData, setStatusData] = useState('open');
+  const [pop, setPOP] = useState('all');
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [allComplain, { ...status }] = useAllComplainMutation();
@@ -63,6 +65,10 @@ function Dashboard() {
 
   const handleStatus = (event) => {
     setStatusData(event.target.value);
+  };
+
+  const handlePOP = (event) => {
+    setPOP(event.target.value);
   };
 
   // const rows = [
@@ -113,6 +119,21 @@ function Dashboard() {
             <option disabled>Pilih Status</option>
             <option value="open">Open Case</option>
             <option value="closed">Closed Case</option>
+          </select>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> POP</span>
+          </label>
+
+          <select
+            className="select w-full max-w-full input-bordered"
+            onChange={handlePOP}
+          >
+            <option disabled>Pilih POP</option>
+            <option value="yogyakarta">Yogyakarta</option>
+            <option value="solo">Solo</option>
           </select>
         </div>
 
@@ -456,10 +477,11 @@ function Dashboard() {
                 return (
                   <tr className="text-center">
                     <td>{index + 1}</td>
+                    <td className="text-left">{item.pop.pop}</td>
                     <td>{item.id_pelanggan}</td>
                     <td>{item.nama_pelanggan}</td>
                     <td>{item.nama_pelapor} - {item.nomor_pelapor}</td>
-                    <td className="text-left">{item.nomor_keluhan} - {item.keluhan}</td>
+                    <td className="text-left">{item.keluhan}</td>
                     <td className="text-left">{item.balasan.length > 0 ? item.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan'}</td>
                     <td className="text-left">
                       <p>
