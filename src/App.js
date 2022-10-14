@@ -19,6 +19,7 @@ import RFODetailMass from './pages/reason_of_outage/detail_masal/RFODetailMass';
 import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSingle';
 import DashboardRFOSingle from './pages/dashboard/rfo_single/DashboardRFOSingle';
 import { setCredentials } from './store/features/auth/authSlice';
+import Statistics from './pages/statistics/Statistics';
 // eslint-disable-next-line import/no-unresolved
 // import 'node_modules/leaflet-geosearch/dist/geosearch.css';
 
@@ -74,6 +75,7 @@ function App() {
               path="/base_transceiver_station"
               element={<BaseTransceiverStation />}
             />
+            <Route path="/statistics" element={<Statistics />} />
           </Routes>
         </Container>
       )}

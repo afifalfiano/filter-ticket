@@ -37,6 +37,7 @@ const authSlice = createSlice({
       state.expires_in = expires_in;
     },
     setLogOut: (state) => {
+      // localStorage.clear();
       state.email = null;
       state.bearer_token = null;
       state.username = null;

@@ -52,6 +52,14 @@ function Menu({ handleBreadcrumb }) {
       >
         BTS
       </Link>
+      <Link
+        className="btn btn-ghost normal-case text-sm"
+        to="/statistics"
+        activeclassname="btn-active"
+        onClick={handleBreadcrumb}
+      >
+        Statistik
+      </Link>
     </div>
   );
 }
