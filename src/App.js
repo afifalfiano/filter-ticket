@@ -20,73 +20,47 @@ import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSi
 import DashboardRFOSingle from './pages/dashboard/rfo_single/DashboardRFOSingle';
 import { setCredentials } from './store/features/auth/authSlice';
 import Statistics from './pages/statistics/Statistics';
+import Layout from './components/common/Layout';
+import RequireAuth from './components/common/RequireAuth';
 // eslint-disable-next-line import/no-unresolved
 // import 'node_modules/leaflet-geosearch/dist/geosearch.css';
 
 function App() {
-  const [login, isLogin] = useState(false);
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
-  const getAuth = () => {
-    const user = localStorage.getItem('user');
-    console.log(user, 'usr');
-    if (user) {
-      isLogin(true);
-      const parse = JSON.parse(user);
-      dispatch(setCredentials({ ...parse }));
-    } else {
-      isLogin(false);
-      navigate('/', { replace: true });
-    }
-  };
-
-  useEffect(() => {
-    getAuth();
-  }, []);
-
   return (
     <div className="App">
-      {login && <Navbar />}
-      {login && (
-        <Container>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/dashboard/detail/:id" element={<DashboardDetail />} />
-            <Route
-              path="/dashboard/rfo_single/:id"
-              element={<DashboardRFOSingle />}
-            />
-            <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
-            <Route
-              path="/reason_of_outage/detail_masal/:id"
-              element={<RFODetailMass />}
-            />
-            <Route
-              path="/reason_of_outage/detail_single/:id"
-              element={<RFODetailSingle />}
-            />
-            <Route path="/report" element={<Report />} />
-            <Route path="/history_dashboard" element={<HistoryDashboard />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route
-              path="/base_transceiver_station"
-              element={<BaseTransceiverStation />}
-            />
-            <Route path="/statistics" element={<Statistics />} />
-          </Routes>
-        </Container>
-      )}
-      {!login && (
-        <Routes>
-          <Route path="/" element={<SignIn />} />
-          <Route path="/sign_in" element={<SignIn />} />
-          <Route path="/sign_up" element={<SignUp />} />
-          <Route path="/verification_email" element={<VerificationEmail />} />
-        </Routes>
-      )}
+      <Routes>
+        <Route path="/" elemnt={<Layout />} />
+        {/* public routes */}
+        <Route index element={<SignIn />} />
+        <Route path="sign-in" element={<SignIn />} />
+
+        {/* protected routes */}
+        <Route element={<RequireAuth />}>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard/detail/:id" element={<DashboardDetail />} />
+          <Route
+            path="/dashboard/rfo_single/:id"
+            element={<DashboardRFOSingle />}
+          />
+          <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
+          <Route
+            path="/reason_of_outage/detail_masal/:id"
+            element={<RFODetailMass />}
+          />
+          <Route
+            path="/reason_of_outage/detail_single/:id"
+            element={<RFODetailSingle />}
+          />
+          <Route path="/report" element={<Report />} />
+          <Route path="/history_dashboard" element={<HistoryDashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route
+            path="/base_transceiver_station"
+            element={<BaseTransceiverStation />}
+          />
+          <Route path="/statistics" element={<Statistics />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

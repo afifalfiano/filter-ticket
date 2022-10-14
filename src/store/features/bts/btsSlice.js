@@ -14,10 +14,13 @@ const btsSlice = createSlice({
       const { data } = action.payload;
       state.data = data;
     },
+    clearBTS: (state) => {
+      state.data = null;
+    },
   },
 });
 
-export const { setBTS } = btsSlice.actions;
+export const { setBTS, clearBTS } = btsSlice.actions;
 
 export default btsSlice.reducer;
 

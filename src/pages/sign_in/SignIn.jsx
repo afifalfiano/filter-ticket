@@ -38,25 +38,9 @@ function SignIn() {
       localStorage.setItem('user', local);
       setTimeout(() => {
         navigate('/dashboard', { replace: true });
-        window.location.reload();
       }, 1000);
     } catch (err) {
       console.log(err);
-      const dummy = {
-        email: null,
-        bearer_token: null,
-        username: null,
-        role_id: null,
-        pop_id: null,
-        id_user: null,
-        expires_in: null,
-      };
-      const local = JSON.stringify(dummy);
-      localStorage.setItem('user', local);
-      setTimeout(() => {
-        navigate('/dashboard', { replace: true });
-        window.location.reload();
-      }, 1000);
     }
   };
 

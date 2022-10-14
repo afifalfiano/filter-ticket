@@ -63,7 +63,7 @@ function SignUp() {
     setTimeout(() => {
       navigate('/verification_email', { replace: true });
     }, 2000);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleEmail = (event) => {

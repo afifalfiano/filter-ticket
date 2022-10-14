@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom'
 import { useLogoutMutation } from '../../store/features/auth/authApiSlice';
 import { selectCurrentUser, setLogOut } from '../../store/features/auth/authSlice';
+import { clearBTS } from '../../store/features/bts/btsSlice';
+import { clearComplain } from '../../store/features/complain/complainSlice';
 
 const DropdownMenu = () => {
 
@@ -10,29 +12,26 @@ const DropdownMenu = () => {
   const dispatch = useDispatch();
 
   // eslint-disable-next-line no-unused-vars
-  const [logout, { isLoading }] = useLogoutMutation();
-  const user = useSelector(selectCurrentUser);
-  console.log(user, 'user');
+  const [logout] = useLogoutMutation();
 
   const onLogout = async (e) => {
     e.preventDefault();
 
     try {
-      const userData = await logout().unwrap();
-      dispatch(setLogOut());
-      console.log(userData, 'log');
-      localStorage.clear();
-      setTimeout(() => {
-        navigate('/sign_in');
-        window.location.reload();
-      }, 1000)
+      const userLogout = await logout().unwrap();
+      dispatch((action) => {
+        action(setLogOut());
+        action(clearBTS());
+        action(clearComplain());
+      });
+      if (userLogout?.status === 'success') {
+        localStorage.clear();
+        navigate('/sign_in', {replace: true});
+      }
 
     } catch (err) {
       localStorage.clear();
-      setTimeout(() => {
-        navigate('/sign_in');
-        window.location.reload();
-      }, 1000)
+      navigate('/sign_in');
     }
 
   }

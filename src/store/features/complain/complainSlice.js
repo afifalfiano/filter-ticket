@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable camelcase */
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
@@ -19,10 +20,14 @@ const complainSlice = createSlice({
       const { data } = action.payload;
       state.detail = data;
     },
+    clearComplain: (state) => {
+      state.data = null;
+      state.detail = null;
+    },
   },
 });
 
-export const { setComplain, setComplainById } = complainSlice.actions;
+export const { setComplain, setComplainById, clearComplain } = complainSlice.actions;
 
 export default complainSlice.reducer;
 
