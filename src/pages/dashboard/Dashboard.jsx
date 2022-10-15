@@ -442,7 +442,7 @@ function Dashboard() {
 
       {!showTable
             && (
-            <h1>Loading...</h1>
+            <h1 className="mt-8">Loading...</h1>
             )}
       {/* start table */}
       {showTable
