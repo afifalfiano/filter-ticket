@@ -1,10 +1,13 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import { HiPencilAlt } from 'react-icons/hi';
+import { useSelector } from 'react-redux';
 import FormUpdateProfile from '../../components/profile/FormUpdateProfile';
+import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 function Profile() {
   const [form, setForm] = useState(false);
+  const { data: user } = useSelector(selectCurrentUser);
 
   const handleUpdateProfile = (event) => {
     console.log(event, 'ev');
@@ -19,16 +22,16 @@ function Profile() {
   return (
     <div>
       {form ? (
-        <FormUpdateProfile handleForm={handleForm} />
+        <FormUpdateProfile handleForm={handleForm} user={user} />
       ) : (
         <div className="flex items-start justify-center">
           <div className="text-center">
             <div className="avatar placeholder">
               <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
-                <span className="text-3xl">A</span>
+                <span className="text-3xl">{user?.username[0]}</span>
               </div>
             </div>
-            <h1 className="font-semibold text-xl mt-5">Afif Alfiano</h1>
+            <h1 className="font-semibold text-xl mt-5">{user?.username}</h1>
             <div className="my-5 flex justify-center">
               <div className="border-gray-200 rounded-md border-2 w-80 h-48 items-center flex-row justify-center">
                 <div className="flex pt-1 px-1 justify-end">
@@ -44,17 +47,17 @@ function Profile() {
                       <tr className="text-left">
                         <td>Email</td>
                         <td>:</td>
-                        <td>afif@gmail.com</td>
+                        <td>{user?.email}</td>
                       </tr>
                       <tr className="text-left">
                         <td>Role</td>
                         <td>:</td>
-                        <td>HELPDESK</td>
+                        <td>{user?.role_id}</td>
                       </tr>
                       <tr className="text-left">
                         <td>POP</td>
                         <td>:</td>
-                        <td>Yogyakarta</td>
+                        <td>{user?.pop_id}</td>
                       </tr>
                     </tbody>
                   </table>

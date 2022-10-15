@@ -11,6 +11,8 @@ const DropdownMenu = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  let { data: user } = useSelector(selectCurrentUser);
+  console.log(user, 'usr');
   // eslint-disable-next-line no-unused-vars
   const [logout] = useLogoutMutation();
 
@@ -40,7 +42,7 @@ const DropdownMenu = () => {
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
-              <span className="text-2xl">A</span>
+              <span className="text-2xl">{user?.username[0]}</span>
             </div>
         </label>
         <div

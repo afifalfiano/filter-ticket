@@ -3,11 +3,11 @@ import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 /* eslint-disable react/prop-types */
-function FormUpdateProfile({ handleForm }) {
-  const [fullName, setFullName] = useState('Afif Alfiano');
-  const [email, setEmail] = useState('afif@gmail.com');
-  const [team, setTeam] = useState('');
-  const [location, setLocation] = useState('');
+function FormUpdateProfile({ handleForm, user }) {
+  const [fullName, setFullName] = useState(user.username);
+  const [email, setEmail] = useState(user.email);
+  const [team, setTeam] = useState(user.role_id);
+  const [location, setLocation] = useState(user.pop_id);
   const [password, setPassword] = useState('12345');
   const [confirmPassword, setConfirmPassword] = useState('123456');
   const [oldPassword, setOldPassword] = useState('123456');
@@ -67,7 +67,7 @@ function FormUpdateProfile({ handleForm }) {
         <div className="text-center">
           <div className="avatar placeholder">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
-              <span className="text-3xl">A</span>
+              <span className="text-3xl">{user?.username[0]}</span>
             </div>
           </div>
           <h1 className="font-semibold text-xl mt-5">Ubah Profile</h1>
