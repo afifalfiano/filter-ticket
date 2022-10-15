@@ -3,6 +3,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import {
   selectCurrentUser,
   setCredentials,
@@ -26,6 +27,7 @@ function RequireAuth() {
     data && (
       <>
         <Navbar />
+        <Toaster />
         <Container>
           <Outlet />
         </Container>
