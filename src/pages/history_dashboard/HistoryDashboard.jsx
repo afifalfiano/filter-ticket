@@ -27,6 +27,7 @@ import { useDispatch } from 'react-redux';
 import styles from './HistoryDashboard.module.css';
 import { useAllComplainHistoryMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
 import { setComplainHistory } from '../../store/features/complain_history/complainHistorySlice';
+import ReopenModal from './ReopenModal';
 
 function HistoryDashboard() {
   const columns = [
@@ -47,6 +48,7 @@ function HistoryDashboard() {
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
   const [allComplainHistory, { ...status }] = useAllComplainHistoryMutation();
+  const [detail, setDetail] = useState(null);
 
   const getAllComplainHistory = async () => {
     try {
@@ -70,44 +72,19 @@ function HistoryDashboard() {
     setPOP(event.target.value);
   };
 
+  const getInfo = ($event) => {
+    console.log($event);
+    if ($event.status === 'success') {
+      getAllComplainHistory();
+    }
+  };
+
   return (
     <div>
 
       {/* modal revert */}
       <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
-      <div className="modal">
-        <div className={`${styles['modal-box-custom']}`}>
-          <label
-            htmlFor="my-modal-delete"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="text-lg font-bold">Konfirmasi Riwayat Data Keluhan</h3>
-          <hr className="my-2" />
-
-          <div className="flex flex-col justify-center align-middle items-center">
-            <HiExclamation size={50} color="#FF2E00" />
-
-            <span className="py-4">
-              Apakah anda yakin mengembalikan status riwayat data keluhan dari &nbsp;
-              <strong>closed</strong>
-              &nbsp; menjadi &nbsp;
-              <strong>open ?</strong>
-            </span>
-          </div>
-
-          <hr className="my-2 mt-5" />
-          <div className="modal-action justify-center">
-            <label htmlFor="my-modal-revert" className="btn btn-md">
-              Batal
-            </label>
-            <label htmlFor="my-modal-revert" className="btn btn-md btn-error">
-              Kembalikan
-            </label>
-          </div>
-        </div>
-      </div>
+      <ReopenModal getInfo={getInfo} detail={detail} />
 
       <div className="flex gap-5 mt-5">
         <div className="form-control">
@@ -214,6 +191,7 @@ function HistoryDashboard() {
                         color="#D98200"
                         className="cursor-pointer"
                         onClick={() => {
+                          setDetail(item);
                           document
                             .getElementById('my-modal-revert')
                             .click();

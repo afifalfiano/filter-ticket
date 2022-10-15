@@ -16,7 +16,13 @@ export const complainHistoryApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    complainHistoryReopen: builder.mutation({
+      query: (id) => ({
+        url: `/open/${id}`,
+        method: 'PUT',
+      }),
+    }),
   }),
 });
 
-export const { useAllComplainHistoryMutation, useComplainHistoryByIdMutation } = complainHistoryApiSlice;
+export const { useAllComplainHistoryMutation, useComplainHistoryByIdMutation, useComplainHistoryReopenMutation } = complainHistoryApiSlice;

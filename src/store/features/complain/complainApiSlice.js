@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
 import { apiSlice } from '../../../api/apiSlice';
 
@@ -15,7 +16,13 @@ export const complainApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    deleteComplain: builder.mutation({
+      query: (id) => ({
+        url: `/keluhan/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useAllComplainMutation, useComplainByIdMutation } = complainApiSlice;
+export const { useAllComplainMutation, useComplainByIdMutation, useDeleteComplainMutation } = complainApiSlice;

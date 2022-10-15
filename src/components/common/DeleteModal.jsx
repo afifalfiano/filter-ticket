@@ -1,20 +1,28 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { HiQuestionMarkCircle } from 'react-icons/hi';
 import toast from 'react-hot-toast';
 import { useDeleteBtsMutation } from '../../store/features/bts/btsApiSlice';
-import styles from './BaseTransceiverStation.module.css';
+import styles from './DeleteModal.module.css';
+import { useDeleteComplainMutation } from '../../store/features/complain/complainApiSlice';
 
-function DeleteModal({ getInfo, detail }) {
+function DeleteModal({ getInfo, detail, title }) {
   console.log(detail, 'dtl');
 
   const [deleteBts] = useDeleteBtsMutation();
+  const [deleteComplain] = useDeleteComplainMutation();
   const onSubmit = async () => {
     try {
-      const deleteData = await deleteBts(detail.id_bts);
+      let deleteData;
+      if (title === 'bts') {
+        deleteData = await deleteBts(detail.id_bts);
+      } else if (title === 'keluhan') {
+        deleteData = await deleteComplain(detail.id_keluhan);
+      }
       if (deleteData.data.status === 'success') {
-        toast.success('Berhasil hapus data bts.', {
+        toast.success(`Berhasil hapus data ${title}.`, {
           style: {
             padding: '16px',
             backgroundColor: '#36d399',
@@ -44,13 +52,13 @@ function DeleteModal({ getInfo, detail }) {
         >
           ✕
         </label>
-        <h3 className="text-lg font-bold">Hapus Data BTS</h3>
+        <h3 className="text-lg font-bold">Hapus Data {title}</h3>
         <hr className="my-2" />
 
         <div className="flex flex-col justify-center align-middle items-center">
           <HiQuestionMarkCircle size={50} color="#FF2E00" />
 
-          <p className="py-4">Apakah anda yakin akan menghapus data BTS?</p>
+          <p className="py-4">Apakah anda yakin akan menghapus data {title}?</p>
         </div>
 
         <hr className="my-2 mt-5" />

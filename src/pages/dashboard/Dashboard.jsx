@@ -27,6 +27,7 @@ import { useDispatch } from 'react-redux';
 import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { setComplain } from '../../store/features/complain/complainSlice';
+import DeleteModal from '../../components/common/DeleteModal';
 
 function Dashboard() {
   const columns = [
@@ -42,6 +43,7 @@ function Dashboard() {
     'Aksi',
   ];
   const [statusData, setStatusData] = useState('open');
+  const [detail, setDetail] = useState(null);
   const [showTable, setShowTable] = useState(false);
   const [pop, setPOP] = useState('all');
   const navigate = useNavigate();
@@ -73,6 +75,13 @@ function Dashboard() {
 
   const handlePOP = (event) => {
     setPOP(event.target.value);
+  };
+
+  const getInfo = ($event) => {
+    console.log($event);
+    if ($event.status === 'success') {
+      getAllComplain();
+    }
   };
 
   return (
@@ -373,36 +382,7 @@ function Dashboard() {
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <div className="modal">
-        <div className={`${styles['modal-box-custom']}`}>
-          <label
-            htmlFor="my-modal-delete"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="text-lg font-bold">Hapus Data Keluhan</h3>
-          <hr className="my-2" />
-
-          <div className="flex flex-col justify-center align-middle items-center">
-            <HiQuestionMarkCircle size={50} color="#FF2E00" />
-
-            <p className="py-4">
-              Apakah anda yakin akan menghapus data keluhan?
-            </p>
-          </div>
-
-          <hr className="my-2 mt-5" />
-          <div className="modal-action justify-center">
-            <label htmlFor="my-modal-delete" className="btn btn-md">
-              Batal
-            </label>
-            <label htmlFor="my-modal-delete" className="btn btn-md btn-error">
-              Hapus
-            </label>
-          </div>
-        </div>
-      </div>
+      <DeleteModal getInfo={getInfo} detail={detail} title="keluhan" />
 
       {/* modal revert */}
       <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
@@ -509,6 +489,7 @@ function Dashboard() {
                                   color="#FF2E00"
                                   className="cursor-pointer"
                                   onClick={() => {
+                                    setDetail(item);
                                     document
                                       .getElementById('my-modal-delete')
                                       .click();

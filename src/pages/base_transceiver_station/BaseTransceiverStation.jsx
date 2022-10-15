@@ -19,7 +19,7 @@ import { selectAllBTS, setBTS } from '../../store/features/bts/btsSlice';
 import styles from './BaseTransceiverStation.module.css';
 import { useAllBtsMutation } from '../../store/features/bts/btsApiSlice';
 import FormBTS from './FormBTS';
-import DeleteModal from './DeleteModal';
+import DeleteModal from '../../components/common/DeleteModal';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -122,7 +122,7 @@ function BaseTransceiverStation() {
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} />
+      <DeleteModal getInfo={getInfo} detail={detail} title="BTS" />
 
       {/* start table */}
       <div className="overflow-x-auto mt-8">
