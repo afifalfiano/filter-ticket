@@ -30,8 +30,13 @@ function BaseTransceiverStation() {
   ];
 
   const [rows, setRows] = useState([]);
+  const [pop, setPOP] = useState('all');
   const [allBts, { ...status }] = useAllBtsMutation();
   const dispatch = useDispatch();
+
+  const handlePOP = (event) => {
+    setPOP(event.target.value);
+  };
 
   const getAllBTS = async () => {
     try {
@@ -60,7 +65,7 @@ function BaseTransceiverStation() {
           Tambah
         </label>
       </div>
-      <div className="mt-4">
+      <div className="flex gap-5 mt-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Cari</span>
@@ -79,6 +84,20 @@ function BaseTransceiverStation() {
               />
             </div>
           </div>
+        </div>
+        <div className="form-control">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> POP</span>
+          </label>
+
+          <select
+            className="select w-full max-w-full input-bordered"
+            onChange={handlePOP}
+          >
+            <option disabled>Pilih POP</option>
+            <option value="yogyakarta">Yogyakarta</option>
+            <option value="solo">Solo</option>
+          </select>
         </div>
       </div>
 
