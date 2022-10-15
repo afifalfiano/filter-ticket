@@ -2,7 +2,7 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SignIn from './pages/sign_in/SignIn';
 import SignUp from './pages/sign_up/SignUp';
 import Navbar from './components/navbar/Navbar';
@@ -18,7 +18,10 @@ import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
 import RFODetailMass from './pages/reason_of_outage/detail_masal/RFODetailMass';
 import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSingle';
 import DashboardRFOSingle from './pages/dashboard/rfo_single/DashboardRFOSingle';
-import { setCredentials } from './store/features/auth/authSlice';
+import {
+  selectCurrentUser,
+  setCredentials,
+} from './store/features/auth/authSlice';
 import Statistics from './pages/statistics/Statistics';
 import Layout from './components/common/Layout';
 import RequireAuth from './components/common/RequireAuth';
@@ -26,16 +29,36 @@ import RequireAuth from './components/common/RequireAuth';
 // import 'node_modules/leaflet-geosearch/dist/geosearch.css';
 
 function App() {
+  let { data } = useSelector(selectCurrentUser);
+  console.log(data, 'dattt');
+  const dispatch = useDispatch();
+
+  const checkUserLocalStorage = () => {
+    const local = localStorage.getItem('user');
+    const user = JSON.parse(local);
+    if (user) {
+      dispatch(setCredentials({ ...user }));
+      data = user;
+    }
+    console.log(data, 'dat');
+  };
+
+  useEffect(() => {
+    checkUserLocalStorage();
+  }, []);
   return (
     <div className="App">
       <Routes>
-        <Route path="/" elemnt={<Layout />} />
-        {/* public routes */}
-        <Route index element={<SignIn />} />
-        <Route path="sign-in" element={<SignIn />} />
-
+        <Route path="/" element={<Layout />}>
+          {/* public routes */}
+          <Route index element={<SignIn />} />
+          <Route path="sign_in" element={<SignIn />} />
+          <Route path="sign_up" element={<SignUp />} />
+          <Route path="verification_email" element={<VerificationEmail />} />
+        </Route>
         {/* protected routes */}
         <Route element={<RequireAuth />}>
+          <Route index element={<Dashboard />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="dashboard/detail/:id" element={<DashboardDetail />} />
           <Route

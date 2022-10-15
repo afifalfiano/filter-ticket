@@ -26,6 +26,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       action(clearBTS());
       action(clearComplain());
     });
+    localStorage.clear();
   }
 
   return result;
