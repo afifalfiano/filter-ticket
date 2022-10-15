@@ -404,7 +404,7 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* modal delete */}
+      {/* modal revert */}
       <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
       <div className="modal">
         <div className={`${styles['modal-box-custom']}`}>

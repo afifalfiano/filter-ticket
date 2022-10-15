@@ -49,6 +49,14 @@ function App() {
           />
           <Route path="report" element={<Report />} />
           <Route path="history_dashboard" element={<HistoryDashboard />} />
+          <Route
+            path="history_dashboard/detail/:id"
+            element={<DashboardDetail />}
+          />
+          <Route
+            path="history_dashboard/rfo_single/:id"
+            element={<DashboardRFOSingle />}
+          />
           <Route path="profile" element={<Profile />} />
           <Route
             path="base_transceiver_station"
