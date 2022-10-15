@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unused-vars */
@@ -9,56 +10,87 @@
 import { Formik, Field, Form } from 'formik';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
+import { useState, useEffect } from 'react';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
-import { useAddBtsMutation } from '../../store/features/bts/btsApiSlice';
+import {
+  useAddBtsMutation,
+  useUpdateBtsMutation,
+} from '../../store/features/bts/btsApiSlice';
 
-function FormBTS({ getInfo }) {
-  const initialValues = {
-    btsName: '',
-    picName: '',
-    picContact: '',
-    fullAddress: '',
-    popLocation: '',
-    coordinat: '',
-  };
+function FormBTS({ getInfo, detail }) {
+  console.log(detail, 'cek render');
   const [addData] = useAddBtsMutation();
+  const [updateBts] = useUpdateBtsMutation();
   const { data: user } = useSelector(selectCurrentUser);
-
+  const initialValues = {
+    btsName: detail?.nama_bts || '',
+    picName: detail?.nama_pic || '',
+    picContact: detail?.nomor_pic || '',
+    fullAddress: detail?.lokasi || '',
+    popLocation: detail?.pop_id || '',
+    coordinat: detail?.kordinat || '',
+  };
   const handlePOP = ($event) => {
     console.log($event, 'ev');
   };
 
   const onSubmitData = async (payload) => {
+    const body = {
+      nama_bts: payload.btsName,
+      nama_pic: payload.picName,
+      nomor_pic: payload.picContact,
+      lokasi: payload.fullAddress,
+      pop_id: payload.pop_id || 1,
+      kordinat: payload.coordinat,
+      user_id: user.id_user,
+    };
     try {
-      const body = {
-        nama_bts: payload.btsName,
-        nama_pic: payload.picName,
-        nomor_pic: payload.picContact,
-        lokasi: payload.fullAddress,
-        pop_id: 1,
-        kordinat: payload.coordinat,
-        user_id: user.id_user,
-      };
-      const add = await addData({ ...body });
-      if (add.data.status === 'success') {
-        toast.success('Berhasil tambah data bts.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
+      // create
+      console.log(detail, 'dt');
+      if (detail === null) {
+        const add = await addData({ ...body });
+        if (add.data.status === 'success') {
+          toast.success('Berhasil tambah data bts.', {
+            style: {
+              padding: '16px',
+              backgroundColor: '#36d399',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'success',
+            icon: false,
+          });
+          setTimeout(() => {
+            document.getElementById('my-modal-3').click();
+            getInfo({ status: 'success' });
+          }, 2000);
+        }
+      } else {
+        // update
+        const update = await updateBts({
+          id: detail.id_bts,
+          body: { ...body },
         });
-
-        setTimeout(() => {
-          document.getElementById('my-modal-3').click();
-          getInfo({ status: 'success' });
-        }, 2000);
+        console.log(body, 'body');
+        if (update.data.status === 'success') {
+          toast.success('Berhasil ubah data bts.', {
+            style: {
+              padding: '16px',
+              backgroundColor: '#36d399',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'success',
+            icon: false,
+          });
+          setTimeout(() => {
+            getInfo({ status: 'success' });
+            document.getElementById('my-modal-3').click();
+          }, 2000);
+        }
       }
-      console.log(add);
     } catch (error) {
       console.log(error);
     }
@@ -71,6 +103,7 @@ function FormBTS({ getInfo }) {
       }, 2000);
     } else {
       reset();
+      document.getElementById('my-modal-3').click();
     }
   };
 
@@ -83,12 +116,14 @@ function FormBTS({ getInfo }) {
         >
           ✕
         </label>
-        <h3 className="text-lg font-bold">Tambah BTS</h3>
+        <h3 className="text-lg font-bold">
+          {detail === null ? 'Tamba BTS' : 'Ubah BTS'}
+        </h3>
         <hr className="my-2" />
         <Formik
+          enableReinitialize
           initialValues={initialValues}
           onSubmit={(values) => {
-            console.log(values);
             onSubmitData(values);
           }}
         >
@@ -110,6 +145,7 @@ function FormBTS({ getInfo }) {
                   id="btsName"
                   name="btsName"
                   placeholder="Nama BTS"
+                  value={values.btsName}
                   className="input input-md input-bordered  max-w-full"
                 />
               </div>
@@ -122,6 +158,7 @@ function FormBTS({ getInfo }) {
                   <Field
                     id="picName"
                     name="picName"
+                    value={values.picName}
                     placeholder="Nama PIC"
                     className="input input-md input-bordered max-w-full"
                   />
@@ -135,6 +172,7 @@ function FormBTS({ getInfo }) {
                   <Field
                     id="picContact"
                     name="picContact"
+                    value={values.picContact}
                     placeholder="Kontak PIC"
                     className="input input-md input-bordered max-w-full"
                   />
@@ -149,6 +187,7 @@ function FormBTS({ getInfo }) {
                   <Field
                     id="fullAddress"
                     name="fullAddress"
+                    value={values.fullAddress}
                     placeholder="Alamat Lengkap"
                     className="input input-md input-bordered max-w-full"
                   />
@@ -161,7 +200,9 @@ function FormBTS({ getInfo }) {
                     component="select"
                     id="popLocation"
                     name="popLocation"
+                    value={values.popLocation}
                     className="select w-full max-w-full input-bordered"
+
                   >
                     <option value="1">Yogyakarta</option>
                     <option value="2">Solo</option>
@@ -178,6 +219,7 @@ function FormBTS({ getInfo }) {
                   id="coordinat"
                   name="coordinat"
                   placeholder="Koordinat"
+                  value={values.coordinat}
                   className="input input-md input-bordered max-w-full"
                 />
               </div>

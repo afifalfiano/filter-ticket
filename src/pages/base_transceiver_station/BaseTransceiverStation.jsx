@@ -14,10 +14,12 @@ import {
 } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { selectAllBTS, setBTS } from '../../store/features/bts/btsSlice';
 import styles from './BaseTransceiverStation.module.css';
 import { useAllBtsMutation } from '../../store/features/bts/btsApiSlice';
 import FormBTS from './FormBTS';
+import DeleteModal from './DeleteModal';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -35,6 +37,7 @@ function BaseTransceiverStation() {
   const [pop, setPOP] = useState('all');
   const [allBts, { ...status }] = useAllBtsMutation();
   const dispatch = useDispatch();
+  const [detail, setDetail] = useState(null);
 
   const handlePOP = (event) => {
     setPOP(event.target.value);
@@ -69,7 +72,10 @@ function BaseTransceiverStation() {
       <div>
         <button
           className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
-          onClick={() => document.getElementById('my-modal-3').click()}
+          onClick={() => {
+            setDetail(null);
+            document.getElementById('my-modal-3').click();
+          }}
         >
           Tambah
         </button>
@@ -112,38 +118,11 @@ function BaseTransceiverStation() {
 
       {/* modal craete or update */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormBTS getInfo={getInfo} />
+      <FormBTS getInfo={getInfo} detail={detail} />
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <div className="modal">
-        <div className={`${styles['modal-box-custom']}`}>
-          <label
-            htmlFor="my-modal-delete"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="text-lg font-bold">Hapus Data BTS</h3>
-          <hr className="my-2" />
-
-          <div className="flex flex-col justify-center align-middle items-center">
-            <HiQuestionMarkCircle size={50} color="#FF2E00" />
-
-            <p className="py-4">Apakah anda yakin akan menghapus data BTS?</p>
-          </div>
-
-          <hr className="my-2 mt-5" />
-          <div className="modal-action justify-center">
-            <label htmlFor="my-modal-delete" className="btn btn-md">
-              Batal
-            </label>
-            <label htmlFor="my-modal-delete" className="btn btn-md btn-error">
-              Hapus
-            </label>
-          </div>
-        </div>
-      </div>
+      <DeleteModal getInfo={getInfo} detail={detail} />
 
       {/* start table */}
       <div className="overflow-x-auto mt-8">
@@ -173,6 +152,7 @@ function BaseTransceiverStation() {
                         size={20}
                         color="#D98200"
                         onClick={() => {
+                          setDetail(item);
                           document.getElementById('my-modal-3').click();
                         }}
                       />
@@ -181,6 +161,7 @@ function BaseTransceiverStation() {
                         color="#FF2E00"
                         className="cursor-pointer"
                         onClick={() => {
+                          setDetail(item);
                           document.getElementById('my-modal-delete').click();
                         }}
                       />

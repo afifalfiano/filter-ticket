@@ -22,7 +22,7 @@ export const btsApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     updateBts: builder.mutation({
-      query: (id, body) => ({
+      query: ({ id, body }) => ({
         url: `/bts/${id}`,
         method: 'PUT',
         body: { ...body },
