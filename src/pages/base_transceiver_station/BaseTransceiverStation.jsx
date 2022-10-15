@@ -36,9 +36,11 @@ function BaseTransceiverStation() {
   const getAllBTS = async () => {
     try {
       const data = await allBts().unwrap();
-      dispatch(setBTS({ ...data }));
-      setRows(data.data);
-      console.log(data, 'data');
+      if (data.status === 'success') {
+        dispatch(setBTS({ ...data }));
+        setRows(data.data);
+        console.log(data, 'data');
+      }
     } catch (err) {
       console.log(err);
     }
@@ -208,7 +210,7 @@ function BaseTransceiverStation() {
 
       {/* start table */}
       <div className="overflow-x-auto mt-8">
-        <table className="table w-full">
+        <table className="table table-zebra w-full">
           <thead>
             <tr>
               {columns.map((item) => (

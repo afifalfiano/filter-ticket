@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   HiOutlineCloudUpload,
   HiSearch,
@@ -11,17 +12,41 @@ import {
   HiEye,
   HiQuestionMarkCircle,
 } from 'react-icons/hi';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useAllRFOMutation } from '../../store/features/rfo/rfoApiSlice';
+import { setRFO } from '../../store/features/rfo/rfoSlice';
 import styles from './ReasonOfOutage.module.css';
 
 function ReasonOfOutage() {
   const [statusData, setStatusData] = useState('all');
-
+  const [showTable, setShowTable] = useState(false);
   const navigate = useNavigate();
+  const [rows, setRows] = useState([]);
+  const dispatch = useDispatch();
+  const [allRFO, { ...status }] = useAllRFOMutation();
 
   const handleStatus = (event) => {
     setStatusData(event.target.value);
   };
+
+  const getAllRFO = async () => {
+    try {
+      const data = await allRFO().unwrap();
+      if (data.status === 'success') {
+        setShowTable(true);
+        dispatch(setRFO({ ...data }));
+        setRows(data.data);
+        console.log(data, 'data rfo');
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getAllRFO();
+  }, []);
 
   const columns = [
     'No',
@@ -33,41 +58,6 @@ function ReasonOfOutage() {
     'Keterangan',
     'Status RFO',
     'Aksi',
-  ];
-  const rows = [
-    {
-      uuid: '12123',
-      pelanggan: 'Putra',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_selesai: new Date().toLocaleString('id-ID'),
-      durasi: '3 hari',
-      masalah: 'internet lambat',
-      lampiran: 'file_lampiran_gangguan_single.pdf',
-      keterangan: '-',
-      status: 'sendiri',
-    },
-    {
-      uuid: '12123',
-      pelanggan: '-',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_selesai: new Date().toLocaleString('id-ID'),
-      durasi: '7 hari',
-      masalah: 'cut off FO janti',
-      lampiran: 'file_lampiran_gangguan_masal.pdf',
-      keterangan: '-',
-      status: 'masal',
-    },
-    {
-      uuid: '12123',
-      pelanggan: 'Putra',
-      waktu_dibuat: new Date().toLocaleString('id-ID'),
-      waktu_selesai: new Date().toLocaleString('id-ID'),
-      durasi: '3 hari',
-      masalah: 'internet lambat',
-      lampiran: 'file_lampiran_gangguan_single.pdf',
-      keterangan: '-',
-      status: 'sendiri',
-    },
   ];
   return (
     <div>
@@ -282,7 +272,7 @@ function ReasonOfOutage() {
 
       {/* start table */}
       <div className="overflow-x-auto mt-8">
-        <table className="table w-full">
+        <table className="table table-zebra w-full">
           <thead>
             <tr>
               {columns.map((item) => (
@@ -296,21 +286,27 @@ function ReasonOfOutage() {
               if (statusData === 'all') {
                 return (
                   <tr className="text-center">
-                    <td>{index + 1}</td>
+                    <th>{index + 1}</th>
                     <td>{item.pelanggan}</td>
                     <td className="text-left">
                       <p>
                         Dibuat:
-                        {item.waktu_dibuat}
+                        {item.mulai_keluhan}
                       </p>
                       <p>
                         Diubah:
-                        {item.waktu_selesai}
+                        {item.selesai_keluhan}
                       </p>
                     </td>
-                    <td>{item.durasi}</td>
-                    <td>{item.masalah}</td>
-                    <td className="link-primary link">{item.lampiran}</td>
+                    <td>{item.durasi || 0}</td>
+                    <td>{item.problem}</td>
+                    <td
+                      className={
+                        item.lampiran_rfo_keluhan ? 'link-primary link' : ''
+                      }
+                    >
+                      {item.lampiran_rfo_keluhan || '-'}
+                    </td>
                     <td>{item.keterangan}</td>
                     <td>
                       {item.status === 'sendiri' ? (
@@ -367,21 +363,27 @@ function ReasonOfOutage() {
               if (item.status === statusData) {
                 return (
                   <tr className="text-center">
-                    <td>{index + 1}</td>
+                    <th>{index + 1}</th>
                     <td>{item.pelanggan}</td>
                     <td className="text-left">
                       <p>
                         Dibuat:
-                        {item.waktu_dibuat}
+                        {item.mulai_keluhan}
                       </p>
                       <p>
                         Diubah:
-                        {item.waktu_selesai}
+                        {item.selesai_keluhan}
                       </p>
                     </td>
-                    <td>{item.durasi}</td>
-                    <td>{item.masalah}</td>
-                    <td className="link-primary link">{item.lampiran}</td>
+                    <td>{item.durasi || 0}</td>
+                    <td>{item.problem}</td>
+                    <td
+                      className={
+                        item.lampiran_rfo_keluhan ? 'link-primary link' : ''
+                      }
+                    >
+                      {item.lampiran_rfo_keluhan || '-'}
+                    </td>
                     <td>{item.keterangan}</td>
                     <td>
                       {item.status === 'sendiri' ? (
