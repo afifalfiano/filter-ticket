@@ -99,7 +99,9 @@ function FormBTS({ getInfo, detail }) {
   const onHandleReset = (reset, title) => {
     if (title === 'submit') {
       setTimeout(() => {
-        reset();
+        if (detail === null) {
+          reset();
+        }
       }, 2000);
     } else {
       reset();
