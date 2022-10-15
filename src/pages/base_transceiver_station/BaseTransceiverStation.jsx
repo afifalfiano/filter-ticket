@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/button-has-type */
@@ -56,6 +57,13 @@ function BaseTransceiverStation() {
     getAllBTS();
   }, []);
 
+  const getInfo = ($event) => {
+    console.log($event);
+    if ($event.status === 'success') {
+      getAllBTS();
+    }
+  };
+
   return (
     <div>
       <div>
@@ -104,7 +112,7 @@ function BaseTransceiverStation() {
 
       {/* modal craete or update */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormBTS />
+      <FormBTS getInfo={getInfo} />
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />

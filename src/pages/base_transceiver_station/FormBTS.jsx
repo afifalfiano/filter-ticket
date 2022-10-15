@@ -1,3 +1,7 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-unused-vars */
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-promise-executor-return */
@@ -5,12 +9,10 @@
 import { Formik, Field, Form } from 'formik';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
-
 import { useAddBtsMutation } from '../../store/features/bts/btsApiSlice';
 
-function FormBTS() {
+function FormBTS({ getInfo }) {
   const initialValues = {
     btsName: '',
     picName: '',
@@ -19,9 +21,7 @@ function FormBTS() {
     popLocation: '',
     coordinat: '',
   };
-  const [defaultValue, setDefaultValue] = useState(initialValues);
   const [addData] = useAddBtsMutation();
-
   const { data: user } = useSelector(selectCurrentUser);
 
   const handlePOP = ($event) => {
@@ -52,24 +52,28 @@ function FormBTS() {
           id: 'success',
           icon: false,
         });
-      }
 
-      setTimeout(() => {
-        document.getElementById('my-modal-3').click();
-        setDefaultValue({
-          btsName: '',
-          picName: '',
-          picContact: '',
-          fullAddress: '',
-          popLocation: '',
-          coordinat: '',
-        });
-      }, 2000);
+        setTimeout(() => {
+          document.getElementById('my-modal-3').click();
+          getInfo({ status: 'success' });
+        }, 2000);
+      }
       console.log(add);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const onHandleReset = (reset, title) => {
+    if (title === 'submit') {
+      setTimeout(() => {
+        reset();
+      }, 2000);
+    } else {
+      reset();
+    }
+  };
+
   return (
     <div className="modal">
       <div className="modal-box max-w-2xl">
@@ -82,108 +86,127 @@ function FormBTS() {
         <h3 className="text-lg font-bold">Tambah BTS</h3>
         <hr className="my-2" />
         <Formik
-          initialValues={defaultValue}
+          initialValues={initialValues}
           onSubmit={(values) => {
             console.log(values);
             onSubmitData(values);
           }}
         >
-          <Form>
-            <div className="form-control">
-              <label htmlFor="btsName" className="label">
-                <span className="label-text"> Nama BTS:</span>
-              </label>
-              <Field
-                id="btsName"
-                name="btsName"
-                placeholder="Nama BTS"
-                className="input input-md input-bordered  max-w-full"
-              />
-            </div>
-
-            <div className="flex flex-row gap-3">
-              <div className="form-control flex-1">
-                <label htmlFor="picName" className="label">
-                  <span className="label-text"> Nama PIC</span>
+          {({
+            values,
+            errors,
+            isSubmitting,
+            isValid,
+            setFieldValue,
+            handleChange,
+            resetForm,
+          }) => (
+            <Form>
+              <div className="form-control">
+                <label htmlFor="btsName" className="label">
+                  <span className="label-text"> Nama BTS:</span>
                 </label>
                 <Field
-                  id="picName"
-                  name="picName"
-                  placeholder="Nama PIC"
-                  className="input input-md input-bordered max-w-full"
+                  id="btsName"
+                  name="btsName"
+                  placeholder="Nama BTS"
+                  className="input input-md input-bordered  max-w-full"
                 />
               </div>
 
-              <div className="form-control flex-1">
-                <label htmlFor="picContact" className="label">
-                  <span className="label-text"> Kontak PIC</span>
+              <div className="flex flex-row gap-3">
+                <div className="form-control flex-1">
+                  <label htmlFor="picName" className="label">
+                    <span className="label-text"> Nama PIC</span>
+                  </label>
+                  <Field
+                    id="picName"
+                    name="picName"
+                    placeholder="Nama PIC"
+                    className="input input-md input-bordered max-w-full"
+                  />
+                </div>
+
+                <div className="form-control flex-1">
+                  <label htmlFor="picContact" className="label">
+                    <span className="label-text"> Kontak PIC</span>
+                  </label>
+
+                  <Field
+                    id="picContact"
+                    name="picContact"
+                    placeholder="Kontak PIC"
+                    className="input input-md input-bordered max-w-full"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-row gap-3">
+                <div className="form-control flex-1">
+                  <label htmlFor="fullAddress" className="label">
+                    <span className="label-text"> Alamat Lengkap</span>
+                  </label>
+                  <Field
+                    id="fullAddress"
+                    name="fullAddress"
+                    placeholder="Alamat Lengkap"
+                    className="input input-md input-bordered max-w-full"
+                  />
+                </div>
+                <div className="form-control flex-1">
+                  <label htmlFor="location" className="label">
+                    <span className="label-text"> POP (Lokasi)</span>
+                  </label>
+                  <Field
+                    component="select"
+                    id="popLocation"
+                    name="popLocation"
+                    className="select w-full max-w-full input-bordered"
+                  >
+                    <option value="1">Yogyakarta</option>
+                    <option value="2">Solo</option>
+                    <option value="3">Surakarta</option>
+                  </Field>
+                </div>
+              </div>
+              <div className="form-control">
+                <label htmlFor="coordinat" className="label">
+                  <span className="label-text"> Koordinat:</span>
                 </label>
 
                 <Field
-                  id="picContact"
-                  name="picContact"
-                  placeholder="Kontak PIC"
+                  id="coordinat"
+                  name="coordinat"
+                  placeholder="Koordinat"
                   className="input input-md input-bordered max-w-full"
                 />
               </div>
-            </div>
-
-            <div className="flex flex-row gap-3">
-              <div className="form-control flex-1">
-                <label htmlFor="fullAddress" className="label">
-                  <span className="label-text"> Alamat Lengkap</span>
-                </label>
-                <Field
-                  id="fullAddress"
-                  name="fullAddress"
-                  placeholder="Alamat Lengkap"
-                  className="input input-md input-bordered max-w-full"
-                />
-              </div>
-              <div className="form-control flex-1">
-                <label htmlFor="location" className="label">
-                  <span className="label-text"> POP (Lokasi)</span>
-                </label>
-                <Field
-                  component="select"
-                  id="popLocation"
-                  name="popLocation"
-                  className="select w-full max-w-full input-bordered"
-                  onChange={handlePOP}
+              {/* <button type="submit">Submit</button> */}
+              <hr className="my-2 mt-10" />
+              <div className="modal-action justify-center">
+                <button
+                  type="button"
+                  htmlFor="my-modal-3"
+                  className="btn btn-md"
+                  onClick={() => {
+                    onHandleReset(resetForm, 'title');
+                  }}
                 >
-                  <option value="1">Yogyakarta</option>
-                  <option value="2">Solo</option>
-                  <option value="3">Surakarta</option>
-                </Field>
+                  Batal
+                </button>
+                <button
+                  type="submit"
+                  htmlFor="my-modal-3"
+                  className="btn btn-md btn-success"
+                  onClick={() => {
+                    onHandleReset(resetForm, 'submit');
+                  }}
+                >
+                  Simpan
+                </button>
               </div>
-            </div>
-            <div className="form-control">
-              <label htmlFor="coordinat" className="label">
-                <span className="label-text"> Koordinat:</span>
-              </label>
-
-              <Field
-                id="coordinat"
-                name="coordinat"
-                placeholder="Koordinat"
-                className="input input-md input-bordered max-w-full"
-              />
-            </div>
-            {/* <button type="submit">Submit</button> */}
-            <hr className="my-2 mt-10" />
-            <div className="modal-action justify-center">
-              <label htmlFor="my-modal-3" className="btn btn-md">
-                Batal
-              </label>
-              <button
-                type="submit"
-                htmlFor="my-modal-3"
-                className="btn btn-md btn-success"
-              >
-                Simpan
-              </button>
-            </div>
-          </Form>
+            </Form>
+          )}
         </Formik>
       </div>
     </div>
