@@ -36,7 +36,7 @@ function BaseTransceiverStation() {
   const getAllBTS = async () => {
     try {
       const data = await allBts().unwrap();
-      if (data.status === 'success') {
+      if (data.message === 'success') {
         dispatch(setBTS({ ...data }));
         setRows(data.data);
         console.log(data, 'data');
