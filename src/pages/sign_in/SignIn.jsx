@@ -1,7 +1,9 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { useLoginMutation } from '../../store/features/auth/authApiSlice';
 import { setCredentials } from '../../store/features/auth/authSlice';
 
@@ -31,16 +33,42 @@ function SignIn() {
 
     try {
       const userData = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...userData }));
-      setEmail('');
-      setPassword('');
-      const local = JSON.stringify(userData);
-      localStorage.setItem('user', local);
-      setTimeout(() => {
-        navigate('/dashboard', { replace: true });
-      }, 1000);
+      console.log(userData, 'dd');
+      if (userData.hasOwnProperty('bearer_token')) {
+        dispatch(setCredentials({ ...userData }));
+        setEmail('');
+        setPassword('');
+        const local = JSON.stringify(userData);
+        localStorage.setItem('user', local);
+        setTimeout(() => {
+          navigate('/dashboard', { replace: true });
+        }, 1000);
+      } else {
+        toast.error(userData?.data?.message, {
+          style: {
+            padding: '16px',
+            backgroundColor: '#ff492d',
+            color: 'white',
+          },
+          duration: 2000,
+          position: 'top-right',
+          id: 'error',
+          icon: false,
+        });
+      }
     } catch (err) {
       console.log(err);
+      toast.error(err?.data?.message, {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
   };
 

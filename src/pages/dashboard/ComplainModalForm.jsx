@@ -162,7 +162,7 @@ function ComplainModalForm({ getInfo, detail }) {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.error.message, {
+      toast.error(error.data.message, {
         style: {
           padding: '16px',
           backgroundColor: '#ff492d',

@@ -16,12 +16,13 @@ function DeleteModal({ getInfo, detail, title }) {
   const onSubmit = async () => {
     try {
       let deleteData;
-      if (title === 'bts') {
+      if (title === 'BTS') {
         deleteData = await deleteBts(detail.id_bts);
       } else if (title === 'keluhan') {
         deleteData = await deleteComplain(detail.id_keluhan);
       }
-      if (deleteData.data.status === 'success') {
+      console.log(deleteData);
+      if (deleteData?.data?.status === 'success') {
         toast.success(`Berhasil hapus data ${title}.`, {
           style: {
             padding: '16px',
@@ -37,9 +38,32 @@ function DeleteModal({ getInfo, detail, title }) {
           document.getElementById('my-modal-delete').click();
           getInfo({ status: 'success' });
         }, 2000);
+      } else {
+        toast.error(deleteData.data.message, {
+          style: {
+            padding: '16px',
+            backgroundColor: '#ff492d',
+            color: 'white',
+          },
+          duration: 2000,
+          position: 'top-right',
+          id: 'error',
+          icon: false,
+        });
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.data.message, {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
   };
 

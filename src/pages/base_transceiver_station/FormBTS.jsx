@@ -65,6 +65,18 @@ function FormBTS({ getInfo, detail }) {
             document.getElementById('my-modal-3').click();
             getInfo({ status: 'success' });
           }, 2000);
+        } else {
+          toast.error(add.data.message, {
+            style: {
+              padding: '16px',
+              backgroundColor: '#ff492d',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'error',
+            icon: false,
+          });
         }
       } else {
         // update
@@ -89,10 +101,33 @@ function FormBTS({ getInfo, detail }) {
             getInfo({ status: 'success' });
             document.getElementById('my-modal-3').click();
           }, 2000);
+        } else {
+          toast.error(update.data.message, {
+            style: {
+              padding: '16px',
+              backgroundColor: '#ff492d',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'error',
+            icon: false,
+          });
         }
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.data.message, {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
   };
 

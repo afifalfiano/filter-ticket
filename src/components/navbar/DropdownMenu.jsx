@@ -5,6 +5,7 @@ import { useLogoutMutation } from '../../store/features/auth/authApiSlice';
 import { selectCurrentUser, setLogOut } from '../../store/features/auth/authSlice';
 import { clearBTS } from '../../store/features/bts/btsSlice';
 import { clearComplain } from '../../store/features/complain/complainSlice';
+import toast from 'react-hot-toast';
 
 const DropdownMenu = () => {
 
@@ -21,19 +22,41 @@ const DropdownMenu = () => {
 
     try {
       const userLogout = await logout().unwrap();
-      dispatch((action) => {
-        action(setLogOut());
-        action(clearBTS());
-        action(clearComplain());
-      });
+      console.log(userLogout, 'lg');
       if (userLogout?.status === 'success') {
+        dispatch((action) => {
+          action(setLogOut());
+          action(clearBTS());
+          action(clearComplain());
+        });
         localStorage.clear();
         navigate('/sign_in', {replace: true});
+      } else {
+        toast.error(userData?.data?.message, {
+          style: {
+            padding: '16px',
+            backgroundColor: '#ff492d',
+            color: 'white',
+          },
+          duration: 2000,
+          position: 'top-right',
+          id: 'error',
+          icon: false,
+        });
       }
 
     } catch (err) {
-      localStorage.clear();
-      navigate('/sign_in');
+      toast.error(userData?.data?.message, {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
 
   }

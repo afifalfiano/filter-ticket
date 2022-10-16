@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import { Toaster } from 'react-hot-toast';
 import SignIn from './pages/sign_in/SignIn';
 import SignUp from './pages/sign_up/SignUp';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -21,6 +22,7 @@ import RequireAuth from './components/common/RequireAuth';
 function App() {
   return (
     <div className="App">
+      <Toaster />
       <Routes>
         <Route element={<Layout />}>
           {/* public routes */}

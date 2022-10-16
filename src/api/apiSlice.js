@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import toast from 'react-hot-toast';
 import { setCredentials, setLogOut } from '../store/features/auth/authSlice';
 import { clearBTS } from '../store/features/bts/btsSlice';
 import { clearComplain } from '../store/features/complain/complainSlice';
@@ -24,6 +25,7 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions);
+  console.log(result, 'ts');
   if (result?.error?.data === 'Please login first') {
     api.dispatch((action) => {
       action(setLogOut());
@@ -31,6 +33,20 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       action(clearComplain());
     });
     localStorage.clear();
+  }
+
+  if (result?.error?.status === 'FETCH_ERROR') {
+    toast.error('Kesalahan Pada Server', {
+      style: {
+        padding: '16px',
+        backgroundColor: '#ff492d',
+        color: 'white',
+      },
+      duration: 2000,
+      position: 'top-right',
+      id: 'error',
+      icon: false,
+    });
   }
 
   return result;
