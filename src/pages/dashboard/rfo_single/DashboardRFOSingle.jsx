@@ -137,7 +137,7 @@ function DashboardRFOSingle() {
             setTimeout(async () => {
               resetForm();
               navigate('/dashboard', { replace: true })
-            }, 500)
+            }, 1000)
           } else {
             toast.error(`${closed?.data?.message}`, {
               style: {
