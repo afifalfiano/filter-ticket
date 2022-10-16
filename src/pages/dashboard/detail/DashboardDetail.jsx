@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -12,7 +13,7 @@ import toast from 'react-hot-toast';
 import { useAddReplyMutation, useComplainByIdMutation } from '../../../store/features/complain/complainApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
 
-function DashboardDetail() {
+function DashboardDetail({ rfoSingle }) {
   const location = useLocation();
   console.log(location, ';loc');
   const [detailComplain, setDetailComplain] = useState(null);
@@ -90,6 +91,7 @@ function DashboardDetail() {
 
   return (
     <div>
+      {!rfoSingle && (
       <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md">
         <div className="flex-1 w-full">
           <table className="border-none items-center w-full">
@@ -138,6 +140,7 @@ function DashboardDetail() {
           </table>
         </div>
       </div>
+      )}
 
       {/* section reply */}
       <div className="flex w-full flex-col py-5">
@@ -215,7 +218,7 @@ function DashboardDetail() {
 
         <hr className="my-3" />
 
-        {!location.pathname.includes('history')
+        {!location.pathname.includes('history') && !rfoSingle
           ? (
             <Formik
               enableReinitialize
@@ -290,7 +293,7 @@ function DashboardDetail() {
                 </Form>
               )}
             </Formik>
-          ) : (
+          ) : !rfoSingle && (
             <div className="text-center items-center justify-center mt-10">
               <button
                 type="button"

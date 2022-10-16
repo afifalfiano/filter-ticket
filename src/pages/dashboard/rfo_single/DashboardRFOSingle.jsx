@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
+import DashboardDetail from '../detail/DashboardDetail';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 function DashboardRFOSingle() {
@@ -193,7 +195,7 @@ function DashboardRFOSingle() {
             Riwayat Follow Up Keluhan
           </h1>
 
-          <div className="flex w-full flex-col py-5">
+          {/* <div className="flex w-full flex-col py-5">
             <p className="justify-start w-full">Keluhan Awal</p>
             <div className="flex justify-between py-2">
               <p>Dibuat oleh: Farhan Kurnia (Helpdesk) </p>
@@ -272,7 +274,8 @@ function DashboardRFOSingle() {
                 <div className="py-2" />
               )}
             </div>
-          ))}
+          ))} */}
+          <DashboardDetail rfoSingle />
         </div>
       </div>
     </>
