@@ -87,9 +87,9 @@ function DashboardDetail() {
       <div className="flex w-full flex-col py-5">
         <p className="justify-start w-full">Keluhan Awal</p>
         <div className="flex justify-between py-2">
-          <p>Dibuat oleh: Farhan Kurnia (Helpdesk) </p>
+          <p>Dibuat oleh: {detailComplain?.user?.name} - ({detailComplain?.user?.role?.role}) </p>
           <p>
-            {new Date().toLocaleString('id-ID', {
+            {new Date(detailComplain?.created_at).toLocaleString('id-ID', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
@@ -104,17 +104,17 @@ function DashboardDetail() {
         <div className="form-control">
           <textarea
             className="textarea textarea-bordered h-28"
-            placeholder="Keluhan awal ..."
             disabled
-            value="internet sangat lambat"
+            value={detailComplain?.keluhan}
             style={{ resize: 'none' }}
           />
         </div>
         <div className="py-2">
+          {detailComplain?.lampiran && (
           <p className="link inline">
             <HiDocumentText size={24} color="blue" className="inline mr-2" />
-            file_lampiran.pdf
           </p>
+          )}
         </div>
 
         <hr className="my-3" />
