@@ -8,9 +8,9 @@ function FormUpdateProfile({ handleForm, user }) {
   const [email, setEmail] = useState(user.email);
   const [team, setTeam] = useState(user.role_id);
   const [location, setLocation] = useState(user.pop_id);
-  const [password, setPassword] = useState('12345');
-  const [confirmPassword, setConfirmPassword] = useState('123456');
-  const [oldPassword, setOldPassword] = useState('123456');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
 
   const onBtnBack = () => {
     handleForm(false);
@@ -99,7 +99,7 @@ function FormUpdateProfile({ handleForm, user }) {
                     id="email"
                     onChange={handleEmail}
                     className="input input-md input-bordered  max-w-full"
-                    disabled="true"
+                    disabled
                   />
                 </div>
 
