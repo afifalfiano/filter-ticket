@@ -37,7 +37,14 @@ export const complainApiSlice = apiSlice.injectEndpoints({
         body: { ...body },
       }),
     }),
+    addReply: builder.mutation({
+      query: (body) => ({
+        url: `/balasan`,
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useAllComplainMutation, useComplainByIdMutation, useDeleteComplainMutation, useAddComplainMutation, useUpdateComplainMutation } = complainApiSlice;
+export const { useAllComplainMutation, useComplainByIdMutation, useDeleteComplainMutation, useAddComplainMutation, useUpdateComplainMutation, useAddReplyMutation } = complainApiSlice;
