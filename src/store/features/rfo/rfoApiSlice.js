@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable object-curly-newline */
 /* eslint-disable prettier/prettier */
 import { apiSlice } from '../../../api/apiSlice';
 
@@ -21,7 +23,14 @@ export const rfoApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    addRFOGangguan: builder.mutation({
+      query: (body) => ({
+        url: '/rfo-gangguan',
+        method: 'POST',
+        body
+      }),
+    }),
   }),
 });
 
-export const { useAllRFOMutation, useRfoByIdMutation, useAllRFOMasalMutation } = rfoApiSlice;
+export const { useAllRFOMutation, useRfoByIdMutation, useAllRFOMasalMutation, useAddRFOGangguanMutation } = rfoApiSlice;

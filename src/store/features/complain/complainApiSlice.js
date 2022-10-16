@@ -44,7 +44,13 @@ export const complainApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    complainClosed: builder.mutation({
+      query: (id) => ({
+        url: `/close/${id}`,
+        method: 'PUT',
+      }),
+    }),
   }),
 });
 
-export const { useAllComplainMutation, useComplainByIdMutation, useDeleteComplainMutation, useAddComplainMutation, useUpdateComplainMutation, useAddReplyMutation } = complainApiSlice;
+export const { useAllComplainMutation, useComplainByIdMutation, useDeleteComplainMutation, useAddComplainMutation, useUpdateComplainMutation, useAddReplyMutation, useComplainClosedMutation } = complainApiSlice;
