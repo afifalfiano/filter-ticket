@@ -39,3 +39,4 @@ export default rfoSlice.reducer;
 
 export const selectAllRFO = (state) => state.rfo;
 export const selectAllRFOMasal = (state) => state.rfo.rfo_masal;
+export const seelectRFODetail = (state) => state.rfo.detail;
