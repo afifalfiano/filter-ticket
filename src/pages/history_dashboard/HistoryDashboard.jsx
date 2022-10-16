@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable prefer-template */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable prettier/prettier */
@@ -143,7 +144,27 @@ function HistoryDashboard() {
               {rows.map((item, index) => (
                 <tr className="text-center">
                   <th>{index + 1}</th>
-                  <td className="text-left">{item.pop.pop}</td>
+                  <td className="text-left">
+                    {
+                            item.pop.pop === 'Yogyakarta' ? (
+                              <span className="badge badge-success text-white">
+                                {item.pop.pop}
+                              </span>
+                            ) : item.pop.pop === 'Solo' ? (
+                              <span className="badge badge-warning text-white">
+                                {item.pop.pop}
+                              </span>
+                            ) : item.pop.pop === 'Purwokerto' ? (
+                              <span className="badge badge-info text-white">
+                                {item.pop.pop}
+                              </span>
+                            ) : (
+                              <span className="badge text-white">
+                                {item.pop.pop}
+                              </span>
+                            )
+                          }
+                  </td>
                   <td>{item.id_pelanggan}</td>
                   <td>{item.nama_pelanggan}</td>
                   <td>
