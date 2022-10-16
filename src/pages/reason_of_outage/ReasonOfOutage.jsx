@@ -287,7 +287,7 @@ function ReasonOfOutage() {
                 return (
                   <tr className="text-center">
                     <th>{index + 1}</th>
-                    <td>{item.pelanggan}</td>
+                    <td>{item.keluhan.id_pelanggan}</td>
                     <td className="text-left">
                       <p>
                         Dibuat:
@@ -307,7 +307,7 @@ function ReasonOfOutage() {
                     >
                       {item.lampiran_rfo_keluhan || '-'}
                     </td>
-                    <td>{item.keterangan}</td>
+                    <td>{item.deskripsi || '-'}</td>
                     <td>
                       {item.status === 'sendiri' ? (
                         <span className="badge badge-accent text-white">
