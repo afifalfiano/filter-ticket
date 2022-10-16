@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { apiSlice } from '../../../api/apiSlice';
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -15,7 +16,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    register: builder.mutation({
+      query: (body) => ({
+        url: '/register',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation } = authApiSlice;

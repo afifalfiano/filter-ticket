@@ -1,9 +1,16 @@
 /* eslint-disable no-console */
+/* eslint-disable prettier/prettier */
 /* eslint-disable operator-linebreak */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/button-has-type */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import { Formik, Field, Form } from 'formik';
+import { useRegisterMutation } from '../../store/features/auth/authApiSlice';
 
 function SignUp() {
   const [fullName, setFullName] = useState('');
@@ -15,85 +22,73 @@ function SignUp() {
   const [valid, setValid] = useState(false);
 
   const navigate = useNavigate();
+  const [register] = useRegisterMutation();
 
-  // eslint-disable-next-line consistent-return
-  const handleValidation = () => {
-    if (
-      email.trim().includes('@') &&
-      fullName.trim().length > 0 &&
-      password.trim().length > 0 &&
-      confirmPassword.trim().length > 0
-    ) {
-      const compare = password.trim() === confirmPassword.trim();
-      console.log(compare, 'cmp');
-      console.log(password.trim(), 'paswd');
-      console.log(confirmPassword.trim(), 'paswd cnf');
-      setValid(true);
-    } else {
-      setValid(false);
+  const initialValues = {
+    name: '',
+    pop_id: '',
+    role_id: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+  };
+
+  const onSubmitData = async (payload) => {
+    try {
+      // create
+      const body = {
+        name: payload.name,
+        pop_id: payload.pop_id || 1,
+        role_id: payload.role_id || 1,
+        email: payload.email,
+        password: payload.password,
+        password_confirmation: payload.password_confirmation,
+      };
+      const registerRes = await register(body);
+      console.log(registerRes, 'res');
+      if (registerRes.data.message === 'Successfully created!') {
+        toast.success('Berhasil membuat akun baru.', {
+          style: {
+            padding: '16px',
+            backgroundColor: '#36d399',
+            color: 'white',
+          },
+          duration: 2000,
+          position: 'top-right',
+          id: 'success',
+          icon: false,
+        });
+
+        setTimeout(() => {
+          navigate('/verification_email', { replace: true });
+        }, 2000)
+      } else {
+        toast.error(`${registerRes.data.message}`, {
+          style: {
+            padding: '16px',
+            backgroundColor: '#ff492d',
+            color: 'white',
+          },
+          duration: 2000,
+          position: 'top-right',
+          id: 'error',
+          icon: false,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.data.message, {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
-  };
-
-  const onSubmitLogin = (e) => {
-    e.preventDefault();
-    const user = {
-      email,
-      password,
-      confirmPassword,
-      fullName,
-      location,
-      team,
-    };
-    console.log(user, 'user');
-    const local = JSON.stringify(user);
-    localStorage.setItem('user', local);
-
-    toast.success('Berhasil buat akun baru.', {
-      style: {
-        padding: '16px',
-        backgroundColor: '#36d399',
-        color: 'white',
-      },
-      duration: 2000,
-      position: 'top-right',
-      id: 'success',
-      icon: false,
-    });
-
-    setTimeout(() => {
-      navigate('/verification_email', { replace: true });
-    }, 2000);
-    // window.location.reload();
-  };
-
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
-    handleValidation();
-  };
-
-  const handleFullName = (event) => {
-    setFullName(event.target.value);
-    handleValidation();
-  };
-
-  const handleTeam = (event) => {
-    setTeam(event.target.value);
-    handleValidation();
-  };
-
-  const handleLocation = (event) => {
-    setLocation(event.target.value);
-    handleValidation();
-  };
-
-  const handlePassword = (event) => {
-    setPassword(event.target.value);
-    handleValidation();
-  };
-
-  const handleConfirmPassword = (event) => {
-    setConfirmPassword(event.target.value);
-    handleValidation();
   };
 
   return (
@@ -104,118 +99,138 @@ function SignUp() {
         </p>
       </div>
       <div className="col-span-1 h-full bg-white">
-        <form onSubmit={onSubmitLogin} className="flex-row pl-16 pr-16">
-          <div className="pt-6">
-            <h4 className="text-2xl text-center font-semibold">
-              Silahkan Mendaftar
-            </h4>
-          </div>
-          <div className="form-control pt-4">
-            <label htmlFor="fullName" className="label">
-              <span className="label-text"> Nama Lengkap:</span>
-            </label>
+        <Formik
+          enableReinitialize
+          initialValues={initialValues}
+          onSubmit={(values, { resetForm }) => {
+            setTimeout(() => {
+              resetForm();
+            }, 500)
+            onSubmitData(values);
+          }}
+        >
+          {({
+            values,
+            errors,
+            isSubmitting,
+            isValid,
+            setFieldValue,
+            handleChange,
+            resetForm,
+          }) => (
+            <Form className="flex-row px-16">
+              <div className="pt-3">
+                <h4 className="text-2xl text-center font-semibold">
+                  Silahkan Mendaftar
+                </h4>
+              </div>
+              <div className="form-control pt-4">
+                <label htmlFor="name" className="label">
+                  <span className="label-text"> Nama Lengkap:</span>
+                </label>
+                <Field
+                  id="name"
+                  name="name"
+                  placeholder="Nama Lengkap"
+                  value={values.name}
+                  className="input input-md input-bordered  max-w-full"
+                />
+              </div>
 
-            <input
-              type="text"
-              value={fullName}
-              id="fullName"
-              onChange={handleFullName}
-              className="input input-md input-bordered  max-w-full"
-            />
-          </div>
+              <div className="form-control pt-4">
+                <label htmlFor="email" className="label">
+                  <span className="label-text"> Email:</span>
+                </label>
 
-          <div className="form-control pt-4">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Email:</span>
-            </label>
+                <Field
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Email@citra.net"
+                  value={values.email}
+                  className="input input-md input-bordered  max-w-full"
+                />
+              </div>
 
-            <input
-              type="email"
-              value={email}
-              id="email"
-              onChange={handleEmail}
-              className="input input-md input-bordered  max-w-full"
-            />
-          </div>
+              <div className="form-control pt-4">
+                <label htmlFor="role_id" className="label">
+                  <span className="label-text"> Tim:</span>
+                </label>
+                <Field
+                  component="select"
+                  id="role_id"
+                  name="role_id"
+                  value={values.role_id}
+                  className="select w-full max-w-full input-bordered"
+                >
+                  <option value="1">HELPDESK</option>
+                  <option value="2">NOC</option>
+                </Field>
+              </div>
 
-          <div className="form-control pt-4">
-            <label htmlFor="team" className="label">
-              <span className="label-text"> Tim:</span>
-            </label>
+              <div className="form-control pt-4">
+                <label htmlFor="pop_id" className="label">
+                  <span className="label-text"> POP(Lokasi):</span>
+                </label>
 
-            <select
-              className="select w-full max-w-full input-bordered"
-              id="team"
-              value={team}
-              onChange={handleTeam}
-            >
-              <option disabled>Pilih Tim</option>
-              <option>HELPDESK</option>
-              <option>NOC</option>
-            </select>
-          </div>
+                <Field
+                  component="select"
+                  id="pop_id"
+                  name="pop_id"
+                  value={values.pop_id}
+                  className="select w-full max-w-full input-bordered"
+                >
+                  <option value="1">Yogyakarta</option>
+                  <option value="2">Solo</option>
+                  <option value="3">Surakarta</option>
+                </Field>
+              </div>
 
-          <div className="form-control pt-4">
-            <label htmlFor="location" className="label">
-              <span className="label-text"> POP(Lokasi):</span>
-            </label>
+              <div className="form-control pt-4 ">
+                <label htmlFor="password" className="label">
+                  <span className="label-text"> Password:</span>
+                </label>
+                <Field
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="***************"
+                  value={values.password}
+                  className="input input-md input-bordered  max-w-full"
+                />
+              </div>
 
-            <select
-              className="select w-full max-w-full input-bordered"
-              value={location}
-              onChange={handleLocation}
-            >
-              <option disabled>Pilih Lokasi</option>
-              <option>Yogyakarta</option>
-              <option>Solo</option>
-              <option>Surakarta</option>
-            </select>
-          </div>
+              <div className="form-control pt-4 ">
+                <label htmlFor="confirmPassword" className="label">
+                  <span className="label-text"> Konfirmsi Password:</span>
+                </label>
+                <Field
+                  type="password"
+                  id="password_confirmation"
+                  name="password_confirmation"
+                  placeholder="***************"
+                  value={values.password_confirmation}
+                  className="input input-md input-bordered  max-w-full"
+                />
+              </div>
 
-          <div className="form-control pt-4 ">
-            <label htmlFor="password" className="label">
-              <span className="label-text"> Password:</span>
-            </label>
-            <input
-              type="password"
-              value={password}
-              id="password"
-              onChange={handlePassword}
-              className="input input-md input-bordered  max-w-full"
-            />
-          </div>
-
-          <div className="form-control pt-4 ">
-            <label htmlFor="confirmPassword" className="label">
-              <span className="label-text"> Konfirmsi Password:</span>
-            </label>
-            <input
-              type="password"
-              value={confirmPassword}
-              id="confirmPassword"
-              onChange={handleConfirmPassword}
-              className="input input-md input-bordered  max-w-full"
-            />
-          </div>
-
-          <div className="form-control mt-5">
-            <button
-              type="submit"
-              className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md btn-block"
-              disabled={!valid}
-            >
-              Daftar
-            </button>
-          </div>
-
-          <div className="label justify-center pt-4">
-            <span>Sudah punya akun?</span>
-            <span className="font-bold link-primary">
-              <Link to="/sign_in">&nbsp; Masuk</Link>
-            </span>
-          </div>
-          <Toaster />
-        </form>
+              <div className="form-control mt-5">
+                <button
+                  type="submit"
+                  className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md btn-block"
+                >
+                  Daftar
+                </button>
+              </div>
+              <div className="label justify-center pt-4">
+                <span>Sudah punya akun?</span>
+                <span className="font-bold link-primary">
+                  <Link to="/sign_in">&nbsp; Masuk</Link>
+                </span>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
