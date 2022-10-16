@@ -30,6 +30,7 @@ import { useAllComplainMutation } from '../../store/features/complain/complainAp
 import { setComplain } from '../../store/features/complain/complainSlice';
 import DeleteModal from '../../components/common/DeleteModal';
 import ComplainModalForm from './ComplainModalForm';
+import RFOMasalModal from './RFOMasalModal';
 
 function Dashboard() {
   const columns = [
@@ -158,88 +159,8 @@ function Dashboard() {
       <ComplainModalForm detail={detail} getInfo={getInfo} />
 
       {/* Modal rfo masal */}
-      <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-      <div className="modal">
-        <div className={`${styles['modal-box-custom']}`}>
-          <label
-            htmlFor="my-modal-4"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="text-lg font-bold">Reason of Outage Masal</h3>
-          <hr className="my-2" />
-
-          <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md mt-5">
-            <div className="flex-1 w-full">
-              <table className="border-none items-center w-full">
-                <tbody>
-                  <tr className="text-left">
-                    <td>Referensi Keluhan</td>
-                    <td>:</td>
-                    <td>123123</td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Pelanggan</td>
-                    <td>:</td>
-                    <td>3123123 - Pratama</td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Kontak</td>
-                    <td>:</td>
-                    <td>Putri - 08123123123</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="flex-1 w-full">
-              <table className="border-none items-center w-full">
-                <tbody>
-                  <tr className="text-left">
-                    <td>Waktu Dibuat</td>
-                    <td>:</td>
-                    <td>{new Date().toLocaleString('id-ID')}</td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Waktu Diubah</td>
-                    <td>:</td>
-                    <td>{new Date().toLocaleString('id-ID')}</td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Status Keluhan</td>
-                    <td>:</td>
-                    <td>Open</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div className="mt-2">
-            <div className="form-control">
-              <label htmlFor="location" className="label">
-                <span className="label-text"> Topik RFO Gangguan Masal</span>
-              </label>
-
-              <select className="select w-full max-w-full input-bordered">
-                <option disabled>Pilih RFO Topik Gangguan Masal</option>
-                <option>Fiber Optik Mati</option>
-                <option>Tower Rusak</option>
-              </select>
-            </div>
-          </div>
-
-          <hr className="my-2 mt-5" />
-          <div className="modal-action justify-center">
-            <label htmlFor="my-modal-4" className="btn btn-md">
-              Batal
-            </label>
-            <label htmlFor="my-modal-4" className="btn btn-md btn-success">
-              Simpan
-            </label>
-          </div>
-        </div>
-      </div>
+      <input type="checkbox" id="my-modal-rfo-masal" className="modal-toggle" />
+      <RFOMasalModal detail={detail} getInfo={getInfo} />
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
@@ -398,7 +319,8 @@ function Dashboard() {
                                   color="#0007A3"
                                   className="cursor-pointer"
                                   onClick={() => {
-                                    document.getElementById('my-modal-4').click();
+                                    setDetail(item);
+                                    document.getElementById('my-modal-rfo-masal').click();
                                   }}
                                 />
                               </>

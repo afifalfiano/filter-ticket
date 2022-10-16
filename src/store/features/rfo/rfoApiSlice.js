@@ -15,7 +15,13 @@ export const rfoApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    allRFOMasal: builder.mutation({
+      query: () => ({
+        url: '/rfo-gangguan',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useAllRFOMutation, useRfoByIdMutation } = rfoApiSlice;
+export const { useAllRFOMutation, useRfoByIdMutation, useAllRFOMasalMutation } = rfoApiSlice;
