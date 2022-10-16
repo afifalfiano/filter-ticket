@@ -9,11 +9,15 @@ import { clearComplain } from '../store/features/complain/complainSlice';
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:8000/api',
   mode: 'cors',
-  prepareHeaders: (headers, { getState }) => {
+  prepareHeaders: (headers, { getState, endpoint }) => {
     const token = getState().auth.data;
+    console.log(endpoint, 'hd');
     if (token?.bearer_token) {
-      headers.set('authorization', `Bearer ${token?.bearer_token}`);
+      headers.set('Authorization', `Bearer ${token?.bearer_token}`);
     }
+    // if (endpoint === 'addComplain') {
+    //   headers.set('Content-Type', 'multipart/form-data');
+    // }
     return headers;
   },
 });

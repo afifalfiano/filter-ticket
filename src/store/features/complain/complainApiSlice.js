@@ -27,7 +27,7 @@ export const complainApiSlice = apiSlice.injectEndpoints({
       query: (body) => ({
         url: `/keluhan`,
         method: 'POST',
-        body: { ...body }
+        body
       }),
     }),
     updateComplain: builder.mutation({

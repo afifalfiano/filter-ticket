@@ -88,12 +88,16 @@ function Dashboard() {
   return (
     <div>
       <div>
-        <label
+        <button
           className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
           htmlFor="my-modal-complain"
+          onClick={() => {
+            setDetail(null);
+            document.getElementById('my-modal-complain').click();
+          }}
         >
           Tambah
-        </label>
+        </button>
       </div>
 
       <div className="flex gap-5 mt-5">

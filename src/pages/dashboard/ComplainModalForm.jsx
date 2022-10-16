@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable react/prop-types */
 /* eslint-disable prefer-template */
@@ -34,9 +35,10 @@ import styles from './ComplainModalForm.module.css';
 import { useAddComplainMutation, useUpdateComplainMutation } from '../../store/features/complain/complainApiSlice';
 
 function ComplainModalForm({ getInfo, detail }) {
-  const [addComplain] = useAddComplainMutation();
-  const [updateComplain] = useUpdateComplainMutation();
+  const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
+  const [updateComplain, { isSuccess: isSuccessUpdate }] = useUpdateComplainMutation();
   const { data: user } = useSelector(selectCurrentUser);
+  const [files, setFiles] = useState([]);
 
   const initialValues = {
     id_pelanggan: detail?.id_pelanggan || '',
@@ -44,31 +46,44 @@ function ComplainModalForm({ getInfo, detail }) {
     nama_pelapor: detail?.nama_pelapor || '',
     nomor_pelapor: detail?.nomor_pelapor || '',
     nomor_keluhan: detail?.nomor_keluhan || '',
-    source: detail?.source || '',
-    email: detail?.email || '',
+    sumber: detail?.sumber || '',
+    detail_sumber: detail?.detail_sumber || '',
     keluhan: detail?.keluhan || '',
     status: detail?.status || '',
     pop_id: detail?.pop_id || '',
   };
 
   const onSubmitData = async (payload) => {
-    const body = {
-      id_pelanggan: payload.id_pelanggan,
-      nama_pelanggan: payload.nama_pelanggan,
-      nama_pelapor: payload.nama_pelapor,
-      nomor_pelapor: payload.nomor_pelapor,
-      nomor_keluhan: payload.nomor_keluhan || Math.random(5),
-      source: payload.source || 'email',
-      email: payload.email,
-      keluhan: payload.keluhan,
-      status: payload.status || 'open',
-      pop_id: payload.pop_id || 1,
-      user_id: user.user_id,
-    };
     try {
       // create
       console.log(detail, 'dt');
       if (detail === null) {
+        // const formData = new FormData();
+        // formData.append('id_pelanggan', payload.id_pelanggan)
+        // formData.append('nama_pelanggan', payload.nama_pelanggan)
+        // formData.append('nama_pelapor', payload.nama_pelapor)
+        // formData.append('nomor_pelapor', payload.nomor_pelapor)
+        // formData.append('sumber', payload.sumber || 'Email')
+        // formData.append('detail_sumber', payload.detail_sumber)
+        // formData.append('keluhan', payload.keluhan)
+        // formData.append('status', payload.status || 'open')
+        // formData.append('pop_id', payload.pop_id || 1)
+        // formData.append('user_id', user.id_user)
+        // formData.append('lampiran', files)
+        const body = {
+          id_pelanggan: payload.id_pelanggan,
+          nama_pelanggan: payload.nama_pelanggan,
+          nama_pelapor: payload.nama_pelapor,
+          nomor_pelapor: payload.nomor_pelapor,
+          nomor_keluhan: payload.nomor_keluhan || Math.random(5),
+          sumber: payload.sumber || 'email',
+          detail_sumber: payload.detail_sumber,
+          keluhan: payload.keluhan,
+          status: payload.status || 'open',
+          pop_id: payload.pop_id || 1,
+          user_id: user.id_user,
+          lampiran: '',
+        };
         const add = await addComplain({ ...body });
         if (add.data.status === 'success') {
           toast.success('Berhasil tambah data keluhan.', {
@@ -86,9 +101,30 @@ function ComplainModalForm({ getInfo, detail }) {
             document.getElementById('my-modal-complain').click();
             getInfo({ status: 'success' });
           }, 2000);
+        } else {
+          toast.error(`${add.data.message}`, {
+            style: {
+              padding: '16px',
+              backgroundColor: '#ff492d',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'error',
+            icon: false,
+          });
         }
       } else {
+        const body = {
+          nama_pelapor: payload.nama_pelapor,
+          nomor_pelapor: payload.nomor_pelapor,
+          sumber: payload.sumber || 'Email',
+          detail_sumber: payload.detail_sumber,
+          keluhan: payload.keluhan,
+          pop_id: payload.pop_id || 1,
+        };
         // update
+
         const update = await updateComplain({
           id: detail.id_keluhan,
           body: { ...body },
@@ -110,10 +146,33 @@ function ComplainModalForm({ getInfo, detail }) {
             getInfo({ status: 'success' });
             document.getElementById('my-modal-complain').click();
           }, 2000);
+        } else {
+          toast.error(update.data.message, {
+            style: {
+              padding: '16px',
+              backgroundColor: '#ff492d',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'error',
+            icon: false,
+          });
         }
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.error.message, {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
   };
 
@@ -121,7 +180,9 @@ function ComplainModalForm({ getInfo, detail }) {
     if (title === 'submit') {
       setTimeout(() => {
         if (detail === null) {
-          reset();
+          if (isSuccessCreate || isSuccessUpdate) {
+            reset();
+          }
         }
       }, 2000);
     } else {
@@ -129,6 +190,25 @@ function ComplainModalForm({ getInfo, detail }) {
       document.getElementById('my-modal-complain').click();
     }
   };
+
+  const onHandleFileUpload = ($event) => {
+    console.log($event.target.files, 'file');
+    console.log($event.target.files.length, 'file');
+    const file = $event.target.files;
+    file.length > 0 ? setFiles(file[0]) : setFiles([]);
+  }
+
+  function formatBytes(bytes, decimals = 2) {
+    if (!+bytes) return '0 Bytes'
+
+    const k = 1024
+    const dm = decimals < 0 ? 0 : decimals
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
+  }
 
   return (
     <div className="modal">
@@ -172,6 +252,7 @@ function ComplainModalForm({ getInfo, detail }) {
                     placeholder="ID Pelanggan"
                     value={values.id_pelanggan}
                     className="input input-md input-bordered  max-w-full"
+                    disabled={detail !== null ? true : null}
                   />
                 </div>
 
@@ -186,6 +267,7 @@ function ComplainModalForm({ getInfo, detail }) {
                     placeholder="Nama Pelanggan"
                     value={values.nama_pelanggan}
                     className="input input-md input-bordered  max-w-full"
+                    disabled={detail !== null ? true : null}
                   />
                 </div>
               </div>
@@ -211,14 +293,14 @@ function ComplainModalForm({ getInfo, detail }) {
 
               <div className="flex flex-row gap-3">
                 <div className="form-control flex-1">
-                  <label htmlFor="source" className="label">
+                  <label htmlFor="sumber" className="label">
                     <span className="label-text"> Sumber Keluhan</span>
                   </label>
                   <Field
                     component="select"
-                    id="source"
-                    name="source"
-                    value={values.source}
+                    id="sumber"
+                    name="sumber"
+                    value={values.sumber}
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="1">Email</option>
@@ -228,15 +310,15 @@ function ComplainModalForm({ getInfo, detail }) {
                 </div>
 
                 <div className="form-control flex-1">
-                  <label htmlFor="email" className="label">
+                  <label htmlFor="detail_sumber" className="label">
                     <span className="label-text"> Kontak Sumber Keluhan</span>
                   </label>
 
                   <Field
-                    id="email"
-                    name="email"
+                    id="detail_sumber"
+                    name="detail_sumber"
                     placeholder="Kontak Sumber Keluhan"
-                    value={values.email}
+                    value={values.detail_sumber}
                     className="input input-md input-bordered  max-w-full"
                   />
                 </div>
@@ -287,8 +369,9 @@ function ComplainModalForm({ getInfo, detail }) {
                 />
               </div>
 
+              {!detail && (
               <div className="form-control">
-                <label htmlFor="email" className="label">
+                <label htmlFor="lampiran" className="label">
                   <span className="label-text"> Unggah Lampiran:</span>
                 </label>
 
@@ -306,10 +389,14 @@ function ComplainModalForm({ getInfo, detail }) {
                         PDF, WORD, JPG, JPEG
                       </p>
                     </div>
-                    <input id="dropzone-file" type="file" className="hidden" />
+                    <input id="dropzone-file" type="file" className="hidden" onChange={onHandleFileUpload} />
                   </label>
                 </div>
+                <div className="mt-2 font-semibold">
+                  File Upload: {files.name} - {formatBytes(files.size)}
+                </div>
               </div>
+              )}
 
               <hr className="my-2 mt-5" />
               <div className="modal-action justify-center">
