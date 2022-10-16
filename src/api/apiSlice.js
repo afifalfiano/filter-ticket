@@ -8,7 +8,7 @@ import { clearBTS } from '../store/features/bts/btsSlice';
 import { clearComplain } from '../store/features/complain/complainSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:8000/api',
+  baseUrl: 'https://filter-keluhan.000webhostapp.com/api',
   mode: 'cors',
   prepareHeaders: (headers, { getState, endpoint }) => {
     const token = getState().auth.data;
