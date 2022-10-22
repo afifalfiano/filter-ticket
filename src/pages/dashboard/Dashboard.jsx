@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable prefer-template */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -24,14 +25,16 @@ import {
 } from 'react-icons/hi';
 import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
-import { setComplain } from '../../store/features/complain/complainSlice';
+import { selectAllComplain, setComplain } from '../../store/features/complain/complainSlice';
 import DeleteModal from '../../components/common/DeleteModal';
 import ComplainModalForm from './ComplainModalForm';
 import RFOMasalModal from './RFOMasalModal';
+import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
+import { setPOP } from '../../store/features/pop/popSlice';
 
 function Dashboard() {
   const columns = [
@@ -49,11 +52,15 @@ function Dashboard() {
   const [statusData, setStatusData] = useState('open');
   const [detail, setDetail] = useState(null);
   const [showTable, setShowTable] = useState(false);
-  const [pop, setPOP] = useState('all');
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [allComplain, { isLoading, isSuccess }] = useAllComplainMutation();
   const dispatch = useDispatch();
+
+  const [search, setSearch] = useState('');
+  const [dataPOP, setdataPOP] = useState([]);
+  const [pop, setPOPLocal] = useState('all');
+  const dataRow = useSelector(selectAllComplain);
 
   const getAllComplain = async () => {
     try {
@@ -69,16 +76,70 @@ function Dashboard() {
     }
   };
 
+  const onHandleSearch = (event) => {
+    event.preventDefault();
+    console.log(event.target.value);
+    console.log(event.target.value.length, 'ooo');
+    setSearch(event.target.value);
+
+    if (event.target.value.length > 0) {
+      const regex = new RegExp(search, 'ig');
+      const searchResult = rows.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
+      setRows(searchResult);
+    } else {
+      setRows(dataRow.data);
+    }
+  }
+
+  const handlePOP = (event) => {
+    console.log(event.target, 'cek');
+    setPOPLocal(event.target.value);
+    console.log(event.target.value, 'how');
+    const dataChanged = dataRow.data.filter((item) => {
+      if (+item.pop_id === +event.target.value) {
+        return item;
+      }
+    })
+    if (event.target.value === 'all') {
+      console.log(dataRow, 'cek gan');
+      setRows(dataRow.data);
+    } else {
+      setRows(dataChanged);
+    }
+  };
+
+  const [allPOP] = useAllPOPMutation();
+
+  const getAllPOP = async () => {
+    try {
+      const data = await allPOP().unwrap();
+      console.log(data, 'ceksaja');
+      if (data.status === 'success') {
+        dispatch(setPOP({ ...data }));
+        console.log('set data', data);
+        setdataPOP(data.data)
+        console.log(dataPOP, 'pp');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    getAllPOP()
     getAllComplain();
   }, []);
 
   const handleStatus = (event) => {
     setStatusData(event.target.value);
-  };
-
-  const handlePOP = (event) => {
-    setPOP(event.target.value);
+    console.log(event.target.value, 'status');
+    console.log(dataRow, 'row');
+    const dataChanged = dataRow.data.filter((item) => {
+      if (item.status === event.target.value) {
+        return item;
+      }
+    })
+    setRows(dataChanged);
   };
 
   const getInfo = ($event) => {
@@ -113,9 +174,8 @@ function Dashboard() {
             className="select w-full max-w-full input-bordered"
             onChange={handleStatus}
           >
-            <option disabled>Pilih Status</option>
-            <option value="open">Open Case</option>
-            <option value="closed">Closed Case</option>
+            <option value="open" label="Open Case">Open Case</option>
+            <option value="closed" label="Closed Case">Closed Case</option>
           </select>
         </div>
 
@@ -128,9 +188,10 @@ function Dashboard() {
             className="select w-full max-w-full input-bordered"
             onChange={handlePOP}
           >
-            <option disabled>Pilih POP</option>
-            <option value="yogyakarta">Yogyakarta</option>
-            <option value="solo">Solo</option>
+            <option value="all" label="Semua">All</option>
+            {dataPOP?.map((item) => (
+              <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+            ))}
           </select>
         </div>
 
@@ -148,7 +209,8 @@ function Dashboard() {
                 id="voice-search"
                 className="input input-md input-bordered pl-10 p-2.5 "
                 placeholder="Cari data keluhan..."
-                required
+                value={search}
+                onChange={onHandleSearch}
               />
             </div>
           </div>
@@ -202,32 +264,22 @@ function Dashboard() {
           </div>
         </div>
       </div>
-
-      {!showTable
-            && (
-            <h1 className="mt-8">Loading...</h1>
-            )}
       {/* start table */}
-      {showTable
-      && (
-        <>
-          <div className="overflow-x-auto mt-8">
-            <table className="table table-zebra w-full">
-              <thead>
-                <tr>
-                  {columns.map((item) => (
-                    <th className="text-center">{item}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((item, index) => {
-                  if (item.status === statusData) {
-                    return (
-                      <tr className="text-center">
-                        <th>{isLoading ? (<Skeleton />) : index + 1}</th>
-                        <td className="text-left">
-                          {
+      <div className="overflow-x-auto mt-8">
+        <table className="table table-zebra w-full">
+          <thead>
+            <tr>
+              {columns.map((item) => (
+                <th className="text-center">{item}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((item, index) => (
+              <tr className="text-center">
+                <th>{isLoading ? (<Skeleton />) : index + 1}</th>
+                <td className="text-left">
+                  {
                             item.pop.pop === 'Yogyakarta' ? (
                               <span className="badge badge-success text-white">
                                 {item.pop.pop}
@@ -246,150 +298,146 @@ function Dashboard() {
                               </span>
                             )
                           }
-                        </td>
-                        <td>{item.id_pelanggan}</td>
-                        <td>{item.nama_pelanggan}</td>
-                        <td>{item.nama_pelapor} - {item.nomor_pelapor}</td>
-                        <td className="text-left">{item.keluhan}</td>
-                        <td className="text-left">{item.balasan.length > 0 ? item.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan'}</td>
-                        <td className="text-left">
-                          <p>
-                            Dibuat:
-                            {new Date(item.created_at).toLocaleString('id-ID')}
-                          </p>
-                          <p>
-                            Diubah:
-                            {item.balasan.length > 0
-                              ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
-                              : new Date(item.created_at).toLocaleString('id-ID')}
-                          </p>
-                        </td>
-                        <td>
-                          {item.status === 'open' ? (
-                            <span className="badge badge-accent text-white">
-                              {item.status}
-                            </span>
-                          ) : (
-                            <span className="badge badge-info text-white">
-                              {item.status}
-                            </span>
-                          )}
-                        </td>
-                        <td>
-                          <div className="flex flex-row gap-3 justify-center">
-                            {statusData === 'open' ? (
-                              <>
-                                <HiPencil
-                                  className="cursor-pointer"
-                                  size={20}
-                                  color="#D98200"
-                                  onClick={() => {
-                                    setDetail(item);
-                                    document.getElementById('my-modal-complain').click();
-                                  }}
-                                />
-                                <HiTrash
-                                  size={20}
-                                  color="#FF2E00"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    setDetail(item);
-                                    document
-                                      .getElementById('my-modal-delete')
-                                      .click();
-                                  }}
-                                />
-                                <HiEye
-                                  size={20}
-                                  color="#0D68F1"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    navigate(`/dashboard/detail/${item.id_keluhan}`);
-                                  }}
-                                />
-                                <HiOutlineClipboardCheck
-                                  size={20}
-                                  color="#065F46"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    navigate(`/dashboard/rfo_single/${item.id_keluhan}`);
-                                  }}
-                                />
-                                <HiOutlineClipboardList
-                                  size={20}
-                                  color="#0007A3"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    setDetail(item);
-                                    document.getElementById('my-modal-rfo-masal').click();
-                                  }}
-                                />
-                              </>
-                            ) : (
-                              <>
-                                <FaUndoAlt
-                                  size={20}
-                                  color="#D98200"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    document
-                                      .getElementById('my-modal-revert')
-                                      .click();
-                                  }}
-                                />
-                                <HiEye
-                                  size={20}
-                                  color="#0D68F1"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    navigate(`/dashboard/detail/${item.uuid}`);
-                                  }}
-                                />
-                                <HiOutlineClipboardCheck
-                                  size={20}
-                                  color="#065F46"
-                                  className="cursor-pointer"
-                                  onClick={() => {
-                                    navigate(`/dashboard/rfo_single/${item.uuid}`);
-                                  }}
-                                />
-                              </>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  }
-                })}
-              </tbody>
-            </table>
+                </td>
+                <td>{item.id_pelanggan}</td>
+                <td>{item.nama_pelanggan}</td>
+                <td>{item.nama_pelapor} - {item.nomor_pelapor}</td>
+                <td className="text-left">{item.keluhan}</td>
+                <td className="text-left">{item.balasan.length > 0 ? item.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan'}</td>
+                <td className="text-left">
+                  <p>
+                    Dibuat:
+                    {new Date(item.created_at).toLocaleString('id-ID')}
+                  </p>
+                  <p>
+                    Diubah:
+                    {item.balasan.length > 0
+                      ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
+                      : new Date(item.created_at).toLocaleString('id-ID')}
+                  </p>
+                </td>
+                <td>
+                  {item.status === 'open' ? (
+                    <span className="badge badge-accent text-white">
+                      {item.status}
+                    </span>
+                  ) : (
+                    <span className="badge badge-info text-white">
+                      {item.status}
+                    </span>
+                  )}
+                </td>
+                <td>
+                  <div className="flex flex-row gap-3 justify-center">
+                    {statusData === 'open' ? (
+                      <>
+                        <HiPencil
+                          className="cursor-pointer"
+                          size={20}
+                          color="#D98200"
+                          onClick={() => {
+                            setDetail(item);
+                            document.getElementById('my-modal-complain').click();
+                          }}
+                        />
+                        <HiTrash
+                          size={20}
+                          color="#FF2E00"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setDetail(item);
+                            document
+                              .getElementById('my-modal-delete')
+                              .click();
+                          }}
+                        />
+                        <HiEye
+                          size={20}
+                          color="#0D68F1"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            navigate(`/dashboard/detail/${item.id_keluhan}`);
+                          }}
+                        />
+                        <HiOutlineClipboardCheck
+                          size={20}
+                          color="#065F46"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            navigate(`/dashboard/rfo_single/${item.id_keluhan}`);
+                          }}
+                        />
+                        <HiOutlineClipboardList
+                          size={20}
+                          color="#0007A3"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setDetail(item);
+                            document.getElementById('my-modal-rfo-masal').click();
+                          }}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <FaUndoAlt
+                          size={20}
+                          color="#D98200"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            document
+                              .getElementById('my-modal-revert')
+                              .click();
+                          }}
+                        />
+                        <HiEye
+                          size={20}
+                          color="#0D68F1"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            navigate(`/dashboard/detail/${item.uuid}`);
+                          }}
+                        />
+                        <HiOutlineClipboardCheck
+                          size={20}
+                          color="#065F46"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            navigate(`/dashboard/rfo_single/${item.uuid}`);
+                          }}
+                        />
+                      </>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="flex justify-between mt-5 pb-20">
+        <div className="flex flex-row gap-1">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> Halaman 1 dari 1</span>
+          </label>
+          <div className="form-control">
+            <select className="select input-bordered">
+              <option>5</option>
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
           </div>
-          <div className="flex justify-between mt-5 pb-20">
-            <div className="flex flex-row gap-1">
-              <label htmlFor="location" className="label font-semibold">
-                <span className="label-text"> Halaman 1 dari 1</span>
-              </label>
-              <div className="form-control">
-                <select className="select input-bordered">
-                  <option>5</option>
-                  <option>10</option>
-                  <option>25</option>
-                  <option>50</option>
-                  <option>100</option>
-                </select>
-              </div>
-            </div>
-            <div className="">
-              <div className="btn-group">
-                <button className="btn btn-outline btn-active">1</button>
-                <button className="btn btn-outline">2</button>
-                <button className="btn btn-outline">3</button>
-                <button className="btn btn-outline">4</button>
-              </div>
-            </div>
+        </div>
+        <div className="">
+          <div className="btn-group">
+            <button className="btn btn-outline btn-active">1</button>
+            <button className="btn btn-outline">2</button>
+            <button className="btn btn-outline">3</button>
+            <button className="btn btn-outline">4</button>
           </div>
-        </>
-      )}
+        </div>
+      </div>
       {/* end table */}
     </div>
   );
