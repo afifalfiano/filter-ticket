@@ -10,10 +10,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
+import * as Yup from 'yup';
 import { useAddReplyMutation, useComplainByIdMutation } from '../../../store/features/complain/complainApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 
+const ReplySchema = Yup.object().shape({
+  balasan: Yup.string()
+    .required('Wajib diisi.')
+});
 function DashboardDetail({ rfoSingle }) {
   const location = useLocation();
   console.log(location, ';loc');
@@ -39,13 +44,16 @@ function DashboardDetail({ rfoSingle }) {
   };
 
   useEffect(() => {
-    const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
-    console.log(data, 'nav');
-    dispatch(updateBreadcrumb(data))
     getComplainById();
   }, [isSuccessReplpy]);
 
-  const onSubmitData = async (payload) => {
+  useEffect(() => {
+    const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
+    console.log(data, 'nav');
+    dispatch(updateBreadcrumb(data))
+  }, [])
+
+  const onSubmitData = async (payload, resetForm) => {
     console.log(detailComplain, 'log');
     try {
       const body = {
@@ -56,6 +64,7 @@ function DashboardDetail({ rfoSingle }) {
       console.log(body);
       const add = await addReply({ ...body });
       if (add.data.status === 'success') {
+        resetForm()
         toast.success('Berhasil membalasa data keluhan.', {
           style: {
             padding: '16px',
@@ -228,20 +237,19 @@ function DashboardDetail({ rfoSingle }) {
           ? (
             <Formik
               enableReinitialize
+              validationSchema={ReplySchema}
               initialValues={{ balasan: '' }}
               onSubmit={(values, { resetForm }) => {
-                resetForm();
-                onSubmitData(values);
+                onSubmitData(values, resetForm);
               }}
             >
               {({
                 values,
                 errors,
-                isSubmitting,
+                touched,
                 isValid,
-                setFieldValue,
                 handleChange,
-                resetForm,
+                handleBlur,
               }) => (
                 <Form>
                   <div className="form-control">
@@ -254,9 +262,14 @@ function DashboardDetail({ rfoSingle }) {
                       name="balasan"
                       component="textarea"
                       placeholder="Balasan"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
                       value={values.balasan}
                       className="textarea textarea-bordered h-28"
                     />
+                    {errors.balasan && touched.balasan ? (
+                      <div className="label label-text text-red-500">{errors.balasan}</div>
+                    ) : null}
                   </div>
 
                   <div className="form-control">
@@ -292,7 +305,7 @@ function DashboardDetail({ rfoSingle }) {
                     >
                       Kembali
                     </button>
-                    <button type="submit" className="btn btn-md btn-success">
+                    <button type="submit" className="btn btn-md btn-success" disabled={!isValid}>
                       Simpan
                     </button>
                   </div>
