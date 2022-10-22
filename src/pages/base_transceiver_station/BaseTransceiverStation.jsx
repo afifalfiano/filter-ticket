@@ -68,7 +68,7 @@ function BaseTransceiverStation() {
     console.log(event.target, 'cek');
     setPOPLocal(event.target.value);
     console.log(event.target.value, 'how');
-    const dataChanged = dataRow.data.some((item) => {
+    const dataChanged = dataRow.data.filter((item) => {
       if (+item.pop_id === +event.target.value) {
         return item;
       }
