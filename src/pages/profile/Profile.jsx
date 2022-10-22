@@ -1,13 +1,64 @@
 /* eslint-disable no-console */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HiPencilAlt } from 'react-icons/hi';
-import { useSelector } from 'react-redux';
-import FormUpdateProfile from '../../components/profile/FormUpdateProfile';
+import { useDispatch, useSelector } from 'react-redux';
+import FormUpdateProfile from './FormUpdateProfile';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
+import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
+import { useAllTeamMutation } from '../../store/features/team/teamApiSlice';
+import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
+import { selectAllTeam, setTeam } from '../../store/features/team/teamSlice';
+
 function Profile() {
+  const dispatch = useDispatch();
   const [form, setForm] = useState(false);
   const { data: user } = useSelector(selectCurrentUser);
+
+  const [currentRole, setCurrentRole] = useState(null);
+  const [currentPop, setCurrentPop] = useState(null);
+
+  const role = useSelector(selectAllTeam);
+  const pop = useSelector(selectAllPOP);
+  const [allPOP] = useAllPOPMutation();
+  const [allTeam] = useAllTeamMutation();
+
+  const getAllPOP = async () => {
+    try {
+      const data = await allPOP().unwrap();
+      console.log(data, 'ceksaja');
+      if (data.status === 'success') {
+        dispatch(setPOP({ ...data }));
+        console.log(pop, 'ppp');
+        const index = pop.data.find((item) => item.id_pop === user.pop_id);
+        setCurrentPop(index);
+        console.log(index, 'match');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllTeam = async () => {
+    try {
+      const data = await allTeam().unwrap();
+      console.log(data, 'zxc');
+      if (data.status === 'success') {
+        dispatch(setTeam({ ...data }));
+        console.log(role, 'tm');
+        const index = role.data.find((item) => item.id_role === user.role_id);
+        setCurrentRole(index);
+        console.log(index, 'match');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllPOP();
+    getAllTeam();
+  }, [form]);
 
   const handleUpdateProfile = (event) => {
     console.log(event, 'ev');
@@ -22,7 +73,7 @@ function Profile() {
   return (
     <div>
       {form ? (
-        <FormUpdateProfile handleForm={handleForm} user={user} />
+        <FormUpdateProfile handleForm={handleForm} />
       ) : (
         <div className="flex items-start justify-center">
           <div className="text-center">
@@ -52,12 +103,12 @@ function Profile() {
                       <tr className="text-left">
                         <td>Role</td>
                         <td>:</td>
-                        <td>{user?.role_id}</td>
+                        <td>{currentRole?.role}</td>
                       </tr>
                       <tr className="text-left">
                         <td>POP</td>
                         <td>:</td>
-                        <td>{user?.pop_id}</td>
+                        <td>{currentPop?.pop}</td>
                       </tr>
                     </tbody>
                   </table>

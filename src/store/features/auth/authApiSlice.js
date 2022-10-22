@@ -1,3 +1,5 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
 import { apiSlice } from '../../../api/apiSlice';
 
@@ -23,7 +25,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    updateProfile: builder.mutation({
+      query: (body) => ({
+        url: '/profile',
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation } = authApiSlice;

@@ -18,7 +18,6 @@ const teamSlice = createSlice({
     },
     clearTeam: (state) => {
       state.data = null;
-      state.detail = null;
     },
   },
 });
