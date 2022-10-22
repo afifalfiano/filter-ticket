@@ -44,7 +44,7 @@ function SignIn() {
           navigate('/dashboard', { replace: true });
         }, 1000);
       } else {
-        toast.error(userData?.data?.message, {
+        toast.error(userData?.data?.message || 'Terjadi Kesalahan', {
           style: {
             padding: '16px',
             backgroundColor: '#ff492d',
@@ -58,7 +58,7 @@ function SignIn() {
       }
     } catch (err) {
       console.log(err);
-      toast.error(err?.data?.message, {
+      toast.error(err?.data?.message || 'Terjadi Kesalahan', {
         style: {
           padding: '16px',
           backgroundColor: '#ff492d',

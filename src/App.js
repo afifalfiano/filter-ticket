@@ -18,6 +18,7 @@ import DashboardRFOSingle from './pages/dashboard/rfo_single/DashboardRFOSingle'
 import Statistics from './pages/statistics/Statistics';
 import Layout from './components/common/Layout';
 import RequireAuth from './components/common/RequireAuth';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function App() {
   return (

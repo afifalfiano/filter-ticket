@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/prefer-default-export */
@@ -8,13 +9,13 @@ import { clearBTS } from '../store/features/bts/btsSlice';
 import { clearComplain } from '../store/features/complain/complainSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:8000/api',
+  baseUrl: '/api',
   mode: 'cors',
   prepareHeaders: (headers, { getState, endpoint }) => {
     const token = getState().auth.data;
     console.log(endpoint, 'hd');
     if (token?.bearer_token) {
-      headers.set('Authorization', `Bearer ${token?.bearer_token}`);
+      headers.set('authorization', `Bearer ${token?.bearer_token}`);
     }
     // if (endpoint === 'addComplain') {
     //   headers.set('Content-Type', 'multipart/form-data');
@@ -24,32 +25,36 @@ const baseQuery = fetchBaseQuery({
 });
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-  const result = await baseQuery(args, api, extraOptions);
-  console.log(result, 'ts');
-  if (result?.error?.data === 'Please login first') {
-    api.dispatch((action) => {
-      action(setLogOut());
-      action(clearBTS());
-      action(clearComplain());
-    });
-    localStorage.clear();
-  }
+  try {
+    const result = await baseQuery(args, api, extraOptions);
+    console.log(result, 'ts');
+    if (result?.error?.data === 'Please login first') {
+      api.dispatch((action) => {
+        action(setLogOut());
+        action(clearBTS());
+        action(clearComplain());
+      });
+      localStorage.clear();
+    }
 
-  if (result?.error?.status === 'FETCH_ERROR') {
-    toast.error('Kesalahan Pada Server', {
-      style: {
-        padding: '16px',
-        backgroundColor: '#ff492d',
-        color: 'white',
-      },
-      duration: 2000,
-      position: 'top-right',
-      id: 'error',
-      icon: false,
-    });
+    if (result?.error?.status === 'FETCH_ERROR') {
+      toast.error('Kesalahan Pada Server', {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
+    }
+    return result;
+  } catch (error) {
+    console.log(error, 'err');
+    // return;
   }
-
-  return result;
 };
 
 export const apiSlice = createApi({

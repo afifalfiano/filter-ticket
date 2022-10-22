@@ -25,6 +25,7 @@ import {
 import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { setComplain } from '../../store/features/complain/complainSlice';
@@ -51,7 +52,7 @@ function Dashboard() {
   const [pop, setPOP] = useState('all');
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
-  const [allComplain, { ...status }] = useAllComplainMutation();
+  const [allComplain, { isLoading, isSuccess }] = useAllComplainMutation();
   const dispatch = useDispatch();
 
   const getAllComplain = async () => {
@@ -224,7 +225,7 @@ function Dashboard() {
                   if (item.status === statusData) {
                     return (
                       <tr className="text-center">
-                        <th>{index + 1}</th>
+                        <th>{isLoading ? (<Skeleton />) : index + 1}</th>
                         <td className="text-left">
                           {
                             item.pop.pop === 'Yogyakarta' ? (

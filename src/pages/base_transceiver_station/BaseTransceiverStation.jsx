@@ -15,6 +15,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { selectAllBTS, setBTS } from '../../store/features/bts/btsSlice';
 import styles from './BaseTransceiverStation.module.css';
 import { useAllBtsMutation } from '../../store/features/bts/btsApiSlice';
@@ -35,7 +36,7 @@ function BaseTransceiverStation() {
 
   const [rows, setRows] = useState([]);
   const [pop, setPOP] = useState('all');
-  const [allBts, { ...status }] = useAllBtsMutation();
+  const [allBts, { isLoading, isSuccess }] = useAllBtsMutation();
   const dispatch = useDispatch();
   const [detail, setDetail] = useState(null);
 
@@ -130,7 +131,7 @@ function BaseTransceiverStation() {
           <thead>
             <tr>
               {columns.map((item) => (
-                <th className="text-center">{item}</th>
+                <th className="text-center">{!isSuccess ? (<Skeleton />) : (item)}</th>
               ))}
             </tr>
           </thead>
@@ -138,40 +139,43 @@ function BaseTransceiverStation() {
             {rows.length > 0 &&
               rows.map((item, index) => (
                 <tr className="text-center" id={item.id}>
-                  <td id={item.id}>{index + 1}</td>
-                  <td>{item.nama_bts}</td>
-                  <td>{item.nama_pic}</td>
-                  <td>{item.nomor_pic}</td>
-                  <td>{item.lokasi}</td>
-                  <td>{item.kordinat}</td>
-                  <td>{item.pop.pop}</td>
+                  <td id={item.id}>{!isSuccess ? (<Skeleton />) : (index + 1)}</td>
+                  <td>{!isSuccess ? (<Skeleton />) : (item.nama_bts)}</td>
+                  <td>{!isSuccess ? (<Skeleton />) : (item.nama_pic)}</td>
+                  <td>{!isSuccess ? (<Skeleton />) : (item.nomor_pic)}</td>
+                  <td>{!isSuccess ? (<Skeleton />) : (item.lokasi)}</td>
+                  <td>{!isSuccess ? (<Skeleton />) : (item.kordinat)}</td>
+                  <td>{!isSuccess ? (<Skeleton />) : (item.pop.pop)}</td>
                   <td>
-                    <div className="flex flex-row gap-3 justify-center">
-                      <HiPencil
-                        className="cursor-pointer"
-                        size={20}
-                        color="#D98200"
-                        onClick={() => {
-                          setDetail(item);
-                          document.getElementById('my-modal-3').click();
-                        }}
-                      />
-                      <HiTrash
-                        size={20}
-                        color="#FF2E00"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setDetail(item);
-                          document.getElementById('my-modal-delete').click();
-                        }}
-                      />
-                      <HiEye
-                        size={20}
-                        color="#0D68F1"
-                        className="cursor-pointer"
-                        onClick={() => {}}
-                      />
-                    </div>
+                    {!isSuccess ? (<Skeleton />) : (
+
+                      <div className="flex flex-row gap-3 justify-center">
+                        <HiPencil
+                          className="cursor-pointer"
+                          size={20}
+                          color="#D98200"
+                          onClick={() => {
+                            setDetail(item);
+                            document.getElementById('my-modal-3').click();
+                          }}
+                        />
+                        <HiTrash
+                          size={20}
+                          color="#FF2E00"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setDetail(item);
+                            document.getElementById('my-modal-delete').click();
+                          }}
+                        />
+                        <HiEye
+                          size={20}
+                          color="#0D68F1"
+                          className="cursor-pointer"
+                          onClick={() => {}}
+                        />
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
