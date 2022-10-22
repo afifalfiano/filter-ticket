@@ -90,7 +90,10 @@ function SignIn() {
             values,
             errors,
             touched,
+            dirty,
             isValid,
+            handleBlur,
+            handleChange
           }) => (
             <Form className="flex-row pt-10 pb-10 pl-16 pr-16 min-h-screen">
               <div className="pt-20">
@@ -111,6 +114,8 @@ function SignIn() {
                   component="input"
                   id="email"
                   name="email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   placeholder="email@citra.net"
                   value={values.email}
                   className="input input-md input-bordered  max-w-full"
@@ -130,6 +135,8 @@ function SignIn() {
                   id="password"
                   name="password"
                   placeholder="***************"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   value={values.password}
                   className="input input-md input-bordered  max-w-full"
                 />

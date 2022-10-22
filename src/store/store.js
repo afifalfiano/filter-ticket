@@ -6,6 +6,8 @@ import btsReducer from './features/bts/btsSlice';
 import complainReducer from './features/complain/complainSlice';
 import complainHistoryReducer from './features/complain_history/complainHistorySlice';
 import rfoReducer from './features/rfo/rfoSlice';
+import popReducer from './features/pop/popSlice';
+import teamReducer from './features/team/teamSlice';
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
     complain: complainReducer,
     rfo: rfoReducer,
     complain_history: complainHistoryReducer,
+    pop: popReducer,
+    team: teamReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true,
