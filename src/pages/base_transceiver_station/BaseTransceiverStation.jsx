@@ -47,6 +47,8 @@ function BaseTransceiverStation() {
   const [detail, setDetail] = useState(null);
   const [search, setSearch] = useState('');
 
+  const [title, setTitle] = useState('update');
+
   const dataRow = useSelector(selectAllBTS);
 
   const onHandleSearch = (event) => {
@@ -130,6 +132,7 @@ function BaseTransceiverStation() {
           className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
           onClick={() => {
             setDetail(null);
+            setTitle('create');
             document.getElementById('my-modal-3').click();
           }}
         >
@@ -176,7 +179,7 @@ function BaseTransceiverStation() {
 
       {/* modal craete or update */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormBTS getInfo={getInfo} detail={detail} />
+      <FormBTS getInfo={getInfo} detail={detail} titleAction={title} />
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
@@ -213,6 +216,7 @@ function BaseTransceiverStation() {
                           color="#D98200"
                           onClick={() => {
                             setDetail(item);
+                            setTitle('update');
                             document.getElementById('my-modal-3').click();
                           }}
                         />
@@ -229,7 +233,11 @@ function BaseTransceiverStation() {
                           size={20}
                           color="#0D68F1"
                           className="cursor-pointer"
-                          onClick={() => {}}
+                          onClick={() => {
+                            setDetail(item);
+                            setTitle('read');
+                            document.getElementById('my-modal-3').click();
+                          }}
                         />
                       </div>
                     )}

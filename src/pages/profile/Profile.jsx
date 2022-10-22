@@ -20,8 +20,8 @@ function Profile() {
 
   const role = useSelector(selectAllTeam);
   const pop = useSelector(selectAllPOP);
-  const [allPOP] = useAllPOPMutation();
   const [allTeam] = useAllTeamMutation();
+  const [allPOP] = useAllPOPMutation();
 
   const getAllPOP = async () => {
     try {

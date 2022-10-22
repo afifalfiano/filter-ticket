@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
@@ -8,40 +9,57 @@
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable no-alert */
 import { Formik, Field, Form } from 'formik';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
+import * as Yup from 'yup';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import {
   useAddBtsMutation,
   useUpdateBtsMutation,
 } from '../../store/features/bts/btsApiSlice';
+import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
+import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
 
-function FormBTS({ getInfo, detail }) {
+const FormBTSSchema = Yup.object().shape({
+  nama_bts: Yup.string()
+    .required('Wajib diisi.'),
+  nama_pic: Yup.string()
+    .required('Wajib diisi.'),
+  nomor_pic: Yup.string()
+    .required('Wajib diisi.'),
+  lokasi: Yup.string()
+    .required('Wajib diisi.'),
+  pop_id: Yup.string()
+    .required('Wajib diisi.'),
+  kordinat: Yup.string()
+    .required('Wajib diisi.'),
+});
+function FormBTS({ getInfo, detail, titleAction }) {
   console.log(detail, 'cek render');
   const [addData] = useAddBtsMutation();
   const [updateBts] = useUpdateBtsMutation();
   const { data: user } = useSelector(selectCurrentUser);
   const initialValues = {
-    btsName: detail?.nama_bts || '',
-    picName: detail?.nama_pic || '',
-    picContact: detail?.nomor_pic || '',
-    fullAddress: detail?.lokasi || '',
-    popLocation: detail?.pop_id || '',
-    coordinat: detail?.kordinat || '',
-  };
-  const handlePOP = ($event) => {
-    console.log($event, 'ev');
+    nama_bts: detail?.nama_bts || '',
+    nama_pic: detail?.nama_pic || '',
+    nomor_pic: detail?.nomor_pic || '',
+    lokasi: detail?.lokasi || '',
+    pop_id: detail?.pop_id || '',
+    kordinat: detail?.kordinat || '',
   };
 
-  const onSubmitData = async (payload) => {
+  const dataPOP = useSelector(selectAllPOP);
+  console.log(dataPOP, 'cek pop');
+
+  const onSubmitData = async (payload, resetForm) => {
     const body = {
-      nama_bts: payload.btsName,
-      nama_pic: payload.picName,
-      nomor_pic: payload.picContact,
-      lokasi: payload.fullAddress,
+      nama_bts: payload.nama_bts,
+      nama_pic: payload.nama_pic,
+      nomor_pic: payload.nomor_pic,
+      lokasi: payload.lokasi,
       pop_id: payload.pop_id || 1,
-      kordinat: payload.coordinat,
+      kordinat: payload.kordinat,
       user_id: user.id_user,
     };
     try {
@@ -62,6 +80,7 @@ function FormBTS({ getInfo, detail }) {
             icon: false,
           });
           setTimeout(() => {
+            resetForm();
             document.getElementById('my-modal-3').click();
             getInfo({ status: 'success' });
           }, 2000);
@@ -131,17 +150,9 @@ function FormBTS({ getInfo, detail }) {
     }
   };
 
-  const onHandleReset = (reset, title) => {
-    if (title === 'submit') {
-      setTimeout(() => {
-        if (detail === null) {
-          reset();
-        }
-      }, 2000);
-    } else {
-      reset();
-      document.getElementById('my-modal-3').click();
-    }
+  const onHandleReset = (reset) => {
+    reset();
+    document.getElementById('my-modal-3').click();
   };
 
   return (
@@ -154,80 +165,108 @@ function FormBTS({ getInfo, detail }) {
           ✕
         </label>
         <h3 className="text-lg font-bold">
-          {detail === null ? 'Tamba BTS' : 'Ubah BTS'}
+          {detail === null && titleAction === 'create' ? 'Tambah BTS' : titleAction === 'update' && 'Ubah BTS'}
+          {titleAction === 'read' && 'Detail BTS'}
         </h3>
         <hr className="my-2" />
         <Formik
           enableReinitialize
           initialValues={initialValues}
-          onSubmit={(values) => {
-            onSubmitData(values);
+          validationSchema={FormBTSSchema}
+          onSubmit={(values, { resetForm }) => {
+            onSubmitData(values, resetForm);
           }}
         >
           {({
             values,
             errors,
+            touched,
             isSubmitting,
             isValid,
             setFieldValue,
+            handleBlur,
             handleChange,
             resetForm,
           }) => (
             <Form>
               <div className="form-control">
-                <label htmlFor="btsName" className="label">
+                <label htmlFor="nama_bts" className="label">
                   <span className="label-text"> Nama BTS:</span>
                 </label>
                 <Field
-                  id="btsName"
-                  name="btsName"
+                  id="nama_bts"
+                  name="nama_bts"
                   placeholder="Nama BTS"
-                  value={values.btsName}
+                  value={values.nama_bts}
+                  disabled={titleAction === 'read'}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
+                {errors.nama_bts && touched.nama_bts ? (
+                  <div className="label label-text text-red-500">{errors.nama_bts}</div>
+                ) : null}
               </div>
 
               <div className="flex flex-row gap-3">
                 <div className="form-control flex-1">
-                  <label htmlFor="picName" className="label">
+                  <label htmlFor="nama_pic" className="label">
                     <span className="label-text"> Nama PIC</span>
                   </label>
                   <Field
-                    id="picName"
-                    name="picName"
-                    value={values.picName}
+                    id="nama_pic"
+                    name="nama_pic"
+                    value={values.nama_pic}
+                    disabled={titleAction === 'read'}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     placeholder="Nama PIC"
                     className="input input-md input-bordered max-w-full"
                   />
+                  {errors.nama_pic && touched.nama_pic ? (
+                    <div className="label label-text text-red-500">{errors.nama_pic}</div>
+                  ) : null}
                 </div>
 
                 <div className="form-control flex-1">
-                  <label htmlFor="picContact" className="label">
+                  <label htmlFor="nomor_pic" className="label">
                     <span className="label-text"> Kontak PIC</span>
                   </label>
 
                   <Field
-                    id="picContact"
-                    name="picContact"
-                    value={values.picContact}
+                    id="nomor_pic"
+                    name="nomor_pic"
+                    value={values.nomor_pic}
+                    disabled={titleAction === 'read'}
                     placeholder="Kontak PIC"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="input input-md input-bordered max-w-full"
                   />
+                  {errors.nomor_pic && touched.nomor_pic ? (
+                    <div className="label label-text text-red-500">{errors.nomor_pic}</div>
+                  ) : null}
                 </div>
               </div>
 
               <div className="flex flex-row gap-3">
                 <div className="form-control flex-1">
-                  <label htmlFor="fullAddress" className="label">
+                  <label htmlFor="lokasi" className="label">
                     <span className="label-text"> Alamat Lengkap</span>
                   </label>
                   <Field
-                    id="fullAddress"
-                    name="fullAddress"
-                    value={values.fullAddress}
+                    id="lokasi"
+                    name="lokasi"
+                    value={values.lokasi}
+                    disabled={titleAction === 'read'}
                     placeholder="Alamat Lengkap"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="input input-md input-bordered max-w-full"
                   />
+                  {errors.lokasi && touched.lokasi ? (
+                    <div className="label label-text text-red-500">{errors.lokasi}</div>
+                  ) : null}
                 </div>
                 <div className="form-control flex-1">
                   <label htmlFor="location" className="label">
@@ -235,55 +274,83 @@ function FormBTS({ getInfo, detail }) {
                   </label>
                   <Field
                     component="select"
-                    id="popLocation"
-                    name="popLocation"
-                    value={values.popLocation}
+                    id="pop_id"
+                    name="pop_id"
+                    value={values.pop_id}
+                    disabled={titleAction === 'read'}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="select w-full max-w-full input-bordered"
 
                   >
-                    <option value="1">Yogyakarta</option>
-                    <option value="2">Solo</option>
-                    <option value="3">Surakarta</option>
+                    <option value="" label="Pilih POP" selected>Pilih POP</option>
+                    {dataPOP.data.map((item) => (
+                      <option id={item.id_pop} value={item.id_pop} label={item.pop}>
+                        {item.pop}
+                      </option>
+                    ))}
                   </Field>
+                  {errors.pop_id && touched.pop_id ? (
+                    <div className="label label-text text-red-500">{errors.pop_id}</div>
+                  ) : null}
                 </div>
               </div>
               <div className="form-control">
-                <label htmlFor="coordinat" className="label">
+                <label htmlFor="kordinat" className="label">
                   <span className="label-text"> Koordinat:</span>
                 </label>
 
                 <Field
-                  id="coordinat"
-                  name="coordinat"
+                  id="kordinat"
+                  name="kordinat"
                   placeholder="Koordinat"
-                  value={values.coordinat}
+                  value={values.kordinat}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  disabled={titleAction === 'read'}
                   className="input input-md input-bordered max-w-full"
                 />
+                {errors.kordinat && touched.kordinat ? (
+                  <div className="label label-text text-red-500">{errors.kordinat}</div>
+                ) : null}
               </div>
-              {/* <button type="submit">Submit</button> */}
               <hr className="my-2 mt-10" />
+              {titleAction !== 'read' && (
               <div className="modal-action justify-center">
                 <button
                   type="button"
                   htmlFor="my-modal-3"
                   className="btn btn-md"
                   onClick={() => {
-                    onHandleReset(resetForm, 'title');
+                    onHandleReset(resetForm);
                   }}
                 >
                   Batal
                 </button>
                 <button
+                  disabled={!isValid}
                   type="submit"
                   htmlFor="my-modal-3"
                   className="btn btn-md btn-success"
-                  onClick={() => {
-                    onHandleReset(resetForm, 'submit');
-                  }}
                 >
                   Simpan
                 </button>
               </div>
+              )}
+              {titleAction === 'read' && (
+              <div className="modal-action justify-center">
+                <button
+                  type="button"
+                  htmlFor="my-modal-3"
+                  className="btn btn-md"
+                  onClick={() => {
+                    onHandleReset(resetForm);
+                  }}
+                >
+                  Batal
+                </button>
+              </div>
+              )}
             </Form>
           )}
         </Formik>
