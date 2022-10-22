@@ -12,6 +12,7 @@ import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
 import { useAddReplyMutation, useComplainByIdMutation } from '../../../store/features/complain/complainApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
+import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 
 function DashboardDetail({ rfoSingle }) {
   const location = useLocation();
@@ -23,6 +24,8 @@ function DashboardDetail({ rfoSingle }) {
   const [complainById, { ...status }] = useComplainByIdMutation();
   const [addReply, { isSuccess: isSuccessReplpy }] = useAddReplyMutation();
   const dispatch = useDispatch();
+
+  const navigasi = useSelector(selectBreadcrumb);
 
   const getComplainById = async () => {
     try {
@@ -36,6 +39,9 @@ function DashboardDetail({ rfoSingle }) {
   };
 
   useEffect(() => {
+    const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
+    console.log(data, 'nav');
+    dispatch(updateBreadcrumb(data))
     getComplainById();
   }, [isSuccessReplpy]);
 

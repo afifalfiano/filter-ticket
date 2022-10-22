@@ -28,6 +28,7 @@ import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styles from './Report.module.css';
+import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function Report() {
   const columns = [
@@ -59,6 +60,12 @@ function Report() {
   const handlePOP = (event) => {
     setPOP(event.target.value);
   };
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(updateBreadcrumb([{ path: '/report', title: 'Laporan' }]));
+  }, [])
 
   return (
     <div>

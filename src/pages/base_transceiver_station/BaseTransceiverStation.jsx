@@ -26,6 +26,7 @@ import FormBTS from './FormBTS';
 import DeleteModal from '../../components/common/DeleteModal';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
+import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -114,6 +115,7 @@ function BaseTransceiverStation() {
   };
 
   useEffect(() => {
+    dispatch(updateBreadcrumb([{ path: '/base_transceiver_station', title: 'BTS' }]))
     getAllPOP()
     getAllBTS();
   }, []);

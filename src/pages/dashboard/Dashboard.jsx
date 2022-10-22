@@ -31,10 +31,11 @@ import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { selectAllComplain, setComplain } from '../../store/features/complain/complainSlice';
 import DeleteModal from '../../components/common/DeleteModal';
-import ComplainModalForm from './ComplainModalForm';
-import RFOMasalModal from './RFOMasalModal';
+import ComplainModalForm from './modal/ComplainModalForm';
+import RFOMasalModal from './modal/RFOMasalModal';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
+import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function Dashboard() {
   const columns = [
@@ -126,6 +127,7 @@ function Dashboard() {
   };
 
   useEffect(() => {
+    dispatch(updateBreadcrumb([{ path: '/dashboard', title: 'Dasbor' }]))
     getAllPOP()
     getAllComplain();
   }, []);

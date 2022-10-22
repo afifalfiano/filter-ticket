@@ -29,6 +29,7 @@ import styles from './HistoryDashboard.module.css';
 import { useAllComplainHistoryMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
 import { setComplainHistory } from '../../store/features/complain_history/complainHistorySlice';
 import ReopenModal from './ReopenModal';
+import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function HistoryDashboard() {
   const columns = [
@@ -66,6 +67,7 @@ function HistoryDashboard() {
   };
 
   useEffect(() => {
+    dispatch(updateBreadcrumb([{ path: '/history_dashboard', title: 'Riwayat Dasbor' }]))
     getAllComplainHistory();
   }, []);
 

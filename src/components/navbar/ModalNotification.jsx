@@ -10,13 +10,13 @@ const ModalNotification = () => {
         <div className="card-body">
           <span className="font-bold text-lg">Pemberitahuan</span>
             <div className="card-body bg-white rounded-md">
-            <span className="text-base text-gray-900">Internet lambat</span>
+            <span className="text-base text-gray-900">Comming Soon...</span>
             </div>
             <div className="card-body bg-white rounded-md">
-            <span className="text-base text-gray-900">Router lambat</span>
+            <span className="text-base text-gray-900">Comming Soon...</span>
             </div>
             <div className="card-body bg-white rounded-md">
-            <span className="text-base text-gray-900">Sinyal lambat</span>
+            <span className="text-base text-gray-900">Comming Soon...</span>
             </div>
           <div className="card-actions mt-3">
             <button className="btn btn-primary btn-block btn-sm">Lihat Semua</button>

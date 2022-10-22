@@ -17,8 +17,8 @@ import { Formik, Field, Form } from 'formik';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './RFOMasalModal.module.css';
-import { useAllRFOMasalMutation } from '../../store/features/rfo/rfoApiSlice';
-import { selectAllRFOMasal, setRFOMasal } from '../../store/features/rfo/rfoSlice';
+import { useAllRFOMasalMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { selectAllRFOMasal, setRFOMasal } from '../../../store/features/rfo/rfoSlice';
 
 function RFOMasalModal({ getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()

@@ -8,6 +8,7 @@ import complainHistoryReducer from './features/complain_history/complainHistoryS
 import rfoReducer from './features/rfo/rfoSlice';
 import popReducer from './features/pop/popSlice';
 import teamReducer from './features/team/teamSlice';
+import breadcrumbReducer from './features/breadcrumb/breadcrumbSlice';
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore({
   reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore({
     rfo: rfoReducer,
     complain_history: complainHistoryReducer,
     pop: popReducer,
-    team: teamReducer
+    team: teamReducer,
+    breadcrumb: breadcrumbReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true,

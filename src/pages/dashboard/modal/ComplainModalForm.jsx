@@ -30,9 +30,29 @@ import { useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { selectCurrentUser } from '../../store/features/auth/authSlice';
+import * as Yup from 'yup';
+import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import styles from './ComplainModalForm.module.css';
-import { useAddComplainMutation, useUpdateComplainMutation } from '../../store/features/complain/complainApiSlice';
+import { useAddComplainMutation, useUpdateComplainMutation } from '../../../store/features/complain/complainApiSlice';
+
+const ComplainFormSchema = Yup.object().shape({
+  id_pelanggan: Yup.string()
+    .required('Wajib diisi.'),
+  nama_pelanggan: Yup.string()
+    .required('Wajib diisi.'),
+  pop_id: Yup.string()
+    .required('Wajib diisi.'),
+  sumber: Yup.string()
+    .required('Wajib diisi.'),
+  detail_sumber: Yup.string()
+    .required('Wajib diisi.'),
+  nama_pelapor: Yup.string()
+    .required('Wajib diisi.'),
+  nomor_pelapor: Yup.string()
+    .required('Wajib diisi.'),
+  keluhan: Yup.string()
+    .required('Wajib diisi.'),
+});
 
 function ComplainModalForm({ getInfo, detail }) {
   const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
@@ -46,14 +66,14 @@ function ComplainModalForm({ getInfo, detail }) {
     nama_pelapor: detail?.nama_pelapor || '',
     nomor_pelapor: detail?.nomor_pelapor || '',
     nomor_keluhan: detail?.nomor_keluhan || '',
-    sumber: detail?.sumber || '',
+    sumber: detail?.sumber_id || '',
     detail_sumber: detail?.detail_sumber || '',
     keluhan: detail?.keluhan || '',
     status: detail?.status || '',
     pop_id: detail?.pop_id || '',
   };
 
-  const onSubmitData = async (payload) => {
+  const onSubmitData = async (payload, resetForm) => {
     try {
       // create
       console.log(detail, 'dt');
@@ -76,11 +96,11 @@ function ComplainModalForm({ getInfo, detail }) {
           nama_pelapor: payload.nama_pelapor,
           nomor_pelapor: payload.nomor_pelapor,
           nomor_keluhan: payload.nomor_keluhan || Math.random(5),
-          sumber: payload.sumber || 'email',
+          sumber_id: payload.sumber,
           detail_sumber: payload.detail_sumber,
           keluhan: payload.keluhan,
-          status: payload.status || 'open',
-          pop_id: payload.pop_id || 1,
+          status: 'open',
+          pop_id: payload.pop_id,
           user_id: user.id_user,
           lampiran: '',
         };
@@ -97,6 +117,7 @@ function ComplainModalForm({ getInfo, detail }) {
             id: 'success',
             icon: false,
           });
+          resetForm();
           setTimeout(() => {
             document.getElementById('my-modal-complain').click();
             getInfo({ status: 'success' });
@@ -118,10 +139,10 @@ function ComplainModalForm({ getInfo, detail }) {
         const body = {
           nama_pelapor: payload.nama_pelapor,
           nomor_pelapor: payload.nomor_pelapor,
-          sumber: payload.sumber || 'Email',
+          sumber_id: payload.sumber,
           detail_sumber: payload.detail_sumber,
           keluhan: payload.keluhan,
-          pop_id: payload.pop_id || 1,
+          pop_id: payload.pop_id,
         };
         // update
 
@@ -176,19 +197,9 @@ function ComplainModalForm({ getInfo, detail }) {
     }
   };
 
-  const onHandleReset = (reset, title) => {
-    if (title === 'submit') {
-      setTimeout(() => {
-        if (detail === null) {
-          if (isSuccessCreate || isSuccessUpdate) {
-            reset();
-          }
-        }
-      }, 2000);
-    } else {
-      reset();
-      document.getElementById('my-modal-complain').click();
-    }
+  const onHandleReset = (reset) => {
+    reset();
+    document.getElementById('my-modal-complain').click();
   };
 
   const onHandleFileUpload = ($event) => {
@@ -226,9 +237,10 @@ function ComplainModalForm({ getInfo, detail }) {
 
         <Formik
           enableReinitialize
+          validationSchema={ComplainFormSchema}
           initialValues={initialValues}
-          onSubmit={(values) => {
-            onSubmitData(values);
+          onSubmit={(values, { resetForm }) => {
+            onSubmitData(values, resetForm);
           }}
         >
           {({
@@ -236,8 +248,9 @@ function ComplainModalForm({ getInfo, detail }) {
             errors,
             isSubmitting,
             isValid,
-            setFieldValue,
+            touched,
             handleChange,
+            handleBlur,
             resetForm,
           }) => (
             <Form>
@@ -251,9 +264,14 @@ function ComplainModalForm({ getInfo, detail }) {
                     name="id_pelanggan"
                     placeholder="ID Pelanggan"
                     value={values.id_pelanggan}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                     disabled={detail !== null ? true : null}
                   />
+                  {errors.id_pelanggan && touched.id_pelanggan ? (
+                    <div className="label label-text text-red-500">{errors.id_pelanggan}</div>
+                  ) : null}
                 </div>
 
                 <div className="form-control flex-1">
@@ -266,9 +284,14 @@ function ComplainModalForm({ getInfo, detail }) {
                     name="nama_pelanggan"
                     placeholder="Nama Pelanggan"
                     value={values.nama_pelanggan}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                     disabled={detail !== null ? true : null}
                   />
+                  {errors.nama_pelanggan && touched.nama_pelanggan ? (
+                    <div className="label label-text text-red-500">{errors.nama_pelanggan}</div>
+                  ) : null}
                 </div>
               </div>
 
@@ -282,12 +305,18 @@ function ComplainModalForm({ getInfo, detail }) {
                     id="pop_id"
                     name="pop_id"
                     value={values.pop_id}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="select w-full max-w-full input-bordered"
                   >
-                    <option value="1">Yogyakarta</option>
-                    <option value="2">Solo</option>
-                    <option value="3">Surakarta</option>
+                    <option value="" label="Pilih POP">Pilih POP</option>
+                    <option value="1" label="Yogyakarta">Yogyakarta</option>
+                    <option value="2" label="Solo">Solo</option>
+                    <option value="3" label="Surakarta">Surakarta</option>
                   </Field>
+                  {errors.pop_id && touched.pop_id ? (
+                    <div className="label label-text text-red-500">{errors.pop_id}</div>
+                  ) : null}
                 </div>
               </div>
 
@@ -301,12 +330,18 @@ function ComplainModalForm({ getInfo, detail }) {
                     id="sumber"
                     name="sumber"
                     value={values.sumber}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="select w-full max-w-full input-bordered"
                   >
-                    <option value="1">Email</option>
-                    <option value="2">Twitter</option>
-                    <option value="3">Instagram</option>
+                    <option value="" label="Pilih Sumber">Pilih Sumber</option>
+                    <option value="1" label="Email">Email</option>
+                    <option value="2" label="Twitter">Twitter</option>
+                    <option value="3" label="Instagram">Instagram</option>
                   </Field>
+                  {errors.sumber && touched.sumber ? (
+                    <div className="label label-text text-red-500">{errors.sumber}</div>
+                  ) : null}
                 </div>
 
                 <div className="form-control flex-1">
@@ -319,8 +354,13 @@ function ComplainModalForm({ getInfo, detail }) {
                     name="detail_sumber"
                     placeholder="Kontak Sumber Keluhan"
                     value={values.detail_sumber}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                   />
+                  {errors.detail_sumber && touched.detail_sumber ? (
+                    <div className="label label-text text-red-500">{errors.detail_sumber}</div>
+                  ) : null}
                 </div>
               </div>
 
@@ -335,8 +375,13 @@ function ComplainModalForm({ getInfo, detail }) {
                     name="nama_pelapor"
                     placeholder="Nama Kontak"
                     value={values.nama_pelapor}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                   />
+                  {errors.nama_pelapor && touched.nama_pelapor ? (
+                    <div className="label label-text text-red-500">{errors.nama_pelapor}</div>
+                  ) : null}
                 </div>
 
                 <div className="form-control flex-1">
@@ -349,8 +394,13 @@ function ComplainModalForm({ getInfo, detail }) {
                     name="nomor_pelapor"
                     placeholder="Nomor Kontak"
                     value={values.nomor_pelapor}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                   />
+                  {errors.nomor_pelapor && touched.nomor_pelapor ? (
+                    <div className="label label-text text-red-500">{errors.nomor_pelapor}</div>
+                  ) : null}
                 </div>
               </div>
 
@@ -365,8 +415,13 @@ function ComplainModalForm({ getInfo, detail }) {
                   component="textarea"
                   placeholder="Keluhan"
                   value={values.keluhan}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
+                {errors.keluhan && touched.keluhan ? (
+                  <div className="label label-text text-red-500">{errors.keluhan}</div>
+                ) : null}
               </div>
 
               {!detail && (
@@ -405,18 +460,16 @@ function ComplainModalForm({ getInfo, detail }) {
                   htmlFor="my-modal-complain"
                   className="btn btn-md"
                   onClick={() => {
-                    onHandleReset(resetForm, 'title');
+                    onHandleReset(resetForm);
                   }}
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
+                  disabled={!isValid}
                   htmlFor="my-modal-complain"
                   className="btn btn-md btn-success"
-                  onClick={() => {
-                    onHandleReset(resetForm, 'submit');
-                  }}
                 >
                   Simpan
                 </button>

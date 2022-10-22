@@ -2,15 +2,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import { useEffect } from 'react';
 import { selectCurrentUser, setCredentials } from '../../store/features/auth/authSlice';
 import { selectAllPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam } from '../../store/features/team/teamSlice';
 import { useUpdateProfileMutation } from '../../store/features/auth/authApiSlice';
+import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 const ProfileSchema = Yup.object().shape({
   pop_id: Yup.string().optional(),
@@ -29,6 +30,13 @@ function FormUpdateProfile({ handleForm }) {
 
   const [updateProfile,] = useUpdateProfileMutation();
   const dispatch = useDispatch()
+
+  const navigasi = useSelector(selectBreadcrumb);
+
+  useEffect(() => {
+    const dataNavigation = [...navigasi.data, { path: '/profile', title: 'Ubah Profil' }]
+    dispatch(updateBreadcrumb(dataNavigation));
+  }, [])
 
   const onBtnBack = () => {
     handleForm(false);

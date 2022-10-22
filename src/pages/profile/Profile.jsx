@@ -9,6 +9,7 @@ import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { useAllTeamMutation } from '../../store/features/team/teamApiSlice';
 import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam, setTeam } from '../../store/features/team/teamSlice';
+import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ function Profile() {
   };
 
   useEffect(() => {
+    dispatch(updateBreadcrumb([{ path: '/profile', title: 'Profil' }]));
     getAllPOP();
     getAllTeam();
   }, [form]);

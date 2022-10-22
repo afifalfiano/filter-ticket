@@ -14,6 +14,7 @@ import {
 } from 'react-icons/hi';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useAllRFOMutation } from '../../store/features/rfo/rfoApiSlice';
 import { setRFO } from '../../store/features/rfo/rfoSlice';
 import styles from './ReasonOfOutage.module.css';
@@ -45,6 +46,11 @@ function ReasonOfOutage() {
   };
 
   useEffect(() => {
+    dispatch(
+      updateBreadcrumb([
+        { path: '/reason_of_outage', title: 'Reason Of Outage' },
+      ])
+    );
     getAllRFO();
   }, []);
 
