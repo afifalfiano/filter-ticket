@@ -199,15 +199,15 @@ function BaseTransceiverStation() {
             {rows.length > 0 &&
               rows.map((item, index) => (
                 <tr className="text-center" id={item.id}>
-                  <td id={item.id}>{!isSuccess ? (<Skeleton count={5} />) : (index + 1)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.nama_bts)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.nama_pic)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.nomor_pic)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.lokasi)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.kordinat)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.pop.pop)}</td>
+                  <td id={item.id}>{!isSuccess ? (<Skeleton count={1} />) : (index + 1)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nama_bts)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nama_pic)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nomor_pic)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.lokasi)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.kordinat)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.pop.pop)}</td>
                   <td>
-                    {!isSuccess ? (<Skeleton count={5} />) : (
+                    {!isSuccess ? (<Skeleton count={1} />) : (
 
                       <div className="flex flex-row gap-3 justify-center">
                         <HiPencil

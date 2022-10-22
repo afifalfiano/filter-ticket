@@ -179,7 +179,7 @@ function Dashboard() {
           </select>
         </div>
 
-        <div className="form-control">
+        <div className="form-control w-40">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> POP</span>
           </label>
@@ -270,66 +270,70 @@ function Dashboard() {
           <thead>
             <tr>
               {columns.map((item) => (
-                <th className="text-center">{item}</th>
+                <th className="text-center">{isLoading ? (<Skeleton count={1} />) : (item)}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {rows.map((item, index) => (
               <tr className="text-center">
-                <th>{isLoading ? (<Skeleton />) : index + 1}</th>
+                <th>{!isSuccess ? (<Skeleton count={1} />) : index + 1}</th>
                 <td className="text-left">
-                  {
-                            item.pop.pop === 'Yogyakarta' ? (
-                              <span className="badge badge-success text-white">
-                                {item.pop.pop}
-                              </span>
-                            ) : item.pop.pop === 'Solo' ? (
-                              <span className="badge badge-warning text-white">
-                                {item.pop.pop}
-                              </span>
-                            ) : item.pop.pop === 'Purwokerto' ? (
-                              <span className="badge badge-info text-white">
-                                {item.pop.pop}
-                              </span>
-                            ) : (
-                              <span className="badge text-white">
-                                {item.pop.pop}
-                              </span>
-                            )
-                          }
+                  { !isSuccess ? (<Skeleton count={1} />)
+                    : item.pop.pop === 'Yogyakarta' ? (
+                      <span className="badge badge-success text-white">
+                        {item.pop.pop}
+                      </span>
+                    ) : item.pop.pop === 'Solo' ? (
+                      <span className="badge badge-warning text-white">
+                        {item.pop.pop}
+                      </span>
+                    ) : item.pop.pop === 'Purwokerto' ? (
+                      <span className="badge badge-info text-white">
+                        {item.pop.pop}
+                      </span>
+                    ) : (
+                      <span className="badge text-white">
+                        {item.pop.pop}
+                      </span>
+                    )}
                 </td>
-                <td>{item.id_pelanggan}</td>
-                <td>{item.nama_pelanggan}</td>
-                <td>{item.nama_pelapor} - {item.nomor_pelapor}</td>
-                <td className="text-left">{item.keluhan}</td>
-                <td className="text-left">{item.balasan.length > 0 ? item.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan'}</td>
+                <td>{!isSuccess ? (<Skeleton count={1} />) : (item.id_pelanggan)}</td>
+                <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nama_pelanggan)}</td>
+                <td>{!isSuccess ? (<Skeleton count={1} />) : (<>{item.nama_pelapor} - {item.nomor_pelapor}</>)}</td>
+                <td className="text-left">{!isSuccess ? (<Skeleton count={1} />) : (item.keluhan)}</td>
+                <td className="text-left">{!isSuccess ? (<Skeleton count={1} />) : (item.balasan.length > 0 ? item.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan')}</td>
                 <td className="text-left">
-                  <p>
-                    Dibuat:
-                    {new Date(item.created_at).toLocaleString('id-ID')}
-                  </p>
-                  <p>
-                    Diubah:
-                    {item.balasan.length > 0
-                      ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
-                      : new Date(item.created_at).toLocaleString('id-ID')}
-                  </p>
-                </td>
-                <td>
-                  {item.status === 'open' ? (
-                    <span className="badge badge-accent text-white">
-                      {item.status}
-                    </span>
-                  ) : (
-                    <span className="badge badge-info text-white">
-                      {item.status}
-                    </span>
+                  {!isSuccess ? (<Skeleton count={1} />) : (
+                    <>
+                      <p>
+                        Dibuat:
+                        {new Date(item.created_at).toLocaleString('id-ID')}
+                      </p>
+                      <p>
+                        Diubah:
+                        {item.balasan.length > 0
+                          ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
+                          : new Date(item.created_at).toLocaleString('id-ID')}
+                      </p>
+                    </>
                   )}
                 </td>
                 <td>
+                  {!isSuccess ? (<Skeleton count={1} />)
+                    : item.status === 'open' ? (
+                      <span className="badge badge-accent text-white">
+                        {item.status}
+                      </span>
+                    ) : (
+                      <span className="badge badge-info text-white">
+                        {item.status}
+                      </span>
+                    )}
+                </td>
+                <td>
                   <div className="flex flex-row gap-3 justify-center">
-                    {statusData === 'open' ? (
+                    {!isSuccess ? (<Skeleton />) : statusData === 'open' ? (
                       <>
                         <HiPencil
                           className="cursor-pointer"
@@ -414,30 +418,32 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-between mt-5 pb-20">
-        <div className="flex flex-row gap-1">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Halaman 1 dari 1</span>
-          </label>
-          <div className="form-control">
-            <select className="select input-bordered">
-              <option>5</option>
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
-              <option>100</option>
-            </select>
+      {isLoading ? (<Skeleton className="mt-5" count={1} />) : (
+        <div className="flex justify-between mt-5 pb-20">
+          <div className="flex flex-row gap-1">
+            <label htmlFor="location" className="label font-semibold">
+              <span className="label-text"> Halaman 1 dari 1</span>
+            </label>
+            <div className="form-control">
+              <select className="select input-bordered">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </div>
+          </div>
+          <div className="">
+            <div className="btn-group">
+              <button className="btn btn-outline btn-active">1</button>
+              <button className="btn btn-outline">2</button>
+              <button className="btn btn-outline">3</button>
+              <button className="btn btn-outline">4</button>
+            </div>
           </div>
         </div>
-        <div className="">
-          <div className="btn-group">
-            <button className="btn btn-outline btn-active">1</button>
-            <button className="btn btn-outline">2</button>
-            <button className="btn btn-outline">3</button>
-            <button className="btn btn-outline">4</button>
-          </div>
-        </div>
-      </div>
+      )}
       {/* end table */}
     </div>
   );
