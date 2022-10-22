@@ -49,7 +49,6 @@ function DashboardDetail({ rfoSingle }) {
 
   useEffect(() => {
     const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
-    console.log(data, 'nav');
     dispatch(updateBreadcrumb(data))
   }, [])
 

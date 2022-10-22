@@ -1,3 +1,6 @@
+/* eslint-disable max-len */
+/* eslint-disable no-undef */
+/* eslint-disable no-irregular-whitespace */
 /* eslint-disable import/order */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable prettier/prettier */
@@ -16,10 +19,29 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useComplainByIdMutation, useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
 import { useAddRFOGangguanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
-import { seelectRFODetail } from '../../../store/features/rfo/rfoSlice';
+import { selectRFODetail } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../detail/DashboardDetail';
 import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
+import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
+import * as Yup from 'yup';
+
+const RFOSingleSchema = Yup.object().shape({
+  problem: Yup.string()
+    .required('Wajib diisi.'),
+  action: Yup.string()
+    .required('Wajib diisi.'),
+  deskripsi: Yup.string()
+    .required('Wajib diisi.'),
+  mulai_gangguan: Yup.string()
+    .optional(),
+  selesai_gangguan: Yup.string()
+    .optional(),
+  nomor_tiket: Yup.string()
+    .optional(),
+  durasi: Yup.string()
+    .optional(),
+});
 
 function DashboardRFOSingle() {
   const navigate = useNavigate();
@@ -45,6 +67,16 @@ function DashboardRFOSingle() {
     lampiran: '',
 
   }
+
+  const lastUpdate = detailComplain?.balasan.length > 0
+    ? detailComplain?.balasan[detailComplain.balasan.length - 1].created_at
+    : detailComplain?.created_at
+
+  const daysCompare = (startDate, endDate) => {
+    const difference = startDate.getTime() - endDate.getTime();
+    const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
+    return TotalDays;
+  };
 
   function formatBytes(bytes, decimals = 2) {
     if (!+bytes) return '0 Bytes'
@@ -80,21 +112,25 @@ function DashboardRFOSingle() {
 
   const [complainClosed] = useComplainClosedMutation()
 
+  const navigasi = useSelector(selectBreadcrumb);
+
   useEffect(() => {
+    const data = [...navigasi.data, { path: `/dashboard/rfo_single/${id}`, title: 'Dasbor Reason Of Outage Single' }]
+    dispatch(updateBreadcrumb(data))
     getComplainById();
   }, []);
 
   const onSubmitData = async (payload, resetForm) => {
-    let dateUpdate;
-    detailComplain?.balasan.length > 0
-      ? dateUpdate = detailComplain?.balasan[detailComplain.balasan.length - 1].created_at
-      : dateUpdate = detailComplain?.created_at
+    const start = new Date(detailComplain.created_at);
+    const end = new Date(lastUpdate);
+    // const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} ${start.getHours()}:${start.getMinutes()}:${start.getSeconds()}:${start.getMilliseconds()}`;
+    // const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} ${end.getHours()}:${end.getMinutes()}:${end.getSeconds()}:${end.getMilliseconds()}`;
+    const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
+    const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
     const body = {
       nomor_tiket: payload.nomor_tiket,
-      // mulai_gangguan: new Date(detailComplain.created_at).getTime(),
-      // selesai_gangguan: new Date(dateUpdate).getTime(),
-      mulai_gangguan: '2022-09-24 12:00:00.000',
-      selesai_gangguan: '2022-09-24 12:00:00.000',
+      mulai_gangguan: formatStart,
+      selesai_gangguan: formatEnd,
       problem: payload.problem,
       action: payload.action,
       status: 'closed',
@@ -239,6 +275,7 @@ function DashboardRFOSingle() {
 
           <Formik
             enableReinitialize
+            validationSchema={RFOSingleSchema}
             initialValues={initialValues}
             onSubmit={(values, { resetForm }) => {
               onSubmitData(values, resetForm);
@@ -247,10 +284,12 @@ function DashboardRFOSingle() {
             {({
               values,
               errors,
+              touched,
               isSubmitting,
               isValid,
               setFieldValue,
               handleChange,
+              handleBlur,
               resetForm,
             }) => (
               <Form>
@@ -267,8 +306,13 @@ function DashboardRFOSingle() {
                       value={values.problem}
                       disabled={history ? true : null}
                       component="textarea"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
                       className="textarea textarea-bordered h-24"
                     />
+                    {errors.problem && touched.problem ? (
+                      <div className="label label-text text-red-500">{errors.problem}</div>
+                    ) : null}
                   </div>
 
                   <div className="form-control">
@@ -282,9 +326,14 @@ function DashboardRFOSingle() {
                       placeholder="Aksi"
                       value={values.action}
                       component="textarea"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
                       disabled={history ? true : null}
                       className="textarea textarea-bordered h-24"
                     />
+                    {errors.action && touched.action ? (
+                      <div className="label label-text text-red-500">{errors.action}</div>
+                    ) : null}
                   </div>
 
                   <div className="form-control">
@@ -298,9 +347,14 @@ function DashboardRFOSingle() {
                       placeholder="Deskripsi"
                       value={values.deskripsi}
                       component="textarea"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
                       disabled={history ? true : null}
                       className="textarea textarea-bordered h-24"
                     />
+                    {errors.deskripsi && touched.deskripsi ? (
+                      <div className="label label-text text-red-500">{errors.deskripsi}</div>
+                    ) : null}
                   </div>
 
                   <div className="flex gap-5">
@@ -315,9 +369,14 @@ function DashboardRFOSingle() {
                         placeholder=""
                         value={new Date(detailComplain?.created_at).toLocaleDateString('id-ID')}
                         type="text"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
                         disabled
                         className="input input-md input-bordered  max-w-full"
                       />
+                      {errors.mulai_gangguan && touched.mulai_gangguan ? (
+                        <div className="label label-text text-red-500">{errors.mulai_gangguan}</div>
+                      ) : null}
 
                     </div>
 
@@ -334,9 +393,14 @@ function DashboardRFOSingle() {
                           ? new Date(detailComplain?.balasan[detailComplain.balasan.length - 1].created_at).toLocaleDateString('id-ID')
                           : new Date(detailComplain?.created_at).toLocaleDateString('id-ID')}
                         type="text"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
                         disabled
                         className="input input-md input-bordered  max-w-full"
                       />
+                      {errors.selesai_gangguan && touched.selesai_gangguan ? (
+                        <div className="label label-text text-red-500">{errors.selesai_gangguan}</div>
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -353,6 +417,8 @@ function DashboardRFOSingle() {
                       placeholder=""
                       value={values.nomor_tiket}
                       type="text"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
                       disabled={history ? true : null}
                       className="input input-md input-bordered  max-w-full"
                     />
@@ -360,17 +426,22 @@ function DashboardRFOSingle() {
 
                   <div className="form-control flex-1">
                     <label htmlFor="durasi" className="label">
-                      <span className="label-text"> Durasi</span>
+                      <span className="label-text"> Durasi (Hari)</span>
                     </label>
 
                     <Field
                       id="durasi"
                       name="durasi"
                       placeholder=""
-                      value={values.durasi}
+                      value={daysCompare(new Date(lastUpdate), new Date(detailComplain?.created_at))}
                       type="text"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
                       className="input input-md input-bordered  max-w-full"
                     />
+                    {errors.durasi && touched.durasi ? (
+                      <div className="label label-text text-red-500">{errors.durasi}</div>
+                    ) : null}
                   </div>
                 </div>
 
@@ -418,7 +489,7 @@ function DashboardRFOSingle() {
                     >
                       Kembali
                     </button>
-                    <button type="submit" className="btn btn-md btn-success">
+                    <button disabled={!isValid} type="submit" className="btn btn-md btn-success">
                       Simpan
                     </button>
                   </div>
