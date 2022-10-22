@@ -1,3 +1,5 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 /* eslint-disable prettier/prettier */
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-unused-vars */
@@ -21,6 +23,8 @@ import styles from './BaseTransceiverStation.module.css';
 import { useAllBtsMutation } from '../../store/features/bts/btsApiSlice';
 import FormBTS from './FormBTS';
 import DeleteModal from '../../components/common/DeleteModal';
+import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
+import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -35,13 +39,46 @@ function BaseTransceiverStation() {
   ];
 
   const [rows, setRows] = useState([]);
-  const [pop, setPOP] = useState('all');
+  const [dataPOP, setdataPOP] = useState([]);
+  const [pop, setPOPLocal] = useState('all');
   const [allBts, { isLoading, isSuccess }] = useAllBtsMutation();
   const dispatch = useDispatch();
   const [detail, setDetail] = useState(null);
 
+  const dataRow = useSelector(selectAllBTS);
+
   const handlePOP = (event) => {
-    setPOP(event.target.value);
+    console.log(event.target, 'cek');
+    setPOPLocal(event.target.value);
+    console.log(event.target.value, 'how');
+    const dataChanged = dataRow.data.filter((item) => {
+      if (+item.pop_id === +event.target.value) {
+        return item;
+      }
+    })
+    if (event.target.value === 'all') {
+      console.log(dataRow, 'cek gan');
+      setRows(dataRow.data);
+    } else {
+      setRows(dataChanged);
+    }
+  };
+
+  const [allPOP] = useAllPOPMutation();
+
+  const getAllPOP = async () => {
+    try {
+      const data = await allPOP().unwrap();
+      console.log(data, 'ceksaja');
+      if (data.status === 'success') {
+        dispatch(setPOP({ ...data }));
+        console.log('set data', data);
+        setdataPOP(data.data)
+        console.log(dataPOP, 'pp');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const getAllBTS = async () => {
@@ -50,7 +87,7 @@ function BaseTransceiverStation() {
       if (data.message === 'success') {
         dispatch(setBTS({ ...data }));
         setRows(data.data);
-        console.log(data, 'data');
+        console.log(data, 'data rows');
       }
     } catch (err) {
       console.log(err);
@@ -58,6 +95,7 @@ function BaseTransceiverStation() {
   };
 
   useEffect(() => {
+    getAllPOP()
     getAllBTS();
   }, []);
 
@@ -110,9 +148,10 @@ function BaseTransceiverStation() {
             className="select w-full max-w-full input-bordered"
             onChange={handlePOP}
           >
-            <option disabled>Pilih POP</option>
-            <option value="yogyakarta">Yogyakarta</option>
-            <option value="solo">Solo</option>
+            <option value="all" label="Semua">All</option>
+            {dataPOP?.map((item) => (
+              <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+            ))}
           </select>
         </div>
       </div>
