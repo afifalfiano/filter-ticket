@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
 /* eslint-disable prettier/prettier */
@@ -44,14 +45,30 @@ function BaseTransceiverStation() {
   const [allBts, { isLoading, isSuccess }] = useAllBtsMutation();
   const dispatch = useDispatch();
   const [detail, setDetail] = useState(null);
+  const [search, setSearch] = useState('');
 
   const dataRow = useSelector(selectAllBTS);
+
+  const onHandleSearch = (event) => {
+    event.preventDefault();
+    console.log(event.target.value);
+    console.log(event.target.value.length, 'ooo');
+    setSearch(event.target.value);
+
+    if (event.target.value.length > 0) {
+      const regex = new RegExp(search, 'ig');
+      const searchResult = rows.filter((item) => item.nama_bts.match(regex) || item.nama_pic.match(regex));
+      setRows(searchResult);
+    } else {
+      setRows(dataRow.data);
+    }
+  }
 
   const handlePOP = (event) => {
     console.log(event.target, 'cek');
     setPOPLocal(event.target.value);
     console.log(event.target.value, 'how');
-    const dataChanged = dataRow.data.filter((item) => {
+    const dataChanged = dataRow.data.some((item) => {
       if (+item.pop_id === +event.target.value) {
         return item;
       }
@@ -134,7 +151,8 @@ function BaseTransceiverStation() {
                 id="voice-search"
                 className="input input-md input-bordered pl-10 p-2.5 "
                 placeholder="Cari data BTS..."
-                required
+                value={search}
+                onChange={onHandleSearch}
               />
             </div>
           </div>
@@ -170,7 +188,7 @@ function BaseTransceiverStation() {
           <thead>
             <tr>
               {columns.map((item) => (
-                <th className="text-center">{!isSuccess ? (<Skeleton />) : (item)}</th>
+                <th className="text-center">{isLoading ? (<Skeleton count={1} />) : (item)}</th>
               ))}
             </tr>
           </thead>
@@ -178,15 +196,15 @@ function BaseTransceiverStation() {
             {rows.length > 0 &&
               rows.map((item, index) => (
                 <tr className="text-center" id={item.id}>
-                  <td id={item.id}>{!isSuccess ? (<Skeleton />) : (index + 1)}</td>
-                  <td>{!isSuccess ? (<Skeleton />) : (item.nama_bts)}</td>
-                  <td>{!isSuccess ? (<Skeleton />) : (item.nama_pic)}</td>
-                  <td>{!isSuccess ? (<Skeleton />) : (item.nomor_pic)}</td>
-                  <td>{!isSuccess ? (<Skeleton />) : (item.lokasi)}</td>
-                  <td>{!isSuccess ? (<Skeleton />) : (item.kordinat)}</td>
-                  <td>{!isSuccess ? (<Skeleton />) : (item.pop.pop)}</td>
+                  <td id={item.id}>{!isSuccess ? (<Skeleton count={5} />) : (index + 1)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.nama_bts)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.nama_pic)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.nomor_pic)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.lokasi)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.kordinat)}</td>
+                  <td>{!isSuccess ? (<Skeleton count={5} />) : (item.pop.pop)}</td>
                   <td>
-                    {!isSuccess ? (<Skeleton />) : (
+                    {!isSuccess ? (<Skeleton count={5} />) : (
 
                       <div className="flex flex-row gap-3 justify-center">
                         <HiPencil
@@ -221,30 +239,32 @@ function BaseTransceiverStation() {
           </tbody>
         </table>
       </div>
-      <div className="flex justify-between mt-5 pb-20">
-        <div className="flex flex-row gap-1">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Halaman 1 dari 1</span>
-          </label>
-          <div className="form-control">
-            <select className="select input-bordered">
-              <option>5</option>
-              <option>10</option>
-              <option>25</option>
-              <option>50</option>
-              <option>100</option>
-            </select>
+      {isLoading ? (<Skeleton className="mt-5" count={1} />) : (
+        <div className="flex justify-between mt-5 pb-20">
+          <div className="flex flex-row gap-1">
+            <label htmlFor="location" className="label font-semibold">
+              <span className="label-text"> Halaman 1 dari 1</span>
+            </label>
+            <div className="form-control">
+              <select className="select input-bordered">
+                <option>5</option>
+                <option>10</option>
+                <option>25</option>
+                <option>50</option>
+                <option>100</option>
+              </select>
+            </div>
+          </div>
+          <div className="">
+            <div className="btn-group">
+              <button className="btn btn-outline btn-active">1</button>
+              <button className="btn btn-outline">2</button>
+              <button className="btn btn-outline">3</button>
+              <button className="btn btn-outline">4</button>
+            </div>
           </div>
         </div>
-        <div className="">
-          <div className="btn-group">
-            <button className="btn btn-outline btn-active">1</button>
-            <button className="btn btn-outline">2</button>
-            <button className="btn btn-outline">3</button>
-            <button className="btn btn-outline">4</button>
-          </div>
-        </div>
-      </div>
+      )}
       {/* end table */}
     </div>
   );
