@@ -34,6 +34,9 @@ import * as Yup from 'yup';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import styles from './ComplainModalForm.module.css';
 import { useAddComplainMutation, useUpdateComplainMutation } from '../../../store/features/complain/complainApiSlice';
+import { selectAllPOP } from '../../../store/features/pop/popSlice';
+import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
+import { setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
 
 const ComplainFormSchema = Yup.object().shape({
   id_pelanggan: Yup.string()
@@ -58,7 +61,32 @@ function ComplainModalForm({ getInfo, detail }) {
   const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
   const [updateComplain, { isSuccess: isSuccessUpdate }] = useUpdateComplainMutation();
   const { data: user } = useSelector(selectCurrentUser);
+  const popData = useSelector(selectAllPOP);
+  console.log(popData, 'pop nih')
   const [files, setFiles] = useState([]);
+
+  const [dataSumber, setSumber] = useState([]);
+
+  const dispatch = useDispatch();
+  const [allSumberKeluhan] = useAllSumberKeluhanMutation();
+
+  const getAllSumberKeluhan = async () => {
+    try {
+      const data = await allSumberKeluhan().unwrap();
+      console.log(data, 'ceksaja sumber');
+      if (data.status === 'success') {
+        dispatch(setSumberKeluhan({ ...data }));
+        setSumber(data.data)
+        console.log(dataSumber, 'pp');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllSumberKeluhan();
+  }, [])
 
   const initialValues = {
     id_pelanggan: detail?.id_pelanggan || '',
@@ -310,9 +338,9 @@ function ComplainModalForm({ getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih POP">Pilih POP</option>
-                    <option value="1" label="Yogyakarta">Yogyakarta</option>
-                    <option value="2" label="Solo">Solo</option>
-                    <option value="3" label="Surakarta">Surakarta</option>
+                    {popData.data.map((item) => (
+                      <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+                    ))}
                   </Field>
                   {errors.pop_id && touched.pop_id ? (
                     <div className="label label-text text-red-500">{errors.pop_id}</div>
@@ -335,9 +363,9 @@ function ComplainModalForm({ getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih Sumber">Pilih Sumber</option>
-                    <option value="1" label="Email">Email</option>
-                    <option value="2" label="Twitter">Twitter</option>
-                    <option value="3" label="Instagram">Instagram</option>
+                    {dataSumber.map((item) => (
+                      <option value={item.id_sumber} label={item.sumber}>{item.sumber}</option>
+                    ))}
                   </Field>
                   {errors.sumber && touched.sumber ? (
                     <div className="label label-text text-red-500">{errors.sumber}</div>
