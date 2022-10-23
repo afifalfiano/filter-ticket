@@ -37,6 +37,6 @@ export const { setRFO, setRFOById, clearRFO, setRFOMasal } = rfoSlice.actions;
 
 export default rfoSlice.reducer;
 
-export const selectAllRFO = (state) => state.rfo;
+export const selectAllRFO = (state) => state.rfo.data;
 export const selectAllRFOMasal = (state) => state.rfo.rfo_masal;
 export const selectRFODetail = (state) => state.rfo.detail;

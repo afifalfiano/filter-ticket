@@ -1,3 +1,7 @@
+/* eslint-disable max-len */
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable no-unused-vars */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
@@ -12,23 +16,72 @@ import {
   HiEye,
   HiQuestionMarkCircle,
 } from 'react-icons/hi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
-import { useAllRFOMutation } from '../../store/features/rfo/rfoApiSlice';
-import { setRFO } from '../../store/features/rfo/rfoSlice';
+import {
+  useAllRFOMutation,
+  useAllRFOMasalMutation,
+} from '../../store/features/rfo/rfoApiSlice';
+import {
+  selectAllRFO,
+  selectAllRFOMasal,
+  setRFO,
+  setRFOMasal,
+} from '../../store/features/rfo/rfoSlice';
 import styles from './ReasonOfOutage.module.css';
 
 function ReasonOfOutage() {
-  const [statusData, setStatusData] = useState('all');
+  const [statusData, setStatusData] = useState('sendiri');
   const [showTable, setShowTable] = useState(false);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
+  const [rowsMasal, setRowsMasal] = useState([]);
   const dispatch = useDispatch();
-  const [allRFO, { ...status }] = useAllRFOMutation();
+  const [allRFO] = useAllRFOMutation();
+  const [allRFOMasal] = useAllRFOMasalMutation();
+
+  const dataKeluhan = useSelector(selectAllRFO);
+  const dataGangguan = useSelector(selectAllRFOMasal);
+  const allData = [].concat(dataKeluhan, dataGangguan);
+  const [search, setSearch] = useState('');
 
   const handleStatus = (event) => {
     setStatusData(event.target.value);
+    console.log(event.target.value, 'status');
+    console.log(dataKeluhan, 'row keluhan');
+    console.log(dataGangguan, 'row gangguan');
+    const dataChanged = allData.filter((item) => {
+      if (event.target.value === 'sendiri') {
+        if (item.hasOwnProperty('id_rfo_keluhan')) {
+          return item;
+        }
+      } else if (event.target.value === 'masal') {
+        if (item.hasOwnProperty('id_rfo_gangguan')) {
+          return item;
+        }
+      }
+    });
+    if (event.target.value === 'all') {
+      console.log(allData, 'cek gan');
+      setRows(allData);
+    } else {
+      setRows(dataChanged);
+    }
+  };
+
+  const getAllRFOMasal = async () => {
+    try {
+      const data = await allRFOMasal().unwrap();
+      if (data.status === 'success') {
+        setShowTable(true);
+        dispatch(setRFOMasal({ ...data }));
+        setRowsMasal(data.data);
+        console.log(data, 'data rfo masal');
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const getAllRFO = async () => {
@@ -52,7 +105,23 @@ function ReasonOfOutage() {
       ])
     );
     getAllRFO();
+    getAllRFOMasal();
   }, []);
+
+  const onHandleSearch = (event) => {
+    event.preventDefault();
+    console.log(event.target.value);
+    console.log(event.target.value.length, 'ooo');
+    setSearch(event.target.value);
+
+    if (event.target.value.length > 0) {
+      const regex = new RegExp(search, 'ig');
+      const searchResult = rows.filter((item) => item.problem.match(regex));
+      setRows(searchResult);
+    } else {
+      setRows(allData);
+    }
+  }
 
   const columns = [
     'No',
@@ -67,7 +136,8 @@ function ReasonOfOutage() {
   ];
   return (
     <div>
-      <div>
+      { statusData === 'masal' && (
+      <div className="mb-5">
         <label
           className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-auto"
           htmlFor="my-modal-3"
@@ -75,8 +145,9 @@ function ReasonOfOutage() {
           Tambah RFO Gangguan Masal
         </label>
       </div>
+      )}
 
-      <div className="flex gap-5 mt-5">
+      <div className="flex gap-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Status Keluhan</span>
@@ -85,11 +156,18 @@ function ReasonOfOutage() {
           <select
             className="select w-full max-w-full input-bordered"
             onChange={handleStatus}
+            value={statusData}
           >
             <option disabled>Pilih Status</option>
-            <option value="all">Semua</option>
-            <option value="sendiri">Sendiri</option>
-            <option value="masal">Masal</option>
+            <option value="all" label="Semua" selected>
+              Semua
+            </option>
+            <option value="sendiri" label="Sendiri" selected>
+              Sendiri
+            </option>
+            <option value="masal" label="Masal">
+              Masal
+            </option>
           </select>
         </div>
 
@@ -107,7 +185,8 @@ function ReasonOfOutage() {
                 id="voice-search"
                 className="input input-md input-bordered pl-10 p-2.5 "
                 placeholder="Cari data rfo..."
-                required
+                value={search}
+                onChange={onHandleSearch}
               />
             </div>
           </div>
@@ -286,163 +365,101 @@ function ReasonOfOutage() {
               ))}
             </tr>
           </thead>
-          {/* rows.map((item) => {}) */}
           <tbody>
-            {rows.map((item, index) => {
-              if (statusData === 'all') {
-                return (
-                  <tr className="text-center">
-                    <th>{index + 1}</th>
-                    <td>{item.keluhan.id_pelanggan}</td>
-                    <td className="text-left">
-                      <p>
-                        Dibuat:
-                        {item.mulai_keluhan}
-                      </p>
-                      <p>
-                        Diubah:
-                        {item.selesai_keluhan}
-                      </p>
-                    </td>
-                    <td>{item.durasi || 0}</td>
-                    <td>{item.problem}</td>
-                    <td
-                      className={
-                        item.lampiran_rfo_keluhan ? 'link-primary link' : ''
-                      }
-                    >
-                      {item.lampiran_rfo_keluhan || '-'}
-                    </td>
-                    <td>{item.deskripsi || '-'}</td>
-                    <td>
-                      {item.status === 'sendiri' ? (
-                        <span className="badge badge-accent text-white">
-                          {item.status}
-                        </span>
-                      ) : (
-                        <span className="badge badge-info text-white">
-                          {item.status}
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <div className="flex flex-row gap-3 justify-center">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            document.getElementById('my-modal-3').click();
-                          }}
-                        />
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            document.getElementById('my-modal-delete').click();
-                          }}
-                        />
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            if (item.status === 'sendiri') {
-                              navigate(
-                                `/reason_of_outage/detail_single/${item.uuid}`
-                              );
-                            }
-                            if (item.status === 'masal') {
-                              navigate(
-                                `/reason_of_outage/detail_masal/${item.uuid}`
-                              );
-                            }
-                          }}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                );
-              }
+            {rows.map((item, index) => (
+              <tr className="text-center">
+                <th>{index + 1}</th>
+                <td>
+                  { item.hasOwnProperty('id_rfo_keluhan') && (<>{item?.keluhan?.id_pelanggan} - {item?.keluhan?.nama_pelanggan}</>)}
+                  { item.hasOwnProperty('id_rfo_gangguan') && (<p>Gangguan Masal</p>)}
+                </td>
+                <td className="text-left">
+                  { item.hasOwnProperty('id_rfo_keluhan') && (
 
-              if (item.status === statusData) {
-                return (
-                  <tr className="text-center">
-                    <th>{index + 1}</th>
-                    <td>{item.pelanggan}</td>
-                    <td className="text-left">
-                      <p>
-                        Dibuat:
-                        {item.mulai_keluhan}
-                      </p>
-                      <p>
-                        Diubah:
-                        {item.selesai_keluhan}
-                      </p>
-                    </td>
-                    <td>{item.durasi || 0}</td>
-                    <td>{item.problem}</td>
-                    <td
-                      className={
-                        item.lampiran_rfo_keluhan ? 'link-primary link' : ''
-                      }
-                    >
-                      {item.lampiran_rfo_keluhan || '-'}
-                    </td>
-                    <td>{item.keterangan}</td>
-                    <td>
-                      {item.status === 'sendiri' ? (
-                        <span className="badge badge-accent text-white">
-                          {item.status}
-                        </span>
-                      ) : (
-                        <span className="badge badge-info text-white">
-                          {item.status}
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <div className="flex flex-row gap-3 justify-center">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            document.getElementById('my-modal-3').click();
-                          }}
-                        />
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            document.getElementById('my-modal-delete').click();
-                          }}
-                        />
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            if (item.status === 'sendiri') {
-                              navigate(
-                                `/reason_of_outage/detail_single/${item.uuid}`
-                              );
-                            }
-                            if (item.status === 'masal') {
-                              navigate(
-                                `/reason_of_outage/detail_masal/${item.uuid}`
-                              );
-                            }
-                          }}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                );
-              }
-            })}
+                  <>
+                    <p>
+                      Dibuat:
+                      {new Date(item?.mulai_keluhan).toLocaleString()}
+                    </p>
+                    <p>
+                      Diubah:
+                      {new Date(item?.selesai_keluhan).toLocaleString()}
+                    </p>
+                  </>
+                  )}
+                  { item.hasOwnProperty('id_rfo_gangguan') && (
+                  <>
+                    <p>
+                      Dibuat:
+                      {new Date(item?.mulai_gangguan).toLocaleString()}
+                    </p>
+                    <p>
+                      Diubah:
+                      {new Date(item?.selesai_gangguan).toLocaleString()}
+                    </p>
+                  </>
+                  )}
+                </td>
+                <td>{item?.durasi || 0}</td>
+                <td>{item?.problem}</td>
+                <td
+                  className={
+                    item?.lampiran_rfo_keluhan ? 'link-primary link' : ''
+                  }
+                >
+                  {item?.lampiran_rfo_keluhan || '-'}
+                </td>
+                <td>{item?.deskripsi || '-'}</td>
+                <td>
+                  {item?.status === 'open' ? (
+                    <span className="badge badge-accent text-white">
+                      {item?.status}
+                    </span>
+                  ) : (
+                    <span className="badge badge-info text-white">
+                      {item?.status}
+                    </span>
+                  )}
+                </td>
+                <td>
+                  <div className="flex flex-row gap-3 justify-center">
+                    <HiPencil
+                      className="cursor-pointer"
+                      size={20}
+                      color="#D98200"
+                      onClick={() => {
+                        document.getElementById('my-modal-3').click();
+                      }}
+                    />
+                    <HiTrash
+                      size={20}
+                      color="#FF2E00"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        document.getElementById('my-modal-delete').click();
+                      }}
+                    />
+                    <HiEye
+                      size={20}
+                      color="#0D68F1"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        if (item.hasOwnProperty('id_rfo_keluhan')) {
+                          navigate(
+                            `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
+                          );
+                        }
+                        if (item.hasOwnProperty('id_rfo_gangguan')) {
+                          navigate(
+                            `/reason_of_outage/detail_masal/${item.id_rfo_gangguan}`
+                          );
+                        }
+                      }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
