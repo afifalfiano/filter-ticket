@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable react/prop-types */
@@ -14,23 +15,31 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import toast, { Toaster } from 'react-hot-toast';
 import { Formik, Field, Form } from 'formik';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Yup from 'yup';
 import styles from './RFOMasalModal.module.css';
 import { useAllRFOMasalMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { selectAllRFOMasal, setRFOMasal } from '../../../store/features/rfo/rfoSlice';
 
+const RFOMasalFormSchema = Yup.object().shape({
+  rfo_gangguan: Yup.string().required('Wajib diisi')
+});
+
 function RFOMasalModal({ getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()
   const dispatch = useDispatch()
-  const dataRFOMasal = useSelector(selectAllRFOMasal);
+  const [dataRFOMasal, setDataRFOMasal] = useState([])
 
   const doGetAllRFOMasal = async () => {
     try {
       const data = await allRFOMasal();
+      console.log(data, 'ms zl');
       if (data.data.status === 'success') {
         dispatch(setRFOMasal({ ...data.data }))
-        console.log(dataRFOMasal, 'msl');
+        setDataRFOMasal([...data.data.data]);
+        console.log(data.data.data, 'cekkkz');
+        console.log(dataRFOMasal, 'hee');
       }
     } catch (error) {
       console.log(error);
@@ -151,6 +160,7 @@ function RFOMasalModal({ getInfo, detail }) {
 
         <Formik
           enableReinitialize
+          validationSchema={RFOMasalFormSchema}
           initialValues={{ rfo_gangguan: '' }}
           onSubmit={(values, { resetForm }) => {
             onSubmitData(values);
@@ -159,11 +169,10 @@ function RFOMasalModal({ getInfo, detail }) {
           {({
             values,
             errors,
-            isSubmitting,
+            touched,
             isValid,
-            setFieldValue,
             handleChange,
-            resetForm,
+            handleBlur,
           }) => (
             <Form>
               <div className="mt-2">
@@ -176,12 +185,19 @@ function RFOMasalModal({ getInfo, detail }) {
                     component="select"
                     id="rfo_gangguan"
                     name="rfo_gangguan"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
                     value={values.rfo_gangguan}
                     className="select w-full max-w-full input-bordered"
                   >
-                    <option value="1">Fiber Optik Mati</option>
-                    <option value="2">Tower Rusak</option>
+                    <option value="">Pilih RFO Gangguan</option>
+                    {dataRFOMasal?.map((item) => (
+                      <option value={item.id_rfo_gangguan} label={item.problem}>{item.problem}</option>
+                    ))}
                   </Field>
+                  {errors.rfo_gangguan && touched.rfo_gangguan ? (
+                    <div className="label label-text text-red-500">{errors.rfo_gangguan}</div>
+                  ) : null}
                 </div>
               </div>
 
@@ -194,6 +210,7 @@ function RFOMasalModal({ getInfo, detail }) {
                   type="submit"
                   htmlFor="my-modal-rfo-masal"
                   className="btn btn-md btn-success"
+                  disabled={!isValid}
                 >
                   Simpan
                 </button>
