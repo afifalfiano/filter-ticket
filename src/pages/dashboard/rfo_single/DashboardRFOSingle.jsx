@@ -475,7 +475,7 @@ function DashboardRFOSingle() {
                   </div>
                 ) : (
                   <div className="mt-2 font-semibold">
-                    File Upload: {detailComplain.lampiran || '-'}
+                    File Upload: {detailComplain?.lampiran || '-'}
                   </div>
                 )}
 
