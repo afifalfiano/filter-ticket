@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable max-len */
 /* eslint-disable no-undef */
 /* eslint-disable no-irregular-whitespace */
@@ -17,7 +18,7 @@ import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useComplainByIdMutation, useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
-import { useAddRFOGangguanMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { useAddRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectRFODetail } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../detail/DashboardDetail';
@@ -108,7 +109,7 @@ function DashboardRFOSingle() {
     }
   };
 
-  const [addRFOGangguan, { isSuccess }] = useAddRFOGangguanMutation()
+  const [addRFOKeluhan, { isSuccess }] = useAddRFOKeluhanMutation()
 
   const [complainClosed] = useComplainClosedMutation()
 
@@ -140,7 +141,7 @@ function DashboardRFOSingle() {
     };
     try {
       // create
-      const update = await addRFOGangguan(body).unwrap();
+      const update = await addRFOKeluhan(body).unwrap();
       console.log(body, 'body');
       if (update?.status === 'success') {
         toast.success('Berhasil menambahkan RFO.', {

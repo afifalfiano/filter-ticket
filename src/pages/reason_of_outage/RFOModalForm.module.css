@@ -1,0 +1,7 @@
+.modal-box-custom {
+    @apply modal-box max-w-2xl modal-box-2;
+}
+
+.modal-box-2 {
+    max-height: calc(110vh - 5em) !important;
+}

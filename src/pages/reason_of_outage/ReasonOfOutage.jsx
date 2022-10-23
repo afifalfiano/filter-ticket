@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -30,6 +32,7 @@ import {
   setRFOMasal,
 } from '../../store/features/rfo/rfoSlice';
 import styles from './ReasonOfOutage.module.css';
+import RFOModalForm from './RFOModalForm';
 
 function ReasonOfOutage() {
   const [statusData, setStatusData] = useState('sendiri');
@@ -45,6 +48,7 @@ function ReasonOfOutage() {
   const dataGangguan = useSelector(selectAllRFOMasal);
   const allData = [].concat(dataKeluhan, dataGangguan);
   const [search, setSearch] = useState('');
+  const [detail, setDetail] = useState(null);
 
   const handleStatus = (event) => {
     setStatusData(event.target.value);
@@ -134,16 +138,31 @@ function ReasonOfOutage() {
     'Status RFO',
     'Aksi',
   ];
+
+  const getInfo = ($event) => {
+    console.log($event);
+    if ($event.status === 'success') {
+      setDetail(null);
+      getAllRFOMasal();
+    }
+  };
+
   return (
     <div>
       { statusData === 'masal' && (
       <div className="mb-5">
-        <label
+        <button
+          type="button"
           className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-auto"
           htmlFor="my-modal-3"
+          onClick={() => {
+            setDetail(null)
+            document.getElementById('my-modal-3').click();
+          }}
+
         >
           Tambah RFO Gangguan Masal
-        </label>
+        </button>
       </div>
       )}
 
@@ -193,7 +212,7 @@ function ReasonOfOutage() {
         </div>
       </div>
 
-      {/* modal delete */}
+      {/* modal delete
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
       <div className="modal">
         <div className={`${styles['modal-box-custom']}`}>
@@ -222,138 +241,11 @@ function ReasonOfOutage() {
             </label>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* modal add or edit  */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <div className="modal">
-        <div className={`${styles['modal-box-custom']}`}>
-          <label
-            htmlFor="my-modal-3"
-            className="btn btn-sm btn-circle absolute right-2 top-2"
-          >
-            ✕
-          </label>
-          <h3 className="text-lg font-bold">Tambah Reason Of Outage Masal</h3>
-          <hr className="my-2" />
-
-          <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Masalah:</span>
-            </label>
-
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="masalah..."
-            />
-          </div>
-
-          <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Aksi:</span>
-            </label>
-
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="aksi..."
-            />
-          </div>
-
-          <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Deskripsi:</span>
-            </label>
-
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="deskripsi..."
-            />
-          </div>
-
-          <div className="flex flex-row gap-3">
-            <div className="form-control flex-1">
-              <label htmlFor="email" className="label">
-                <span className="label-text"> Waktu Mulai Keluhan</span>
-              </label>
-
-              <input
-                type="date"
-                className="input input-md input-bordered  max-w-full"
-              />
-            </div>
-
-            <div className="form-control flex-1">
-              <label htmlFor="email" className="label">
-                <span className="label-text"> Waktu Selesai Keluhan</span>
-              </label>
-
-              <input
-                type="date"
-                className="input input-md input-bordered  max-w-full"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-row gap-3">
-            <div className="form-control flex-1">
-              <label htmlFor="email" className="label">
-                <span className="label-text"> Tiket Pelaporan (Opsional)</span>
-              </label>
-
-              <input
-                type="text"
-                className="input input-md input-bordered  max-w-full"
-              />
-            </div>
-
-            <div className="form-control flex-1">
-              <label htmlFor="email" className="label">
-                <span className="label-text"> Durasi</span>
-              </label>
-
-              <input
-                type="text"
-                className="input input-md input-bordered  max-w-full"
-                disabled
-              />
-            </div>
-          </div>
-
-          <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Unggah Lampiran:</span>
-            </label>
-
-            <div className="flex justify-center items-center w-full">
-              <label
-                htmlFor="dropzone-file"
-                className="flex flex-col justify-center items-center w-full h-32 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer "
-              >
-                <div className="flex flex-col justify-center items-center pt-5 pb-6">
-                  <HiOutlineCloudUpload size={28} />
-                  <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span>
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    PDF, WORD, JPG, JPEG
-                  </p>
-                </div>
-                <input id="dropzone-file" type="file" className="hidden" />
-              </label>
-            </div>
-          </div>
-
-          <hr className="my-2 mt-5" />
-          <div className="modal-action justify-center">
-            <label htmlFor="my-modal-3" className="btn btn-md">
-              Batal
-            </label>
-            <label htmlFor="my-modal-3" className="btn btn-md btn-success">
-              Simpan
-            </label>
-          </div>
-        </div>
-      </div>
+      <RFOModalForm getInfo={getInfo} detail={detail} />
 
       {/* start table */}
       <div className="overflow-x-auto mt-8">
@@ -428,15 +320,15 @@ function ReasonOfOutage() {
                       size={20}
                       color="#D98200"
                       onClick={() => {
-                        document.getElementById('my-modal-3').click();
-                      }}
-                    />
-                    <HiTrash
-                      size={20}
-                      color="#FF2E00"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        document.getElementById('my-modal-delete').click();
+                        if (item.hasOwnProperty('id_rfo_keluhan')) {
+                          navigate(
+                            `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
+                          );
+                        }
+                        if (item.hasOwnProperty('id_rfo_gangguan')) {
+                          setDetail(item);
+                          document.getElementById('my-modal-3').click();
+                        }
                       }}
                     />
                     <HiEye
