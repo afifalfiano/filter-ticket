@@ -4,6 +4,7 @@
 /* eslint-disable import/prefer-default-export */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { setCredentials, setLogOut } from '../store/features/auth/authSlice';
 import { clearBTS } from '../store/features/bts/btsSlice';
 import { clearComplain } from '../store/features/complain/complainSlice';
@@ -37,6 +38,16 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       localStorage.clear();
     }
 
+    if (result?.error?.data === '\nPlease login first') {
+      api.dispatch((action) => {
+        action(setLogOut());
+        action(clearBTS());
+        action(clearComplain());
+      });
+      localStorage.clear();
+      window.location.reload();
+    }
+
     if (result?.error?.status === 'FETCH_ERROR') {
       toast.error('Kesalahan Pada Server', {
         style: {
@@ -53,7 +64,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     return result;
   } catch (error) {
     console.log(error, 'err');
-    // return;
   }
 };
 

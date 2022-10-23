@@ -58,8 +58,10 @@ function DashboardDetail({ rfoSingle, idComplain }) {
   }, [isSuccessReplpy]);
 
   useEffect(() => {
-    const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
-    dispatch(updateBreadcrumb(data))
+    if (idComplain === undefined) {
+      const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
+      dispatch(updateBreadcrumb(data))
+    }
   }, [])
 
   const onSubmitData = async (payload, resetForm) => {

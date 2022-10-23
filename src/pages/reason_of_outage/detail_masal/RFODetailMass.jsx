@@ -1,116 +1,337 @@
-import { useNavigate } from 'react-router-dom';
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable max-len */
+/* eslint-disable no-irregular-whitespace */
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from 'react';
+import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import * as Yup from 'yup';
+import { Formik, Field, Form } from 'formik';
+import toast from 'react-hot-toast';
+import { useRfoByIdMutation, useRfoGangguanByIdMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { setRFOGangguanById } from '../../../store/features/rfo/rfoSlice';
+import DashboardDetail from '../../dashboard/detail/DashboardDetail';
+import { selectCurrentUser } from '../../../store/features/auth/authSlice';
+import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
+
+const RFOMasalSchema = Yup.object().shape({
+  problem: Yup.string().required('Wajib diisi.'),
+  action: Yup.string().required('Wajib diisi.'),
+  deskripsi: Yup.string().required('Wajib diisi.'),
+  mulai_gangguan: Yup.string().optional(),
+  selesai_gangguan: Yup.string().optional(),
+  nomor_tiket: Yup.string().optional(),
+  durasi: Yup.string().optional(),
+});
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 function RFODetailMass() {
+  const { id } = useParams();
+  const [rfoGangguanById, { isSuccess }] = useRfoGangguanByIdMutation();
+  const [detailRFOMasal, setDetailRFOMasal] = useState([]);
+  const [files, setFiles] = useState([]);
+  const onHandleFileUpload = ($event) => {
+    console.log($event.target.files, 'file');
+    console.log($event.target.files.length, 'file');
+    const file = $event.target.files;
+    file.length > 0 ? setFiles(file[0]) : setFiles([]);
+  };
+
+  const dispatch = useDispatch();
+  const getRFOMasalKeluhanById = async () => {
+    try {
+      const data = await rfoGangguanById(id).unwrap();
+      console.log(data);
+      if (data.status === 'success') {
+        dispatch(setRFOGangguanById(data));
+        setDetailRFOMasal(data.data);
+        console.log(detailRFOMasal, 'cek');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const initialValues = {
+    problem: detailRFOMasal?.problem || '',
+    action: detailRFOMasal?.action || '',
+    deskripsi: detailRFOMasal?.action || '',
+    mulai_gangguan: new Date(detailRFOMasal?.mulai_gangguan).toLocaleString() || '',
+    selesai_gangguan: new Date(detailRFOMasal?.selesai_gangguan).toLocaleString() || '',
+    nomor_tiket: detailRFOMasal?.nomor_tiket || '',
+    durasi: detailRFOMasal?.durasi || '',
+    lampiran: detailRFOMasal?.lampiran || '',
+  };
+
+  const { data: user } = useSelector(selectCurrentUser);
+
+  const onSubmitData = async (payload) => {
+  };
+
+  function formatBytes(bytes, decimals = 2) {
+    if (!+bytes) return '0 Bytes'
+
+    const k = 1024
+    const dm = decimals < 0 ? 0 : decimals
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+
+    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
+  }
+
+  const navigasi = useSelector(selectBreadcrumb);
+
+  useEffect(() => {
+    const data = [...navigasi.data, { path: `/reason_of_outage/detail_masal/${id}`, title: 'Detail Reason Of Outage' }]
+    dispatch(updateBreadcrumb(data))
+    getRFOMasalKeluhanById();
+  }, []);
+
   const navigate = useNavigate();
   return (
     <div className="flex w-full gap-5">
       <div className="flex-1 w-full">
         <h1 className="text-center font-semibold">Reason Of Outage Masal</h1>
 
-        <div className="flex flex-col gap-3">
-          <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Masalah:</span>
-            </label>
+        <Formik
+          enableReinitialize
+          validationSchema={RFOMasalSchema}
+          initialValues={initialValues}
+          onSubmit={(values, { resetForm }) => {
+            onSubmitData(values, resetForm);
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            isSubmitting,
+            isValid,
+            setFieldValue,
+            handleChange,
+            handleBlur,
+            resetForm,
+          }) => (
+            <Form>
+              <div className="flex flex-col gap-3">
+                <div className="form-control">
+                  <label htmlFor="problem" className="label">
+                    <span className="label-text"> Masalah:</span>
+                  </label>
 
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="masalah..."
-              disabled
-              value="masalah baru"
-            />
-          </div>
+                  <Field
+                    id="problem"
+                    name="problem"
+                    placeholder="Masalah"
+                    value={values.problem}
+                    component="textarea"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    disabled
+                    className="textarea textarea-bordered h-24"
+                  />
+                  {errors.problem && touched.problem ? (
+                    <div className="label label-text text-red-500">
+                      {errors.problem}
+                    </div>
+                  ) : null}
+                </div>
 
-          <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Aksi:</span>
-            </label>
+                <div className="form-control">
+                  <label htmlFor="action" className="label">
+                    <span className="label-text"> Aksi:</span>
+                  </label>
 
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="aksi..."
-              disabled
-              value="aksi baru"
-            />
-          </div>
+                  <Field
+                    id="action"
+                    name="action"
+                    placeholder="Aksi"
+                    value={values.action}
+                    component="textarea"
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    disabled
+                    className="textarea textarea-bordered h-24"
+                  />
+                  {errors.action && touched.action ? (
+                    <div className="label label-text text-red-500">
+                      {errors.action}
+                    </div>
+                  ) : null}
+                </div>
 
-          <div className="form-control">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Deskripsi:</span>
-            </label>
+                <div className="form-control">
+                  <label htmlFor="deskripsi" className="label">
+                    <span className="label-text"> Deskripsi:</span>
+                  </label>
 
-            <textarea
-              className="textarea textarea-bordered h-24"
-              placeholder="deskripsi..."
-              disabled
-              value="deskripsi baru"
-            />
-          </div>
+                  <Field
+                    id="deskripsi"
+                    name="deskripsi"
+                    placeholder="Deskripsi"
+                    value={values.deskripsi}
+                    component="textarea"
+                    onBlur={handleBlur}
+                    disabled
+                    onChange={handleChange}
+                    className="textarea textarea-bordered h-24"
+                  />
+                  {errors.deskripsi && touched.deskripsi ? (
+                    <div className="label label-text text-red-500">
+                      {errors.deskripsi}
+                    </div>
+                  ) : null}
+                </div>
 
-          <div className="flex gap-5">
-            <div className="form-control flex-1">
-              <label htmlFor="email" className="label">
-                <span className="label-text"> Waktu Mulai Keluhan</span>
-              </label>
+                <div className="flex gap-5">
+                  <div className="form-control flex-1">
+                    <label htmlFor="mulai_gangguan" className="label">
+                      <span className="label-text"> Waktu Mulai Keluhan</span>
+                    </label>
 
-              <input
-                type="date"
-                className="input input-md input-bordered  max-w-full"
-                disabled
-              />
-            </div>
+                    <Field
+                      id="mulai_gangguan"
+                      name="mulai_gangguan"
+                      placeholder=""
+                      value={values.mulai_gangguan}
+                      type="text"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      disabled
+                      className="input input-md input-bordered  max-w-full"
+                    />
+                    {errors.mulai_gangguan && touched.mulai_gangguan ? (
+                      <div className="label label-text text-red-500">
+                        {errors.mulai_gangguan}
+                      </div>
+                    ) : null}
+                  </div>
 
-            <div className="form-control flex-1">
-              <label htmlFor="email" className="label">
-                <span className="label-text"> Waktu Selesai Keluhan</span>
-              </label>
+                  <div className="form-control flex-1">
+                    <label htmlFor="selesai_gangguan" className="label">
+                      <span className="label-text">
+                        {' '}
+                        Waktu Selesai Keluhan
+                      </span>
+                    </label>
 
-              <input
-                type="date"
-                className="input input-md input-bordered  max-w-full"
-                disabled
-              />
-            </div>
-          </div>
-        </div>
+                    <Field
+                      id="selesai_gangguan"
+                      name="selesai_gangguan"
+                      placeholder=""
+                      value={values.selesai_gangguan}
+                      type="text"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      disabled
+                      className="input input-md input-bordered  max-w-full"
+                    />
+                    {errors.selesai_gangguan && touched.selesai_gangguan ? (
+                      <div className="label label-text text-red-500">
+                        {errors.selesai_gangguan}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-3 mt-2">
+                <div className="form-control flex-1">
+                  <label htmlFor="nomor_tiket" className="label">
+                    <span className="label-text">
+                      {' '}
+                      Tiket Pelaporan (Opsional)
+                    </span>
+                  </label>
 
-        <div className="flex gap-3">
-          <div className="form-control flex-1">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Tiket Pelaporan (Opsional)</span>
-            </label>
+                  <Field
+                    id="nomor_tiket"
+                    name="nomor_tiket"
+                    placeholder=""
+                    value={values.nomor_tiket}
+                    type="text"
+                    disabled
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    className="input input-md input-bordered  max-w-full"
+                  />
+                </div>
 
-            <input
-              type="text"
-              className="input input-md input-bordered  max-w-full"
-            />
-          </div>
+                <div className="form-control flex-1">
+                  <label htmlFor="durasi" className="label">
+                    <span className="label-text"> Durasi (Hari)</span>
+                  </label>
 
-          <div className="form-control flex-1">
-            <label htmlFor="email" className="label">
-              <span className="label-text"> Durasi</span>
-            </label>
+                  <Field
+                    id="durasi"
+                    name="durasi"
+                    placeholder=""
+                    value={values.durasi}
+                    type="text"
+                    disabled
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    className="input input-md input-bordered  max-w-full"
+                  />
+                  {errors.durasi && touched.durasi ? (
+                    <div className="label label-text text-red-500">
+                      {errors.durasi}
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+              {/* <div className="form-control">
+                  <label htmlFor="lampiran" className="label">
+                    <span className="label-text"> Unggah Lampiran:</span>
+                  </label>
 
-            <input
-              type="text"
-              className="input input-md input-bordered  max-w-full"
-              disabled
-            />
-          </div>
-        </div>
+                  <div className="flex justify-center items-center w-full">
+                    <label
+                      htmlFor="dropzone-file"
+                      className="flex flex-col justify-center items-center w-full h-32 bg-gray-50 rounded-lg border-2 border-gray-300 border-dashed cursor-pointer "
+                    >
+                      <div className="flex flex-col justify-center items-center pt-5 pb-6">
+                        <HiOutlineCloudUpload size={28} />
+                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                          <span className="font-semibold">Click to upload</span>
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          PDF, WORD, JPG, JPEG
+                        </p>
+                      </div>
+                      <input
+                        id="dropzone-file"
+                        type="file"
+                        className="hidden"
+                        onChange={onHandleFileUpload}
+                      />
+                    </label>
+                  </div>
+                  <div className="mt-2 font-semibold">
+                    File Upload:
+                    {files.name}
+                    -
+                    {formatBytes(files.size)}
+                  </div>
+                </div> */}
 
-        <div className="modal-action justify-center mt-10">
-          <button
-            type="button"
-            className="btn btn-md mr-5"
-            onClick={() => {
-              navigate('/reason_of_outage');
-            }}
-          >
-            Kembali
-          </button>
-        </div>
+              <div className="modal-action justify-center mt-10">
+                <button
+                  type="button"
+                  className="btn btn-md mr-5"
+                  onClick={() => {
+                    navigate('/reason_of_outage');
+                  }}
+                >
+                  Kembali
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
 
       <div className=" border-gray-100 border-2" />
@@ -121,42 +342,76 @@ function RFODetailMass() {
         </h1>
 
         <div className="w-full overflow-auto mt-6" style={{ height: '35rem' }}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+          {isSuccess && detailRFOMasal?.keluhan.map((item) => (
             <div className="border-2 border-gray-100 rounded-md mt-3 p-3">
-              <table className="border-none items-center w-full">
+              <table className="border-none items-center w-full" id={item.id_keluhan}>
                 <tbody>
                   <tr className="text-left">
                     <td>ID Pelanggan</td>
                     <td>:</td>
                     <td>
-                      123123
-                      {item}
+                      {item.id_pelanggan}
                     </td>
                   </tr>
                   <tr className="text-left">
                     <td>Nama Pelanggan</td>
                     <td>:</td>
-                    <td>Putra saja</td>
+                    <td>{item.nama_pelanggan}</td>
                   </tr>
                   <tr className="text-left">
                     <td>Kontak</td>
                     <td>:</td>
-                    <td>Putri - 08123123123</td>
+                    <td>{item.nama_pelapor} - {item.nomor_pelapor}</td>
                   </tr>
                   <tr className="text-left">
                     <td>Sumber Keluhan</td>
                     <td>:</td>
-                    <td>Twitter - @putra</td>
+                    <td>{item.sumber.sumber} - {item.detail_sumber} </td>
                   </tr>
                   <tr className="text-left">
                     <td>Keluhan</td>
                     <td>:</td>
-                    <td>Internet sangat lambat</td>
+                    <td>{item.keluhan}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           ))}
+          {isSuccess && detailRFOMasal?.keluhan.length === 0 && (
+          <div className="border-2 border-gray-100 rounded-md mt-3 p-3">
+            <table className="border-none items-center w-full">
+              <tbody>
+                <tr className="text-left">
+                  <td>ID Pelanggan</td>
+                  <td>:</td>
+                  <td>
+                    -
+                  </td>
+                </tr>
+                <tr className="text-left">
+                  <td>Nama Pelanggan</td>
+                  <td>:</td>
+                  <td>-</td>
+                </tr>
+                <tr className="text-left">
+                  <td>Kontak</td>
+                  <td>:</td>
+                  <td>-</td>
+                </tr>
+                <tr className="text-left">
+                  <td>Sumber Keluhan</td>
+                  <td>:</td>
+                  <td>-</td>
+                </tr>
+                <tr className="text-left">
+                  <td>Keluhan</td>
+                  <td>:</td>
+                  <td>-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          )}
         </div>
       </div>
     </div>
