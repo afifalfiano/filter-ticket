@@ -57,8 +57,8 @@ function HistoryDashboard() {
       const data = await allComplainHistory().unwrap();
       if (data.status === 'success') {
         setShowTable(true);
-        dispatch(setComplainHistory({ ...data }));
-        setRows(data.data);
+        dispatch(setComplainHistory({ ...data.data }));
+        setRows(data.data.data);
         console.log(data, 'data complain');
       }
     } catch (err) {
