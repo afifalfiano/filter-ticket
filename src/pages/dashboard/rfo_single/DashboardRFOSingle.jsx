@@ -26,6 +26,7 @@ import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import * as Yup from 'yup';
+import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 
 const RFOSingleSchema = Yup.object().shape({
   problem: Yup.string()
@@ -115,6 +116,8 @@ function DashboardRFOSingle() {
 
   const navigasi = useSelector(selectBreadcrumb);
 
+  const { data: user } = useSelector(selectCurrentUser);
+
   useEffect(() => {
     const data = [...navigasi.data, { path: `/dashboard/rfo_single/${id}`, title: 'Dasbor Reason Of Outage Single' }]
     dispatch(updateBreadcrumb(data))
@@ -137,7 +140,7 @@ function DashboardRFOSingle() {
       status: 'closed',
       deskripsi: payload.deskripsi,
       lampiran_rfo_keluhan: payload.lampiran || '-',
-      user_id: detailComplain.user_id,
+      user_id: user.id_user
     };
     try {
       // create

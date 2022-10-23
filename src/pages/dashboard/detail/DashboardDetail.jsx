@@ -14,12 +14,14 @@ import * as Yup from 'yup';
 import { useAddReplyMutation, useComplainByIdMutation } from '../../../store/features/complain/complainApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
+import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 
 const ReplySchema = Yup.object().shape({
   balasan: Yup.string()
     .required('Wajib diisi.')
 });
-function DashboardDetail({ rfoSingle }) {
+function DashboardDetail({ rfoSingle, idComplain }) {
+  console.log(idComplain, 'zuuu');
   const location = useLocation();
   console.log(location, ';loc');
   const [detailComplain, setDetailComplain] = useState(null);
@@ -34,7 +36,13 @@ function DashboardDetail({ rfoSingle }) {
 
   const getComplainById = async () => {
     try {
-      const data = await complainById(id).unwrap();
+      let idConditional;
+      if (idComplain !== undefined) {
+        idConditional = idComplain;
+      } else {
+        idConditional = id;
+      }
+      const data = await complainById(idConditional).unwrap();
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
       console.log(data, 'data');
@@ -42,6 +50,8 @@ function DashboardDetail({ rfoSingle }) {
       console.log(err);
     }
   };
+
+  const { data: user } = useSelector(selectCurrentUser);
 
   useEffect(() => {
     getComplainById();
@@ -57,7 +67,7 @@ function DashboardDetail({ rfoSingle }) {
     try {
       const body = {
         balasan: payload.balasan,
-        user_id: detailComplain.user_id,
+        user_id: user.id_user,
         keluhan_id: detailComplain.id_keluhan
       }
       console.log(body);

@@ -8,6 +8,7 @@ const initialState = {
   data: [],
   detail: {},
   rfo_masal: [],
+  detail_masal: {},
 };
 
 const rfoSlice = createSlice({
@@ -22,6 +23,10 @@ const rfoSlice = createSlice({
       const { data } = action.payload;
       state.detail = data;
     },
+    setRFOGangguanById: (state, action) => {
+      const { data } = action.payload;
+      state.detail_masal = data;
+    },
     clearRFO: (state) => {
       state.data = null;
       state.detail = null;
@@ -33,10 +38,11 @@ const rfoSlice = createSlice({
   },
 });
 
-export const { setRFO, setRFOById, clearRFO, setRFOMasal } = rfoSlice.actions;
+export const { setRFO, setRFOById, setRFOGangguanById, clearRFO, setRFOMasal } = rfoSlice.actions;
 
 export default rfoSlice.reducer;
 
 export const selectAllRFO = (state) => state.rfo.data;
 export const selectAllRFOMasal = (state) => state.rfo.rfo_masal;
 export const selectRFODetail = (state) => state.rfo.detail;
+export const selectRFODetailGangguan = (state) => state.rfo.detail_masal;

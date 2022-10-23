@@ -178,10 +178,10 @@ function ReasonOfOutage() {
             value={statusData}
           >
             <option disabled>Pilih Status</option>
-            <option value="all" label="Semua" selected>
+            <option value="all" label="Semua">
               Semua
             </option>
-            <option value="sendiri" label="Sendiri" selected>
+            <option value="sendiri" label="Sendiri" defaultValue>
               Sendiri
             </option>
             <option value="masal" label="Masal">
@@ -322,7 +322,7 @@ function ReasonOfOutage() {
                       onClick={() => {
                         if (item.hasOwnProperty('id_rfo_keluhan')) {
                           navigate(
-                            `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
+                            `/reason_of_outage/detail_single/${item.id_rfo_keluhan}?edit=true`
                           );
                         }
                         if (item.hasOwnProperty('id_rfo_gangguan')) {
