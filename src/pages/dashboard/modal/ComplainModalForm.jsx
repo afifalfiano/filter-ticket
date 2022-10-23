@@ -36,7 +36,7 @@ import styles from './ComplainModalForm.module.css';
 import { useAddComplainMutation, useUpdateComplainMutation } from '../../../store/features/complain/complainApiSlice';
 import { selectAllPOP } from '../../../store/features/pop/popSlice';
 import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
-import { setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
+import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
 
 const ComplainFormSchema = Yup.object().shape({
   id_pelanggan: Yup.string()
@@ -65,28 +65,7 @@ function ComplainModalForm({ getInfo, detail }) {
   console.log(popData, 'pop nih')
   const [files, setFiles] = useState([]);
 
-  const [dataSumber, setSumber] = useState([]);
-
-  const dispatch = useDispatch();
-  const [allSumberKeluhan] = useAllSumberKeluhanMutation();
-
-  const getAllSumberKeluhan = async () => {
-    try {
-      const data = await allSumberKeluhan().unwrap();
-      console.log(data, 'ceksaja sumber');
-      if (data.status === 'success') {
-        dispatch(setSumberKeluhan({ ...data }));
-        setSumber(data.data)
-        console.log(dataSumber, 'pp');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getAllSumberKeluhan();
-  }, [])
+  const dataSumber = useSelector(selectAllSumberKeluhan);
 
   const initialValues = {
     id_pelanggan: detail?.id_pelanggan || '',
@@ -363,7 +342,7 @@ function ComplainModalForm({ getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih Sumber">Pilih Sumber</option>
-                    {dataSumber.map((item) => (
+                    {dataSumber.data.map((item) => (
                       <option value={item.id_sumber} label={item.sumber}>{item.sumber}</option>
                     ))}
                   </Field>

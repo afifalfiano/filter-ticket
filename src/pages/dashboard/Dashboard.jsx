@@ -36,6 +36,8 @@ import RFOMasalModal from './modal/RFOMasalModal';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import { useAllSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
+import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKeluhanSlice';
 
 function Dashboard() {
   const columns = [
@@ -111,6 +113,20 @@ function Dashboard() {
 
   const [allPOP] = useAllPOPMutation();
 
+  const [allSumberKeluhan] = useAllSumberKeluhanMutation();
+
+  const getAllSumberKeluhan = async () => {
+    try {
+      const data = await allSumberKeluhan().unwrap();
+      console.log(data, 'ceksaja sumber');
+      if (data.status === 'success') {
+        dispatch(setSumberKeluhan({ ...data }));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
@@ -129,6 +145,7 @@ function Dashboard() {
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/dashboard', title: 'Dasbor' }]))
     getAllPOP()
+    getAllSumberKeluhan();
     getAllComplain();
   }, []);
 
