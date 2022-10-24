@@ -16,11 +16,11 @@
 import { useEffect, useState } from 'react';
 import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useComplainByIdMutation, useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
-import { useAddRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { useAddRFOKeluhanMutation, useRfoByIdMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
-import { selectRFODetail } from '../../../store/features/rfo/rfoSlice';
+import { selectRFODetail, setRFOById } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../detail/DashboardDetail';
 import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
@@ -48,25 +48,30 @@ const RFOSingleSchema = Yup.object().shape({
 function DashboardRFOSingle() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const idRfoKeluhan = searchParams.get('id_rfo');
+  console.log(idRfoKeluhan, 'dapat');
   console.log(location, ';loc');
   const [detailComplain, setDetailComplain] = useState(null);
   const { id } = useParams();
   console.log(id, 'param');
-  const [complainById, { ...status }] = useComplainByIdMutation();
+  const [complainById, { isSuccess: isSuccessComplainById }] = useComplainByIdMutation();
   const dispatch = useDispatch();
   const [files, setFiles] = useState([]);
+  const [rfoById, { isSuccess: isSuccessRfoById }] = useRfoByIdMutation();
+  const [rfoKeluhan, setRfoKeluhan] = useState(null);
 
   const history = location.pathname.includes('history');
 
-  const initialValues = {
-    problem: '',
-    action: '',
-    deskripsi: '',
-    mulai_gangguan: '',
-    selesai_gangguan: '',
-    nomor_tiket: '',
-    durasi: '',
-    lampiran: '',
+  let initialValues = {
+    problem: rfoKeluhan?.problem || '',
+    action: rfoKeluhan?.action || '',
+    deskripsi: rfoKeluhan?.deskripsi || '',
+    mulai_gangguan: new Date(rfoKeluhan?.mulai_gangguan).toLocaleString() || '',
+    selesai_gangguan: new Date(rfoKeluhan?.selesai_gangguan).toLocaleString() || '',
+    nomor_tiket: rfoKeluhan?.nomor_tiket || '',
+    durasi: rfoKeluhan?.durasi || '',
+    lampiran: rfoKeluhan?.lammpiran || '',
 
   }
 
@@ -99,11 +104,40 @@ function DashboardRFOSingle() {
     file.length > 0 ? setFiles(file[0]) : setFiles([]);
   }
 
+  const getRFOKeluhanById = async () => {
+    try {
+      const data = await rfoById(idRfoKeluhan).unwrap();
+      console.log(data, 'rfo id after update');
+      if (data.status === 'success') {
+        dispatch(setRFOById({ ...data }))
+        setRfoKeluhan({ ...data });
+        initialValues = {
+          problem: rfoKeluhan?.problem,
+          action: rfoKeluhan?.action,
+          deskripsi: rfoKeluhan?.deskripsi,
+          mulai_gangguan: new Date(rfoKeluhan?.mulai_gangguan).toLocaleString(),
+          selesai_gangguan: new Date(rfoKeluhan?.selesai_gangguan).toLocaleString(),
+          nomor_tiket: rfoKeluhan?.nomor_tiket,
+          durasi: rfoKeluhan?.durasi,
+          lampiran: rfoKeluhan?.lammpiran,
+        }
+        console.log(rfoKeluhan, 'yuhuz');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const getComplainById = async () => {
     try {
       const data = await complainById(id).unwrap();
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
+      if (data.data.status === 'closed') {
+        console.log('closed nih')
+      } else {
+        console.log('open nih')
+      }
       console.log(data, 'data');
     } catch (err) {
       console.log(err);
@@ -119,9 +153,12 @@ function DashboardRFOSingle() {
   const { data: user } = useSelector(selectCurrentUser);
 
   useEffect(() => {
-    const data = [...navigasi.data, { path: `/dashboard/rfo_single/${id}`, title: 'Dasbor Reason Of Outage Single' }]
+    const data = [...navigasi.data, { path: `/dashboard/rfo_single/${id}?id_rfo=${idRfoKeluhan}`, title: 'Dasbor Reason Of Outage Single' }]
     dispatch(updateBreadcrumb(data))
     getComplainById();
+    if (idRfoKeluhan !== null) {
+      getRFOKeluhanById();
+    }
   }, []);
 
   const onSubmitData = async (payload, resetForm) => {
@@ -140,7 +177,8 @@ function DashboardRFOSingle() {
       status: 'closed',
       deskripsi: payload.deskripsi,
       lampiran_rfo_keluhan: payload.lampiran || '-',
-      user_id: user.id_user
+      user_id: user.id_user,
+      keluhan_id: detailComplain.id_keluhan
     };
     try {
       // create
@@ -482,7 +520,7 @@ function DashboardRFOSingle() {
                   </div>
                 )}
 
-                {!history ? (
+                {!history && idRfoKeluhan === null ? (
                   <div className="modal-action justify-center mt-10">
                     <button
                       type="button"
@@ -505,6 +543,7 @@ function DashboardRFOSingle() {
                       className="btn btn-md mr-5"
                       onClick={() => {
                         navigate('/history_dashboard');
+                        // navigate('/dashboard');
                       }}
                     >
                       Kembali

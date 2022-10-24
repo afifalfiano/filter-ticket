@@ -387,7 +387,7 @@ function Dashboard() {
                           color="#065F46"
                           className="cursor-pointer"
                           onClick={() => {
-                            navigate(`/dashboard/rfo_single/${item.id_keluhan}`);
+                            navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_gangguan_id}`);
                           }}
                         />
                         <HiOutlineClipboardList
