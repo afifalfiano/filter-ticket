@@ -1,7 +1,11 @@
+/* eslint-disable no-unused-vars */
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 // eslint-disable-next-line react/prop-types
 function Menu() {
+  const { data: user } = useSelector(selectCurrentUser);
   return (
     <div className="flex-1">
       <Link
@@ -39,20 +43,24 @@ function Menu() {
       >
         Riwayat Dasbor
       </Link>
-      <Link
-        className="btn btn-ghost normal-case text-sm"
-        to="/base_transceiver_station"
-        activeclassname="btn-active"
-      >
-        BTS
-      </Link>
-      <Link
-        className="btn btn-ghost normal-case text-sm"
-        to="/statistics"
-        activeclassname="btn-active"
-      >
-        Statistik
-      </Link>
+      {user.role_id === 1 && (
+        <>
+          <Link
+            className="btn btn-ghost normal-case text-sm"
+            to="/base_transceiver_station"
+            activeclassname="btn-active"
+          >
+            BTS
+          </Link>
+          <Link
+            className="btn btn-ghost normal-case text-sm"
+            to="/statistics"
+            activeclassname="btn-active"
+          >
+            Statistik
+          </Link>
+        </>
+      )}
     </div>
   );
 }
