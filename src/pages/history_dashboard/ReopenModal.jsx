@@ -64,14 +64,14 @@ function ReopenModal({ getInfo, detail }) {
         >
           ✕
         </label>
-        <h3 className="text-lg font-bold">Konfirmasi Riwayat Data Keluhan</h3>
+        <h3 className="text-lg font-bold">Konfirmasi Data Keluhan</h3>
         <hr className="my-2" />
 
         <div className="flex flex-col justify-center align-middle items-center">
           <HiExclamation size={50} color="#FF2E00" />
 
           <span className="py-4">
-            Apakah anda yakin mengembalikan status riwayat data keluhan dari
+            Apakah anda yakin mengembalikan status data keluhan dari
             &nbsp;
             <strong>closed</strong>
             &nbsp; menjadi &nbsp;

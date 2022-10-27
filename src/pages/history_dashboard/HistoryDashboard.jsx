@@ -289,7 +289,7 @@ function HistoryDashboard() {
                         className="cursor-pointer"
                         onClick={() => {
                           navigate(
-                            `/history_dashboard/rfo_single/${item.id_keluhan}`
+                            `/history_dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_gangguan_id}`
                           );
                         }}
                       />

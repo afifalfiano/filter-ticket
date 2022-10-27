@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable prefer-template */
@@ -38,6 +39,7 @@ import { setPOP } from '../../store/features/pop/popSlice';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useAllSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKeluhanSlice';
+import ReopenModal from '../history_dashboard/ReopenModal';
 
 function Dashboard() {
   const columns = [
@@ -70,9 +72,14 @@ function Dashboard() {
       const data = await allComplain().unwrap();
       if (data.status === 'success') {
         setShowTable(true);
+        const dataFilter = data.data.filter((item) => {
+          if (item.status === statusData) {
+            return item;
+          }
+        });
         dispatch(setComplain({ ...data }));
-        setRows(data.data);
-        console.log(data, 'data complain');
+        setRows(dataFilter);
+        console.log(dataFilter, 'data complain');
       }
     } catch (err) {
       console.log(err);
@@ -250,7 +257,8 @@ function Dashboard() {
 
       {/* modal revert */}
       <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
-      <div className="modal">
+      <ReopenModal getInfo={getInfo} detail={detail} />
+      {/* <div className="modal">
         <div className={`${styles['modal-box-custom']}`}>
           <label
             htmlFor="my-modal-delete"
@@ -282,7 +290,7 @@ function Dashboard() {
             </label>
           </div>
         </div>
-      </div>
+      </div> */}
       {/* start table */}
       <div className="overflow-x-auto mt-8">
         <table className="table table-zebra w-full">
@@ -299,54 +307,54 @@ function Dashboard() {
                 <th>{!isSuccess ? (<Skeleton count={1} />) : index + 1}</th>
                 <td className="text-left">
                   { !isSuccess ? (<Skeleton count={1} />)
-                    : item.pop.pop === 'Yogyakarta' ? (
+                    : item?.pop?.pop === 'Yogyakarta' ? (
                       <span className="badge badge-success text-white">
-                        {item.pop.pop}
+                        {item?.pop?.pop}
                       </span>
-                    ) : item.pop.pop === 'Solo' ? (
+                    ) : item?.pop?.pop === 'Solo' ? (
                       <span className="badge badge-warning text-white">
-                        {item.pop.pop}
+                        {item?.pop?.pop}
                       </span>
-                    ) : item.pop.pop === 'Purwokerto' ? (
+                    ) : item?.pop?.pop === 'Purwokerto' ? (
                       <span className="badge badge-info text-white">
-                        {item.pop.pop}
+                        {item?.pop?.pop}
                       </span>
                     ) : (
                       <span className="badge text-white">
-                        {item.pop.pop}
+                        {item?.pop?.pop}
                       </span>
                     )}
                 </td>
-                <td>{!isSuccess ? (<Skeleton count={1} />) : (item.id_pelanggan)}</td>
-                <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nama_pelanggan)}</td>
-                <td>{!isSuccess ? (<Skeleton count={1} />) : (<>{item.nama_pelapor} - {item.nomor_pelapor}</>)}</td>
-                <td className="text-left">{!isSuccess ? (<Skeleton count={1} />) : (item.keluhan)}</td>
-                <td className="text-left">{!isSuccess ? (<Skeleton count={1} />) : (item.balasan.length > 0 ? item.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan')}</td>
+                <td>{!isSuccess ? (<Skeleton count={1} />) : (item?.id_pelanggan)}</td>
+                <td>{!isSuccess ? (<Skeleton count={1} />) : (item?.nama_pelanggan)}</td>
+                <td>{!isSuccess ? (<Skeleton count={1} />) : (<>{item?.nama_pelapor} - {item?.nomor_pelapor}</>)}</td>
+                <td className="text-left">{!isSuccess ? (<Skeleton count={1} />) : (item?.keluhan)}</td>
+                <td className="text-left">{!isSuccess ? (<Skeleton count={1} />) : (item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan')}</td>
                 <td className="text-left">
                   {!isSuccess ? (<Skeleton count={1} />) : (
                     <>
                       <p>
                         Dibuat:
-                        {new Date(item.created_at).toLocaleString('id-ID')}
+                        {new Date(item?.created_at).toLocaleString('id-ID')}
                       </p>
                       <p>
                         Diubah:
-                        {item.balasan.length > 0
-                          ? new Date(item.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
-                          : new Date(item.created_at).toLocaleString('id-ID')}
+                        {item?.balasan.length > 0
+                          ? new Date(item?.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
+                          : new Date(item?.created_at).toLocaleString('id-ID')}
                       </p>
                     </>
                   )}
                 </td>
                 <td>
                   {!isSuccess ? (<Skeleton count={1} />)
-                    : item.status === 'open' ? (
+                    : item?.status === 'open' ? (
                       <span className="badge badge-accent text-white">
-                        {item.status}
+                        {item?.status}
                       </span>
                     ) : (
                       <span className="badge badge-info text-white">
-                        {item.status}
+                        {item?.status}
                       </span>
                     )}
                 </td>
@@ -407,6 +415,7 @@ function Dashboard() {
                           color="#D98200"
                           className="cursor-pointer"
                           onClick={() => {
+                            setDetail(item);
                             document
                               .getElementById('my-modal-revert')
                               .click();
@@ -417,7 +426,7 @@ function Dashboard() {
                           color="#0D68F1"
                           className="cursor-pointer"
                           onClick={() => {
-                            navigate(`/dashboard/detail/${item.uuid}`);
+                            navigate(`/dashboard/detail/${item.id_keluhan}`);
                           }}
                         />
                         <HiOutlineClipboardCheck
@@ -425,7 +434,7 @@ function Dashboard() {
                           color="#065F46"
                           className="cursor-pointer"
                           onClick={() => {
-                            navigate(`/dashboard/rfo_single/${item.uuid}`);
+                            navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_gangguan_id}`);
                           }}
                         />
                       </>

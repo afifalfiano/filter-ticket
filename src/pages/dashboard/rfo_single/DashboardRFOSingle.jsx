@@ -18,7 +18,7 @@ import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useComplainByIdMutation, useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
-import { useAddRFOKeluhanMutation, useRfoByIdMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { useAddRFOKeluhanMutation, useRfoByIdMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectRFODetail, setRFOById } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../detail/DashboardDetail';
@@ -109,8 +109,8 @@ function DashboardRFOSingle() {
       const data = await rfoById(idRfoKeluhan).unwrap();
       console.log(data, 'rfo id after update');
       if (data.status === 'success') {
-        dispatch(setRFOById({ ...data }))
-        setRfoKeluhan({ ...data });
+        dispatch(setRFOById(data.data))
+        setRfoKeluhan(data.data);
         initialValues = {
           problem: rfoKeluhan?.problem,
           action: rfoKeluhan?.action,
@@ -145,6 +145,7 @@ function DashboardRFOSingle() {
   };
 
   const [addRFOKeluhan, { isSuccess }] = useAddRFOKeluhanMutation()
+  const [updateRFOKeluhan] = useUpdateRFOKeluhanMutation()
 
   const [complainClosed] = useComplainClosedMutation()
 
@@ -182,10 +183,18 @@ function DashboardRFOSingle() {
     };
     try {
       // create
-      const update = await addRFOKeluhan(body).unwrap();
+      let data;
+      let message;
+      if (idRfoKeluhan === null) {
+        data = await addRFOKeluhan(body).unwrap();
+        message = 'Berhasil menambahkan RFO';
+      } else {
+        data = await updateRFOKeluhan({ id: idRfoKeluhan, body }).unwrap();
+        message = 'Berhasil memperbarui RFO';
+      }
       console.log(body, 'body');
-      if (update?.status === 'success') {
-        toast.success('Berhasil menambahkan RFO.', {
+      if (data?.status === 'success') {
+        toast.success(message, {
           style: {
             padding: '16px',
             backgroundColor: '#36d399',
@@ -232,7 +241,7 @@ function DashboardRFOSingle() {
           console.log(closed, 'cek');
         }, 1000);
       } else {
-        console.log(update, 'err');
+        console.log(data, 'err');
         toast.error(update?.message, {
           style: {
             padding: '16px',
@@ -475,9 +484,10 @@ function DashboardRFOSingle() {
                       id="durasi"
                       name="durasi"
                       placeholder=""
-                      value={daysCompare(new Date(lastUpdate), new Date(detailComplain?.created_at))}
+                      value={values.durasi}
                       type="text"
                       onBlur={handleBlur}
+                      disabled
                       onChange={handleChange}
                       className="input input-md input-bordered  max-w-full"
                     />
@@ -520,7 +530,7 @@ function DashboardRFOSingle() {
                   </div>
                 )}
 
-                {!history && idRfoKeluhan === null ? (
+                {(!history && idRfoKeluhan === null) || (!history && idRfoKeluhan !== null) ? (
                   <div className="modal-action justify-center mt-10">
                     <button
                       type="button"
