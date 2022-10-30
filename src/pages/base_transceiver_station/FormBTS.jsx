@@ -20,21 +20,8 @@ import {
 } from '../../store/features/bts/btsApiSlice';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
+import { FormBTSSchema } from '../../utils/schema_validation_form';
 
-const FormBTSSchema = Yup.object().shape({
-  nama_bts: Yup.string()
-    .required('Wajib diisi.'),
-  nama_pic: Yup.string()
-    .required('Wajib diisi.'),
-  nomor_pic: Yup.string()
-    .required('Wajib diisi.'),
-  lokasi: Yup.string()
-    .required('Wajib diisi.'),
-  pop_id: Yup.string()
-    .required('Wajib diisi.'),
-  kordinat: Yup.string()
-    .required('Wajib diisi.'),
-});
 function FormBTS({ getInfo, detail, titleAction }) {
   console.log(detail, 'cek render');
   const [addData] = useAddBtsMutation();

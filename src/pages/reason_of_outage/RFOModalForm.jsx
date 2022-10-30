@@ -44,25 +44,7 @@ import {
 import styles from './RFOModalForm.module.css';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import UploadFile from '../../components/common/forms/UploadFile';
-
-const RFOSingleSchema = Yup.object().shape({
-  problem: Yup.string()
-    .required('Wajib diisi.'),
-  action: Yup.string()
-    .required('Wajib diisi.'),
-  deskripsi: Yup.string()
-    .required('Wajib diisi.'),
-  mulai_gangguan: Yup.string()
-    .optional(),
-  selesai_gangguan: Yup.string()
-    .optional(),
-  nomor_tiket: Yup.string()
-    .optional(),
-  durasi: Yup.string()
-    .optional(),
-  status: Yup.string()
-    .optional(),
-});
+import { RFOSingleSchema } from '../../utils/schema_validation_form';
 
 function RFOModalForm({ getInfo, detail }) {
   console.log(detail, 'cek render sajax');

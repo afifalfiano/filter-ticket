@@ -16,11 +16,8 @@ import { setComplainById } from '../../../store/features/complain/complainSlice'
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
+import { ReplySchema } from '../../../utils/schema_validation_form';
 
-const ReplySchema = Yup.object().shape({
-  balasan: Yup.string()
-    .required('Wajib diisi.')
-});
 function DashboardDetail({ rfoSingle, idComplain }) {
   console.log(idComplain, 'zuuu');
   const location = useLocation();

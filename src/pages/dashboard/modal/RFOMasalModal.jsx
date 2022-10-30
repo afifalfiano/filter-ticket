@@ -21,10 +21,7 @@ import * as Yup from 'yup';
 import styles from './RFOMasalModal.module.css';
 import { useAllRFOMasalMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { selectAllRFOMasal, setRFOMasal } from '../../../store/features/rfo/rfoSlice';
-
-const RFOMasalFormSchema = Yup.object().shape({
-  rfo_gangguan: Yup.string().required('Wajib diisi')
-});
+import { RFOMasalFormSchema } from '../../../utils/schema_validation_form';
 
 function RFOMasalModal({ getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()

@@ -8,18 +8,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
-import { useLoginMutation } from '../../store/features/auth/authApiSlice';
-import { setCredentials } from '../../store/features/auth/authSlice';
+import { useLoginMutation } from '../../../store/features/auth/authApiSlice';
+import { setCredentials } from '../../../store/features/auth/authSlice';
+import { SignInSchema } from '../../../utils/schema_validation_form';
 
-const SignInSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Email tidak valid.')
-    .required('Wajib diisi.')
-    .matches(/@citra/, 'Email tidak sesuai.'),
-  password: Yup.string()
-    .required('Wajib diisi.')
-    .min(6, 'Password minimal 6 karakter.'),
-});
 function SignIn() {
   const dispatch = useDispatch();
   const [login, { isSuccess }] = useLoginMutation();

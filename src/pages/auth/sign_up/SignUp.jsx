@@ -10,28 +10,10 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { Formik, Field, Form } from 'formik';
-import * as Yup from 'yup';
-import { useRegisterMutation } from '../../store/features/auth/authApiSlice';
-import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
-import { useAllTeamMutation } from '../../store/features/team/teamApiSlice';
-
-const SignUpSchema = Yup.object().shape({
-  name: Yup.string().required('Wajb diisi'),
-  email: Yup.string()
-    .email('Email tidak valid.')
-    .required('Wajib diisi.')
-    .matches(/@citra/, 'Email tidak sesuai.'),
-  password: Yup.string()
-    .required('Wajib diisi.')
-    .min(6, 'Password minimal 6 karakter.'),
-  pop_id: Yup.string()
-    .required('Wajib diisi.'),
-  role_id: Yup.string()
-    .required('Wajib diisi.'),
-  password_confirmation: Yup.string()
-    .required('Wajib diisi.')
-    .oneOf([Yup.ref('password'), null], 'Password tidak cocok')
-});
+import { useRegisterMutation } from '../../../store/features/auth/authApiSlice';
+import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
+import { useAllTeamMutation } from '../../../store/features/team/teamApiSlice';
+import { SignUpSchema } from '../../../utils/schema_validation_form';
 
 function SignUp() {
   const navigate = useNavigate();

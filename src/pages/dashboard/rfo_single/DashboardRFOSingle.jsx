@@ -29,23 +29,6 @@ import * as Yup from 'yup';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 
-const RFOSingleSchema = Yup.object().shape({
-  problem: Yup.string()
-    .required('Wajib diisi.'),
-  action: Yup.string()
-    .required('Wajib diisi.'),
-  deskripsi: Yup.string()
-    .required('Wajib diisi.'),
-  mulai_gangguan: Yup.string()
-    .optional(),
-  selesai_gangguan: Yup.string()
-    .optional(),
-  nomor_tiket: Yup.string()
-    .optional(),
-  durasi: Yup.string()
-    .optional(),
-});
-
 function DashboardRFOSingle() {
   const navigate = useNavigate();
   const location = useLocation();

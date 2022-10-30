@@ -2,15 +2,15 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
-import SignIn from './pages/sign_in/SignIn';
-import SignUp from './pages/sign_up/SignUp';
+import SignIn from './pages/auth/sign_in/SignIn';
+import SignUp from './pages/auth/sign_up/SignUp';
 import Dashboard from './pages/dashboard/Dashboard';
 import ReasonOfOutage from './pages/reason_of_outage/ReasonOfOutage';
 import Report from './pages/report/Report';
 import HistoryDashboard from './pages/history_dashboard/HistoryDashboard';
 import Profile from './pages/profile/Profile';
 import BaseTransceiverStation from './pages/base_transceiver_station/BaseTransceiverStation';
-import VerificationEmail from './pages/verification_email/VerificationEmail';
+import VerificationEmail from './pages/auth/verification_email/VerificationEmail';
 import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
 import RFODetailMass from './pages/reason_of_outage/detail_masal/RFODetailMass';
 import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSingle';

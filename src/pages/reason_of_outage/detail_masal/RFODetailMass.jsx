@@ -16,16 +16,7 @@ import { setRFOGangguanById } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../../dashboard/detail/DashboardDetail';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
-
-const RFOMasalSchema = Yup.object().shape({
-  problem: Yup.string().required('Wajib diisi.'),
-  action: Yup.string().required('Wajib diisi.'),
-  deskripsi: Yup.string().required('Wajib diisi.'),
-  mulai_gangguan: Yup.string().optional(),
-  selesai_gangguan: Yup.string().optional(),
-  nomor_tiket: Yup.string().optional(),
-  durasi: Yup.string().optional(),
-});
+import { RFOMasalSchema } from '../../../utils/schema_validation_form';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 function RFODetailMass() {

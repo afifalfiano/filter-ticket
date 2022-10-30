@@ -12,16 +12,8 @@ import { selectAllPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam } from '../../store/features/team/teamSlice';
 import { useUpdateProfileMutation } from '../../store/features/auth/authApiSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import { ProfileSchema } from '../../utils/schema_validation_form';
 
-const ProfileSchema = Yup.object().shape({
-  pop_id: Yup.string().optional(),
-  role_id: Yup.string().optional(),
-  old_password: Yup.string().optional().min(6, 'Password minimal 6 karakter.'),
-  password: Yup.string().optional().min(6, 'Password minimal 6 karakter.'),
-  password_confirmation: Yup.string()
-    .optional()
-    .oneOf([Yup.ref('password'), null], 'Password tidak cocok'),
-});
 /* eslint-disable react/prop-types */
 function FormUpdateProfile({ handleForm }) {
   const { data: user } = useSelector(selectCurrentUser);

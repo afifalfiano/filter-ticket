@@ -38,25 +38,7 @@ import { selectAllPOP } from '../../../store/features/pop/popSlice';
 import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
-
-const ComplainFormSchema = Yup.object().shape({
-  id_pelanggan: Yup.string()
-    .required('Wajib diisi.'),
-  nama_pelanggan: Yup.string()
-    .required('Wajib diisi.'),
-  pop_id: Yup.string()
-    .required('Wajib diisi.'),
-  sumber: Yup.string()
-    .required('Wajib diisi.'),
-  detail_sumber: Yup.string()
-    .required('Wajib diisi.'),
-  nama_pelapor: Yup.string()
-    .required('Wajib diisi.'),
-  nomor_pelapor: Yup.string()
-    .required('Wajib diisi.'),
-  keluhan: Yup.string()
-    .required('Wajib diisi.'),
-});
+import { ComplainFormSchema } from '../../../utils/schema_validation_form';
 
 function ComplainModalForm({ getInfo, detail }) {
   const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
