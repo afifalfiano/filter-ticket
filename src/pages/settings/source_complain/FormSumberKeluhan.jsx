@@ -9,33 +9,33 @@
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable no-alert */
 import { Formik, Field, Form } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
-import { useAddTeamMutation, useUpdateTeamMutation } from '../../../store/features/team/teamApiSlice';
-import { FormRoleSchema } from '../../../utils/schema_validation_form';
+import { useAddSumberKeluhanMutation, useUpdateSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
+import { FormSumberKeluhanSchema } from '../../../utils/schema_validation_form';
 
-function FormRole({ getInfo, detail, titleAction }) {
+function FormSumberKeluhan({ getInfo, detail, titleAction }) {
   console.log(detail, 'cek render');
-  const [addTeam] = useAddTeamMutation();
-  const [updateTeam] = useUpdateTeamMutation();
+  const [addSumberKeluhan] = useAddSumberKeluhanMutation();
+  const [updateSumberKeluhan] = useUpdateSumberKeluhanMutation();
   const { data: user } = useSelector(selectCurrentUser);
   const initialValues = {
-    role: detail?.role || '',
+    sumber: detail?.sumber || '',
   };
 
   const onSubmitData = async (payload, resetForm) => {
     const body = {
-      role: payload.role,
+      sumber: payload.sumber,
       user_id: user.id_user,
     };
     try {
       // create
       console.log(detail, 'dt');
       if (detail === null) {
-        const add = await addTeam({ ...body });
+        const add = await addSumberKeluhan({ ...body });
         if (add.data.status === 'success') {
-          toast.success('Berhasil tambah data Role.', {
+          toast.success('Berhasil tambah data Sumber.', {
             style: {
               padding: '16px',
               backgroundColor: '#36d399',
@@ -66,13 +66,13 @@ function FormRole({ getInfo, detail, titleAction }) {
         }
       } else {
         // update
-        const update = await updateTeam({
-          id: detail.id_role,
-          body: { ...body, id_role: detail.id_role },
+        const update = await updateSumberKeluhan({
+          id: detail.id_sumber,
+          body: { ...body, id_sumber: detail.id_sumber },
         });
         console.log(body, 'body');
         if (update.data.status === 'success') {
-          toast.success('Berhasil ubah data role.', {
+          toast.success('Berhasil ubah data Sumber.', {
             style: {
               padding: '16px',
               backgroundColor: '#36d399',
@@ -132,14 +132,14 @@ function FormRole({ getInfo, detail, titleAction }) {
           ✕
         </label>
         <h3 className="text-lg font-bold">
-          {detail === null && titleAction === 'create' ? 'Tambah Role' : titleAction === 'update' && 'Ubah Role'}
-          {titleAction === 'read' && 'Detail Role'}
+          {detail === null && titleAction === 'create' ? 'Tambah Sumber' : titleAction === 'update' && 'Ubah Sumber'}
+          {titleAction === 'read' && 'Detail Sumber'}
         </h3>
         <hr className="my-2" />
         <Formik
           enableReinitialize
           initialValues={initialValues}
-          validationSchema={FormRoleSchema}
+          validationSchema={FormSumberKeluhanSchema}
           onSubmit={(values, { resetForm }) => {
             onSubmitData(values, resetForm);
           }}
@@ -155,21 +155,21 @@ function FormRole({ getInfo, detail, titleAction }) {
           }) => (
             <Form>
               <div className="form-control">
-                <label htmlFor="role" className="label">
-                  <span className="label-text"> Nama role:</span>
+                <label htmlFor="sumber" className="label">
+                  <span className="label-text"> Nama Sumber:</span>
                 </label>
                 <Field
-                  id="role"
-                  name="role"
-                  placeholder="Nama Role"
-                  value={values.role}
+                  id="sumber"
+                  name="sumber"
+                  placeholder="Nama Sumber"
+                  value={values.sumber}
                   disabled={titleAction === 'read'}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.role && touched.role ? (
-                  <div className="label label-text text-red-500">{errors.role}</div>
+                {errors.sumber && touched.sumber ? (
+                  <div className="label label-text text-red-500">{errors.sumber}</div>
                 ) : null}
               </div>
 
@@ -218,4 +218,4 @@ function FormRole({ getInfo, detail, titleAction }) {
   );
 }
 
-export default FormRole;
+export default FormSumberKeluhan;

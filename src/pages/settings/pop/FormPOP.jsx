@@ -213,7 +213,7 @@ function FormPOP({ getInfo, detail, titleAction }) {
                     onHandleReset(resetForm);
                   }}
                 >
-                  Batal
+                  Kembali
                 </button>
               </div>
               )}

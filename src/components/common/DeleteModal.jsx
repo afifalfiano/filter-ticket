@@ -9,6 +9,7 @@ import styles from './DeleteModal.module.css';
 import { useDeleteComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { useDeletePOPMutation } from '../../store/features/pop/popApiSlice';
 import { useDeleteTeamMutation } from '../../store/features/team/teamApiSlice';
+import { useDeleteSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 
 function DeleteModal({ getInfo, detail, title }) {
   console.log(detail, 'dtl');
@@ -17,6 +18,7 @@ function DeleteModal({ getInfo, detail, title }) {
   const [deleteComplain] = useDeleteComplainMutation();
   const [deletePOP] = useDeletePOPMutation();
   const [deleteTeam] = useDeleteTeamMutation();
+  const [deleteSumberKeluhan] = useDeleteSumberKeluhanMutation();
 
   const onSubmit = async () => {
     try {
@@ -29,6 +31,8 @@ function DeleteModal({ getInfo, detail, title }) {
         deleteData = await deletePOP(detail.id_pop);
       } else if (title === 'Team') {
         deleteData = await deleteTeam(detail.id_role);
+      } else if (title === 'Sumber Keluhan') {
+        deleteData = await deleteSumberKeluhan(detail.id_sumber);
       }
       console.log(deleteData);
       if (deleteData?.data?.status === 'success') {
