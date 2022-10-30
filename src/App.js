@@ -19,6 +19,7 @@ import Statistics from './pages/statistics/Statistics';
 import Layout from './components/common/Layout';
 import RequireAuth from './components/common/RequireAuth';
 import 'react-loading-skeleton/dist/skeleton.css';
+import NotFound from './pages/not_found/NotFound';
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
             element={<BaseTransceiverStation />}
           />
           <Route path="statistics" element={<Statistics />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </div>
