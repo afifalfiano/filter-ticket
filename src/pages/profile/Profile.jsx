@@ -47,7 +47,7 @@ function Profile() {
       if (data.status === 'success') {
         dispatch(setTeam({ ...data }));
         console.log(role, 'tm');
-        const index = role.data.find((item) => item.id_role === user.role_id);
+        const index = role.data.find((item) => +item.id_role === +user.role_id);
         setCurrentRole(index);
         console.log(index, 'match');
       }

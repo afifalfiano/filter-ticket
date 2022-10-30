@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-unused-vars */
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -60,6 +62,65 @@ function Menu() {
             Statistik
           </Link>
         </>
+      )}
+
+      {/* if admin */}
+      {user.role_id === 3 && (
+        <div className="dropdown">
+          <label tabIndex={0} className="btn m-1">
+            Pengaturan
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu p-2 shadow bg-neutral rounded-box w-52 "
+          >
+            <li>
+              <Link
+                className="btn btn-ghost normal-case text-sm justify-start"
+                to="/base_transceiver_station"
+                activeclassname="btn-active"
+              >
+                BTS
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="btn btn-ghost normal-case text-sm justify-start"
+                to="/users"
+                activeclassname="btn-active"
+              >
+                Pengguna
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="btn btn-ghost normal-case text-sm justify-start"
+                to="/pop"
+                activeclassname="btn-active"
+              >
+                POP
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="btn btn-ghost normal-case text-sm justify-start"
+                to="/source_complain"
+                activeclassname="btn-active"
+              >
+                Sumber Keluhan
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="btn btn-ghost normal-case text-sm justify-start"
+                to="/role"
+                activeclassname="btn-active"
+              >
+                Otoritas
+              </Link>
+            </li>
+          </ul>
+        </div>
       )}
     </div>
   );
