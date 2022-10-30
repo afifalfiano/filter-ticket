@@ -69,7 +69,7 @@ function SignUp() {
     try {
       // create
       const body = {
-        name: payload.name,
+        name: payload.name.toUpperCase(),
         pop_id: payload.pop_id,
         role_id: payload.role_id,
         email: payload.email,
@@ -183,7 +183,7 @@ function SignUp() {
                   type="email"
                   id="email"
                   name="email"
-                  placeholder="email@citra.net"
+                  placeholder="Masukkan email"
                   value={values.email}
                   onBlur={handleBlur}
                   onChange={handleChange}

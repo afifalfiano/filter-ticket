@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable max-len */
@@ -34,6 +35,8 @@ function RFODetailSingle() {
   };
 
   const dispatch = useDispatch();
+  let lastUpdate = null;
+
   const getRFOKeluhanById = async () => {
     try {
       const data = await rfoById(id).unwrap();
@@ -41,6 +44,9 @@ function RFODetailSingle() {
       if (data.status === 'success') {
         dispatch(setRFOById(data));
         setDetailRFO(data.data);
+        lastUpdate = detailRFO?.keluhan?.balasan?.length > 0
+          ? detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at
+          : detailRFO?.keluhan?.created_at
         console.log(detailRFO, 'cek');
       }
     } catch (error) {
@@ -72,10 +78,6 @@ function RFODetailSingle() {
     durasi: detailRFO?.durasi || '',
     lampiran: detailRFO?.lampiran || '',
   };
-
-  const lastUpdate = detailRFO?.keluhan?.balasan?.length > 0
-    ? detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at
-    : detailRFO?.keluhan?.created_at
 
   const [updateRFOKeluhan] = useUpdateRFOKeluhanMutation();
 
@@ -345,8 +347,8 @@ function RFODetailSingle() {
                           detailRFO?.keluhan?.balasan.length > 0
                             ? new Date(
                               detailRFO?.keluhan?.balasan[
-                                detailRFO.balasan.length - 1
-                              ].created_at
+                                detailRFO?.balasan?.length - 1
+                              ]?.created_at
                             ).toLocaleDateString('id-ID')
                             : new Date(
                               detailRFO?.keluhan?.created_at

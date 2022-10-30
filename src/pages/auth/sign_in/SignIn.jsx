@@ -107,7 +107,7 @@ function SignIn() {
                   name="email"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  placeholder="email@citra.net"
+                  placeholder="Masukkan email"
                   value={values.email}
                   className="input input-md input-bordered  max-w-full"
                 />

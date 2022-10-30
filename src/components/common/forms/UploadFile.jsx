@@ -1,7 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/named */
-/* eslint-disable no-undef */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
@@ -55,7 +54,8 @@ function UploadFile({ uploaded = false }) {
       )}
       {uploaded && (
         <div className="mt-2 font-semibold">
-          File Upload: {detailComplain?.lampiran || '-'}
+          {/* File Upload: {detailComplain?.lampiran || '-'} */}
+          File Upload: -
         </div>
       )}
     </>

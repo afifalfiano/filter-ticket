@@ -1,6 +1,5 @@
 /* eslint-disable import/named */
 /* eslint-disable max-len */
-/* eslint-disable no-undef */
 /* eslint-disable no-irregular-whitespace */
 /* eslint-disable import/order */
 /* eslint-disable react/jsx-one-expression-per-line */
@@ -25,9 +24,9 @@ import DashboardDetail from '../detail/DashboardDetail';
 import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
-import * as Yup from 'yup';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
+import { RFOSingleSchema } from '../../../utils/schema_validation_form';
 
 function DashboardRFOSingle() {
   const navigate = useNavigate();
@@ -186,7 +185,7 @@ function DashboardRFOSingle() {
         }, 1000);
       } else {
         console.log(data, 'err');
-        toast.error(update?.message, {
+        toast.error(data?.message, {
           style: {
             padding: '16px',
             backgroundColor: '#ff492d',
