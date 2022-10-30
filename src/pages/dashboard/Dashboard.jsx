@@ -192,7 +192,7 @@ function Dashboard() {
         </button>
       </div>
 
-      {isSuccess && (
+      {!isLoading && (
       <div className="flex gap-5 mt-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
@@ -266,7 +266,7 @@ function Dashboard() {
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={3} />}
       {/* start table */}
 
-      {isSuccess && (
+      {!isLoading && (
       <div className="overflow-x-auto mt-8">
         <table className="table table-zebra w-full">
           <thead>
@@ -416,7 +416,7 @@ function Dashboard() {
         </table>
       </div>
       )}
-      {isSuccess && (<Pagination />)}
+      {!isLoading && (<Pagination />)}
     </div>
   );
 }
