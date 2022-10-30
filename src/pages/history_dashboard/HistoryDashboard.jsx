@@ -33,6 +33,8 @@ import ReopenModal from './ReopenModal';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
+import Pagination from '../../components/common/table/Pagination';
+import SkeletonTable from '../../components/common/table/SkeletonTable';
 
 function HistoryDashboard() {
   const columns = [
@@ -54,7 +56,7 @@ function HistoryDashboard() {
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
-  const [allComplainHistory, { ...status }] = useAllComplainHistoryMutation();
+  const [allComplainHistory, { isLoading }] = useAllComplainHistoryMutation();
   const [detail, setDetail] = useState(null);
 
   const getAllComplainHistory = async () => {
@@ -142,6 +144,7 @@ function HistoryDashboard() {
       <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
       <ReopenModal getInfo={getInfo} detail={detail} />
 
+      {!isLoading && (
       <div className="flex gap-5 mt-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
@@ -180,13 +183,12 @@ function HistoryDashboard() {
           </div>
         </div>
       </div>
+      )}
 
-      {!showTable
-            && (
-            <h1 className="mt-8">Loading...</h1>
-            )}
+      {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
+
       {/* start table */}
-      {showTable && (
+      {!isLoading && (
       <>
         <div className="overflow-x-auto mt-8">
           <table className="table table-zebra w-full">
@@ -300,30 +302,7 @@ function HistoryDashboard() {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-between mt-5 pb-20">
-          <div className="flex flex-row gap-1">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Halaman 1 dari 1</span>
-            </label>
-            <div className="form-control">
-              <select className="select input-bordered">
-                <option>5</option>
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-              </select>
-            </div>
-          </div>
-          <div className="">
-            <div className="btn-group">
-              <button className="btn btn-outline btn-active">1</button>
-              <button className="btn btn-outline">2</button>
-              <button className="btn btn-outline">3</button>
-              <button className="btn btn-outline">4</button>
-            </div>
-          </div>
-        </div>
+        {!isLoading && (<Pagination />)}
       </>
       )}
       {/* end table */}
