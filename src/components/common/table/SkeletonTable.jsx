@@ -62,8 +62,8 @@ function SkeletonTable({
   );
 }
 SkeletonTable.propTypes = {
-  countColumns: PropTypes.array,
-  countRows: PropTypes.array,
+  countColumns: PropTypes.number,
+  countRows: PropTypes.number,
   showFilter: PropTypes.bool,
   totalFilter: PropTypes.number,
 };

@@ -10,19 +10,21 @@ import popReducer from './features/pop/popSlice';
 import teamReducer from './features/team/teamSlice';
 import sumberKeluhanReducer from './features/sumber_keluhan/sumberKeluhanSlice';
 import breadcrumbReducer from './features/breadcrumb/breadcrumbSlice';
+import usersReducer from './features/users/usersSlice';
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
-    bts: btsReducer,
+    breadcrumb: breadcrumbReducer,
     complain: complainReducer,
     rfo: rfoReducer,
     complain_history: complainHistoryReducer,
     pop: popReducer,
     team: teamReducer,
     sumber_keluhan: sumberKeluhanReducer,
-    breadcrumb: breadcrumbReducer
+    bts: btsReducer,
+    users: usersReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true,
