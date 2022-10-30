@@ -2,6 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 import SignIn from './pages/auth/sign_in/SignIn';
 import SignUp from './pages/auth/sign_up/SignUp';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -20,8 +21,17 @@ import Layout from './components/common/Layout';
 import RequireAuth from './components/common/RequireAuth';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NotFound from './pages/not_found/NotFound';
+import { selectCurrentUser } from './store/features/auth/authSlice';
+import Users from './pages/settings/users/Users';
+import Pop from './pages/settings/pop/Pop';
+import SourceComplain from './pages/settings/source_complain/SourceComplain';
+import Role from './pages/settings/role/Role';
 
 function App() {
+  const data = localStorage.getItem('user');
+  const user = JSON.parse(data);
+  console.log(user, 'cek');
+
   return (
     <div className="App">
       <Toaster />
@@ -67,6 +77,13 @@ function App() {
             element={<BaseTransceiverStation />}
           />
           <Route path="statistics" element={<Statistics />} />
+
+          {/* for admin */}
+          <Route path="users" element={<Users />} />
+          <Route path="pop" element={<Pop />} />
+          <Route path="source_complain" element={<SourceComplain />} />
+          <Route path="role" element={<Role />} />
+          {/* end admin */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

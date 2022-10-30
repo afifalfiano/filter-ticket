@@ -67,7 +67,7 @@ function Menu() {
       {/* if admin */}
       {user.role_id === 3 && (
         <div className="dropdown">
-          <label tabIndex={0} className="btn m-1">
+          <label tabIndex={0} className="btn m-1 capitalize">
             Pengaturan
           </label>
           <ul
