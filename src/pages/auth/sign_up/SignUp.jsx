@@ -21,16 +21,16 @@ function SignUp() {
   const [allPOP] = useAllPOPMutation();
   const [allTeam] = useAllTeamMutation();
 
-  const [optionTeam,] = useState([
+  const [optionTeam, setOptionTeam] = useState([
     { label: 'Pilih Role', value: '' },
-    { label: 'HELPDESK', value: 1 },
-    { label: 'NOC', value: 2 },
+    // { label: 'HELPDESK', value: 1 },
+    // { label: 'NOC', value: 2 },
   ])
-  const [optionPOP,] = useState([
+  const [optionPOP, setOptionPOP] = useState([
     { label: 'Pilih POP', value: '' },
-    { label: 'Yogyakarta', value: 1 },
-    { label: 'Solo', value: 2 },
-    { label: 'Surakarta', value: 3 },
+    // { label: 'Yogyakarta', value: 1 },
+    // { label: 'Solo', value: 2 },
+    // { label: 'Surakarta', value: 3 },
   ])
 
   const initialValues = {
@@ -42,28 +42,54 @@ function SignUp() {
     password_confirmation: '',
   };
 
-  // const getAllPOP = async () => {
-  //   try {
-  //     const data = await allPOP().unwrap();
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const getAllPOP = async () => {
+    try {
+      const data = await allPOP().unwrap();
+      if (data.status === 'success') {
+        const mapPOP = data.data.map((item) => ({
+          label: item.pop,
+          value: item.id_pop
+        }))
+        mapPOP.unshift(
+          { label: 'Pilih Role', value: '' },
+        )
+        setOptionPOP(mapPOP);
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      setOptionPOP([
+        { label: 'Pilih POP', value: '' },
+      ]);
+    }
+  }
 
-  // const getAllTeam = async () => {
-  //   try {
-  //     const data = await allTeam().unwrap();
-  //     console.log(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const getAllTeam = async () => {
+    try {
+      const data = await allTeam().unwrap();
+      console.log(data);
+      if (data.status === 'success') {
+        const mapTeam = data.data.map((item) => ({
+          label: item.role,
+          value: item.id_role
+        }))
+        mapTeam.unshift(
+          { label: 'Pilih Role', value: '' },
+        )
+        setOptionTeam(mapTeam);
+      }
+    } catch (error) {
+      console.log(error);
+      setOptionTeam([
+        { label: 'Pilih Team', value: '' },
+      ]);
+    }
+  }
 
-  // useEffect(() => {
-  //   getAllPOP();
-  //   getAllTeam();
-  // }, [])
+  useEffect(() => {
+    getAllPOP();
+    getAllTeam();
+  }, [])
 
   const onSubmitData = async (payload, resetForm) => {
     try {
