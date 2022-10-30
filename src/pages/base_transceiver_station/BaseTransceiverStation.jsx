@@ -28,6 +28,9 @@ import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
+import SkeletonTable from '../../components/common/table/SkeletonTable';
+import Pagination from '../../components/common/table/Pagination';
+
 function BaseTransceiverStation() {
   const columns = [
     'No',
@@ -141,6 +144,8 @@ function BaseTransceiverStation() {
           Tambah
         </button>
       </div>
+
+      {!isLoading && (
       <div className="flex gap-5 mt-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
@@ -178,6 +183,7 @@ function BaseTransceiverStation() {
           </select>
         </div>
       </div>
+      )}
 
       {/* modal craete or update */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
@@ -187,7 +193,10 @@ function BaseTransceiverStation() {
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
       <DeleteModal getInfo={getInfo} detail={detail} title="BTS" />
 
+      {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
+
       {/* start table */}
+      {!isLoading && (
       <div className="overflow-x-auto mt-8">
         <table className="table table-zebra w-full">
           <thead>
@@ -198,83 +207,55 @@ function BaseTransceiverStation() {
             </tr>
           </thead>
           <tbody>
-            {rows.length > 0 &&
-              rows.map((item, index) => (
-                <tr className="text-center" id={item.id}>
-                  <td id={item.id}>{!isSuccess ? (<Skeleton count={1} />) : (index + 1)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nama_bts)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nama_pic)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.nomor_pic)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.lokasi)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.kordinat)}</td>
-                  <td>{!isSuccess ? (<Skeleton count={1} />) : (item.pop.pop)}</td>
-                  <td>
-                    {!isSuccess ? (<Skeleton count={1} />) : (
-
-                      <div className="flex flex-row gap-3 justify-center">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('update');
-                            document.getElementById('my-modal-3').click();
-                          }}
-                        />
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            document.getElementById('my-modal-delete').click();
-                          }}
-                        />
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('read');
-                            document.getElementById('my-modal-3').click();
-                          }}
-                        />
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
+            { rows.map((item, index) => (
+              <tr className="text-center" id={item.id}>
+                <td id={item.id}>{index + 1}</td>
+                <td>{item.nama_bts}</td>
+                <td>{item.nama_pic}</td>
+                <td>{item.nomor_pic}</td>
+                <td>{item.lokasi}</td>
+                <td>{item.kordinat}</td>
+                <td>{item.pop.pop}</td>
+                <td>
+                  <div className="flex flex-row gap-3 justify-center">
+                    <HiPencil
+                      className="cursor-pointer"
+                      size={20}
+                      color="#D98200"
+                      onClick={() => {
+                        setDetail(item);
+                        setTitle('update');
+                        document.getElementById('my-modal-3').click();
+                      }}
+                    />
+                    <HiTrash
+                      size={20}
+                      color="#FF2E00"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setDetail(item);
+                        document.getElementById('my-modal-delete').click();
+                      }}
+                    />
+                    <HiEye
+                      size={20}
+                      color="#0D68F1"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setDetail(item);
+                        setTitle('read');
+                        document.getElementById('my-modal-3').click();
+                      }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
-      {isLoading ? (<Skeleton className="mt-5" count={1} />) : (
-        <div className="flex justify-between mt-5 pb-20">
-          <div className="flex flex-row gap-1">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Halaman 1 dari 1</span>
-            </label>
-            <div className="form-control">
-              <select className="select input-bordered">
-                <option>5</option>
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-              </select>
-            </div>
-          </div>
-          <div className="">
-            <div className="btn-group">
-              <button className="btn btn-outline btn-active">1</button>
-              <button className="btn btn-outline">2</button>
-              <button className="btn btn-outline">3</button>
-              <button className="btn btn-outline">4</button>
-            </div>
-          </div>
-        </div>
       )}
+      {!isLoading && (<Pagination />)}
       {/* end table */}
     </div>
   );
