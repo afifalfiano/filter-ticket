@@ -110,7 +110,7 @@ function Pop() {
       <DeleteModal getInfo={getInfo} detail={detail} title="POP" />
 
       {isLoading && (
-        <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />
+        <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
       )}
 
       {/* start table */}

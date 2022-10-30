@@ -26,4 +26,4 @@ export const { setUsers, clearUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;
 
-export const selectAllTeam = (state) => state.team;
+export const selectAllUsers = (state) => state.users;
