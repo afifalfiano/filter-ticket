@@ -8,6 +8,7 @@ import { useDeleteBtsMutation } from '../../store/features/bts/btsApiSlice';
 import styles from './DeleteModal.module.css';
 import { useDeleteComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { useDeletePOPMutation } from '../../store/features/pop/popApiSlice';
+import { useDeleteTeamMutation } from '../../store/features/team/teamApiSlice';
 
 function DeleteModal({ getInfo, detail, title }) {
   console.log(detail, 'dtl');
@@ -15,6 +16,7 @@ function DeleteModal({ getInfo, detail, title }) {
   const [deleteBts] = useDeleteBtsMutation();
   const [deleteComplain] = useDeleteComplainMutation();
   const [deletePOP] = useDeletePOPMutation();
+  const [deleteTeam] = useDeleteTeamMutation();
 
   const onSubmit = async () => {
     try {
@@ -25,6 +27,8 @@ function DeleteModal({ getInfo, detail, title }) {
         deleteData = await deleteComplain(detail.id_keluhan);
       } else if (title === 'POP') {
         deleteData = await deletePOP(detail.id_pop);
+      } else if (title === 'Team') {
+        deleteData = await deleteTeam(detail.id_role);
       }
       console.log(deleteData);
       if (deleteData?.data?.status === 'success') {

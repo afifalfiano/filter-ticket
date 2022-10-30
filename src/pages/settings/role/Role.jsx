@@ -12,6 +12,7 @@ import SkeletonTable from '../../../components/common/table/SkeletonTable';
 import Pagination from '../../../components/common/table/Pagination';
 import { useAllTeamMutation } from '../../../store/features/team/teamApiSlice';
 import { selectAllTeam, setTeam } from '../../../store/features/team/teamSlice';
+import FormRole from './FormRole';
 
 function Role() {
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ function Role() {
 
       {/* modal craete or update */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      {/* <FormBTS getInfo={getInfo} detail={detail} titleAction={title} /> */}
+      <FormRole getInfo={getInfo} detail={detail} titleAction={title} />
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
@@ -137,7 +138,7 @@ function Role() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('update');
-                          // document.getElementById('my-modal-3').click();
+                          document.getElementById('my-modal-3').click();
                         }}
                       />
                       <HiTrash
@@ -146,7 +147,7 @@ function Role() {
                         className="cursor-pointer"
                         onClick={() => {
                           setDetail(item);
-                          // document.getElementById('my-modal-delete').click();
+                          document.getElementById('my-modal-delete').click();
                         }}
                       />
                       <HiEye
@@ -156,7 +157,7 @@ function Role() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('read');
-                          // document.getElementById('my-modal-3').click();
+                          document.getElementById('my-modal-3').click();
                         }}
                       />
                     </div>
