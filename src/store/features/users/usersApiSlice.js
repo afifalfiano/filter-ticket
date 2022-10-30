@@ -11,7 +11,39 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    usersById: builder.mutation({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: 'GET',
+      }),
+    }),
+    addUsers: builder.mutation({
+      query: (body) => ({
+        url: '/user',
+        method: 'POST',
+        body: { ...body },
+      }),
+    }),
+    updateUsers: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/user/${id}`,
+        method: 'PUT',
+        body: { ...body },
+      }),
+    }),
+    deleteUsers: builder.mutation({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useAllUsersMutation } = usersApiSlice;
+export const {
+  useAllUsersMutation,
+  useUsersByIdMutation,
+  useAddUsersMutation,
+  useUpdateUsersMutation,
+  useDeleteUsersMutation,
+} = usersApiSlice;

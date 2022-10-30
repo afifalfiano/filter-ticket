@@ -86,6 +86,18 @@ const RFOMasalSchema = Yup.object().shape({
   durasi: Yup.string().optional(),
 });
 
+const FormPOPSchema = Yup.object().shape({
+  pop: Yup.string().required('Wajib diisi.'),
+});
+
+const FormRoleSchema = Yup.object().shape({
+  role: Yup.string().required('Wajib diisi.'),
+});
+
+const FormSumberKeluhanSchema = Yup.object().shape({
+  sumber: Yup.string().required('Wajib diisi.'),
+});
+
 export {
   SignUpSchema,
   SignInSchema,
@@ -96,4 +108,7 @@ export {
   RFOSingleSchema,
   ProfileSchema,
   RFOMasalSchema,
+  FormPOPSchema,
+  FormRoleSchema,
+  FormSumberKeluhanSchema,
 };

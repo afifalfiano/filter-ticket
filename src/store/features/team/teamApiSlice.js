@@ -11,7 +11,39 @@ export const teamApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    teamById: builder.mutation({
+      query: (id) => ({
+        url: `/role/${id}`,
+        method: 'GET',
+      }),
+    }),
+    addTeam: builder.mutation({
+      query: (body) => ({
+        url: '/role',
+        method: 'POST',
+        body: { ...body },
+      }),
+    }),
+    updateTeam: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/role/${id}`,
+        method: 'PUT',
+        body: { ...body },
+      }),
+    }),
+    deleteTeam: builder.mutation({
+      query: (id) => ({
+        url: `/role/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useAllTeamMutation } = teamApiSlice;
+export const {
+  useAllTeamMutation,
+  useTeamByIdMutation,
+  useAddTeamMutation,
+  useUpdateTeamMutation,
+  useDeleteTeamMutation,
+} = teamApiSlice;

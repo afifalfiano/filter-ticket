@@ -7,12 +7,15 @@ import toast from 'react-hot-toast';
 import { useDeleteBtsMutation } from '../../store/features/bts/btsApiSlice';
 import styles from './DeleteModal.module.css';
 import { useDeleteComplainMutation } from '../../store/features/complain/complainApiSlice';
+import { useDeletePOPMutation } from '../../store/features/pop/popApiSlice';
 
 function DeleteModal({ getInfo, detail, title }) {
   console.log(detail, 'dtl');
 
   const [deleteBts] = useDeleteBtsMutation();
   const [deleteComplain] = useDeleteComplainMutation();
+  const [deletePOP] = useDeletePOPMutation();
+
   const onSubmit = async () => {
     try {
       let deleteData;
@@ -20,6 +23,8 @@ function DeleteModal({ getInfo, detail, title }) {
         deleteData = await deleteBts(detail.id_bts);
       } else if (title === 'keluhan') {
         deleteData = await deleteComplain(detail.id_keluhan);
+      } else if (title === 'POP') {
+        deleteData = await deletePOP(detail.id_pop);
       }
       console.log(deleteData);
       if (deleteData?.data?.status === 'success') {

@@ -11,7 +11,39 @@ export const popApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    POPById: builder.mutation({
+      query: (id) => ({
+        url: `/pop/${id}`,
+        method: 'GET',
+      }),
+    }),
+    addPOP: builder.mutation({
+      query: (body) => ({
+        url: '/pop',
+        method: 'POST',
+        body: { ...body },
+      }),
+    }),
+    updatePOP: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/pop/${id}`,
+        method: 'PUT',
+        body: { ...body },
+      }),
+    }),
+    deletePOP: builder.mutation({
+      query: (id) => ({
+        url: `/pop/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useAllPOPMutation } = popApiSlice;
+export const {
+  useAllPOPMutation,
+  usePOPByIdMutation,
+  useAddPOPMutation,
+  useUpdatePOPMutation,
+  useDeletePOPMutation,
+} = popApiSlice;

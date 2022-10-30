@@ -11,7 +11,39 @@ export const sumberKeluhanApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    sumberKeluhanById: builder.mutation({
+      query: (id) => ({
+        url: `/sumber-keluhan/${id}`,
+        method: 'GET',
+      }),
+    }),
+    addSumberKeluhan: builder.mutation({
+      query: (body) => ({
+        url: '/sumber-keluhan',
+        method: 'POST',
+        body: { ...body },
+      }),
+    }),
+    updateSumberKeluhan: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/sumber-keluhan/${id}`,
+        method: 'PUT',
+        body: { ...body },
+      }),
+    }),
+    deleteSumberKeluhan: builder.mutation({
+      query: (id) => ({
+        url: `/sumber-keluhan/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useAllSumberKeluhanMutation } = sumberKeluhanApiSlice;
+export const {
+  useAllSumberKeluhanMutation,
+  useSumberKeluhanByIdMutation,
+  useAddSumberKeluhanMutation,
+  useUpdateSumberKeluhanMutation,
+  useDeleteSumberKeluhanMutation,
+} = sumberKeluhanApiSlice;

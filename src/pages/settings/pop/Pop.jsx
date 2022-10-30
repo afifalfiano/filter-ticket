@@ -12,6 +12,7 @@ import SkeletonTable from '../../../components/common/table/SkeletonTable';
 import Pagination from '../../../components/common/table/Pagination';
 import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
+import FormPOP from './FormPOP';
 
 function Pop() {
   const dispatch = useDispatch();
@@ -103,7 +104,7 @@ function Pop() {
 
       {/* modal craete or update */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      {/* <FormBTS getInfo={getInfo} detail={detail} titleAction={title} /> */}
+      <FormPOP getInfo={getInfo} detail={detail} titleAction={title} />
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
@@ -138,7 +139,7 @@ function Pop() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('update');
-                          // document.getElementById('my-modal-3').click();
+                          document.getElementById('my-modal-3').click();
                         }}
                       />
                       <HiTrash
@@ -147,7 +148,7 @@ function Pop() {
                         className="cursor-pointer"
                         onClick={() => {
                           setDetail(item);
-                          // document.getElementById('my-modal-delete').click();
+                          document.getElementById('my-modal-delete').click();
                         }}
                       />
                       <HiEye
@@ -157,7 +158,7 @@ function Pop() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('read');
-                          // document.getElementById('my-modal-3').click();
+                          document.getElementById('my-modal-3').click();
                         }}
                       />
                     </div>
