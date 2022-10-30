@@ -51,7 +51,7 @@ function SignUp() {
           value: item.id_pop
         }))
         mapPOP.unshift(
-          { label: 'Pilih Role', value: '' },
+          { label: 'Pilih POP', value: '' },
         )
         setOptionPOP(mapPOP);
       }
@@ -76,7 +76,8 @@ function SignUp() {
         mapTeam.unshift(
           { label: 'Pilih Role', value: '' },
         )
-        setOptionTeam(mapTeam);
+        const fixTeam = mapTeam.filter((item) => item.label !== 'ADMIN');
+        setOptionTeam(fixTeam);
       }
     } catch (error) {
       console.log(error);
