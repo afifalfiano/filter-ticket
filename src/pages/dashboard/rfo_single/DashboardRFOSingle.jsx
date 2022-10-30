@@ -49,22 +49,22 @@ const RFOSingleSchema = Yup.object().shape({
 function DashboardRFOSingle() {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { id } = useParams();
+  const history = location.pathname.includes('history');
   const [searchParams] = useSearchParams();
   const idRfoKeluhan = searchParams.get('id_rfo');
-  console.log(typeof idRfoKeluhan, 'dapat');
-  console.log(idRfoKeluhan, 'dapat');
-  console.log(location, ';loc');
+  const navigasi = useSelector(selectBreadcrumb);
+
   const [detailComplain, setDetailComplain] = useState(null);
-  const { id } = useParams();
-  console.log(id, 'param');
-  const [complainById, { isSuccess: isSuccessComplainById }] = useComplainByIdMutation();
-  const dispatch = useDispatch();
-  const [files, setFiles] = useState([]);
-  const [rfoById, { isSuccess: isSuccessRfoById }] = useRfoByIdMutation();
   const [rfoKeluhan, setRfoKeluhan] = useState(null);
-
-  const history = location.pathname.includes('history');
-
+  const [complainById, { isSuccess: isSuccessComplainById }] = useComplainByIdMutation();
+  const [rfoById, { isSuccess: isSuccessRfoById }] = useRfoByIdMutation();
+  const [addRFOKeluhan, { isSuccess }] = useAddRFOKeluhanMutation()
+  const [updateRFOKeluhan] = useUpdateRFOKeluhanMutation()
+  const [complainClosed] = useComplainClosedMutation()
+  let lastUpdate = null;
+  const { data: user } = useSelector(selectCurrentUser);
   let initialValues = {
     problem: rfoKeluhan?.problem || '',
     action: rfoKeluhan?.action || '',
@@ -77,39 +77,10 @@ function DashboardRFOSingle() {
 
   }
 
-  const lastUpdate = detailComplain?.balasan.length > 0
-    ? detailComplain?.balasan[detailComplain.balasan.length - 1].created_at
-    : detailComplain?.created_at
-
-  const daysCompare = (startDate, endDate) => {
-    const difference = startDate.getTime() - endDate.getTime();
-    const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-    return TotalDays;
-  };
-
-  function formatBytes(bytes, decimals = 2) {
-    if (!+bytes) return '0 Bytes'
-
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
-  }
-
-  const onHandleFileUpload = ($event) => {
-    console.log($event.target.files, 'file');
-    console.log($event.target.files.length, 'file');
-    const file = $event.target.files;
-    file.length > 0 ? setFiles(file[0]) : setFiles([]);
-  }
-
+  // this function running if the complain have rfo gangguan id
   const getRFOKeluhanById = async () => {
     try {
       const data = await rfoById(idRfoKeluhan).unwrap();
-      console.log(data, 'rfo id after update');
       if (data.status === 'success') {
         dispatch(setRFOById(data.data))
         setRfoKeluhan(data.data);
@@ -135,31 +106,19 @@ function DashboardRFOSingle() {
       const data = await complainById(id).unwrap();
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
-      if (data.data.status === 'closed') {
-        console.log('closed nih')
-      } else {
-        console.log('open nih')
-      }
-      console.log(data, 'data');
+      lastUpdate = detailComplain?.balasan.length > 0
+        ? detailComplain?.balasan[detailComplain.balasan.length - 1].created_at
+        : detailComplain?.created_at
     } catch (err) {
       console.log(err);
     }
   };
 
-  const [addRFOKeluhan, { isSuccess }] = useAddRFOKeluhanMutation()
-  const [updateRFOKeluhan] = useUpdateRFOKeluhanMutation()
-
-  const [complainClosed] = useComplainClosedMutation()
-
-  const navigasi = useSelector(selectBreadcrumb);
-
-  const { data: user } = useSelector(selectCurrentUser);
-
   useEffect(() => {
     const data = [...navigasi.data, { path: `/dashboard/rfo_single/${id}?id_rfo=${idRfoKeluhan}`, title: 'Dasbor Reason Of Outage Single' }]
     dispatch(updateBreadcrumb(data))
     getComplainById();
-    if (idRfoKeluhan !== null) {
+    if (idRfoKeluhan !== 'null') {
       getRFOKeluhanById();
     }
   }, []);
@@ -208,7 +167,7 @@ function DashboardRFOSingle() {
           icon: false,
         });
         setTimeout(async () => {
-          const closed = await complainClosed(detailComplain.user_id);
+          const closed = await complainClosed(detailComplain.id_keluhan);
           console.log(closed, 'cls');
           if (closed?.data?.status === 'success') {
             toast.success('Data Keluhan Berhasil Ditutup.', {
@@ -357,7 +316,7 @@ function DashboardRFOSingle() {
                       name="problem"
                       placeholder="Masalah"
                       value={values.problem}
-                      disabled={history ? true : null}
+                      disabled={history || detailComplain?.status === 'closed' ? true : null}
                       component="textarea"
                       onBlur={handleBlur}
                       onChange={handleChange}
@@ -381,7 +340,7 @@ function DashboardRFOSingle() {
                       component="textarea"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      disabled={history ? true : null}
+                      disabled={history || detailComplain?.status === 'closed' ? true : null}
                       className="textarea textarea-bordered h-24"
                     />
                     {errors.action && touched.action ? (
@@ -402,7 +361,7 @@ function DashboardRFOSingle() {
                       component="textarea"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      disabled={history ? true : null}
+                      disabled={history || detailComplain?.status === 'closed' ? true : null}
                       className="textarea textarea-bordered h-24"
                     />
                     {errors.deskripsi && touched.deskripsi ? (
@@ -472,7 +431,7 @@ function DashboardRFOSingle() {
                       type="text"
                       onBlur={handleBlur}
                       onChange={handleChange}
-                      disabled={history ? true : null}
+                      disabled={history || detailComplain?.status === 'closed' ? true : null}
                       className="input input-md input-bordered  max-w-full"
                     />
                   </div>
@@ -499,7 +458,7 @@ function DashboardRFOSingle() {
                   </div>
                 </div>
 
-                {!history ? (
+                {(!history && idRfoKeluhan === 'null' && detailComplain?.status === 'open') ? (
                   <UploadFile />
 
                 ) : (
@@ -508,7 +467,7 @@ function DashboardRFOSingle() {
                   </div>
                 )}
 
-                {(!history && idRfoKeluhan === null) || (!history && idRfoKeluhan !== null) ? (
+                {(!history && detailComplain?.status === 'open') || idRfoKeluhan === 'null' ? (
                   <div className="modal-action justify-center mt-10">
                     <button
                       type="button"
@@ -530,7 +489,11 @@ function DashboardRFOSingle() {
                       type="button"
                       className="btn btn-md mr-5"
                       onClick={() => {
-                        navigate('/history_dashboard');
+                        if (history && detailComplain?.status === 'closed') {
+                          navigate('/history_dashboard');
+                        } else {
+                          navigate('/dashboard');
+                        }
                         // navigate('/dashboard');
                       }}
                     >

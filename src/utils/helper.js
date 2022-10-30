@@ -10,4 +10,10 @@ function formatBytes(bytes, decimals = 2) {
 
   return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`;
 }
-export { formatBytes };
+
+function daysCompare(startDate, endDate) {
+  const difference = startDate.getTime() - endDate.getTime();
+  const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
+  return TotalDays;
+}
+export { formatBytes, daysCompare };

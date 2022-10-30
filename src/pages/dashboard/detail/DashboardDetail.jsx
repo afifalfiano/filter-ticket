@@ -53,6 +53,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
   };
 
   const { data: user } = useSelector(selectCurrentUser);
+  const historyUrl = location.pathname.includes('history');
 
   useEffect(() => {
     getComplainById();
@@ -245,7 +246,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
 
         <hr className="my-3" />
 
-        {!location.pathname.includes('history') && !rfoSingle
+        {!historyUrl && !rfoSingle && detailComplain?.status === 'open'
           ? (
             <Formik
               enableReinitialize
@@ -308,7 +309,11 @@ function DashboardDetail({ rfoSingle, idComplain }) {
                 type="button"
                 className="btn btn-md mr-5"
                 onClick={() => {
-                  navigate('/history_dashboard');
+                  if (historyUrl) {
+                    navigate('/history_dashboard');
+                  } else {
+                    navigate('/dashboard');
+                  }
                 }}
               >
                 Kembali

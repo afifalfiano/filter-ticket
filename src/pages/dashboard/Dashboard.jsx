@@ -108,13 +108,13 @@ function Dashboard() {
     setPOPLocal(event.target.value);
     console.log(event.target.value, 'how');
     const dataChanged = dataRow.data.filter((item) => {
-      if (+item.pop_id === +event.target.value) {
+      if (+item.pop_id === +event.target.value && item.status === statusData) {
         return item;
       }
     })
     if (event.target.value === 'all') {
       console.log(dataRow, 'cek gan');
-      setRows(dataRow.data);
+      setRows(dataRow.data.filter((item) => item.status === statusData));
     } else {
       setRows(dataChanged);
     }
@@ -179,6 +179,7 @@ function Dashboard() {
 
   return (
     <div>
+      {statusData === 'open' && (
       <div>
         <button
           className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
@@ -191,6 +192,7 @@ function Dashboard() {
           Tambah
         </button>
       </div>
+      )}
 
       {!isLoading && (
       <div className="flex gap-5 mt-5">
