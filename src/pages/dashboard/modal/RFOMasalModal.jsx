@@ -19,12 +19,15 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import styles from './RFOMasalModal.module.css';
-import { useAllRFOMasalMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { useAllRFOMasalMutation, useUpdateKeluhanRFOGangguanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { selectAllRFOMasal, setRFOMasal } from '../../../store/features/rfo/rfoSlice';
 import { RFOMasalFormSchema } from '../../../utils/schema_validation_form';
+import { useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
 
 function RFOMasalModal({ getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()
+  const [updateKeluhanRFOGangguan] = useUpdateKeluhanRFOGangguanMutation()
+  const [complainClosed] = useComplainClosedMutation()
   const dispatch = useDispatch()
   const [dataRFOMasal, setDataRFOMasal] = useState([])
 
@@ -50,12 +53,12 @@ function RFOMasalModal({ getInfo, detail }) {
     try {
       // create
       const body = {
+        rfo_gangguan_id: payload.rfo_gangguan
       };
-      //   const rfoMasal = await rfoMasalKeluhan(body);
-      let rfoMasal;
-      console.log(rfoMasal, 'res');
-      if (rfoMasal.data.status === 'success') {
-        toast.success('Berhasil membuat akun baru.', {
+      const data = await updateKeluhanRFOGangguan({ id: detail.id_keluhan, body });
+      console.log(data, 'res');
+      if (data.data.status === 'success') {
+        toast.success(data.data.message, {
           style: {
             padding: '16px',
             backgroundColor: '#36d399',
@@ -67,12 +70,48 @@ function RFOMasalModal({ getInfo, detail }) {
           icon: false,
         });
 
-        setTimeout(() => {
-          document.getElementById('my-modal-rfo-masal').click();
-          getInfo({ status: 'success' });
-        }, 2000)
+        setTimeout(async () => {
+          const closed = await complainClosed(detail.id_keluhan);
+          console.log(closed, 'cls');
+          if (closed?.data?.status === 'success') {
+            toast.success('Data Keluhan Berhasil Ditutup.', {
+              style: {
+                padding: '16px',
+                backgroundColor: '#36d399',
+                color: 'white',
+              },
+              duration: 2000,
+              position: 'top-right',
+              id: 'success',
+              icon: false,
+            });
+
+            setTimeout(async () => {
+              document.getElementById('my-modal-rfo-masal').click();
+              getInfo({ status: 'success' });
+            }, 1000)
+          } else {
+            toast.error(`${closed?.data?.message}`, {
+              style: {
+                padding: '16px',
+                backgroundColor: '#ff492d',
+                color: 'white',
+              },
+              duration: 2000,
+              position: 'top-right',
+              id: 'error',
+              icon: false,
+            });
+          }
+          console.log(closed, 'cek');
+        }, 1000);
+
+        // setTimeout(() => {
+        //   document.getElementById('my-modal-rfo-masal').click();
+        //   getInfo({ status: 'success' });
+        // }, 2000)
       } else {
-        toast.error(`${rfoMasal.data.message}`, {
+        toast.error(`${data.data.message}`, {
           style: {
             padding: '16px',
             backgroundColor: '#ff492d',
