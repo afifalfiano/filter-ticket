@@ -202,7 +202,7 @@ function BaseTransceiverStation() {
           <thead>
             <tr>
               {columns.map((item) => (
-                <th className="text-center">{isLoading ? (<Skeleton count={1} />) : (item)}</th>
+                <th className="text-center">{item}</th>
               ))}
             </tr>
           </thead>
