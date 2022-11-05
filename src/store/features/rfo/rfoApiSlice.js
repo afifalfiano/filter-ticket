@@ -76,7 +76,14 @@ export const rfoApiSlice = apiSlice.injectEndpoints({
         body
       }),
     }),
+    updateKeluhanRFOKeluhan: builder.mutation({
+      query: ({ id, body }) => ({
+        url: `/keluhan-rfo-keluhan/${id}`,
+        method: 'PUT',
+        body
+      }),
+    }),
   }),
 });
 
-export const { useAllRFOMutation, useDeleteRFOKeluhanMutation, useRfoByIdMutation, useRfoGangguanByIdMutation, useAddRFOKeluhanMutation, useUpdateRFOKeluhanMutation, useAllRFOMasalMutation, useAddRFOGangguanMutation, useUpdateRFOGangguanMutation, useDeleteRFOGangguanMutation, useUpdateKeluhanRFOGangguanMutation } = rfoApiSlice;
+export const { useAllRFOMutation, useDeleteRFOKeluhanMutation, useRfoByIdMutation, useRfoGangguanByIdMutation, useAddRFOKeluhanMutation, useUpdateRFOKeluhanMutation, useAllRFOMasalMutation, useAddRFOGangguanMutation, useUpdateRFOGangguanMutation, useDeleteRFOGangguanMutation, useUpdateKeluhanRFOGangguanMutation, useUpdateKeluhanRFOKeluhanMutation } = rfoApiSlice;

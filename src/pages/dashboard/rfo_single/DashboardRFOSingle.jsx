@@ -17,7 +17,7 @@ import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useComplainByIdMutation, useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
-import { useAddRFOKeluhanMutation, useRfoByIdMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { useAddRFOKeluhanMutation, useRfoByIdMutation, useUpdateKeluhanRFOKeluhanMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectRFODetail, setRFOById } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../detail/DashboardDetail';
@@ -45,6 +45,7 @@ function DashboardRFOSingle() {
   const [addRFOKeluhan, { isSuccess }] = useAddRFOKeluhanMutation()
   const [updateRFOKeluhan] = useUpdateRFOKeluhanMutation()
   const [complainClosed] = useComplainClosedMutation()
+  const [updateKeluhanRFOKeluhan] = useUpdateKeluhanRFOKeluhanMutation()
   let lastUpdate = null;
   const { data: user } = useSelector(selectCurrentUser);
   let initialValues = {
@@ -148,11 +149,16 @@ function DashboardRFOSingle() {
           id: 'success',
           icon: false,
         });
+
         setTimeout(async () => {
-          const closed = await complainClosed(detailComplain.id_keluhan);
-          console.log(closed, 'cls');
-          if (closed?.data?.status === 'success') {
-            toast.success('Data Keluhan Berhasil Ditutup.', {
+          console.log(data, 'cek data baru')
+          const bodyUpdate = {
+            rfo_keluhan_id: data.id_rfo_keluhan
+          }
+          const updateKeluhan = await updateKeluhanRFOKeluhan({ id, body: bodyUpdate })
+
+          if (updateKeluhan.status === 'success') {
+            toast.success(updateKeluhan.data.message, {
               style: {
                 padding: '16px',
                 backgroundColor: '#36d399',
@@ -165,24 +171,42 @@ function DashboardRFOSingle() {
             });
 
             setTimeout(async () => {
-              resetForm();
-              navigate('/dashboard', { replace: true })
-            }, 1000)
-          } else {
-            toast.error(`${closed?.data?.message}`, {
-              style: {
-                padding: '16px',
-                backgroundColor: '#ff492d',
-                color: 'white',
-              },
-              duration: 2000,
-              position: 'top-right',
-              id: 'error',
-              icon: false,
-            });
+              const closed = await complainClosed(detailComplain.id_keluhan);
+              console.log(closed, 'cls');
+              if (closed?.data?.status === 'success') {
+                toast.success('Data Keluhan Berhasil Ditutup.', {
+                  style: {
+                    padding: '16px',
+                    backgroundColor: '#36d399',
+                    color: 'white',
+                  },
+                  duration: 2000,
+                  position: 'top-right',
+                  id: 'success',
+                  icon: false,
+                });
+
+                setTimeout(async () => {
+                  resetForm();
+                  navigate('/dashboard', { replace: true })
+                }, 1000)
+              } else {
+                toast.error(`${closed?.data?.message}`, {
+                  style: {
+                    padding: '16px',
+                    backgroundColor: '#ff492d',
+                    color: 'white',
+                  },
+                  duration: 2000,
+                  position: 'top-right',
+                  id: 'error',
+                  icon: false,
+                });
+              }
+              console.log(closed, 'cek');
+            }, 2000);
           }
-          console.log(closed, 'cek');
-        }, 1000);
+        }, 0);
       } else {
         console.log(data, 'err');
         toast.error(data?.message, {
