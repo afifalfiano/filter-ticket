@@ -157,7 +157,7 @@ function DashboardRFOSingle() {
           }
           const updateKeluhan = await updateKeluhanRFOKeluhan({ id, body: bodyUpdate })
 
-          if (updateKeluhan.status === 'success') {
+          if (updateKeluhan.data.status === 'success') {
             toast.success(updateKeluhan.data.message, {
               style: {
                 padding: '16px',

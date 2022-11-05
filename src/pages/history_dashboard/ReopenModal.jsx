@@ -25,30 +25,60 @@ import {
 import toast from 'react-hot-toast';
 import { useComplainHistoryReopenMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
 import styles from './HistoryDashboard.module.css';
+import { useDeleteRFOKeluhanMutation } from '../../store/features/rfo/rfoApiSlice';
 
 function ReopenModal({ getInfo, detail }) {
   const [complainHistoryReopen] = useComplainHistoryReopenMutation()
+  const [deleteRFOKeluhan] = useDeleteRFOKeluhanMutation();
 
   const onSubmit = async () => {
     try {
-      const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
+      console.log(detail, 'dtl');
+      if (detail.rfo_keluhan_id !== null) {
+        // if (deleteKeluhan.data.status === 'success') {
+        const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
+        if (reopenComplain.data.status === 'success') {
+          toast.success(`Berhasil membuka kembali keluhan.`, {
+            style: {
+              padding: '16px',
+              backgroundColor: '#36d399',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'success',
+            icon: false,
+          });
 
-      if (reopenComplain.data.status === 'success') {
-        toast.success(`Berhasil membuka kembali keluhan.`, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
-        setTimeout(() => {
-          document.getElementById('my-modal-revert').click();
-          getInfo({ status: 'success' });
-        }, 2000);
+          const deleteKeluhan = await deleteRFOKeluhan(detail.rfo_keluhan_id);
+          if (deleteKeluhan.data.status === 'success') {
+            setTimeout(() => {
+              document.getElementById('my-modal-revert').click();
+              getInfo({ status: 'success' });
+            }, 2000);
+          }
+        }
+        // }
+      } else {
+        const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
+
+        if (reopenComplain.data.status === 'success') {
+          toast.success(`Berhasil membuka kembali keluhan.`, {
+            style: {
+              padding: '16px',
+              backgroundColor: '#36d399',
+              color: 'white',
+            },
+            duration: 2000,
+            position: 'top-right',
+            id: 'success',
+            icon: false,
+          });
+          setTimeout(() => {
+            document.getElementById('my-modal-revert').click();
+            getInfo({ status: 'success' });
+          }, 2000);
+        }
       }
     } catch (error) {
       console.log(error);
