@@ -76,8 +76,7 @@ function SignUp() {
         mapTeam.unshift(
           { label: 'Pilih Role', value: '' },
         )
-        const fixTeam = mapTeam.filter((item) => item.label !== 'ADMIN');
-        setOptionTeam(fixTeam);
+        setOptionTeam(mapTeam);
       }
     } catch (error) {
       console.log(error);
