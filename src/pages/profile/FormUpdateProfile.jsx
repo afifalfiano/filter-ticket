@@ -186,6 +186,7 @@ function FormUpdateProfile({ handleForm }) {
                           name="role_id"
                           value={values.role_id}
                           onBlur={handleBlur}
+                          disabled={user.role_id !== 3}
                           onChange={handleChange}
                           className="select w-full max-w-full input-bordered"
                         >
@@ -211,6 +212,7 @@ function FormUpdateProfile({ handleForm }) {
                           id="pop_id"
                           name="pop_id"
                           value={values.pop_id}
+                          disabled={user.role_id !== 3}
                           onBlur={handleBlur}
                           onChange={handleChange}
                           className="select w-full max-w-full input-bordered"
