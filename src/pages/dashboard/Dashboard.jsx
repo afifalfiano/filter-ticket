@@ -333,74 +333,41 @@ function Dashboard() {
                   <div className="flex flex-row gap-3 justify-center">
                     { statusData === 'open' ? (
                       <>
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            setDetail(item);
-                            document.getElementById('my-modal-complain').click();
-                          }}
-                        />
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            document
-                              .getElementById('my-modal-delete')
-                              .click();
-                          }}
-                        />
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(`/dashboard/detail/${item.id_keluhan}`);
-                          }}
-                        />
-                        <HiOutlineClipboardCheck
-                          size={20}
-                          color="#065F46"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
-                          }}
-                        />
-                        <HiOutlineClipboardList
-                          size={20}
-                          color="#0007A3"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            document.getElementById('my-modal-rfo-masal').click();
-                          }}
-                        />
-                      </>
-                    ) : (
-                      <>
-                        <FaUndoAlt
-                          size={20}
-                          color="#D98200"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            document
-                              .getElementById('my-modal-revert')
-                              .click();
-                          }}
-                        />
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(`/dashboard/detail/${item.id_keluhan}`);
-                          }}
-                        />
-                        {item.rfo_keluhan_id !== null && (
+                        <div className="tooltip" data-tip="Edit">
+                          <HiPencil
+                            className="cursor-pointer"
+                            size={20}
+                            color="#D98200"
+                            onClick={() => {
+                              setDetail(item);
+                              document.getElementById('my-modal-complain').click();
+                            }}
+                          />
+                        </div>
+                        <div className="tooltip" data-tip="Hapus">
+                          <HiTrash
+                            size={20}
+                            color="#FF2E00"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setDetail(item);
+                              document
+                                .getElementById('my-modal-delete')
+                                .click();
+                            }}
+                          />
+                        </div>
+                        <div className="tooltip" data-tip="Detail">
+                          <HiEye
+                            size={20}
+                            color="#0D68F1"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              navigate(`/dashboard/detail/${item.id_keluhan}`);
+                            }}
+                          />
+                        </div>
+                        <div className="tooltip" data-tip="RFO Keluhan">
                           <HiOutlineClipboardCheck
                             size={20}
                             color="#065F46"
@@ -409,19 +376,70 @@ function Dashboard() {
                               navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
                             }}
                           />
-                        )}
-                        {item.rfo_gangguan_id !== null && (
+                        </div>
+                        <div className="tooltip" data-tip="RFO Gangguan">
                           <HiOutlineClipboardList
                             size={20}
                             color="#0007A3"
                             className="cursor-pointer"
                             onClick={() => {
                               setDetail(item);
-                              navigate(
-                                `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
-                              );
+                              document.getElementById('my-modal-rfo-masal').click();
                             }}
                           />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="tooltip" data-tip="Kembalikan Status Open">
+                          <FaUndoAlt
+                            size={20}
+                            color="#D98200"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setDetail(item);
+                              document
+                                .getElementById('my-modal-revert')
+                                .click();
+                            }}
+                          />
+                        </div>
+                        <div className="tooltip" data-tip="Detail">
+                          <HiEye
+                            size={20}
+                            color="#0D68F1"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              navigate(`/dashboard/detail/${item.id_keluhan}`);
+                            }}
+                          />
+                        </div>
+                        {item.rfo_keluhan_id !== null && (
+                          <div className="tooltip" data-tip="RFO Keluhan">
+                            <HiOutlineClipboardCheck
+                              size={20}
+                              color="#065F46"
+                              className="cursor-pointer"
+                              onClick={() => {
+                                navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
+                              }}
+                            />
+                          </div>
+                        )}
+                        {item.rfo_gangguan_id !== null && (
+                          <div className="tooltip" data-tip="RFO Gangguan">
+                            <HiOutlineClipboardList
+                              size={20}
+                              color="#0007A3"
+                              className="cursor-pointer"
+                              onClick={() => {
+                                setDetail(item);
+                                navigate(
+                                  `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
+                                );
+                              }}
+                            />
+                          </div>
                         )}
                       </>
                     )}
