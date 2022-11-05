@@ -297,51 +297,57 @@ function ReasonOfOutage() {
                 </td>
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
-                    <HiPencil
-                      className="cursor-pointer"
-                      size={20}
-                      color="#D98200"
-                      onClick={() => {
-                        if (item.hasOwnProperty('id_rfo_keluhan')) {
-                          navigate(
-                            `/reason_of_outage/detail_single/${item.id_rfo_keluhan}?edit=true`
-                          );
-                        }
-                        if (item.hasOwnProperty('id_rfo_gangguan')) {
-                          setDetail(item);
-                          document.getElementById('my-modal-3').click();
-                        }
-                      }}
-                    />
-                    <HiEye
-                      size={20}
-                      color="#0D68F1"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        if (item.hasOwnProperty('id_rfo_keluhan')) {
-                          navigate(
-                            `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
-                          );
-                        }
-                        if (item.hasOwnProperty('id_rfo_gangguan')) {
-                          navigate(
-                            `/reason_of_outage/detail_masal/${item.id_rfo_gangguan}`
-                          );
-                        }
-                      }}
-                    />
-                    {item.hasOwnProperty('id_rfo_gangguan') && (
-                      <HiTrash
-                        size={20}
-                        color="#FF2E00"
+                    <div className="tooltip" data-tip="Edit">
+                      <HiPencil
                         className="cursor-pointer"
+                        size={20}
+                        color="#D98200"
                         onClick={() => {
-                          setDetail(item);
-                          document
-                            .getElementById('my-modal-delete')
-                            .click();
+                          if (item.hasOwnProperty('id_rfo_keluhan')) {
+                            navigate(
+                              `/reason_of_outage/detail_single/${item.id_rfo_keluhan}?edit=true`
+                            );
+                          }
+                          if (item.hasOwnProperty('id_rfo_gangguan')) {
+                            setDetail(item);
+                            document.getElementById('my-modal-3').click();
+                          }
                         }}
                       />
+                    </div>
+                    <div className="tooltip" data-tip="Detail">
+                      <HiEye
+                        size={20}
+                        color="#0D68F1"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          if (item.hasOwnProperty('id_rfo_keluhan')) {
+                            navigate(
+                              `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
+                            );
+                          }
+                          if (item.hasOwnProperty('id_rfo_gangguan')) {
+                            navigate(
+                              `/reason_of_outage/detail_masal/${item.id_rfo_gangguan}`
+                            );
+                          }
+                        }}
+                      />
+                    </div>
+                    {item.hasOwnProperty('id_rfo_gangguan') && (
+                      <div className="tooltip" data-tip="Hapus">
+                        <HiTrash
+                          size={20}
+                          color="#FF2E00"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setDetail(item);
+                            document
+                              .getElementById('my-modal-delete')
+                              .click();
+                          }}
+                        />
+                      </div>
                     )}
                   </div>
                 </td>

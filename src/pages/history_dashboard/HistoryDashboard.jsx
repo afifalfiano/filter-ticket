@@ -266,49 +266,57 @@ function HistoryDashboard() {
                   </td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <FaUndoAlt
-                        size={20}
-                        color="#D98200"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setDetail(item);
-                          document
-                            .getElementById('my-modal-revert')
-                            .click();
-                        }}
-                      />
-                      <HiEye
-                        size={20}
-                        color="#0D68F1"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          navigate(`/history_dashboard/detail/${item.id_keluhan}`);
-                        }}
-                      />
-                      {item.rfo_keluhan_id !== null && (
-                        <HiOutlineClipboardCheck
+                      <div className="tooltip" data-tip="Kembalikan Status Open">
+                        <FaUndoAlt
                           size={20}
-                          color="#065F46"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(
-                              `/history_dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`
-                            );
-                          }}
-                        />
-                      )}
-                      {item.rfo_gangguan_id !== null && (
-                        <HiOutlineClipboardList
-                          size={20}
-                          color="#0007A3"
+                          color="#D98200"
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            navigate(
-                              `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
-                            );
+                            document
+                              .getElementById('my-modal-revert')
+                              .click();
                           }}
                         />
+                      </div>
+                      <div className="tooltip" data-tip="Detail">
+                        <HiEye
+                          size={20}
+                          color="#0D68F1"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            navigate(`/history_dashboard/detail/${item.id_keluhan}`);
+                          }}
+                        />
+                      </div>
+                      {item.rfo_keluhan_id !== null && (
+                        <div className="tooltip" data-tip="RFO Keluhan">
+                          <HiOutlineClipboardCheck
+                            size={20}
+                            color="#065F46"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              navigate(
+                                `/history_dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`
+                              );
+                            }}
+                          />
+                        </div>
+                      )}
+                      {item.rfo_gangguan_id !== null && (
+                        <div className="tooltip" data-tip="RFO Gangguan">
+                          <HiOutlineClipboardList
+                            size={20}
+                            color="#0007A3"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setDetail(item);
+                              navigate(
+                                `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
+                              );
+                            }}
+                          />
+                        </div>
                       )}
                     </div>
                   </td>

@@ -150,32 +150,38 @@ function Report() {
                 <td className="text-left">{item.keluhan_closed}</td>
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
-                    <HiEye
-                      size={20}
-                      color="#0D68F1"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        navigate(`/report/detail/${item.id_report}`);
-                      }}
-                    />
-                    <HiOutlinePrinter
-                      size={20}
-                      color="#0D68F1"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        navigate(`/report/detail/${item.id_report}`);
-                      }}
-                    />
-                    <HiTrash
-                      size={20}
-                      color="#FF2E00"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        document
-                          .getElementById('my-modal-delete')
-                          .click();
-                      }}
-                    />
+                    <div className="tooltip" data-tip="Detail">
+                      <HiEye
+                        size={20}
+                        color="#0D68F1"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          navigate(`/report/detail/${item.id_report}`);
+                        }}
+                      />
+                    </div>
+                    <div className="tooltip" data-tip="Cetak">
+                      <HiOutlinePrinter
+                        size={20}
+                        color="#0D68F1"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          navigate(`/report/detail/${item.id_report}`);
+                        }}
+                      />
+                    </div>
+                    <div className="tooltip" data-tip="Hapus">
+                      <HiTrash
+                        size={20}
+                        color="#FF2E00"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          document
+                            .getElementById('my-modal-delete')
+                            .click();
+                        }}
+                      />
+                    </div>
                   </div>
                 </td>
               </tr>
