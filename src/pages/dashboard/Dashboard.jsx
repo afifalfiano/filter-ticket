@@ -366,7 +366,7 @@ function Dashboard() {
                           color="#065F46"
                           className="cursor-pointer"
                           onClick={() => {
-                            navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_gangguan_id}`);
+                            navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
                           }}
                         />
                         <HiOutlineClipboardList
@@ -400,14 +400,28 @@ function Dashboard() {
                             navigate(`/dashboard/detail/${item.id_keluhan}`);
                           }}
                         />
-                        <HiOutlineClipboardCheck
-                          size={20}
-                          color="#065F46"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_gangguan_id}`);
-                          }}
-                        />
+                        {item.rfo_keluhan_id !== null ? (
+                          <HiOutlineClipboardCheck
+                            size={20}
+                            color="#065F46"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
+                            }}
+                          />
+                        ) : (
+                          <HiOutlineClipboardList
+                            size={20}
+                            color="#0007A3"
+                            className="cursor-pointer"
+                            onClick={() => {
+                              setDetail(item);
+                              navigate(
+                                `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
+                              );
+                            }}
+                          />
+                        )}
                       </>
                     )}
                   </div>

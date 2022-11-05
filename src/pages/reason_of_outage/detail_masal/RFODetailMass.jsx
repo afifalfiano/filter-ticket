@@ -280,7 +280,7 @@ function RFODetailMass() {
                   type="button"
                   className="btn btn-md mr-5"
                   onClick={() => {
-                    navigate('/reason_of_outage');
+                    navigate(-1);
                   }}
                 >
                   Kembali
