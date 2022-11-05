@@ -20,6 +20,7 @@ import {
 } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import DeleteModal from '../../components/common/DeleteModal';
 import Pagination from '../../components/common/table/Pagination';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
@@ -146,6 +147,7 @@ function ReasonOfOutage() {
     if ($event.status === 'success') {
       setDetail(null);
       getAllRFOMasal();
+      getAllRFO();
     }
   };
 
@@ -167,6 +169,10 @@ function ReasonOfOutage() {
         </button>
       </div>
       )}
+
+      {/* modal delete */}
+      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <DeleteModal getInfo={getInfo} detail={detail} title="RFO Gangguan" />
 
       {!isLoading && (
       <div className="flex gap-5">
@@ -324,6 +330,19 @@ function ReasonOfOutage() {
                         }
                       }}
                     />
+                    {item.hasOwnProperty('id_rfo_gangguan') && (
+                      <HiTrash
+                        size={20}
+                        color="#FF2E00"
+                        className="cursor-pointer"
+                        onClick={() => {
+                          setDetail(item);
+                          document
+                            .getElementById('my-modal-delete')
+                            .click();
+                        }}
+                      />
+                    )}
                   </div>
                 </td>
               </tr>

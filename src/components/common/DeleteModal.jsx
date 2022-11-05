@@ -10,6 +10,7 @@ import { useDeleteComplainMutation } from '../../store/features/complain/complai
 import { useDeletePOPMutation } from '../../store/features/pop/popApiSlice';
 import { useDeleteTeamMutation } from '../../store/features/team/teamApiSlice';
 import { useDeleteSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
+import { useDeleteRFOGangguanMutation } from '../../store/features/rfo/rfoApiSlice';
 
 function DeleteModal({ getInfo, detail, title }) {
   console.log(detail, 'dtl');
@@ -19,6 +20,7 @@ function DeleteModal({ getInfo, detail, title }) {
   const [deletePOP] = useDeletePOPMutation();
   const [deleteTeam] = useDeleteTeamMutation();
   const [deleteSumberKeluhan] = useDeleteSumberKeluhanMutation();
+  const [deleteRFOGangguan] = useDeleteRFOGangguanMutation();
 
   const onSubmit = async () => {
     try {
@@ -33,6 +35,8 @@ function DeleteModal({ getInfo, detail, title }) {
         deleteData = await deleteTeam(detail.id_role);
       } else if (title === 'Sumber Keluhan') {
         deleteData = await deleteSumberKeluhan(detail.id_sumber);
+      } else if (title === 'RFO Gangguan') {
+        deleteData = await deleteRFOGangguan(detail.id_rfo_gangguan);
       }
       console.log(deleteData);
       if (deleteData?.data?.status === 'success') {
