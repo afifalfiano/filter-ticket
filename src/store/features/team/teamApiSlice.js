@@ -11,6 +11,12 @@ export const teamApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    allTeamPublic: builder.mutation({
+      query: () => ({
+        url: '/role-public',
+        method: 'GET',
+      }),
+    }),
     teamById: builder.mutation({
       query: (id) => ({
         url: `/role/${id}`,
@@ -42,6 +48,7 @@ export const teamApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useAllTeamMutation,
+  useAllTeamPublicMutation,
   useTeamByIdMutation,
   useAddTeamMutation,
   useUpdateTeamMutation,

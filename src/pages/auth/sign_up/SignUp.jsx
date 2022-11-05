@@ -12,14 +12,14 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Formik, Field, Form } from 'formik';
 import { useRegisterMutation } from '../../../store/features/auth/authApiSlice';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
-import { useAllTeamMutation } from '../../../store/features/team/teamApiSlice';
+import { useAllTeamPublicMutation } from '../../../store/features/team/teamApiSlice';
 import { SignUpSchema } from '../../../utils/schema_validation_form';
 
 function SignUp() {
   const navigate = useNavigate();
   const [register] = useRegisterMutation();
   const [allPOP] = useAllPOPMutation();
-  const [allTeam] = useAllTeamMutation();
+  const [allTeamPublic] = useAllTeamPublicMutation();
 
   const [optionTeam, setOptionTeam] = useState([
     { label: 'Pilih Role', value: '' },
@@ -66,7 +66,7 @@ function SignUp() {
 
   const getAllTeam = async () => {
     try {
-      const data = await allTeam().unwrap();
+      const data = await allTeamPublic().unwrap();
       console.log(data);
       if (data.status === 'success') {
         const mapTeam = data.data.map((item) => ({
