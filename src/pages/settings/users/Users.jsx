@@ -139,35 +139,41 @@ function Users() {
                   <td>{item.pop_id}</td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <HiPencil
-                        className="cursor-pointer"
-                        size={20}
-                        color="#D98200"
-                        onClick={() => {
-                          setDetail(item);
-                          setTitle('update');
+                      <div className="tooltip" data-tip="Edit">
+                        <HiPencil
+                          className="cursor-pointer"
+                          size={20}
+                          color="#D98200"
+                          onClick={() => {
+                            setDetail(item);
+                            setTitle('update');
                           // document.getElementById('my-modal-3').click();
-                        }}
-                      />
-                      <HiTrash
-                        size={20}
-                        color="#FF2E00"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setDetail(item);
+                          }}
+                        />
+                      </div>
+                      <div className="tooltip" data-tip="Hapus">
+                        <HiTrash
+                          size={20}
+                          color="#FF2E00"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setDetail(item);
                           // document.getElementById('my-modal-delete').click();
-                        }}
-                      />
-                      <HiEye
-                        size={20}
-                        color="#0D68F1"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setDetail(item);
-                          setTitle('read');
+                          }}
+                        />
+                      </div>
+                      <div className="tooltip" data-tip="Detail">
+                        <HiEye
+                          size={20}
+                          color="#0D68F1"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            setDetail(item);
+                            setTitle('read');
                           // document.getElementById('my-modal-3').click();
-                        }}
-                      />
+                          }}
+                        />
+                      </div>
                     </div>
                   </td>
                 </tr>
