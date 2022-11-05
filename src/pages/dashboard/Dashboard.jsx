@@ -400,7 +400,7 @@ function Dashboard() {
                             navigate(`/dashboard/detail/${item.id_keluhan}`);
                           }}
                         />
-                        {item.rfo_keluhan_id !== null ? (
+                        {item.rfo_keluhan_id !== null && (
                           <HiOutlineClipboardCheck
                             size={20}
                             color="#065F46"
@@ -409,7 +409,8 @@ function Dashboard() {
                               navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
                             }}
                           />
-                        ) : (
+                        )}
+                        {item.rfo_gangguan_id !== null && (
                           <HiOutlineClipboardList
                             size={20}
                             color="#0007A3"

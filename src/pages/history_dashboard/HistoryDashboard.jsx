@@ -285,7 +285,7 @@ function HistoryDashboard() {
                           navigate(`/history_dashboard/detail/${item.id_keluhan}`);
                         }}
                       />
-                      {item.rfo_keluhan_id !== null ? (
+                      {item.rfo_keluhan_id !== null && (
                         <HiOutlineClipboardCheck
                           size={20}
                           color="#065F46"
@@ -296,7 +296,8 @@ function HistoryDashboard() {
                             );
                           }}
                         />
-                      ) : (
+                      )}
+                      {item.rfo_gangguan_id !== null && (
                         <HiOutlineClipboardList
                           size={20}
                           color="#0007A3"
