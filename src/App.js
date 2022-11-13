@@ -26,6 +26,7 @@ import Users from './pages/settings/users/Users';
 import Pop from './pages/settings/pop/Pop';
 import SourceComplain from './pages/settings/source_complain/SourceComplain';
 import Role from './pages/settings/role/Role';
+import ReportDetail from './pages/report/detail/ReportDetail';
 
 function App() {
   const data = localStorage.getItem('user');
@@ -62,6 +63,7 @@ function App() {
             element={<RFODetailSingle />}
           />
           <Route path="report" element={<Report />} />
+          <Route path="report/create" element={<ReportDetail />} />
           <Route path="history_dashboard" element={<HistoryDashboard />} />
           <Route
             path="history_dashboard/detail/:id"
