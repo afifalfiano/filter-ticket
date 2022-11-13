@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import { useState, useEffect } from 'react';
 import { HiPencilAlt } from 'react-icons/hi';
@@ -10,10 +11,12 @@ import { useAllTeamMutation } from '../../store/features/team/teamApiSlice';
 import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam, setTeam } from '../../store/features/team/teamSlice';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import { useGetProfileMutation } from '../../store/features/auth/authApiSlice';
 
 function Profile() {
   const dispatch = useDispatch();
   const [form, setForm] = useState(false);
+  const [profile, setProfile] = useState(null);
   const { data: user } = useSelector(selectCurrentUser);
 
   const [currentRole, setCurrentRole] = useState(null);
@@ -21,8 +24,21 @@ function Profile() {
 
   const role = useSelector(selectAllTeam);
   const pop = useSelector(selectAllPOP);
-  const [allTeam] = useAllTeamMutation();
   const [allPOP] = useAllPOPMutation();
+  const [allTeam] = useAllTeamMutation();
+  const [getProfile] = useGetProfileMutation();
+
+  const doGetProfile = async () => {
+    try {
+      const data = await getProfile().unwrap();
+      console.log(data, 'profile');
+      if (data.status === 'success') {
+        setProfile(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getAllPOP = async () => {
     try {
@@ -60,6 +76,7 @@ function Profile() {
     dispatch(updateBreadcrumb([{ path: '/profile', title: 'Profil' }]));
     getAllPOP();
     getAllTeam();
+    doGetProfile();
   }, [form]);
 
   const handleUpdateProfile = (event) => {
@@ -81,10 +98,12 @@ function Profile() {
           <div className="text-center">
             <div className="avatar placeholder">
               <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
-                <span className="text-3xl">{user?.username[0]}</span>
+                <span className="text-3xl">
+                  <img src={profile?.avatar} alt={profile?.username} />
+                </span>
               </div>
             </div>
-            <h1 className="font-semibold text-xl mt-5">{user?.username}</h1>
+            <h1 className="font-semibold text-xl mt-5">{profile?.username}</h1>
             <div className="my-5 flex justify-center">
               <div className="border-gray-200 rounded-md border-2 w-80 h-48 items-center flex-row justify-center">
                 <div className="flex pt-1 px-1 justify-end">
@@ -100,17 +119,17 @@ function Profile() {
                       <tr className="text-left">
                         <td>Email</td>
                         <td>:</td>
-                        <td>{user?.email}</td>
+                        <td>{profile?.email}</td>
                       </tr>
                       <tr className="text-left">
                         <td>Role</td>
                         <td>:</td>
-                        <td>{currentRole?.role}</td>
+                        <td>{profile?.role?.role}</td>
                       </tr>
                       <tr className="text-left">
                         <td>POP</td>
                         <td>:</td>
-                        <td>{currentPop?.pop}</td>
+                        <td>{profile?.pop?.pop}</td>
                       </tr>
                     </tbody>
                   </table>

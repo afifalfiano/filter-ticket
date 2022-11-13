@@ -1,16 +1,37 @@
 /* eslint-disable */
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom'
-import { useLogoutMutation } from '../../store/features/auth/authApiSlice';
+import { useGetProfileMutation, useLogoutMutation } from '../../store/features/auth/authApiSlice';
 import { selectCurrentUser, setLogOut } from '../../store/features/auth/authSlice';
 import { clearBTS } from '../../store/features/bts/btsSlice';
 import { clearComplain } from '../../store/features/complain/complainSlice';
 import toast from 'react-hot-toast';
+import { useEffect, useState } from 'react';
 
 const DropdownMenu = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const [profile, setProfile] = useState(null);
+  const [getProfile] = useGetProfileMutation();
+
+  const doGetProfile = async () => {
+    try {
+      const data = await getProfile().unwrap();
+      console.log(data, 'profile');
+      if (data.status === 'success') {
+        setProfile(data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    doGetProfile();
+  }, [])
+  
 
   let { data: user } = useSelector(selectCurrentUser);
   console.log(user, 'usr');
@@ -65,7 +86,9 @@ const DropdownMenu = () => {
       <div className="dropdown dropdown-end">
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
-              <span className="text-2xl">{user?.username[0]}</span>
+              <span className="text-2xl">
+              <img src={profile?.avatar} alt={profile?.username} />
+              </span>
             </div>
         </label>
         <div

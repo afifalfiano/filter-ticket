@@ -171,6 +171,7 @@ function FormUpdateProfile({ handleForm }) {
                           onChange={handleChange}
                           placeholder="email@citra.net"
                           value={values.email}
+                          disabled={user.role_id !== 3}
                           className="input input-md input-bordered  max-w-full"
                         />
                       </div>

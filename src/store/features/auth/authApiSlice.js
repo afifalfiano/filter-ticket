@@ -32,7 +32,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    getProfile: builder.mutation({
+      query: () => ({
+        url: '/profile',
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation, useGetProfileMutation } = authApiSlice;
