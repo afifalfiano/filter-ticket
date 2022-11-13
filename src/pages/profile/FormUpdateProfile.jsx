@@ -15,7 +15,7 @@ import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcr
 import { ProfileSchema } from '../../utils/schema_validation_form';
 
 /* eslint-disable react/prop-types */
-function FormUpdateProfile({ handleForm }) {
+function FormUpdateProfile({ handleForm, profile }) {
   const { data: user } = useSelector(selectCurrentUser);
   const roleData = useSelector(selectAllTeam);
   const popData = useSelector(selectAllPOP);
@@ -134,7 +134,9 @@ function FormUpdateProfile({ handleForm }) {
               <div className="text-center">
                 <div className="avatar placeholder">
                   <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
-                    <span className="text-3xl">{user?.username[0]}</span>
+                    <span className="text-3xl">
+                      <img src={profile?.avatar} alt={profile?.username} />
+                    </span>
                   </div>
                 </div>
                 <h1 className="font-semibold text-xl mt-5">Ubah Profile</h1>

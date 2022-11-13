@@ -92,7 +92,7 @@ function Profile() {
   return (
     <div>
       {form ? (
-        <FormUpdateProfile handleForm={handleForm} />
+        <FormUpdateProfile handleForm={handleForm} profile={profile} />
       ) : (
         <div className="flex items-start justify-center">
           <div className="text-center">
