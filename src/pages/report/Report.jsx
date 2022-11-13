@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable max-len */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -221,8 +223,14 @@ function Report() {
                         size={20}
                         color="#0D68F1"
                         className="cursor-pointer"
-                        onClick={() => {
-                          navigate(`/report/detail/${item.id_report}`);
+                        onClick={(e) => {
+                          // <a href={item.lampiran_laporan} target="_blank" rel="noreferrer" />
+                          e.preventDefault();
+                          e.stopPropagation();
+                          window.open(
+                            `${item.lampiran_laporan}`,
+                            '_blank' // <- This is what makes it open in a new window.
+                          );
                         }}
                       />
                     </div>
