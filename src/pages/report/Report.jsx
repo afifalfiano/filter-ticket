@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable prefer-template */
@@ -26,11 +27,15 @@ import {
 } from 'react-icons/hi';
 import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './Report.module.css';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import { useAllReportMutation } from '../../store/features/report/reportApiSlice';
 import Pagination from '../../components/common/table/Pagination';
 import DeleteModal from '../../components/common/DeleteModal';
+import { selectAllReport, setReport } from '../../store/features/report/reportSlice';
+import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
+import { setPOP } from '../../store/features/pop/popSlice';
 
 function Report() {
   const columns = [
@@ -39,35 +44,85 @@ function Report() {
     'Tanggal',
     'Shift',
     'Petugas',
-    'Keluhan Open',
-    'Keluhan Closed',
     'Aksi',
   ];
-
-  const rows = [
-    {
-      id_report: 1,
-      pop: 'Yogyakarta',
-      tanggal: new Date().toLocaleDateString('id-ID'),
-      shift: '1 ( 08.00 - 16.00 )',
-      petugas: 'Putra, Putri, ',
-      keluhan_open: '...',
-      keluhan_closed: '...'
-    }
-  ];
   const [showTable, setShowTable] = useState(true);
-  const [pop, setPOP] = useState('all');
+  // const [pop, setPOP] = useState('all');
+  const [dataPOP, setdataPOP] = useState([]);
+  const [rows, setRows] = useState([]);
   const [detail, setDetail] = useState(null);
   const navigate = useNavigate();
+  const [allReport] = useAllReportMutation();
+  const dataRow = useSelector(selectAllReport);
+  const [allPOP] = useAllPOPMutation();
+  const [search, setSearch] = useState('');
+  const dispatch = useDispatch();
 
-  const handlePOP = (event) => {
-    setPOP(event.target.value);
+  const getAllPOP = async () => {
+    try {
+      const data = await allPOP().unwrap();
+      console.log(data, 'ceksaja');
+      if (data.status === 'success') {
+        dispatch(setPOP({ ...data }));
+        console.log('set data', data);
+        setdataPOP(data.data)
+        console.log(dataPOP, 'pp');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const dispatch = useDispatch()
+  const handlePOP = (event) => {
+    console.log(event.target, 'cek');
+    setPOP(event.target.value);
+    console.log(event.target.value, 'how');
+    const dataChanged = dataRow.data.filter((item) => {
+      if (+item.pop_id === +event.target.value) {
+        return item;
+      }
+    })
+    if (event.target.value === 'all') {
+      console.log(dataRow, 'cek gan');
+      setRows(dataRow.data)
+    } else {
+      setRows(dataChanged);
+    }
+  };
+
+  const onHandleSearch = (event) => {
+    event.preventDefault();
+    console.log(event.target.value);
+    console.log(event.target.value.length, 'ooo');
+    setSearch(event.target.value);
+
+    if (event.target.value.length > 0) {
+      const regex = new RegExp(search, 'ig');
+      const searchResult = rows.filter((item) => item.petugas.match(regex) || item.pop.pop.match(regex));
+      setRows(searchResult);
+    } else {
+      setRows(dataRow.data);
+    }
+  }
+
+  const doGetAllReport = async () => {
+    try {
+      const data = await allReport().unwrap();
+      console.log(data, 'dat');
+      if (data.status === 'success') {
+        dispatch(setReport({ ...data }));
+        setRows(data.data);
+        console.log(data.data, 'rw');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/report', title: 'Laporan' }]));
+    getAllPOP();
+    doGetAllReport();
   }, [])
 
   const getInfo = ($event) => {
@@ -104,11 +159,13 @@ function Report() {
             className="select w-full max-w-full input-bordered"
             onChange={handlePOP}
           >
-            <option disabled>Pilih POP</option>
-            <option value="yogyakarta">Yogyakarta</option>
-            <option value="solo">Solo</option>
+            <option value="all" label="Semua">All</option>
+            {dataPOP?.map((item) => (
+              <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+            ))}
           </select>
         </div>
+
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Cari</span>
@@ -122,8 +179,9 @@ function Report() {
                 type="text"
                 id="voice-search"
                 className="input input-md input-bordered pl-10 p-2.5 "
-                placeholder="Cari laporan..."
-                required
+                placeholder="Cari data keluhan..."
+                value={search}
+                onChange={onHandleSearch}
               />
             </div>
           </div>
@@ -142,12 +200,10 @@ function Report() {
             {rows.map((item, index) => (
               <tr className="text-center">
                 <th>{index + 1}</th>
-                <td>{item.pop}</td>
-                <td className="text-left">{item.tanggal}</td>
-                <td>{item.shift}</td>
+                <td>{item.pop.pop}</td>
+                <td className="text-left">{new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
+                <td>{item.shift.shift} ({item.shift.mulai} - {item.shift.selesai})</td>
                 <td>{item.petugas}</td>
-                <td className="text-left">{item.keluhan_open}</td>
-                <td className="text-left">{item.keluhan_closed}</td>
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
                     <div className="tooltip" data-tip="Detail">
