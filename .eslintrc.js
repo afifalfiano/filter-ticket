@@ -3,9 +3,8 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
-    'cypress/globals': true,
   },
-  extends: ['plugin:react/recommended', 'airbnb', 'plugin:cypress/recommended'],
+  extends: ['plugin:react/recommended', 'airbnb', ''],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -14,7 +13,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', 'prettier', 'cypress'],
+  plugins: ['react', 'prettier', ''],
   rules: {
     semi: 0,
     'comma-dangle': 0,
