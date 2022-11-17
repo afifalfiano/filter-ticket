@@ -4,7 +4,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['plugin:react/recommended', 'airbnb', ''],
+  extends: ['plugin:react/recommended', 'airbnb'],
   overrides: [],
   parserOptions: {
     ecmaVersion: 'latest',
@@ -13,7 +13,7 @@ module.exports = {
       jsx: true,
     },
   },
-  plugins: ['react', 'prettier', ''],
+  plugins: ['react', 'prettier'],
   rules: {
     semi: 0,
     'comma-dangle': 0,
