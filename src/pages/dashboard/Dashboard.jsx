@@ -155,7 +155,12 @@ function Dashboard() {
     dispatch(updateBreadcrumb([{ path: '/dashboard', title: 'Dasbor' }]))
     getAllPOP()
     getAllSumberKeluhan();
-    getAllComplain();
+    const intervalId = setInterval(() => {
+      getAllComplain();
+    }, 30000);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const handleStatus = (event) => {
