@@ -14,7 +14,7 @@ function Breadcrumb() {
     <div className="pt-6 px-6 text-md breadcrumbs">
       <ul>
         <li>
-          <Link to="/">
+          <Link to="/dashboard">
             <HiHome />
           </Link>
         </li>

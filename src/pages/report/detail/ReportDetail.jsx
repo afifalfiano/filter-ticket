@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
@@ -14,13 +15,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from 'react-hot-toast';
+import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
 import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation } from "../../../store/features/report/reportApiSlice";
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
 
 function ReportDetail() {
   const [allUserLocal, setAllUserLocal] = useState([]);
+  const [checkedState, setCheckedState] = useState(
+    new Array(2).fill(false)
+  );
   const [allShiftLocal, setAllShiftLocal] = useState([]);
   const [allPOPLocal, setAllPOPLocal] = useState([])
   const [bodyKeluhan, setBodyKeluhan] = useState({});
@@ -114,9 +119,32 @@ function ReportDetail() {
         console.log('set cek', data);
         // setAllShiftLocal(data.data);
         // setKeluhanLaporanLocal
+      } else {
+        toast.error(data.message || 'Data Tidak Ditemukan', {
+          style: {
+            padding: '16px',
+            backgroundColor: '#ffd22e',
+            color: 'white',
+          },
+          duration: 2000,
+          position: 'top-right',
+          id: 'error',
+          icon: false,
+        });
       }
     } catch (error) {
       console.log(error);
+      toast.error(error.data.message || 'Data Tidak Ditemukan', {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ffd22e',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
   }
 
@@ -124,16 +152,25 @@ function ReportDetail() {
     getKeluhanLaporanUser();
   }
 
+  const navigasi = useSelector(selectBreadcrumb);
+
   useEffect(() => {
-    dispatch(updateBreadcrumb([{ path: '/report/create', title: 'Tambah Laporan' }]));
+    const data = [...navigasi.data, { path: `/report/create`, title: 'Tambah' }]
+    dispatch(updateBreadcrumb(data))
     getAllPOP();
     getAllUserLapor();
     getAllShift();
   }, [])
 
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) => (index === position ? !item : item));
+    setCheckedState(updatedCheckedState);
+    console.log(checkedState, 'cek');
+    console.log(allUserLocal, 'all');
+  };
+
   return (
     <div>
-      <h1>Detail Laporan</h1>
       <div className="flex gap-5 mt-5">
         <div className="form-control">
           <label htmlFor="tanggal" className="label font-semibold">
@@ -158,7 +195,7 @@ function ReportDetail() {
             ))}
           </select>
         </div>
-        <div className="form-control">
+        {/* <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> User Laporan</span>
           </label>
@@ -173,7 +210,7 @@ function ReportDetail() {
               <option value={item.id_user} label={item.name}>{item.name}</option>
             ))}
           </select>
-        </div>
+        </div> */}
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Shift</span>
@@ -195,6 +232,33 @@ function ReportDetail() {
             Buat Laporan
           </button>
         </div>
+      </div>
+      <div className="mt-5">
+        <label htmlFor="location" className="label font-semibold">
+          <span className="label-text"> User Pengguna</span>
+        </label>
+        <div className="flex gap-5">
+          {allUserLocal.map(({ name, role }, index) => (
+            <div key={index}>
+              <div className="label">
+                <input
+                  type="checkbox"
+                  id={`custom-checkbox-${index}`}
+                  name={name}
+                  value={name}
+                  checked={checkedState[index]}
+                  onChange={() => handleOnChange(index)}
+                />
+                <label htmlFor={`custom-checkbox-${index}`} className="pl-2">{name}({role.role})</label>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="mt-5">
+        <label htmlFor="location" className="label font-semibold">
+          <span className="label-text"> Tampilan Laporan</span>
+        </label>
       </div>
     </div>
   );
