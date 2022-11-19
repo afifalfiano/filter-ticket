@@ -1,3 +1,9 @@
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-shadow */
+/* eslint-disable new-cap */
+/* eslint-disable no-return-assign */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable function-paren-newline */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable max-len */
@@ -13,7 +19,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-
+import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-hot-toast';
@@ -21,11 +27,14 @@ import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/brea
 import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation } from "../../../store/features/report/reportApiSlice";
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
 
+const styleReport = {
+  fontSize: '12px',
+  padding: '12px'
+}
+
 function ReportDetail() {
   const [allUserLocal, setAllUserLocal] = useState([]);
-  const [checkedState, setCheckedState] = useState(
-    new Array(2).fill(false)
-  );
+  const [checkedState, setCheckedState] = useState([]);
   const [allShiftLocal, setAllShiftLocal] = useState([]);
   const [allPOPLocal, setAllPOPLocal] = useState([])
   const [bodyKeluhan, setBodyKeluhan] = useState({});
@@ -64,7 +73,8 @@ function ReportDetail() {
         }
         console.log(dataLocal, 'loc');
         setAllUserLocal(dataLocal);
-        console.log('set user lapor', data);
+        setCheckedState(new Array(dataLocal.length).fill(true))
+        console.log('set user lapor', checkedState);
       }
     } catch (error) {
       console.log(error);
@@ -95,30 +105,37 @@ function ReportDetail() {
     if (id === 'shift') {
       setBodyKeluhan({ ...bodyKeluhan, shift: value });
     }
-    // setPOPLocal(event.target.value);
-    // console.log(event.target.value, 'how');
-    // const dataChanged = dataRow.data.filter((item) => {
-    //   if (+item.pop_id === +event.target.value && item.status === statusData) {
-    //     return item;
-    //   }
-    // })
-    // if (event.target.value === 'all') {
-    //   console.log(dataRow, 'cek gan');
-    //   setRows(dataRow.data.filter((item) => item.status === statusData));
-    // } else {
-    //   setRows(dataChanged);
-    // }
   };
+
+  const handleGeneratePdf = () => {
+    const doc = new jsPDF({
+      format: "a4",
+      unit: "px"
+    });
+
+    doc.setFontSize(12);
+    doc.html(document.getElementById('preview-report'), {
+      async callback(doc) {
+        doc.setFontSize(12);
+        // doc.save("Laporan" + new Date().toString());
+        const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
+        doc.setProperties({ title: printFileName });
+        window.open(doc.output('bloburl'), '_blank');
+      }
+    });
+  };
+
+  // let dataOpen = [];
+  // let dataClosed = [];
 
   const getKeluhanLaporanUser = async () => {
     try {
       const body = bodyKeluhan;
       const data = await getKeluhanLaporan({ body }).unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'succes') {
         console.log('set cek', data);
-        // setAllShiftLocal(data.data);
-        // setKeluhanLaporanLocal
+        setKeluhanLaporanLocal(data.data);
       } else {
         toast.error(data.message || 'Data Tidak Ditemukan', {
           style: {
@@ -164,11 +181,9 @@ function ReportDetail() {
 
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) => (index === position ? !item : item));
+    console.log(updatedCheckedState, 'cek dulu')
     setCheckedState(updatedCheckedState);
-    console.log(checkedState, 'cek');
-    console.log(allUserLocal, 'all');
   };
-
   return (
     <div>
       <div className="flex gap-5 mt-5">
@@ -195,22 +210,6 @@ function ReportDetail() {
             ))}
           </select>
         </div>
-        {/* <div className="form-control">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> User Laporan</span>
-          </label>
-
-          <select
-            className="select w-full max-w-full input-bordered"
-            onChange={handleFilter}
-            id="user"
-          >
-            <option value="" label="Pilih User">Pilih User</option>
-            {allUserLocal?.map((item) => (
-              <option value={item.id_user} label={item.name}>{item.name}</option>
-            ))}
-          </select>
-        </div> */}
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Shift</span>
@@ -229,7 +228,12 @@ function ReportDetail() {
         </div>
         <div className="form-control justify-end">
           <button type="button" onClick={onRequestLaporan} className="btn btn-md btn-success">
-            Buat Laporan
+            Generate Data
+          </button>
+        </div>
+        <div className="form-control justify-end">
+          <button type="button" onClick={handleGeneratePdf} className="btn btn-md btn-primary" disabled={keluhanLaporanLocal === null}>
+            Unduh Laporan
           </button>
         </div>
       </div>
@@ -259,6 +263,69 @@ function ReportDetail() {
         <label htmlFor="location" className="label font-semibold">
           <span className="label-text"> Tampilan Laporan</span>
         </label>
+        {keluhanLaporanLocal !== null && (
+        <div id="preview-report" style={styleReport}>
+          <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
+          <p className="font-semibold mt-2">Petugas:</p>
+          {/* {checkedState.map((item) => (<p>{item.toString()}</p>))} */}
+          {
+            checkedState.map((condition, indexcondition) => {
+              let user = '';
+              if (condition) {
+                allUserLocal.forEach((item, index) => {
+                  if (indexcondition === index) {
+                    user = <p>{item.name} ({item.role.role})</p>
+                  }
+                }
+                )
+              }
+              return user;
+            })
+          }
+          <p className="font-semibold mt-2">Total Keluhan: {keluhanLaporanLocal?.total_keluhan}</p>
+          <p className="font-semibold mt-2">Total RFO Gangguan: {keluhanLaporanLocal?.total_rfo_gangguan}</p>
+          <p className="font-semibold mt-2">Shift: {allShiftLocal?.map((item) => {
+            if (item.id_shift === +bodyKeluhan.shift) {
+              return (
+                <span>{`${item.shift} (${item.mulai}) - (${item.selesai})`}</span>
+              );
+            }
+          })}
+          </p>
+          <p className="font-semibold mt-2">Keluhan Open</p>
+          <div>
+            {keluhanLaporanLocal?.keluhan.map((item) => {
+              if (item.status === 'open') {
+                return (
+                  <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>
+                )
+              }
+            })}
+          </div>
+          <p className="font-semibold mt-2">Keluhan Closed</p>
+          <div>
+            {keluhanLaporanLocal?.keluhan.map((item) => {
+              if (item.status === 'closed') {
+                return (
+                  <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>
+                )
+              }
+            })}
+          </div>
+          <p className="font-semibold mt-2">RFO Gangguan</p>
+          <div>
+            {keluhanLaporanLocal?.rfo_gangguan.map((item) => (
+              <>
+                <li>{item.problem}</li>
+                <p className="ml-5">Terdampak:</p>
+                <ul className="ml-5">
+                  {item.keluhan.map((efek) => <li>{efek.id_pelanggan} - {efek.nama_pelanggan}</li>)}
+                </ul>
+              </>
+            ))}
+          </div>
+        </div>
+        )}
       </div>
     </div>
   );
