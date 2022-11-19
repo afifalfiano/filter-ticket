@@ -1,3 +1,6 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 /* eslint-disable react/prop-types */
 /* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
@@ -11,7 +14,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
-import { useAddReplyMutation, useComplainByIdMutation } from '../../../store/features/complain/complainApiSlice';
+import { useAddReplyMutation, useComplainByIdMutation, useLampiranFileBalasanMutation } from '../../../store/features/complain/complainApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
@@ -23,6 +26,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
   const location = useLocation();
   console.log(location, ';loc');
   const [detailComplain, setDetailComplain] = useState(null);
+  const [filesLocal, setFilesLocal] = useState([]);
   const { id } = useParams();
   console.log(id, 'param');
   const navigate = useNavigate();
@@ -30,8 +34,13 @@ function DashboardDetail({ rfoSingle, idComplain }) {
   const [addReply, { isSuccess: isSuccessReplpy }] = useAddReplyMutation();
   const dispatch = useDispatch();
 
-  const navigasi = useSelector(selectBreadcrumb);
+  const [lampiranFileBalasan] = useLampiranFileBalasanMutation();
 
+  const navigasi = useSelector(selectBreadcrumb);
+  const onHandleFileUpload = ($event) => {
+    console.log($event, 'file');
+    setFilesLocal($event);
+  }
   const getComplainById = async () => {
     try {
       let idConditional;
@@ -54,9 +63,6 @@ function DashboardDetail({ rfoSingle, idComplain }) {
 
   useEffect(() => {
     getComplainById();
-  }, [isSuccessReplpy]);
-
-  useEffect(() => {
     if (idComplain === undefined) {
       const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
       dispatch(updateBreadcrumb(data))
@@ -86,6 +92,15 @@ function DashboardDetail({ rfoSingle, idComplain }) {
           id: 'success',
           icon: false,
         });
+        const formData = new FormData();
+        formData.append('balasan_id', add?.data?.id_balasan);
+        for (let index = 0; index < filesLocal.length; index++) {
+          formData.append(`path[${index}]`, filesLocal[index])
+        }
+
+        const dataLampiran = await lampiranFileBalasan({ body: formData }).unwrap();
+        console.log(dataLampiran, 'lampiran');
+        getComplainById();
       } else {
         toast.error(`${add.data.message}`, {
           style: {
@@ -196,11 +211,15 @@ function DashboardDetail({ rfoSingle, idComplain }) {
             />
           </div>
           <div className="py-2">
-            {detailComplain?.lampiran && (
-            <p className="link inline">
-              <HiDocumentText size={24} color="blue" className="inline mr-2" />
-            </p>
-            )}
+            {detailComplain?.lampirankeluhan.map((file) => {
+              if (file.keluhan_id === detailComplain.id_keluhan) {
+                return (
+                  <a className="link inline" href={file.path} target="_blank" rel="noreferrer">
+                    <HiDocumentText size={24} color="blue" className="inline mr-2" />Lampiran File
+                  </a>
+                )
+              }
+            })}
           </div>
         </div>
 
@@ -231,11 +250,15 @@ function DashboardDetail({ rfoSingle, idComplain }) {
                 />
               </div>
               <div className="py-2">
-                {item?.lampiran && (
-                <p className="link inline">
-                  <HiDocumentText size={24} color="blue" className="inline mr-2" />
-                </p>
-                )}
+                {item?.lampiranbalasan.map((file) => {
+                  if (+file.balasan_id === +item.id_balasan) {
+                    return (
+                      <a className="link inline" href={file.path} target="_blank" rel="noreferrer">
+                        <HiDocumentText size={24} color="blue" className="inline mr-2" /> Lampiran File
+                      </a>
+                    )
+                  }
+                })}
               </div>
             </div>
           ))
@@ -282,7 +305,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
                     ) : null}
                   </div>
 
-                  <UploadFile />
+                  <UploadFile getFile={onHandleFileUpload} />
                   <div className="text-center items-center justify-center mt-10">
                     <button
                       type="button"

@@ -57,7 +57,14 @@ export const complainApiSlice = apiSlice.injectEndpoints({
         body
       }),
     }),
+    lampiranFileBalasan: builder.mutation({
+      query: ({ body }) => ({
+        url: `/lampiran-balasan`,
+        method: 'POST',
+        body
+      }),
+    }),
   }),
 });
 
-export const { useAllComplainMutation, useComplainByIdMutation, useDeleteComplainMutation, useAddComplainMutation, useUpdateComplainMutation, useAddReplyMutation, useComplainClosedMutation, useLampiranFileMutation } = complainApiSlice;
+export const { useAllComplainMutation, useComplainByIdMutation, useDeleteComplainMutation, useAddComplainMutation, useUpdateComplainMutation, useAddReplyMutation, useComplainClosedMutation, useLampiranFileMutation, useLampiranFileBalasanMutation } = complainApiSlice;
