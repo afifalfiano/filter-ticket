@@ -153,22 +153,6 @@ function ReasonOfOutage() {
 
   return (
     <div>
-      { statusData === 'masal' && (
-      <div className="mb-5">
-        <button
-          type="button"
-          className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-auto"
-          htmlFor="my-modal-3"
-          onClick={() => {
-            setDetail(null)
-            document.getElementById('my-modal-3').click();
-          }}
-
-        >
-          Tambah RFO Gangguan Masal
-        </button>
-      </div>
-      )}
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
@@ -218,6 +202,28 @@ function ReasonOfOutage() {
               />
             </div>
           </div>
+        </div>
+        <div className="form-control">
+          { statusData === 'masal' && (
+          <>
+            <label htmlFor="location" className="label font-semibold">
+              <span className="label-text"> -</span>
+            </label>
+            <div className="mb-5">
+              <button
+                type="button"
+                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-auto"
+                htmlFor="my-modal-3"
+                onClick={() => {
+                  setDetail(null);
+                  document.getElementById('my-modal-3').click();
+                }}
+              >
+                Tambah RFO Gangguan Masal
+              </button>
+            </div>
+          </>
+          )}
         </div>
       </div>
       )}
