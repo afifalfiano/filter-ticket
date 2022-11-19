@@ -151,7 +151,7 @@ function Users() {
                           }}
                         />
                       </div>
-                      <div className="tooltip" data-tip="Hapus">
+                      {/* <div className="tooltip" data-tip="Hapus">
                         <HiTrash
                           size={20}
                           color="#FF2E00"
@@ -161,8 +161,8 @@ function Users() {
                           // document.getElementById('my-modal-delete').click();
                           }}
                         />
-                      </div>
-                      <div className="tooltip" data-tip="Detail">
+                      </div> */}
+                      {/* <div className="tooltip" data-tip="Detail">
                         <HiEye
                           size={20}
                           color="#0D68F1"
@@ -173,7 +173,7 @@ function Users() {
                           // document.getElementById('my-modal-3').click();
                           }}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </td>
                 </tr>
