@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/prop-types */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/require-default-props */
 /* eslint-disable import/named */
@@ -10,12 +13,14 @@ import { HiOutlineCloudUpload } from 'react-icons/hi';
 import PropTypes from 'prop-types';
 import { formatBytes } from '../../../utils/helper';
 
-function UploadFile({ uploaded = false }) {
+function UploadFile({ uploaded = false, getFile }) {
   const [file, setFile] = useState([]);
 
   const onHandleFileUpload = ($event) => {
     const data = $event.target.files;
-    data.length > 0 ? setFile(data[0]) : setFile([]);
+    console.log(data, 'dat');
+    data.length > 0 ? setFile(data) : setFile([]);
+    getFile(data);
   };
   return (
     <>
@@ -43,12 +48,18 @@ function UploadFile({ uploaded = false }) {
                 id="dropzone-file"
                 type="file"
                 className="hidden"
+                multiple="true"
                 onChange={onHandleFileUpload}
               />
             </label>
           </div>
           <div className="mt-2 font-semibold">
-            File Upload: {file.name} - {formatBytes(file.size)}
+            {new Array(file.length).fill(null).map((item, index) => (
+              <p key={index}>
+                File Upload {index + 1}: {file[index].name} -{' '}
+                {formatBytes(file[index].size)}
+              </p>
+            ))}
           </div>
         </div>
       )}

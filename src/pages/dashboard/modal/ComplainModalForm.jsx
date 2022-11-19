@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-console */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable react/prop-types */
@@ -33,7 +34,7 @@ import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import styles from './ComplainModalForm.module.css';
-import { useAddComplainMutation, useUpdateComplainMutation } from '../../../store/features/complain/complainApiSlice';
+import { useAddComplainMutation, useLampiranFileMutation, useUpdateComplainMutation } from '../../../store/features/complain/complainApiSlice';
 import { selectAllPOP } from '../../../store/features/pop/popSlice';
 import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
@@ -46,9 +47,10 @@ function ComplainModalForm({ getInfo, detail, onClose }) {
   const { data: user } = useSelector(selectCurrentUser);
   const popData = useSelector(selectAllPOP);
   console.log(popData, 'pop nih')
-  const [files, setFiles] = useState([]);
+  const [filesLocal, setFilesLocal] = useState([]);
 
   const dataSumber = useSelector(selectAllSumberKeluhan);
+  const [lampiranFile] = useLampiranFileMutation();
 
   const initialValues = {
     id_pelanggan: detail?.id_pelanggan || '',
@@ -107,8 +109,17 @@ function ComplainModalForm({ getInfo, detail, onClose }) {
             id: 'success',
             icon: false,
           });
-          resetForm();
+
+          const formData = new FormData();
+          formData.append('keluhan_id', add?.data?.id_keluhan);
+          for (let index = 0; index < filesLocal.length; index++) {
+            formData.append(`path[${index}]`, filesLocal[index])
+          }
+
+          const dataLampiran = await lampiranFile({ body: formData }).unwrap();
+          console.log(dataLampiran, 'lampiran');
           setTimeout(() => {
+            resetForm();
             document.getElementById('my-modal-complain').click();
             getInfo({ status: 'success' });
           }, 2000);
@@ -194,22 +205,8 @@ function ComplainModalForm({ getInfo, detail, onClose }) {
   };
 
   const onHandleFileUpload = ($event) => {
-    console.log($event.target.files, 'file');
-    console.log($event.target.files.length, 'file');
-    const file = $event.target.files;
-    file.length > 0 ? setFiles(file[0]) : setFiles([]);
-  }
-
-  function formatBytes(bytes, decimals = 2) {
-    if (!+bytes) return '0 Bytes'
-
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
+    console.log($event, 'file');
+    setFilesLocal($event);
   }
 
   return (
@@ -416,7 +413,7 @@ function ComplainModalForm({ getInfo, detail, onClose }) {
               </div>
 
               {!detail && (
-                <UploadFile />
+                <UploadFile getFile={onHandleFileUpload} />
 
               )}
 
