@@ -29,6 +29,7 @@ import Role from './pages/settings/role/Role';
 import ReportCreate from './pages/report/create/ReportCreate';
 import ReportDetail from './pages/report/detail/ReportDetail';
 import Shift from './pages/settings/shift/Shift';
+import ForgetPassword from './pages/auth/forget_password/ForgetPassword';
 
 function App() {
   const data = localStorage.getItem('user');
@@ -45,6 +46,7 @@ function App() {
           <Route path="sign_in" element={<SignIn />} />
           <Route path="sign_up" element={<SignUp />} />
           <Route path="verification_email" element={<VerificationEmail />} />
+          <Route path="forget_password" element={<ForgetPassword />} />
         </Route>
         {/* protected routes */}
         <Route element={<RequireAuth />}>

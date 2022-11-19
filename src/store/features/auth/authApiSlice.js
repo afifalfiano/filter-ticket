@@ -38,7 +38,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    requestOTP: builder.mutation({
+      query: (email) => ({
+        url: `/otp?email=${email}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation, useGetProfileMutation } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation, useGetProfileMutation, useRequestOTPMutation } = authApiSlice;
