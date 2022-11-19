@@ -23,6 +23,10 @@ import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-hot-toast';
+import {
+  HiEye,
+  HiEyeOff
+} from 'react-icons/hi';
 import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
 import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation } from "../../../store/features/report/reportApiSlice";
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
@@ -44,7 +48,14 @@ function ReportDetail() {
   const [allShift] = useAllShiftMutation();
   const [allPOP] = useAllPOPMutation();
   const [getKeluhanLaporan] = useGetKeluhanLaporanMutation()
+  const [showPreview, setShowPreview] = useState(false);
   const dispatch = useDispatch();
+
+  const handleShowPreview = (event) => {
+    console.log(event);
+    // const update = showPreview ? !showPreview : showPreview;
+    setShowPreview(!event);
+  }
 
   const getAllPOP = async () => {
     try {
@@ -136,6 +147,7 @@ function ReportDetail() {
       if (data.status === 'succes') {
         console.log('set cek', data);
         setKeluhanLaporanLocal(data.data);
+        setShowPreview(true);
       } else {
         toast.error(data.message || 'Data Tidak Ditemukan', {
           style: {
@@ -262,8 +274,25 @@ function ReportDetail() {
       <div className="mt-5">
         <label htmlFor="location" className="label font-semibold">
           <span className="label-text"> Tampilan Laporan</span>
+          {showPreview && (
+          <HiEyeOff
+            size={20}
+            color="#0D68F1"
+            className="cursor-pointer"
+            onClick={() => handleShowPreview(showPreview)}
+          />
+          ) }
+          {!showPreview
+          && (
+          <HiEye
+            size={20}
+            color="#0D68F1"
+            className="cursor-pointer"
+            onClick={() => handleShowPreview(showPreview)}
+          />
+          )}
         </label>
-        {keluhanLaporanLocal !== null && (
+        {(keluhanLaporanLocal !== null && showPreview) && (
         <div id="preview-report" style={styleReport}>
           <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
           <p className="font-semibold mt-2">Petugas:</p>

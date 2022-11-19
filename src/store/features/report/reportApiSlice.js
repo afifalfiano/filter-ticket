@@ -11,6 +11,13 @@ export const reportApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    saveReport: builder.mutation({
+      query: ({ body }) => ({
+        url: '/laporan',
+        method: 'POST',
+        body
+      }),
+    }),
     getUserLaporan: builder.mutation({
       query: () => ({
         url: '/laporan-user',
@@ -35,6 +42,7 @@ export const reportApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useAllReportMutation,
+  useSaveReportMutation,
   useGetUserLaporanMutation,
   useAllShiftMutation,
   useGetKeluhanLaporanMutation
