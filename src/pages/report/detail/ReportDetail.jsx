@@ -192,15 +192,33 @@ function ReportDetail() {
 
   const handleSubmitReport = async () => {
     const body = new FormData();
-    body.append('tanggal', '2022-11-9');
+
+    let userHelpdesk = '';
+    let userNOC = '';
+    checkedState.forEach((condition, indexcondition) => {
+      if (condition) {
+        allUserLocal.forEach((item, index) => {
+          if (indexcondition === index) {
+            if (item.role.role === 'HELPDESK') {
+              userHelpdesk += item.name;
+            }
+            if (item.role.role === 'NOC') {
+              userNOC += item.name;
+            }
+          }
+        }
+        )
+      }
+    })
+
+    body.append('tanggal', bodyKeluhan.tanggal);
     body.append('shift_id', bodyKeluhan.shift);
     body.append('pop_id', bodyKeluhan.pop_id);
-    body.append('noc', 'test');
-    body.append('helpdesk', 'test');
+    body.append('noc', userNOC);
+    body.append('helpdesk', userHelpdesk);
     body.append('data_laporan', document.getElementById('preview-report').innerHTML);
     body.append('user_id', user.id_user);
     body.append('lampiran_laporan', file);
-    console.log(file, 'file');
 
     try {
       const data = await saveReport({ body }).unwrap();
