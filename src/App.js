@@ -12,6 +12,7 @@ import HistoryDashboard from './pages/history_dashboard/HistoryDashboard';
 import Profile from './pages/profile/Profile';
 import BaseTransceiverStation from './pages/base_transceiver_station/BaseTransceiverStation';
 import VerificationEmail from './pages/auth/verification_email/VerificationEmail';
+import VerificationSuccess from './pages/auth/verification_success/VerificationSuccess';
 import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
 import RFODetailMass from './pages/reason_of_outage/detail_masal/RFODetailMass';
 import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSingle';
@@ -46,6 +47,7 @@ function App() {
           <Route path="sign_in" element={<SignIn />} />
           <Route path="sign_up" element={<SignUp />} />
           <Route path="verification_email" element={<VerificationEmail />} />
+          <Route path="verification/:token" element={<VerificationSuccess />} />
           <Route path="forget_password" element={<ForgetPassword />} />
         </Route>
         {/* protected routes */}
