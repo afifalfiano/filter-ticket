@@ -96,7 +96,7 @@ function Users() {
                   type="text"
                   id="voice-search"
                   className="input input-md input-bordered pl-10 p-2.5 "
-                  placeholder="Cari data BTS..."
+                  placeholder="Cari data pengguna..."
                   value={search}
                   onChange={onHandleSearch}
                 />
