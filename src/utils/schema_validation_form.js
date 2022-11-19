@@ -94,6 +94,12 @@ const FormRoleSchema = Yup.object().shape({
   role: Yup.string().required('Wajib diisi.'),
 });
 
+const FormShiftSchema = Yup.object().shape({
+  shift: Yup.string().required('Wajib diisi.'),
+  mulai: Yup.string().required('Wajib diisi.'),
+  selesai: Yup.string().required('Wajib diisi.'),
+});
+
 const FormSumberKeluhanSchema = Yup.object().shape({
   sumber: Yup.string().required('Wajib diisi.'),
 });
@@ -110,5 +116,6 @@ export {
   RFOMasalSchema,
   FormPOPSchema,
   FormRoleSchema,
+  FormShiftSchema,
   FormSumberKeluhanSchema,
 };

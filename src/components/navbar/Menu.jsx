@@ -119,6 +119,15 @@ function Menu() {
                 Otoritas
               </Link>
             </li>
+            <li>
+              <Link
+                className="btn btn-ghost normal-case text-sm justify-start"
+                to="/shift"
+                activeclassname="btn-active"
+              >
+                Shift
+              </Link>
+            </li>
           </ul>
         </div>
       )}

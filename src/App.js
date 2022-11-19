@@ -28,6 +28,7 @@ import SourceComplain from './pages/settings/source_complain/SourceComplain';
 import Role from './pages/settings/role/Role';
 import ReportCreate from './pages/report/create/ReportCreate';
 import ReportDetail from './pages/report/detail/ReportDetail';
+import Shift from './pages/settings/shift/Shift';
 
 function App() {
   const data = localStorage.getItem('user');
@@ -87,6 +88,7 @@ function App() {
           <Route path="pop" element={<Pop />} />
           <Route path="source_complain" element={<SourceComplain />} />
           <Route path="role" element={<Role />} />
+          <Route path="shift" element={<Shift />} />
           {/* end admin */}
           <Route path="*" element={<NotFound />} />
         </Route>

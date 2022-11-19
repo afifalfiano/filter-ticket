@@ -12,6 +12,7 @@ import { useDeleteTeamMutation } from '../../store/features/team/teamApiSlice';
 import { useDeleteSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { useDeleteRFOGangguanMutation } from '../../store/features/rfo/rfoApiSlice';
 import { useDeleteLaporanMutation } from '../../store/features/report/reportApiSlice';
+import { useDeleteShiftMutation } from '../../store/features/shift/shiftApiSlice';
 
 function DeleteModal({ getInfo, detail, title }) {
   console.log(detail, 'dtl');
@@ -23,6 +24,7 @@ function DeleteModal({ getInfo, detail, title }) {
   const [deleteSumberKeluhan] = useDeleteSumberKeluhanMutation();
   const [deleteRFOGangguan] = useDeleteRFOGangguanMutation();
   const [deleteLaporan] = useDeleteLaporanMutation();
+  const [deleteShift] = useDeleteShiftMutation();
 
   const onSubmit = async () => {
     try {
@@ -41,6 +43,8 @@ function DeleteModal({ getInfo, detail, title }) {
         deleteData = await deleteRFOGangguan(detail.id_rfo_gangguan);
       } else if (title === 'laporan') {
         deleteData = await deleteLaporan(detail.id_laporan);
+      } else if (title === 'Shift') {
+        deleteData = await deleteShift(detail.id_shift);
       }
       console.log(deleteData);
       if (deleteData?.data?.status === 'success') {

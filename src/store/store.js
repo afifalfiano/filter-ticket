@@ -12,6 +12,7 @@ import sumberKeluhanReducer from './features/sumber_keluhan/sumberKeluhanSlice';
 import breadcrumbReducer from './features/breadcrumb/breadcrumbSlice';
 import usersReducer from './features/users/usersSlice';
 import reportReducer from './features/report/reportSlice';
+import shiftReducer from './features/shift/shiftSlice';
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore({
   reducer: {
@@ -26,7 +27,8 @@ export const store = configureStore({
     sumber_keluhan: sumberKeluhanReducer,
     bts: btsReducer,
     users: usersReducer,
-    report: reportReducer
+    report: reportReducer,
+    shift: shiftReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true,
