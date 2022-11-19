@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-shadow */
 /* eslint-disable new-cap */
@@ -28,8 +29,10 @@ import {
   HiEyeOff
 } from 'react-icons/hi';
 import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
-import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation } from "../../../store/features/report/reportApiSlice";
+import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation, useSaveReportMutation } from "../../../store/features/report/reportApiSlice";
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
+import { selectCurrentUser } from "../../../store/features/auth/authSlice";
+import { formatBytes } from "../../../utils/helper";
 
 const styleReport = {
   fontSize: '12px',
@@ -48,6 +51,7 @@ function ReportDetail() {
   const [allShift] = useAllShiftMutation();
   const [allPOP] = useAllPOPMutation();
   const [getKeluhanLaporan] = useGetKeluhanLaporanMutation()
+  const [saveReport] = useSaveReportMutation();
   const [showPreview, setShowPreview] = useState(false);
   const dispatch = useDispatch();
 
@@ -136,9 +140,12 @@ function ReportDetail() {
     });
   };
 
-  // let dataOpen = [];
-  // let dataClosed = [];
+  const [file, setFile] = useState([]);
 
+  const onHandleFileUpload = ($event) => {
+    const data = $event.target.files;
+    data.length > 0 ? setFile(data[0]) : setFile([]);
+  };
   const getKeluhanLaporanUser = async () => {
     try {
       const body = bodyKeluhan;
@@ -179,6 +186,28 @@ function ReportDetail() {
 
   const onRequestLaporan = () => {
     getKeluhanLaporanUser();
+  }
+
+  const { data: user } = useSelector(selectCurrentUser);
+
+  const handleSubmitReport = async () => {
+    const body = new FormData();
+    body.append('tanggal', '2022-11-9');
+    body.append('shift_id', bodyKeluhan.shift);
+    body.append('pop_id', bodyKeluhan.pop_id);
+    body.append('noc', 'test');
+    body.append('helpdesk', 'test');
+    body.append('data_laporan', document.getElementById('preview-report').innerHTML);
+    body.append('user_id', user.id_user);
+    body.append('lampiran_laporan', file);
+    console.log(file, 'file');
+
+    try {
+      const data = await saveReport({ body }).unwrap();
+      console.log(data, 'dat');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const navigasi = useSelector(selectBreadcrumb);
@@ -271,6 +300,7 @@ function ReportDetail() {
           ))}
         </div>
       </div>
+      <hr />
       <div className="mt-5">
         <label htmlFor="location" className="label font-semibold">
           <span className="label-text"> Tampilan Laporan</span>
@@ -355,6 +385,28 @@ function ReportDetail() {
           </div>
         </div>
         )}
+      </div>
+      <hr />
+      <div className="mt-2 font-semibold">
+        File Upload: {file.name} - {formatBytes(file.size)}
+      </div>
+      <div className="mt-5">
+        <div className="flex justify-center gap-5">
+          <label
+            htmlFor="dropzone-file"
+            className="btn btn-md bg-slate-500 text-white cursor-pointer border-none "
+          > Unggah Laporan
+            <input
+              id="dropzone-file"
+              type="file"
+              className="hidden"
+              onChange={onHandleFileUpload}
+            />
+          </label>
+          <button type="button" onClick={handleSubmitReport} className="btn btn-md bg-blue-600 text-white border-none" disabled={file.length === 0}>
+            Simpan Laporan
+          </button>
+        </div>
       </div>
     </div>
   );
