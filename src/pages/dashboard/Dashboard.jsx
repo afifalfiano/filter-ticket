@@ -32,6 +32,7 @@ import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { selectAllComplain, setComplain } from '../../store/features/complain/complainSlice';
 import DeleteModal from '../../components/common/DeleteModal';
+import RenderModal from '../../components/modal/Modal';
 import ComplainModalForm from './modal/ComplainModalForm';
 import RFOMasalModal from './modal/RFOMasalModal';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
@@ -59,6 +60,7 @@ function Dashboard() {
   const [statusData, setStatusData] = useState('open');
   const [detail, setDetail] = useState(null);
   const [showTable, setShowTable] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [allComplain, { isLoading, isSuccess }] = useAllComplainMutation();
@@ -192,6 +194,7 @@ function Dashboard() {
           htmlFor="my-modal-complain"
           onClick={() => {
             setDetail(null);
+            setShowModal(true);
             document.getElementById('my-modal-complain').click();
           }}
         >
@@ -257,7 +260,10 @@ function Dashboard() {
 
       {/* Modal tambah */}
       <input type="checkbox" id="my-modal-complain" className="modal-toggle" />
-      <ComplainModalForm detail={detail} getInfo={getInfo} />
+      {/* <RenderModal> */}
+      {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
+      {showModal && <ComplainModalForm onClose={setShowModal} detail={detail} getInfo={getInfo} /> }
+      {/* </RenderModal> */}
 
       {/* Modal rfo masal */}
       <input type="checkbox" id="my-modal-rfo-masal" className="modal-toggle" />
