@@ -17,11 +17,11 @@ function Profile() {
   const dispatch = useDispatch();
   const [form, setForm] = useState(false);
   const [profile, setProfile] = useState(null);
-  const { data: user } = useSelector(selectCurrentUser);
-
+  
   const [currentRole, setCurrentRole] = useState(null);
   const [currentPop, setCurrentPop] = useState(null);
-
+  
+  const { data: user } = useSelector(selectCurrentUser);
   const role = useSelector(selectAllTeam);
   const pop = useSelector(selectAllPOP);
   const [allPOP] = useAllPOPMutation();

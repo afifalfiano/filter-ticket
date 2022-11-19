@@ -100,6 +100,15 @@ const FormShiftSchema = Yup.object().shape({
   selesai: Yup.string().required('Wajib diisi.'),
 });
 
+const FormUserSchema = Yup.object().shape({
+  name: Yup.string().required('Wajib diisi.'),
+  email: Yup.string()
+    .email('Email tidak valid.')
+    .required('Wajib diisi.')
+    .matches(/@citra/, 'Email tidak sesuai.'),
+  pop_id: Yup.string().required('Wajib diisi.'),
+  role_id: Yup.string().required('Wajib diisi.'),
+});
 const FormSumberKeluhanSchema = Yup.object().shape({
   sumber: Yup.string().required('Wajib diisi.'),
 });
@@ -108,6 +117,7 @@ export {
   SignUpSchema,
   SignInSchema,
   FormBTSSchema,
+  FormUserSchema,
   ReplySchema,
   ComplainFormSchema,
   RFOMasalFormSchema,

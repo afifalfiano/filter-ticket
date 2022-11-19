@@ -13,6 +13,7 @@ import SkeletonTable from '../../../components/common/table/SkeletonTable';
 import Pagination from '../../../components/common/table/Pagination';
 import { selectAllUsers, setUsers } from '../../../store/features/users/usersSlice';
 import { useAllUsersMutation } from '../../../store/features/users/usersApiSlice';
+import FormUser from './FormUser';
 
 function Users() {
   const dispatch = useDispatch();
@@ -108,7 +109,7 @@ function Users() {
 
       {/* modal craete or update */}
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      {/* <FormBTS getInfo={getInfo} detail={detail} titleAction={title} /> */}
+      <FormUser getInfo={getInfo} detail={detail} titleAction={title} />
 
       {/* modal delete */}
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
@@ -147,7 +148,7 @@ function Users() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                          // document.getElementById('my-modal-3').click();
+                            document.getElementById('my-modal-3').click();
                           }}
                         />
                       </div>
