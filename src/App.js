@@ -47,7 +47,7 @@ function App() {
           <Route path="sign_in" element={<SignIn />} />
           <Route path="sign_up" element={<SignUp />} />
           <Route path="verification_email" element={<VerificationEmail />} />
-          <Route path="verification/:token" element={<VerificationSuccess />} />
+          <Route path="verification" element={<VerificationSuccess />} />
           <Route path="forget_password" element={<ForgetPassword />} />
         </Route>
         {/* protected routes */}

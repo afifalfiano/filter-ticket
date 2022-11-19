@@ -1,18 +1,17 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useVerificationEmailMutation } from '../../../store/features/auth/authApiSlice';
 
 function VerificationSuccess() {
-  const token = useParams();
-  console.log(token, 'id');
+  const params = useLocation();
   const [verificationEmail] = useVerificationEmailMutation();
 
   const verificationToken = async () => {
     try {
-      const body = token.token.split('=');
+      const body = params.search.split('=');
       console.log(body[1]);
       const data = await verificationEmail(body[1]).unwrap();
       console.log(data);
