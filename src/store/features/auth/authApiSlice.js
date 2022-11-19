@@ -50,7 +50,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    resetPassword: builder.mutation({
+      query: (param) => ({
+        url: `/lupa-password${param}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation, useGetProfileMutation, useRequestOTPMutation, useVerificationEmailMutation } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation, useGetProfileMutation, useRequestOTPMutation, useVerificationEmailMutation, useResetPasswordMutation } = authApiSlice;
