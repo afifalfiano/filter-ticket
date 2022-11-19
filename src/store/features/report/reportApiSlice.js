@@ -11,6 +11,12 @@ export const reportApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getOneReport: builder.mutation({
+      query: (id) => ({
+        url: `/laporan/${id}`,
+        method: 'GET',
+      }),
+    }),
     saveReport: builder.mutation({
       query: ({ body }) => ({
         url: '/laporan',
@@ -48,6 +54,7 @@ export const reportApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useAllReportMutation,
+  useGetOneReportMutation,
   useSaveReportMutation,
   useGetUserLaporanMutation,
   useAllShiftMutation,
