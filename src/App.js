@@ -26,6 +26,7 @@ import Users from './pages/settings/users/Users';
 import Pop from './pages/settings/pop/Pop';
 import SourceComplain from './pages/settings/source_complain/SourceComplain';
 import Role from './pages/settings/role/Role';
+import ReportCreate from './pages/report/create/ReportCreate';
 import ReportDetail from './pages/report/detail/ReportDetail';
 
 function App() {
@@ -63,7 +64,8 @@ function App() {
             element={<RFODetailSingle />}
           />
           <Route path="report" element={<Report />} />
-          <Route path="report/create" element={<ReportDetail />} />
+          <Route path="report/create" element={<ReportCreate />} />
+          <Route path="report/detail/:id" element={<ReportDetail />} />
           <Route path="history_dashboard" element={<HistoryDashboard />} />
           <Route
             path="history_dashboard/detail/:id"
