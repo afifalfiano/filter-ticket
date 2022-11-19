@@ -214,7 +214,8 @@ function Report() {
                         color="#0D68F1"
                         className="cursor-pointer"
                         onClick={() => {
-                          navigate(`/report/detail/${item.id_report}`);
+                          setDetail(item);
+                          navigate(`/report/detail/${item.id_laporan}`);
                         }}
                       />
                     </div>
@@ -240,6 +241,7 @@ function Report() {
                         color="#FF2E00"
                         className="cursor-pointer"
                         onClick={() => {
+                          setDetail(item);
                           document
                             .getElementById('my-modal-delete')
                             .click();

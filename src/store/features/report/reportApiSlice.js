@@ -36,7 +36,13 @@ export const reportApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body
       }),
-    })
+    }),
+    deleteLaporan: builder.mutation({
+      query: (id) => ({
+        url: `/laporan/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
@@ -45,5 +51,6 @@ export const {
   useSaveReportMutation,
   useGetUserLaporanMutation,
   useAllShiftMutation,
-  useGetKeluhanLaporanMutation
+  useGetKeluhanLaporanMutation,
+  useDeleteLaporanMutation
 } = reportApiSlice;

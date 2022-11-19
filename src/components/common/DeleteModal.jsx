@@ -11,6 +11,7 @@ import { useDeletePOPMutation } from '../../store/features/pop/popApiSlice';
 import { useDeleteTeamMutation } from '../../store/features/team/teamApiSlice';
 import { useDeleteSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { useDeleteRFOGangguanMutation } from '../../store/features/rfo/rfoApiSlice';
+import { useDeleteLaporanMutation } from '../../store/features/report/reportApiSlice';
 
 function DeleteModal({ getInfo, detail, title }) {
   console.log(detail, 'dtl');
@@ -21,6 +22,7 @@ function DeleteModal({ getInfo, detail, title }) {
   const [deleteTeam] = useDeleteTeamMutation();
   const [deleteSumberKeluhan] = useDeleteSumberKeluhanMutation();
   const [deleteRFOGangguan] = useDeleteRFOGangguanMutation();
+  const [deleteLaporan] = useDeleteLaporanMutation();
 
   const onSubmit = async () => {
     try {
@@ -37,6 +39,8 @@ function DeleteModal({ getInfo, detail, title }) {
         deleteData = await deleteSumberKeluhan(detail.id_sumber);
       } else if (title === 'RFO Gangguan') {
         deleteData = await deleteRFOGangguan(detail.id_rfo_gangguan);
+      } else if (title === 'laporan') {
+        deleteData = await deleteLaporan(detail.id_laporan);
       }
       console.log(deleteData);
       if (deleteData?.data?.status === 'success') {
@@ -56,7 +60,7 @@ function DeleteModal({ getInfo, detail, title }) {
           getInfo({ status: 'success' });
         }, 2000);
       } else {
-        toast.error(deleteData.data.message, {
+        toast.error(deleteData?.data?.message || 'Gagal hapus data', {
           style: {
             padding: '16px',
             backgroundColor: '#ff492d',
@@ -70,7 +74,7 @@ function DeleteModal({ getInfo, detail, title }) {
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.data.message, {
+      toast.error(error?.data?.message || 'Gagal hapus data', {
         style: {
           padding: '16px',
           backgroundColor: '#ff492d',
