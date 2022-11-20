@@ -5,8 +5,8 @@ import { apiSlice } from '../../../api/apiSlice';
 export const complainHistoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allComplainHistory: builder.mutation({
-      query: () => ({
-        url: '/history',
+      query: (param) => ({
+        url: `/history${param}`,
         method: 'GET',
       }),
     }),

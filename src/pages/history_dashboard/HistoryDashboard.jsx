@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
@@ -51,6 +52,10 @@ function HistoryDashboard() {
     'Status',
     'Aksi',
   ];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState([5]);
+  const [countPage, setCountPage] = useState([1]);
+
   const [showTable, setShowTable] = useState(false);
   const [pop, setPOPLocal] = useState('all');
   const [dataPOP, setdataPOP] = useState([]);
@@ -63,9 +68,11 @@ function HistoryDashboard() {
 
   const { data: user } = useSelector(selectCurrentUser);
 
-  const getAllComplainHistory = async () => {
+  const getAllComplainHistory = async (page = 1) => {
+    console.log(page, 'cek');
+    const param = `?page=${page}`;
     try {
-      const data = await allComplainHistory().unwrap();
+      const data = await allComplainHistory(param).unwrap();
       if (data.status === 'success') {
         setShowTable(true);
         let dataFix;
@@ -82,6 +89,16 @@ function HistoryDashboard() {
         } else {
           dispatch(setComplainHistory({ ...data.data }));
           setRows(data.data.data);
+          setCurrentPage(data.data.current_page);
+          setPerPage([data.data.per_page]);
+
+          const countPaginate = [];
+          for (let i = 0; i < data.data.last_page; i++) {
+            console.log(i, 'iiii');
+            countPaginate.push(i + 1);
+          }
+          setCountPage(countPaginate);
+          console.log(countPaginate, 'count');
         }
         // dispatch(setComplainHistory({ ...data.data }));
         // setRows(data.data.data);
@@ -360,7 +377,7 @@ function HistoryDashboard() {
             </tbody>
           </table>
         </div>
-        {!isLoading && (<Pagination />)}
+        {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllComplainHistory(i.target.id)} serverMode />)}
       </>
       )}
       {/* end table */}
