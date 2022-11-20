@@ -33,6 +33,7 @@ import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMut
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
 import { selectCurrentUser } from "../../../store/features/auth/authSlice";
 import { formatBytes } from "../../../utils/helper";
+import { setPOP } from "../../../store/features/pop/popSlice";
 
 const styleReport = {
   fontSize: '12px',
@@ -61,13 +62,29 @@ function ReportCreate() {
     setShowPreview(!event);
   }
 
+  const { data: user } = useSelector(selectCurrentUser);
+
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
       if (data.status === 'success') {
-        console.log('set pop', data);
-        setAllPOPLocal(data.data);
+        // console.log('set pop', data);
+        // setAllPOPLocal(data.data);
+        let dataFix;
+        if (user.role_id === 2) {
+          const dataFilter = data.data.filter((pop) => {
+            if (pop.id_pop === user.pop_id) {
+              return pop;
+            }
+          });
+          dataFix = dataFilter
+        } else {
+          dataFix = data.data
+        }
+        dispatch(setPOP({ data: dataFix }));
+        console.log('set data', data);
+        setAllPOPLocal(dataFix);
       }
     } catch (error) {
       console.log(error);
@@ -187,8 +204,6 @@ function ReportCreate() {
   const onRequestLaporan = () => {
     getKeluhanLaporanUser();
   }
-
-  const { data: user } = useSelector(selectCurrentUser);
 
   const handleSubmitReport = async () => {
     const body = new FormData();

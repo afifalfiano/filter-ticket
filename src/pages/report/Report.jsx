@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/anchor-has-content */
 /* eslint-disable max-len */
@@ -38,6 +39,7 @@ import DeleteModal from '../../components/common/DeleteModal';
 import { selectAllReport, setReport } from '../../store/features/report/reportSlice';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
+import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 function Report() {
   const columns = [
@@ -59,16 +61,32 @@ function Report() {
   const [allPOP] = useAllPOPMutation();
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
+  const { data: user } = useSelector(selectCurrentUser);
 
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
       if (data.status === 'success') {
-        dispatch(setPOP({ ...data }));
+        let dataFix;
+        if (user.role_id === 2) {
+          const dataFilter = data.data.filter((pop) => {
+            if (pop.id_pop === user.pop_id) {
+              return pop;
+            }
+          });
+          dataFix = dataFilter
+        } else {
+          dataFix = data.data
+        }
+        dispatch(setPOP({ data: dataFix }));
         console.log('set data', data);
-        setdataPOP(data.data)
+        setdataPOP(dataFix);
         console.log(dataPOP, 'pp');
+        // dispatch(setPOP({ ...data }));
+        // console.log('set data', data);
+        // setdataPOP(data.data)
+        // console.log(dataPOP, 'pp');
       }
     } catch (error) {
       console.log(error);
@@ -112,9 +130,24 @@ function Report() {
       const data = await allReport().unwrap();
       console.log(data, 'dat');
       if (data.status === 'success') {
-        dispatch(setReport({ ...data }));
-        setRows(data.data);
-        console.log(data.data, 'rw');
+        let dataFix;
+        if (user.role_id === 2) {
+          const dataFilter = data.data.filter((item) => {
+            if (item.pop_id === user.pop_id) {
+              return item;
+            }
+          });
+          dataFix = dataFilter
+          dispatch(setReport({ data: dataFix }));
+          setRows(dataFix);
+          console.log(dataFix, 'data complain');
+        } else {
+          dispatch(setReport({ ...data }));
+          setRows(data.data);
+        }
+        // dispatch(setReport({ ...data }));
+        // setRows(data.data);
+        // console.log(data.data, 'rw');
       }
     } catch (error) {
       console.log(error);
@@ -181,7 +214,7 @@ function Report() {
                 type="text"
                 id="voice-search"
                 className="input input-md input-bordered pl-10 p-2.5 "
-                placeholder="Cari data keluhan..."
+                placeholder="Cari data laporan..."
                 value={search}
                 onChange={onHandleSearch}
               />
@@ -202,7 +235,25 @@ function Report() {
             {rows.map((item, index) => (
               <tr className="text-center">
                 <th>{index + 1}</th>
-                <td>{item.pop.pop}</td>
+                <td>
+                  { item?.pop?.pop === 'Yogyakarta' ? (
+                    <span className="badge badge-success text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  ) : item?.pop?.pop === 'Solo' ? (
+                    <span className="badge badge-warning text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  ) : item?.pop?.pop === 'Purwokerto' ? (
+                    <span className="badge badge-info text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  ) : (
+                    <span className="badge text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  )}
+                </td>
                 <td className="text-left">{new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
                 <td>{item.shift.shift} ({item.shift.mulai} - {item.shift.selesai})</td>
                 <td>{item.petugas}</td>

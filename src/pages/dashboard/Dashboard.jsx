@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
@@ -43,6 +44,7 @@ import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKelu
 import ReopenModal from '../history_dashboard/ReopenModal';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
 import Pagination from '../../components/common/table/Pagination';
+import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 function Dashboard() {
   const columns = [
@@ -66,6 +68,8 @@ function Dashboard() {
   const [allComplain, { isLoading, isSuccess }] = useAllComplainMutation();
   const dispatch = useDispatch();
 
+  const { data: user } = useSelector(selectCurrentUser);
+
   const [search, setSearch] = useState('');
   const [dataPOP, setdataPOP] = useState([]);
   const [pop, setPOPLocal] = useState('all');
@@ -76,14 +80,27 @@ function Dashboard() {
       const data = await allComplain().unwrap();
       if (data.status === 'success') {
         setShowTable(true);
-        const dataFilter = data.data.filter((item) => {
-          if (item.status === statusData) {
-            return item;
-          }
-        });
-        dispatch(setComplain({ ...data }));
-        setRows(dataFilter);
-        console.log(dataFilter, 'data complain');
+        let dataFix;
+        if (user.role_id === 2) {
+          const dataFilter = data.data.filter((item) => {
+            if (item.pop_id === user.pop_id) {
+              return item;
+            }
+          });
+          dataFix = dataFilter
+          dispatch(setComplain({ data: dataFix }));
+          setRows(dataFix);
+          console.log(dataFix, 'data complain');
+        } else {
+          const dataFilter = data.data.filter((item) => {
+            if (item.status === statusData) {
+              return item;
+            }
+          });
+          dispatch(setComplain({ ...data }));
+          setRows(dataFilter);
+          console.log(dataFilter, 'data complain');
+        }
       }
     } catch (err) {
       console.log(err);
@@ -143,9 +160,21 @@ function Dashboard() {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
       if (data.status === 'success') {
-        dispatch(setPOP({ ...data }));
+        console.log(user, 'user nih');
+        let dataFix;
+        if (user.role_id === 2) {
+          const dataFilter = data.data.filter((pop) => {
+            if (pop.id_pop === user.pop_id) {
+              return pop;
+            }
+          });
+          dataFix = dataFilter
+        } else {
+          dataFix = data.data
+        }
+        dispatch(setPOP({ data: dataFix }));
         console.log('set data', data);
-        setdataPOP(data.data)
+        setdataPOP(dataFix);
         console.log(dataPOP, 'pp');
       }
     } catch (error) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable max-len */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable prefer-template */
@@ -35,6 +36,7 @@ import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
 import Pagination from '../../components/common/table/Pagination';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
+import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 function HistoryDashboard() {
   const columns = [
@@ -59,13 +61,30 @@ function HistoryDashboard() {
   const [allComplainHistory, { isLoading }] = useAllComplainHistoryMutation();
   const [detail, setDetail] = useState(null);
 
+  const { data: user } = useSelector(selectCurrentUser);
+
   const getAllComplainHistory = async () => {
     try {
       const data = await allComplainHistory().unwrap();
       if (data.status === 'success') {
         setShowTable(true);
-        dispatch(setComplainHistory({ ...data.data }));
-        setRows(data.data.data);
+        let dataFix;
+        if (user.role_id === 2) {
+          const dataFilter = data.data.data.filter((item) => {
+            if (item.pop_id === user.pop_id) {
+              return item;
+            }
+          });
+          dataFix = dataFilter
+          dispatch(setComplainHistory({ data: dataFix }));
+          setRows(dataFix);
+          console.log(dataFix, 'data complain');
+        } else {
+          dispatch(setComplainHistory({ ...data.data }));
+          setRows(data.data.data);
+        }
+        // dispatch(setComplainHistory({ ...data.data }));
+        // setRows(data.data.data);
         console.log(data, 'data complain');
       }
     } catch (err) {
@@ -82,10 +101,26 @@ function HistoryDashboard() {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
       if (data.status === 'success') {
-        dispatch(setPOP({ ...data }));
+        let dataFix;
+        if (user.role_id === 2) {
+          const dataFilter = data.data.filter((pop) => {
+            if (pop.id_pop === user.pop_id) {
+              return pop;
+            }
+          });
+          dataFix = dataFilter
+        } else {
+          dataFix = data.data
+        }
+        dispatch(setPOP({ data: dataFix }));
         console.log('set data', data);
-        setdataPOP(data.data)
+        setdataPOP(dataFix);
         console.log(dataPOP, 'pp');
+
+        // dispatch(setPOP({ ...data }));
+        // console.log('set data', data);
+        // setdataPOP(data.data)
+        // console.log(dataPOP, 'pp');
       }
     } catch (error) {
       console.log(error);
