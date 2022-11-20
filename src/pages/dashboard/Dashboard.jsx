@@ -29,6 +29,7 @@ import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import ClipLoader from "react-spinners/ClipLoader";
 import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { selectAllComplain, setComplain } from '../../store/features/complain/complainSlice';
@@ -46,6 +47,12 @@ import SkeletonTable from '../../components/common/table/SkeletonTable';
 import Pagination from '../../components/common/table/Pagination';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
+const override = {
+  display: "block",
+  margin: "0 auto",
+  // borderColor: "red",
+};
+
 function Dashboard() {
   const columns = [
     'No',
@@ -61,7 +68,7 @@ function Dashboard() {
   ];
   const [statusData, setStatusData] = useState('open');
   const [detail, setDetail] = useState(null);
-  const [showTable, setShowTable] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
@@ -76,10 +83,10 @@ function Dashboard() {
   const dataRow = useSelector(selectAllComplain);
 
   const getAllComplain = async () => {
+    setShowLoading(true);
     try {
       const data = await allComplain().unwrap();
       if (data.status === 'success') {
-        setShowTable(true);
         let dataFix;
         if (user.role_id === 2) {
           const dataFilter = data.data.filter((item) => {
@@ -101,6 +108,10 @@ function Dashboard() {
           setRows(dataFilter);
           console.log(dataFilter, 'data complain');
         }
+
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 1500);
       }
     } catch (err) {
       console.log(err);
@@ -232,7 +243,6 @@ function Dashboard() {
       </div>
       )}
 
-      {!isLoading && (
       <div className="flex gap-5 mt-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
@@ -285,7 +295,6 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      )}
 
       {/* Modal tambah */}
       <input type="checkbox" id="my-modal-complain" className="modal-toggle" />
@@ -306,10 +315,9 @@ function Dashboard() {
       <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
       <ReopenModal getInfo={getInfo} detail={detail} />
 
-      {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={3} />}
+      {/* {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={3} />} */}
       {/* start table */}
 
-      {!isLoading && (
       <div className="overflow-x-auto mt-8">
         <table className="table table-zebra w-full">
           <thead>
@@ -491,8 +499,20 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
+      <Pagination />
+      {showLoading && (
+      <div className="fixed bottom-5 right-5 w-52 min-w-min bg-slate-500 rounded-md shadow-md drop-shadow-md">
+        <div className="flex flex-row justify-between items-center p-4">
+          <ClipLoader
+            color="#1ffff0"
+            size={40}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+          <p className="font-semibold text-white">Data Diperbarui</p>
+        </div>
+      </div>
       )}
-      {!isLoading && (<Pagination />)}
     </div>
   );
 }
