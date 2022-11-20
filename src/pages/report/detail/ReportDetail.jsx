@@ -55,7 +55,7 @@ function ReportDetail() {
   return (
     <>
       <p><strong>Tanggal</strong> : {detail?.tanggal || '-'}</p>
-      <p><strong>Shift</strong>: {detail?.shift_id || '-'} </p>
+      <p><strong>Shift</strong>: {`${detail?.shift.shift} (${detail?.shift.mulai}) - (${detail?.shift.selesai})` || '-'} </p>
       <p><strong>Petugas</strong>: {detail?.petugas || '-'}</p>
       <p><strong>POP</strong>: {detail?.pop.pop || '-'}</p>
       <p><strong>File Laporan</strong>: <a href={detail?.lampiran_laporan} className="link link-hover" target="_blank" rel="noreferrer">Download file</a></p>
