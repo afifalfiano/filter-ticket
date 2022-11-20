@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable max-len */
@@ -59,21 +60,74 @@ function Dashboard() {
     'Status',
     'Aksi',
   ];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentFilterPage, setCurrentFilterPage] = useState(5);
+  const [perPage, setPerPage] = useState([5, 10, 25, 50, 100]);
+  const [countPage, setCountPage] = useState([1]);
+
   const [statusData, setStatusData] = useState('open');
   const [detail, setDetail] = useState(null);
   const [showTable, setShowTable] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
+  const [indexLastPerPage, setIndexLastPerPage] = useState(0);
   const [allComplain, { isLoading, isSuccess }] = useAllComplainMutation();
   const dispatch = useDispatch();
+  const dataRow = useSelector(selectAllComplain);
 
   const { data: user } = useSelector(selectCurrentUser);
+
+  const doPaginate = (page) => {
+    console.log(page, 'target page');
+    setCurrentPage(page);
+    // console.log(indexLastPerPage, 'last before');
+    let data;
+    if (+page === 1) {
+      data = dataRow.data.slice(0, currentFilterPage);
+      setIndexLastPerPage(+currentFilterPage - 1);
+    } else {
+      data = dataRow.data.slice(indexLastPerPage + 1, +indexLastPerPage + 1 + +currentFilterPage);
+      console.log(indexLastPerPage + 1, 'index last per plus 1');
+      console.log(+indexLastPerPage + +currentFilterPage, 'current filter');
+      setIndexLastPerPage(+indexLastPerPage + +currentFilterPage);
+    }
+    const filterData = data.filter((item) => item.status === statusData);
+    console.log(filterData);
+    setRows(filterData);
+    // const divideRow = rows.length / perPage
+  }
+
+  const doFilterDataPerPage = (count) => {
+    setCurrentFilterPage(count);
+    console.log(count, 'id per page');
+    const data = dataRow.data.slice(0, count);
+    setRows(data);
+
+    const resultPage = dataRow.data.length / count;
+    const newPage = [];
+    if (resultPage > 1) {
+      let z = 1;
+      for (let i = 0; i < +resultPage.toFixed(); i++) {
+        newPage.push(i + 1);
+        z++;
+      }
+      if (resultPage.toString().match('.')) {
+        newPage.push(z);
+      }
+    } else {
+      setCurrentPage(1);
+      newPage.push(1);
+    }
+    console.log(newPage, 'page');
+    console.log(resultPage, 'result page');
+    setCountPage(newPage);
+    setIndexLastPerPage(data.length - 1);
+  }
 
   const [search, setSearch] = useState('');
   const [dataPOP, setdataPOP] = useState([]);
   const [pop, setPOPLocal] = useState('all');
-  const dataRow = useSelector(selectAllComplain);
 
   const getAllComplain = async () => {
     try {
@@ -89,7 +143,8 @@ function Dashboard() {
           });
           dataFix = dataFilter
           dispatch(setComplain({ data: dataFix }));
-          setRows(dataFix);
+          const dataShow = dataFix.slice(0, currentFilterPage)
+          setRows(dataShow);
           console.log(dataFix, 'data complain');
         } else {
           const dataFilter = data.data.filter((item) => {
@@ -98,8 +153,11 @@ function Dashboard() {
             }
           });
           dispatch(setComplain({ ...data }));
-          setRows(dataFilter);
+          const dataShow = dataFilter.slice(0, currentFilterPage)
+          console.log(dataShow, 'ds');
+          setRows(dataShow);
           console.log(dataFilter, 'data complain');
+          doFilterDataPerPage(5);
         }
       }
     } catch (err) {
@@ -115,10 +173,13 @@ function Dashboard() {
 
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = rows.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
+      const searchResult = dataRow.data.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
       setRows(searchResult);
+      setCurrentPage(1);
     } else {
-      setRows(dataRow.data);
+      const data = dataRow.data.slice(0, currentFilterPage);
+      setRows(data);
+      setCurrentPage(1);
     }
   }
 
@@ -133,9 +194,14 @@ function Dashboard() {
     })
     if (event.target.value === 'all') {
       console.log(dataRow, 'cek gan');
-      setRows(dataRow.data.filter((item) => item.status === statusData));
+      const dataNormal = dataRow.data.filter((item) => item.status === statusData)
+      const dataSlice = dataNormal.slice(0, currentFilterPage);
+      setRows(dataSlice);
+      setCurrentPage(1);
     } else {
-      setRows(dataChanged);
+      const dataSlice = dataChanged.slice(0, currentFilterPage);
+      setRows(dataSlice);
+      setCurrentPage(1);
     }
   };
 
@@ -187,11 +253,11 @@ function Dashboard() {
     getAllPOP()
     getAllSumberKeluhan();
     getAllComplain();
-    const intervalId = setInterval(() => {
-      getAllComplain();
-    }, 30000);
+    // const intervalId = setInterval(() => {
+    //   getAllComplain();
+    // }, 30000);
     return () => {
-      clearInterval(intervalId);
+      // clearInterval(intervalId);
     };
   }, []);
 
@@ -204,7 +270,10 @@ function Dashboard() {
         return item;
       }
     })
-    setRows(dataChanged);
+    const dataSlice = dataChanged.slice(0, currentFilterPage);
+    setRows(dataSlice);
+    setIndexLastPerPage(0);
+    setCurrentPage(1);
   };
 
   const getInfo = ($event) => {
@@ -492,7 +561,7 @@ function Dashboard() {
         </table>
       </div>
       )}
-      {!isLoading && (<Pagination />)}
+      {!isLoading && (<Pagination perPage={perPage} currentFilterPage={currentFilterPage} currentPage={currentPage} countPage={countPage} handlePerPage={(o) => doFilterDataPerPage(o.target.value)} onClick={(i) => doPaginate(i.target.id)} serverMode={false} />)}
     </div>
   );
 }

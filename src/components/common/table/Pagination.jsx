@@ -9,7 +9,7 @@
 import { useState } from 'react';
 
 /* eslint-disable react/button-has-type */
-function Pagination({ perPage = [5, 10, 25, 50, 100], currentPage = 1, countPage = [1], onClick, serverMode = true, handlePerPage }) {
+function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage, currentPage = 1, countPage = [1], onClick, serverMode = true, handlePerPage }) {
   return (
     <div className="flex justify-between mt-5 pb-20">
       {serverMode && (
@@ -30,7 +30,7 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentPage = 1, countPage
           <div className="form-control">
             <select className="select input-bordered" onChange={handlePerPage}>
               {perPage?.map((item) => (
-                <option value={item} label={item}>item</option>
+                <option value={item} label={item} id={item} defaultValue={item === currentFilterPage && true}>{item}</option>
               ))}
             </select>
           </div>
@@ -52,17 +52,17 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentPage = 1, countPage
                 {' '}
                 Halaman
                 {' '}
-                {1}
+                {currentPage}
                 {' '}
                 dari
                 {' '}
-                {1}
+                {countPage.length}
               </span>
             </label>
             <div className="form-control">
               <select className="select input-bordered" onChange={handlePerPage}>
                 {perPage?.map((item) => (
-                  <option value={item} label={item}>item</option>
+                  <option value={item} label={item} id={item}>{item}</option>
                 ))}
               </select>
             </div>
@@ -70,7 +70,7 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentPage = 1, countPage
           <div className="">
             <div className="btn-group">
               {countPage?.map((item) => (
-                <button className={`btn btn-outline ${currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
+                <button className={`btn btn-outline ${+currentPage === +item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
               ))}
             </div>
           </div>
