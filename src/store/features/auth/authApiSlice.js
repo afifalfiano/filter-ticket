@@ -56,7 +56,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    changeAvatar: builder.mutation({
+      query: (body) => ({
+        url: `/profileAvatar`,
+        method: 'POST',
+        body
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation, useGetProfileMutation, useRequestOTPMutation, useVerificationEmailMutation, useResetPasswordMutation } = authApiSlice;
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useUpdateProfileMutation, useGetProfileMutation, useRequestOTPMutation, useVerificationEmailMutation, useResetPasswordMutation, useChangeAvatarMutation } = authApiSlice;

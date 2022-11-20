@@ -7,12 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { useEffect } from 'react';
+import { HiPencil } from 'react-icons/hi';
 import { selectCurrentUser, setCredentials } from '../../store/features/auth/authSlice';
 import { selectAllPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam } from '../../store/features/team/teamSlice';
 import { useUpdateProfileMutation } from '../../store/features/auth/authApiSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { ProfileSchema } from '../../utils/schema_validation_form';
+import PreviewImage from './PreviewImage';
 
 /* eslint-disable react/prop-types */
 function FormUpdateProfile({ handleForm, profile }) {
@@ -109,8 +111,18 @@ function FormUpdateProfile({ handleForm, profile }) {
       });
     }
   };
+
+  const getInfo = ($event) => {
+    console.log($event);
+    if ($event.status === 'success') {
+      handleForm(false);
+    }
+  };
   return (
     <div>
+      {/* modal craete or update */}
+      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <PreviewImage getInfo={getInfo} />
       <Formik
         enableReinitialize
         validationSchema={ProfileSchema}
@@ -138,6 +150,14 @@ function FormUpdateProfile({ handleForm, profile }) {
                       <img src={profile?.avatar} alt={profile?.username} />
                     </span>
                   </div>
+                </div>
+                <div className="flex justify-center">
+                  <HiPencil
+                    className="link link-primary"
+                    onClick={() => {
+                      document.getElementById('my-modal-3').click();
+                    }}
+                  />
                 </div>
                 <h1 className="font-semibold text-xl mt-5">Ubah Profile</h1>
                 <div className="my-5 flex justify-center gap-7">
