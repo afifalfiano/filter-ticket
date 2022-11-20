@@ -1,6 +1,14 @@
 /* eslint-disable */
 
-const ModalNotification = () => {
+import { useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectAllNotification } from "../../store/features/notification/notificationSlice";
+
+const ModalNotification = ({ data = [] }) => {
+
+  console.log(data, 'data nihhhhh')
+
   return (
     <>
       <div
@@ -9,7 +17,20 @@ const ModalNotification = () => {
       >
         <div className="card-body">
           <span className="font-bold text-lg">Pemberitahuan</span>
-            <div className="card-body bg-white rounded-md">
+          {
+            data?.map((item) => (
+            <div className="card-body bg-white rounded-md" id={item.id}>
+            <span className="text-base text-slate-800">{item.title}</span>
+            <span className="text-small text-slate-400">{item.desc}</span>
+            </div>
+            ))
+          }
+          {data.length === 0 && (
+            <div className="card-body bg-white rounded-md text-center">
+            <span className="text-base text-gray-900">Tidak ada pemberitahuan</span>
+            </div>
+          )}
+            {/* <div className="card-body bg-white rounded-md">
             <span className="text-base text-gray-900">Comming Soon...</span>
             </div>
             <div className="card-body bg-white rounded-md">
@@ -17,7 +38,7 @@ const ModalNotification = () => {
             </div>
             <div className="card-body bg-white rounded-md">
             <span className="text-base text-gray-900">Comming Soon...</span>
-            </div>
+            </div> */}
           <div className="card-actions mt-3">
             <button className="btn btn-primary btn-block btn-sm">Lihat Semua</button>
           </div>

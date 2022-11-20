@@ -16,7 +16,7 @@ function ForgetPassword() {
   const navigate = useNavigate();
   const [otp, setOTP] = useState('');
   const [password, setPassword] = useState('');
-  const [showOTP, setShowOTP] = useState(true);
+  const [showOTP, setShowOTP] = useState(false);
   const [requestOTP] = useRequestOTPMutation();
   const [resetPassword] = useResetPasswordMutation();
   const handleInput = (event) => {

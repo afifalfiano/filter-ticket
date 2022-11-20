@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+/* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
@@ -35,7 +37,6 @@ import ForgetPassword from './pages/auth/forget_password/ForgetPassword';
 function App() {
   const data = localStorage.getItem('user');
   const user = JSON.parse(data);
-  console.log(user, 'cek');
 
   return (
     <div className="App">
