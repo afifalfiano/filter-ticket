@@ -317,7 +317,7 @@ function Dashboard() {
       <input type="checkbox" id="my-modal-complain" className="modal-toggle" />
       {/* <RenderModal> */}
       {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
-      {showModal && <ComplainModalForm onClose={setShowModal} detail={detail} getInfo={getInfo} /> }
+      <ComplainModalForm onClose={setShowModal} detail={detail} getInfo={getInfo} />
       {/* </RenderModal> */}
 
       {/* Modal rfo masal */}
