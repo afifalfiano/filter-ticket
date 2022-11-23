@@ -54,7 +54,7 @@ const override = {
 };
 
 function Dashboard() {
-  const columns = [
+  const initColumns = [
     'No',
     'POP',
     'ID Pelanggan',
@@ -66,6 +66,7 @@ function Dashboard() {
     'Status',
     'Aksi',
   ];
+  const [columns, setColumns] = useState(initColumns);
   const [statusData, setStatusData] = useState('open');
   const [detail, setDetail] = useState(null);
   const [showLoading, setShowLoading] = useState(true);
@@ -198,6 +199,22 @@ function Dashboard() {
     getAllPOP()
     getAllSumberKeluhan();
     getAllComplain();
+
+    if (user.role_id === 0) {
+      setColumns([
+        'No',
+        'POP',
+        'ID Pelanggan',
+        'Nama Pelanggan',
+        'Kontak',
+        'Keluhan',
+        'Progress',
+        'Waktu',
+        'Status',
+        'Sentimen',
+        'Aksi',
+      ]);
+    }
     const intervalId = setInterval(() => {
       getAllComplain();
     }, 30000);
@@ -378,6 +395,7 @@ function Dashboard() {
                     </span>
                   )}
                 </td>
+                {user.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
                     { statusData === 'open' ? (

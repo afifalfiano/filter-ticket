@@ -40,7 +40,7 @@ import SkeletonTable from '../../components/common/table/SkeletonTable';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 function HistoryDashboard() {
-  const columns = [
+  const initColumns = [
     'No',
     'POP',
     'ID Pelanggan',
@@ -52,6 +52,7 @@ function HistoryDashboard() {
     'Status',
     'Aksi',
   ];
+  const [columns, setColumns] = useState(initColumns);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState([5]);
   const [countPage, setCountPage] = useState([1]);
@@ -163,6 +164,21 @@ function HistoryDashboard() {
     dispatch(updateBreadcrumb([{ path: '/history_dashboard', title: 'Riwayat Dasbor' }]))
     getAllPOP()
     getAllComplainHistory();
+    if (user.role_id === 0) {
+      setColumns([
+        'No',
+        'POP',
+        'ID Pelanggan',
+        'Nama Pelanggan',
+        'Kontak',
+        'Keluhan',
+        'Progress',
+        'Waktu',
+        'Status',
+        'Sentimen',
+        'Aksi',
+      ]);
+    }
   }, []);
 
   const handlePOP = (event) => {
@@ -316,6 +332,7 @@ function HistoryDashboard() {
                       {item.status}
                     </span>
                   </td>
+                  {user.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
                       <div className="tooltip" data-tip="Kembalikan Status Open">
