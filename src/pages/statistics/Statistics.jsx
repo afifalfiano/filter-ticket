@@ -15,29 +15,33 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useGetStatistikMutation } from '../../store/features/graph/graphApiSlice';
-import dataDummy from './dummy';
+// import datadummy from './dummy';
 
 function Statistics() {
   const dispatch = useDispatch();
+  const [dataGraph, setDataGraph] = useState(null);
   const [getStatistik] = useGetStatistikMutation();
 
   const getDataStatistik = async () => {
     try {
       const data = await getStatistik().unwrap();
+      if (data.status === 'success') {
+        setDataGraph(data);
+      }
       console.log(data, 'staistik');
     } catch (error) {
       console.log(error);
     }
   }
 
-  console.log(dataDummy, 'dm');
+  // console.log(dataDummy, 'dm');
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/statistics', title: 'Statistik' }]));
     getDataStatistik();
@@ -52,7 +56,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataDummy.all}
+              data={dataGraph.all}
               margin={{
                 top: 5,
                 right: 30,
@@ -80,7 +84,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataDummy.today}
+              data={dataGraph.today}
               margin={{
                 top: 5,
                 right: 30,
@@ -108,7 +112,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataDummy.yesterday}
+              data={dataGraph.yesterday}
               margin={{
                 top: 5,
                 right: 30,
@@ -136,7 +140,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataDummy.a_week_ago}
+              data={dataGraph.a_week_ago}
               margin={{
                 top: 5,
                 right: 30,
@@ -145,7 +149,7 @@ function Statistics() {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -164,7 +168,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataDummy.this_month}
+              data={dataGraph.this_month}
               margin={{
                 top: 5,
                 right: 30,
@@ -173,11 +177,11 @@ function Statistics() {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="total" fill="#8884d8" />
+              <Bar dataKey="Total" fill="#8884d8" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -188,7 +192,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataDummy.this_year}
+              data={dataGraph.this_year}
               margin={{
                 top: 5,
                 right: 30,
@@ -197,14 +201,14 @@ function Statistics() {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="all_pop" fill="#8884d8" />
-              <Bar dataKey="jogja" fill="#0f7d9e" />
-              <Bar dataKey="solo" fill="#82ca9d" />
-              <Bar dataKey="purwokerto" fill="#f89c38" />
+              <Bar dataKey="Semua POP" fill="#f86042" />
+              <Bar dataKey="Purwokerto" fill="#0f7d9e" />
+              <Bar dataKey="Surakarta" fill="#82ca9d" />
+              <Bar dataKey="Yogyakarta" fill="#f89c38" />
             </BarChart>
           </ResponsiveContainer>
         </div>
