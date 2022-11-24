@@ -22,11 +22,11 @@ import {
 } from 'recharts';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useGetStatistikMutation } from '../../store/features/graph/graphApiSlice';
-// import datadummy from './dummy';
+import dataInit from './data_init';
 
 function Statistics() {
   const dispatch = useDispatch();
-  const [dataGraph, setDataGraph] = useState(null);
+  const [dataGraph, setDataGraph] = useState(dataInit);
   const [getStatistik] = useGetStatistikMutation();
 
   const getDataStatistik = async () => {
@@ -56,7 +56,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataGraph.all}
+              data={dataGraph?.all}
               margin={{
                 top: 5,
                 right: 30,
@@ -65,7 +65,7 @@ function Statistics() {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -84,7 +84,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataGraph.today}
+              data={dataGraph?.today}
               margin={{
                 top: 5,
                 right: 30,
@@ -93,7 +93,7 @@ function Statistics() {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -112,7 +112,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataGraph.yesterday}
+              data={dataGraph?.yesterday}
               margin={{
                 top: 5,
                 right: 30,
@@ -121,7 +121,7 @@ function Statistics() {
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
               <Legend />
@@ -140,7 +140,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataGraph.a_week_ago}
+              data={dataGraph?.a_week_ago}
               margin={{
                 top: 5,
                 right: 30,
@@ -168,7 +168,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataGraph.this_month}
+              data={dataGraph?.this_month}
               margin={{
                 top: 5,
                 right: 30,
@@ -192,7 +192,7 @@ function Statistics() {
             <BarChart
               width={500}
               height={300}
-              data={dataGraph.this_year}
+              data={dataGraph?.this_year}
               margin={{
                 top: 5,
                 right: 30,
