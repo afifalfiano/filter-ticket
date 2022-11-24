@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable array-callback-return */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
@@ -63,7 +64,7 @@ function FormUser({ getInfo, detail, titleAction }) {
       if (data.status === 'success') {
         dispatch(setTeam({ ...data }));
         console.log(role, 'tm');
-        const index = role.data.find((item) => +item.id_role === +user.role_id);
+        const index = role.data.find((item) => +item.id_role === +user?.role_id);
         setCurrentRole(index);
         console.log(index, 'match');
       }
@@ -81,7 +82,7 @@ function FormUser({ getInfo, detail, titleAction }) {
     const body = {
       name: payload.name,
       email: payload.email,
-      role_id: payload.role_id,
+      role_id: payload?.role_id,
       pop_id: payload.pop_id,
     };
     try {
@@ -222,7 +223,7 @@ function FormUser({ getInfo, detail, titleAction }) {
                   component="select"
                   id="role_id"
                   name="role_id"
-                  value={values.role_id}
+                  value={values?.role_id}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"

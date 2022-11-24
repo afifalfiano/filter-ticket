@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useEffect } from 'react';
@@ -10,21 +10,32 @@ import {
 } from '../../store/features/auth/authSlice';
 import Container from './Container';
 import Navbar from '../navbar/Navbar';
+import { selectBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function RequireAuth() {
-  let { data } = useSelector(selectCurrentUser);
+  // const { data } = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const breadcrumb = useSelector(selectBreadcrumb);
+  const user = localStorage.getItem('user');
+  // const urlChanges = window.location.pathname.split('/').pop();
 
-  if (!data) {
-    const user = localStorage.getItem('user');
-    const local = JSON.parse(user);
-    console.log(local, 'lokal');
-    dispatch(setCredentials(local));
-    data = local;
-  }
+  useEffect(() => {
+    // if (!data) {
+    console.log(user, 'usr');
+    if (user !== null) {
+      const local = JSON.parse(user);
+      console.log(local, 'lokal');
+      dispatch(setCredentials(local));
+    } else {
+      navigate('/sign_in', { replace: true });
+      window.location.reload();
+    }
+    // }
+  }, []);
 
   return (
-    data && (
+    user && (
       <>
         <Navbar />
         <Toaster />

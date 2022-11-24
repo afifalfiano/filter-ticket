@@ -87,7 +87,7 @@ const DropdownMenu = () => {
         <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
               <span className="text-2xl">
-              <img src={profile?.avatar} alt={profile?.username} />
+              <img src={profile?.avatar} alt={profile?.name} />
               </span>
             </div>
         </label>

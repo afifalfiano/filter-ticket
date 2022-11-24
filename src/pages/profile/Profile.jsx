@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import { useState, useEffect } from 'react';
@@ -63,7 +64,9 @@ function Profile() {
       if (data.status === 'success') {
         dispatch(setTeam({ ...data }));
         console.log(role, 'tm');
-        const index = role.data.find((item) => +item.id_role === +user.role_id);
+        const index = role.data.find(
+          (item) => +item.id_role === +user?.role_id
+        );
         setCurrentRole(index);
         console.log(index, 'match');
       }
@@ -99,11 +102,11 @@ function Profile() {
             <div className="avatar placeholder">
               <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
                 <span className="text-3xl">
-                  <img src={profile?.avatar} alt={profile?.username} />
+                  <img src={profile?.avatar} alt={profile?.name} />
                 </span>
               </div>
             </div>
-            <h1 className="font-semibold text-xl mt-5">{profile?.username}</h1>
+            <h1 className="font-semibold text-xl mt-5">{profile?.name}</h1>
             <div className="my-5 flex justify-center">
               <div className="border-gray-200 rounded-md border-2 w-80 h-48 items-center flex-row justify-center">
                 <div className="flex pt-1 px-1 justify-end">

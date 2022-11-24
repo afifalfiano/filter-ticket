@@ -97,7 +97,7 @@ function SignUp() {
       const body = {
         name: payload.name.toUpperCase(),
         pop_id: payload.pop_id,
-        role_id: payload.role_id,
+        role_id: payload?.role_id,
         email: payload.email,
         password: payload.password,
         password_confirmation: payload.password_confirmation,
@@ -228,7 +228,7 @@ function SignUp() {
                   component="select"
                   id="role_id"
                   name="role_id"
-                  value={values.role_id}
+                  value={values?.role_id}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
@@ -237,8 +237,8 @@ function SignUp() {
                     <option value={item.value} label={item.label}>{item.label}</option>
                   ))}
                 </Field>
-                {errors.role_id && touched.role_id ? (
-                  <div className="label text-red-500 pb-0 text-xs">{errors.role_id}</div>
+                {errors?.role_id && touched?.role_id ? (
+                  <div className="label text-red-500 pb-0 text-xs">{errors?.role_id}</div>
                 ) : null}
               </div>
 

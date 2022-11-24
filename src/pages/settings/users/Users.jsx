@@ -136,7 +136,7 @@ function Users() {
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
-                  <td>{item.role_id}</td>
+                  <td>{item?.role_id}</td>
                   <td>{item.pop_id}</td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">

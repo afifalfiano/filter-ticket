@@ -72,7 +72,7 @@ function ReportCreate() {
         // console.log('set pop', data);
         // setAllPOPLocal(data.data);
         let dataFix;
-        if (user.role_id === 2) {
+        if (user?.role_id === 2) {
           const dataFilter = data.data.filter((pop) => {
             if (pop.id_pop === user.pop_id) {
               return pop;

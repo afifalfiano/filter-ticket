@@ -77,7 +77,7 @@ function HistoryDashboard() {
       if (data.status === 'success') {
         setShowTable(true);
         let dataFix;
-        if (user.role_id === 2) {
+        if (user?.role_id === 2) {
           const dataFilter = data.data.data.filter((item) => {
             if (item.pop_id === user.pop_id) {
               return item;
@@ -120,7 +120,7 @@ function HistoryDashboard() {
       console.log(data, 'ceksaja');
       if (data.status === 'success') {
         let dataFix;
-        if (user.role_id === 2) {
+        if (user?.role_id === 2) {
           const dataFilter = data.data.filter((pop) => {
             if (pop.id_pop === user.pop_id) {
               return pop;
@@ -164,7 +164,7 @@ function HistoryDashboard() {
     dispatch(updateBreadcrumb([{ path: '/history_dashboard', title: 'Riwayat Dasbor' }]))
     getAllPOP()
     getAllComplainHistory();
-    if (user.role_id === 0) {
+    if (user?.role_id === 0) {
       setColumns([
         'No',
         'POP',
@@ -332,7 +332,7 @@ function HistoryDashboard() {
                       {item.status}
                     </span>
                   </td>
-                  {user.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
+                  {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
                       <div className="tooltip" data-tip="Kembalikan Status Open">

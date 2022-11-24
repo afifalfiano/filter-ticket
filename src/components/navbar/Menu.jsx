@@ -1,13 +1,20 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-unused-vars */
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+// import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { selectCurrentUser } from '../../store/features/auth/authSlice';
+// import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 // eslint-disable-next-line react/prop-types
 function Menu() {
-  const { data: user } = useSelector(selectCurrentUser);
+  // const { data: user } = useSelector(selectCurrentUser);
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const users = localStorage.getItem('user');
+    const data = JSON.parse(users);
+    setUser(data);
+  }, []);
   return (
     <div className="flex-1">
       <Link
@@ -45,7 +52,7 @@ function Menu() {
       >
         Riwayat Dasbor
       </Link>
-      {user.role_id === 1 && (
+      {user?.role_id === 1 && (
         <>
           <Link
             className="btn btn-ghost normal-case text-sm"
@@ -65,7 +72,7 @@ function Menu() {
       )}
 
       {/* if admin */}
-      {user.role_id === 0 && (
+      {user?.role_id === 0 && (
         <div className="dropdown">
           <label tabIndex={0} className="btn m-1 capitalize">
             Pengaturan

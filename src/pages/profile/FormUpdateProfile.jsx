@@ -44,7 +44,7 @@ function FormUpdateProfile({ handleForm, profile }) {
         body = {
           name: payload.name,
           pop_id: payload.pop_id,
-          role_id: payload.role_id,
+          role_id: payload?.role_id,
           email: payload.email,
           password: payload.password,
           password_confirmation: payload.password_confirmation,
@@ -53,7 +53,7 @@ function FormUpdateProfile({ handleForm, profile }) {
         body = {
           name: payload.name,
           pop_id: payload.pop_id,
-          role_id: payload.role_id,
+          role_id: payload?.role_id,
           email: payload.email,
         };
       }
@@ -62,7 +62,7 @@ function FormUpdateProfile({ handleForm, profile }) {
       console.log(body, 'body');
       if (data.status === 'success') {
         const newProfile = {
-          ...user, bearer_token: data.bearer_token, role_id: data.data[0].role_id, pop_id: data.data[0].pop_id, username: data.data[0].name
+          ...user, bearer_token: data.bearer_token, role_id: data.data[0]?.role_id, pop_id: data.data[0].pop_id, username: data.data[0].name
         }
         dispatch(setCredentials({ ...newProfile }));
         console.log(newProfile, 'let');
@@ -127,7 +127,7 @@ function FormUpdateProfile({ handleForm, profile }) {
         enableReinitialize
         validationSchema={ProfileSchema}
         initialValues={{
-          name: user.username, email: user.email, pop_id: user.pop_id, role_id: user.role_id, old_password: '', password: '', password_confirmation: ''
+          name: user?.username, email: user?.email, pop_id: user?.pop_id, role_id: user?.role_id, old_password: '', password: '', password_confirmation: ''
         }}
         onSubmit={(values) => {
           onSubmitData(values);
@@ -193,7 +193,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                           onChange={handleChange}
                           placeholder="email@citra.net"
                           value={values.email}
-                          disabled={user.role_id !== 3}
+                          disabled={user?.role_id !== 3}
                           className="input input-md input-bordered  max-w-full"
                         />
                       </div>
@@ -207,9 +207,9 @@ function FormUpdateProfile({ handleForm, profile }) {
                           component="select"
                           id="role_id"
                           name="role_id"
-                          value={values.role_id}
+                          value={values?.role_id}
                           onBlur={handleBlur}
-                          disabled={user.role_id !== 3}
+                          disabled={user?.role_id !== 3}
                           onChange={handleChange}
                           className="select w-full max-w-full input-bordered"
                         >
@@ -235,7 +235,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                           id="pop_id"
                           name="pop_id"
                           value={values.pop_id}
-                          disabled={user.role_id !== 3}
+                          disabled={user?.role_id !== 3}
                           onBlur={handleBlur}
                           onChange={handleChange}
                           className="select w-full max-w-full input-bordered"
@@ -325,13 +325,13 @@ function FormUpdateProfile({ handleForm, profile }) {
                   <button
                     type="button"
                     onClick={onBtnBack}
-                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md bg-black text-white w-24"
+                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md bg-black text-white w-24 border-none"
                   >
                     Kembali
                   </button>
                   <button
                     type="submit"
-                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-24 bg-success"
+                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-24 bg-success border-none"
                   >
                     Simpan
                   </button>

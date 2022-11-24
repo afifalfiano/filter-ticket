@@ -29,7 +29,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   try {
     const result = await baseQuery(args, api, extraOptions);
     console.log(result, 'ts');
-    if (result?.error?.data === 'Please login first') {
+    if (result?.error?.data?.message === 'Please login first') {
       api.dispatch((action) => {
         action(setLogOut());
         action(clearBTS());
@@ -38,7 +38,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       localStorage.clear();
     }
 
-    if (result?.error?.data === '\nPlease login first') {
+    if (result?.error?.data?.message === '\nPlease login first') {
       api.dispatch((action) => {
         action(setLogOut());
         action(clearBTS());

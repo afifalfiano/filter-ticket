@@ -33,23 +33,39 @@ import ReportCreate from './pages/report/create/ReportCreate';
 import ReportDetail from './pages/report/detail/ReportDetail';
 import Shift from './pages/settings/shift/Shift';
 import ForgetPassword from './pages/auth/forget_password/ForgetPassword';
+import { useState } from 'react';
 
 function App() {
   const data = localStorage.getItem('user');
   const user = JSON.parse(data);
+  const [render, setRender] = useState(false);
+
+  const getConditionRender = (event) => {
+    console.log(event, 'loggg');
+    setRender(event);
+  };
 
   return (
     <div className="App">
       <Toaster />
       <Routes>
-        <Route element={<Layout />}>
+        <Route element={<Layout render={getConditionRender} />}>
           {/* public routes */}
           <Route index element={<SignIn />} />
-          <Route path="sign_in" element={<SignIn />} />
-          <Route path="sign_up" element={<SignUp />} />
-          <Route path="verification_email" element={<VerificationEmail />} />
-          <Route path="verification" element={<VerificationSuccess />} />
-          <Route path="forget_password" element={<ForgetPassword />} />
+          <Route path="sign_in" element={render && <SignIn />} />
+          <Route path="sign_up" element={render && <SignUp />} />
+          <Route
+            path="verification_email"
+            element={render && <VerificationEmail />}
+          />
+          <Route
+            path="verification"
+            element={render && <VerificationSuccess />}
+          />
+          <Route
+            path="forget_password"
+            element={render && <ForgetPassword />}
+          />
         </Route>
         {/* protected routes */}
         <Route element={<RequireAuth />}>

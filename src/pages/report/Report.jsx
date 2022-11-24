@@ -69,7 +69,7 @@ function Report() {
       console.log(data, 'ceksaja');
       if (data.status === 'success') {
         let dataFix;
-        if (user.role_id === 2) {
+        if (user?.role_id === 2) {
           const dataFilter = data.data.filter((pop) => {
             if (pop.id_pop === user.pop_id) {
               return pop;
@@ -131,7 +131,7 @@ function Report() {
       console.log(data, 'dat');
       if (data.status === 'success') {
         let dataFix;
-        if (user.role_id === 2) {
+        if (user?.role_id === 2) {
           const dataFilter = data.data.filter((item) => {
             if (item.pop_id === user.pop_id) {
               return item;
