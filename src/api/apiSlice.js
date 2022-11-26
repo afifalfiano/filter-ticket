@@ -36,6 +36,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         action(clearComplain());
       });
       localStorage.clear();
+      window.location.reload();
     }
 
     if (result?.error?.data?.message === '\nPlease login first') {

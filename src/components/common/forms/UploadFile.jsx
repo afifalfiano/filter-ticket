@@ -47,6 +47,7 @@ function UploadFile({ uploaded = false, getFile }) {
               <input
                 id="dropzone-file"
                 type="file"
+                accept=".doc,.pdf,.docx,.zip,.jpeg,.jpg,.png,.mp4"
                 className="hidden"
                 multiple="true"
                 onChange={onHandleFileUpload}
