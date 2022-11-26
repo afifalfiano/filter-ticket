@@ -53,23 +53,21 @@ function Menu() {
         Riwayat Dasbor
       </Link>
       {user?.role_id === 1 && (
-        <>
-          <Link
-            className="btn btn-ghost normal-case text-sm"
-            to="/base_transceiver_station"
-            activeclassname="btn-active"
-          >
-            BTS
-          </Link>
-          <Link
-            className="btn btn-ghost normal-case text-sm"
-            to="/statistics"
-            activeclassname="btn-active"
-          >
-            Statistik
-          </Link>
-        </>
+        <Link
+          className="btn btn-ghost normal-case text-sm"
+          to="/base_transceiver_station"
+          activeclassname="btn-active"
+        >
+          BTS
+        </Link>
       )}
+      <Link
+        className="btn btn-ghost normal-case text-sm"
+        to="/statistics"
+        activeclassname="btn-active"
+      >
+        Statistik
+      </Link>
 
       {/* if admin */}
       {user?.role_id === 0 && (

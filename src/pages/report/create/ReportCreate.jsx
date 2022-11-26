@@ -28,6 +28,7 @@ import {
   HiEye,
   HiEyeOff
 } from 'react-icons/hi';
+import { useNavigate } from "react-router-dom";
 import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
 import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation, useSaveReportMutation } from "../../../store/features/report/reportApiSlice";
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
@@ -47,6 +48,7 @@ function ReportCreate() {
   const [allPOPLocal, setAllPOPLocal] = useState([])
   const [bodyKeluhan, setBodyKeluhan] = useState({});
   const [keluhanLaporanLocal, setKeluhanLaporanLocal] = useState(null);
+  const navigate = useNavigate()
 
   const [getUserLaporan] = useGetUserLaporanMutation()
   const [allShift] = useAllShiftMutation();
@@ -237,9 +239,36 @@ function ReportCreate() {
 
     try {
       const data = await saveReport({ body }).unwrap();
+      if (data.status === 'success') {
+        toast.success('Berhasil simpan laporan.', {
+          style: {
+            padding: '16px',
+            backgroundColor: '#36d399',
+            color: 'white',
+          },
+          duration: 2000,
+          position: 'top-right',
+          id: 'success',
+          icon: false,
+        });
+      }
+      setTimeout(() => {
+        navigate('/report', { replace: true });
+      }, 2000);
       console.log(data, 'dat');
     } catch (error) {
       console.log(error);
+      toast.error(error.data.message || 'Gagal simpan laporan', {
+        style: {
+          padding: '16px',
+          backgroundColor: '#ff492d',
+          color: 'white',
+        },
+        duration: 2000,
+        position: 'top-right',
+        id: 'error',
+        icon: false,
+      });
     }
   }
 
