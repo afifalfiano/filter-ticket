@@ -40,6 +40,7 @@ import { selectAllReport, setReport } from '../../store/features/report/reportSl
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
+import ReportDetail from './detail/ReportDetail';
 
 function Report() {
   const columns = [
@@ -47,7 +48,8 @@ function Report() {
     'POP',
     'Tanggal',
     'Shift',
-    'Petugas',
+    'Petugas NOC',
+    'Petugas Helpdesk',
     'Aksi',
   ];
   const [showTable, setShowTable] = useState(true);
@@ -184,6 +186,12 @@ function Report() {
       <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
       <DeleteModal getInfo={getInfo} detail={detail} title="laporan" />
 
+      {/* Modal tambah */}
+      <input type="checkbox" id="my-modal-detail" className="modal-toggle" />
+      {/* <RenderModal> */}
+      {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
+      <ReportDetail detailData={detail} />
+
       <div className="flex gap-5 mt-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
@@ -256,7 +264,8 @@ function Report() {
                 </td>
                 <td className="text-left">{new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
                 <td>{item.shift.shift} ({item.shift.mulai} - {item.shift.selesai})</td>
-                <td>{item.petugas}</td>
+                <td>{item.noc}</td>
+                <td>{item.helpdesk}</td>
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
                     <div className="tooltip" data-tip="Detail">
@@ -265,8 +274,12 @@ function Report() {
                         color="#0D68F1"
                         className="cursor-pointer"
                         onClick={() => {
+                          // setDetail(item);
+                          // navigate(`/report/detail/${item.id_laporan}`);
                           setDetail(item);
-                          navigate(`/report/detail/${item.id_laporan}`);
+                          document
+                            .getElementById('my-modal-detail')
+                            .click();
                         }}
                       />
                     </div>

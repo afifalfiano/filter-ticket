@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-prototype-builtins */
@@ -28,39 +32,109 @@ import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/brea
 import { useGetOneReportMutation } from "../../../store/features/report/reportApiSlice";
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-function ReportDetail() {
-  const navigasi = useSelector(selectBreadcrumb);
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const [getOneReport] = useGetOneReportMutation();
-  const [detail, setDetail] = useState(null);
+function ReportDetail({ detailData }) {
+  console.log(detailData, 'detail data')
+  // const navigasi = useSelector(selectBreadcrumb);
+  // const { id } = useParams();
+  // const dispatch = useDispatch();
+  // const [getOneReport] = useGetOneReportMutation();
+  // const [detail, setDetail] = useState(null);
 
-  const getDetailReport = async () => {
-    try {
-      const data = await getOneReport(id).unwrap();
-      console.log(data, 'data');
-      if (data.status === 'success') {
-        setDetail(data.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const getDetailReport = async () => {
+  //   try {
+  //     const id = detailData.id_laporan;
+  //     const data = await getOneReport(id).unwrap();
+  //     console.log(data, 'data');
+  //     if (data.status === 'success') {
+  //       setDetail(data.data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
   useEffect(() => {
-    const data = [...navigasi.data, { path: `/report/detail/${id}`, title: 'Detail' }]
-    dispatch(updateBreadcrumb(data))
-    getDetailReport();
+    // const data = [...navigasi.data, { path: `/report/detail/${id}`, title: 'Detail' }]
+    // dispatch(updateBreadcrumb(data))
+    // getDetailReport();
   }, [])
 
-  return (
-    <>
-      <p><strong>Tanggal</strong> : {detail?.tanggal || '-'}</p>
-      <p><strong>Shift</strong>: {`${detail?.shift.shift} (${detail?.shift.mulai}) - (${detail?.shift.selesai})` || '-'} </p>
-      <p><strong>Petugas</strong>: {detail?.petugas || '-'}</p>
-      <p><strong>POP</strong>: {detail?.pop.pop || '-'}</p>
-      <p><strong>File Laporan</strong>: <a href={detail?.lampiran_laporan} className="link link-hover" target="_blank" rel="noreferrer">Download file</a></p>
+  const onBtnBack = () => {
+    document.getElementById('my-modal-detail').click();
+  }
 
-    </>
+  return (
+    <div className="modal">
+      <div className="modal-box max-w-2xl">
+        <label
+          htmlFor="my-modal-3"
+          className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnBack}
+        >
+          ✕
+        </label>
+        <h3 className="text-lg font-bold">
+          Detail Laporan
+        </h3>
+        <hr className="my-2" />
+        <div className="overflow-x-auto">
+          <table className="table w-full border-0">
+            <thead>
+              <tr>
+                {/* <th />
+                <th>Name</th>
+                <th>Job</th>
+                <th>Favorite Color</th> */}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Tanggal</th>
+                <td>:</td>
+                <td>{detailData?.tanggal || '-'}</td>
+              </tr>
+              <tr>
+                <th>Shift</th>
+                <td>:</td>
+                <td>{`${detailData?.shift.shift} (${detailData?.shift.mulai}) - (${detailData?.shift.selesai})` || '-'}</td>
+              </tr>
+              <tr>
+                <th>Petugas NOC</th>
+                <td>:</td>
+                <td>{detailData?.noc || '-'}</td>
+              </tr>
+              <tr>
+                <th>Petugas HELPDESK</th>
+                <td>:</td>
+                <td>{detailData?.helpdesk || '-'}</td>
+              </tr>
+              <tr>
+                <th>POP</th>
+                <td>:</td>
+                <td>{detailData?.pop.pop || '-'}</td>
+              </tr>
+              <tr>
+                <th>File Laporan</th>
+                <td>:</td>
+                <td><a href={detailData?.lampiran_laporan} className="link link-hover" target="_blank" rel="noreferrer">Download file</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <hr className="my-2 mt-10" />
+        <div className="modal-action justify-center">
+          <button
+            type="button"
+            htmlFor="my-modal-3"
+            className="btn btn-md"
+            onClick={() => {
+              onBtnBack();
+            }}
+          >
+            Kembali
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
 
