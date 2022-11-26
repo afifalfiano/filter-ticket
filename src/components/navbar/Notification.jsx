@@ -17,16 +17,16 @@ function Notification() {
 
   console.log(getNotif.data, 'notif');
   useEffect(() => {
-    const pusher = new Pusher('b335e0172f9e04f5ba8e', {
+    const pusher = new Pusher('2ed546b20ddc434a9b6a', {
       cluster: 'ap1',
       encrypted: true,
     });
     Pusher.logToConsole = true;
     const dataLocal = [];
     const channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', (data) => {
+    channel.bind('KeluhanEvent', (data) => {
       console.log(data, 'websocket');
-      dataLocal.push(data);
+      dataLocal.push(data.message);
       console.log(dataLocal, 'data local');
       dispatch(setNotification({data: dataLocal}));
     });
