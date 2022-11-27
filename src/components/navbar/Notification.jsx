@@ -25,7 +25,7 @@ function Notification() {
     Pusher.logToConsole = true;
     const dataLocal = [];
     const channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', (data) => {
+    channel.bind('KeluhanEvent', (data) => {
       console.log(data, 'websocket');
       dataLocal.push(data.message);
       console.log(dataLocal, 'data local');
