@@ -1,0 +1,10 @@
+{
+    "interests": ["hello"],
+    "web": {
+      "notification": {
+        "title": "Data Keluhan Baru",
+        "body": "Keluhan Baru",
+        "deep_link": "https://www.pusher.com"
+      }
+    }
+    }
