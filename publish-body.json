@@ -1,10 +1,18 @@
 {
     "interests": ["hello"],
     "web": {
+      "time_to_live": 3600,
       "notification": {
         "title": "Data Keluhan Baru",
         "body": "Keluhan Baru",
-        "deep_link": "https://www.pusher.com"
+        "icon": "https://www.pngitem.com/pimgs/m/79-793143_file-a-complaint-file-a-complaint-icon-hd.png",
+        "deep_link": "http://localhost:3000/dashboard/1"
       }
+    },
+    "data": {
+      "some": "metadata",
+      "of": "your",
+      "choosing": "can",
+      "go": "here"
     }
     }
