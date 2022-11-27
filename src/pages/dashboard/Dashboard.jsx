@@ -1,3 +1,5 @@
+/* eslint-disable default-param-last */
+/* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable max-len */
@@ -82,8 +84,57 @@ function Dashboard() {
   const [dataPOP, setdataPOP] = useState([]);
   const [pop, setPOPLocal] = useState('all');
   const dataRow = useSelector(selectAllComplain);
+  const [reRequest, setRerequest] = useState(0);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    currentFilterPage: 5,
+    pageNumbers: [1],
+    filterPage: [5, 10, 25, 50, 100]
+  });
+
+  const handlePagination = (targetPage = 1, data) => {
+    console.log(data, 'opo ikih');
+    setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
+    console.log(pagination, 'cek ombak');
+    const indexOfLastPost = targetPage * pagination.currentFilterPage;
+    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
+    let currentPosts;
+    if (data === undefined) {
+      currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    } else {
+      currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+    }
+    setRows(currentPosts);
+  }
+
+  const doGetPageNumber = (dataFix) => {
+    console.log(dataFix, 'fixxxxxx ');
+    console.log(pagination.currentFilterPage, 'filpter');
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers });
+  }
+
+  const handleFilterPagination = (selectFilter) => {
+    // setPagination({ ...pagination, currentFilterPage: selectFilter });
+    const indexOfLastPost = pagination.currentPage * selectFilter;
+    const indexOfFirstPost = indexOfLastPost - selectFilter;
+    const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    setRows(currentPosts);
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
+    console.log('cek ombak filter', pagination);
+  }
 
   const getAllComplain = async () => {
+    console.log(pagination, 'pggag');
     setShowLoading(true);
     try {
       const data = await allComplain().unwrap();
@@ -98,6 +149,8 @@ function Dashboard() {
           dataFix = dataFilter
           dispatch(setComplain({ data: dataFix }));
           setRows(dataFix);
+          handlePagination(1, dataFix);
+          doGetPageNumber(dataFix);
           console.log(dataFix, 'data complain');
         } else {
           const dataFilter = data.data.filter((item) => {
@@ -107,6 +160,8 @@ function Dashboard() {
           });
           dispatch(setComplain({ ...data }));
           setRows(dataFilter);
+          handlePagination(1, data.data);
+          doGetPageNumber(data.data);
           console.log(dataFilter, 'data complain');
         }
 
@@ -517,7 +572,7 @@ function Dashboard() {
           </tbody>
         </table>
       </div>
-      <Pagination />
+      <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} onClick={(i) => handlePagination(i.target.id, undefined)} handlePerPage={(x) => handleFilterPagination(x.target.value)} />
       {showLoading && (
       <div className="fixed bottom-5 right-5 w-52 min-w-min bg-slate-500 rounded-md shadow-md drop-shadow-md">
         <div className="flex flex-row justify-between items-center p-4">

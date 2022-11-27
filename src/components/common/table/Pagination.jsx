@@ -9,7 +9,11 @@
 import { useState } from 'react';
 
 /* eslint-disable react/button-has-type */
-function Pagination({ perPage = [5, 10, 25, 50, 100], currentPage = 1, countPage = [1], onClick, serverMode = true, handlePerPage }) {
+function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 5, currentPage = 1, countPage = [1], onClick, serverMode = true, handlePerPage }) {
+  console.log(perPage, 'items per page');
+  console.log(currentFilterPage, 'current filter per page');
+  console.log(currentPage, 'current page');
+  console.log(countPage, 'count page');
   return (
     <div className="flex justify-between mt-5 pb-20">
       {serverMode && (
@@ -52,15 +56,15 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentPage = 1, countPage
                 {' '}
                 Halaman
                 {' '}
-                {1}
+                {currentPage}
                 {' '}
                 dari
                 {' '}
-                {1}
+                {countPage.length}
               </span>
             </label>
             <div className="form-control">
-              <select className="select input-bordered" onChange={handlePerPage}>
+              <select className="select input-bordered" onChange={handlePerPage} defaultValue={currentFilterPage}>
                 {perPage?.map((item) => (
                   <option value={item} label={item}>item</option>
                 ))}
@@ -70,7 +74,7 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentPage = 1, countPage
           <div className="">
             <div className="btn-group">
               {countPage?.map((item) => (
-                <button className={`btn btn-outline ${currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
+                <button className={`btn btn-outline ${+currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
               ))}
             </div>
           </div>
