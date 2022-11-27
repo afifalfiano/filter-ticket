@@ -1,3 +1,6 @@
+/* eslint-disable default-param-last */
+/* eslint-disable react/button-has-type */
+/* eslint-disable no-undef */
 /* eslint-disable no-plusplus */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
@@ -15,13 +18,13 @@ import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
 import * as Yup from 'yup';
 import { useAddReplyMutation, useComplainByIdMutation, useLampiranFileBalasanMutation } from '../../../store/features/complain/complainApiSlice';
-import { setComplainById } from '../../../store/features/complain/complainSlice';
+import { selectDetailComplain, setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ReplySchema } from '../../../utils/schema_validation_form';
 
-function DashboardDetail({ rfoSingle, idComplain }) {
+function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   console.log(idComplain, 'zuuu');
   const location = useLocation();
   console.log(location, ';loc');
@@ -32,15 +35,62 @@ function DashboardDetail({ rfoSingle, idComplain }) {
   const navigate = useNavigate();
   const [complainById, { ...status }] = useComplainByIdMutation();
   const [addReply, { isSuccess: isSuccessReplpy }] = useAddReplyMutation();
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    currentFilterPage: 10,
+    pageNumbers: [1],
+  });
   const dispatch = useDispatch();
-
+  // const doGetPageNumber = (dataFix) => {
+  //   const pageNumbers = [];
+  //   for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
+  //     pageNumbers.push(i);
+  //   }
+  //   setPagination({ ...pagination, pageNumbers });
+  // }
   const [lampiranFileBalasan] = useLampiranFileBalasanMutation();
+
+  const detailState = useSelector(selectDetailComplain);
 
   const navigasi = useSelector(selectBreadcrumb);
   const onHandleFileUpload = ($event) => {
     console.log($event, 'file');
     setFilesLocal($event);
+    console.log(detailState, 'cekk detail state');
   }
+
+  const handlePagination = (targetPage = 1, data = undefined) => {
+    console.log(data, 'opo ikih');
+    console.log(detailState, 'opo ikih part 2');
+    console.log(pagination, 'cek ombak');
+    const indexOfLastPost = targetPage * pagination.currentFilterPage;
+    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
+    let reply;
+    let newState;
+    if (data === undefined) {
+      reply = detailState.balasan.slice(indexOfFirstPost, indexOfLastPost);
+      newState = { ...detailState, balasan: reply }
+    } else {
+      reply = data.balasan.slice(indexOfFirstPost, indexOfLastPost);
+      newState = { ...data, balasan: reply }
+    }
+    const pageNumbers = [];
+    let dataSource = [];
+    if (data === undefined) {
+      dataSource = detailState.balasan;
+    } else {
+      dataSource = data.balasan;
+    }
+    for (let i = 1; i <= Math.ceil(dataSource.length / pagination.currentFilterPage); i++) {
+      pageNumbers.push(i);
+    }
+    setPagination({ ...pagination, currentPage: +targetPage, pageNumbers })
+    console.log('reply', reply);
+    console.log('new state', newState);
+    // console.log(newState, 'cek reply pagination');
+    setDetailComplain(newState);
+  }
+
   const getComplainById = async () => {
     try {
       let idConditional;
@@ -52,6 +102,12 @@ function DashboardDetail({ rfoSingle, idComplain }) {
       const data = await complainById(idConditional).unwrap();
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
+      if (showPaginate) {
+        console.log(data.data, 'mantapq');
+        handlePagination(1, data.data);
+        console.log(idComplain, 'id aja');
+        // doGetPageNumber(data.data.balasan)
+      }
       console.log(data, 'data');
     } catch (err) {
       console.log(err);
@@ -211,11 +267,11 @@ function DashboardDetail({ rfoSingle, idComplain }) {
             />
           </div>
           <div className="py-2">
-            {detailComplain?.lampirankeluhan.map((file) => {
-              if (file.keluhan_id === detailComplain.id_keluhan) {
+            {detailComplain?.lampiranbalasan?.map((file) => {
+              if (+file.balasan_id === +item.id_balasan) {
                 return (
                   <a className="link inline" href={file.path} target="_blank" rel="noreferrer">
-                    <HiDocumentText size={24} color="blue" className="inline mr-2" />Lampiran File
+                    <HiDocumentText size={24} color="blue" className="inline mr-2" /> Lampiran File
                   </a>
                 )
               }
@@ -250,7 +306,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
                 />
               </div>
               <div className="py-2">
-                {item?.lampiranbalasan.map((file) => {
+                {item?.lampiranbalasan?.map((file) => {
                   if (+file.balasan_id === +item.id_balasan) {
                     return (
                       <a className="link inline" href={file.path} target="_blank" rel="noreferrer">
@@ -263,6 +319,16 @@ function DashboardDetail({ rfoSingle, idComplain }) {
             </div>
           ))
         }
+
+        {showPaginate && (
+        <div className="flex justify-center">
+          <div className="btn-group">
+            {pagination.pageNumbers?.map((item) => (
+              <button className={`btn btn-outline ${+pagination.currentPage === item && 'btn-active'}`} onClick={(e) => handlePagination(e.target.id, undefined)} id={item}>{item}</button>
+            ))}
+          </div>
+        </div>
+        )}
 
         <hr className="my-3" />
 

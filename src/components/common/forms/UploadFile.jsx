@@ -49,7 +49,7 @@ function UploadFile({ uploaded = false, getFile }) {
                 type="file"
                 accept=".doc,.pdf,.docx,.zip,.jpeg,.jpg,.png,.mp4"
                 className="hidden"
-                multiple="true"
+                multiple
                 onChange={onHandleFileUpload}
               />
             </label>

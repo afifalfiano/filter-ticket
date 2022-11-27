@@ -32,3 +32,4 @@ export const { setComplain, setComplainById, clearComplain } = complainSlice.act
 export default complainSlice.reducer;
 
 export const selectAllComplain = (state) => state.complain;
+export const selectDetailComplain = (state) => state.complain.detail;

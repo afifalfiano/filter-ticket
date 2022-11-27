@@ -452,7 +452,7 @@ function RFODetailSingle() {
           </h1>
 
           {isSuccess && (
-            <DashboardDetail rfoSingle idComplain={detailRFO?.keluhan_id} />
+            <DashboardDetail rfoSingle idComplain={detailRFO?.keluhan_id} showPaginate={false} />
           )}
         </div>
       </div>
