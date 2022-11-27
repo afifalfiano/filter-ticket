@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/anchor-has-content */
@@ -18,7 +19,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+  BarChart, LineChart, Bar, Line, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useGetStatistikFilterMutation, useGetStatistikMutation } from '../../store/features/graph/graphApiSlice';
@@ -52,7 +53,9 @@ function Statistics() {
   const [dataGraph, setDataGraph] = useState(dataInit);
   // const [tanggalMulai, setTanggalMulai] = useState(null);
   // const [tanggalSelesai, setTanggalSelesai] = useState(null);
-  const [parameter, setParameter] = useState({ mulai: null, selesai: null });
+  const today = new Date();
+  const format = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  const [parameter, setParameter] = useState({ mulai: format, selesai: format });
   const [dataFilter, setDataFilter] = useState(dataInitFilter);
   const [getStatistik] = useGetStatistikMutation();
   const [getStatistikFilter] = useGetStatistikFilterMutation();
@@ -68,12 +71,6 @@ function Statistics() {
       console.log(error);
     }
   }
-
-  // console.log(dataDummy, 'dm');
-  useEffect(() => {
-    dispatch(updateBreadcrumb([{ path: '/statistics', title: 'Statistik' }]));
-    getDataStatistik();
-  }, []);
 
   const doGetStatistikByFilter = async () => {
     try {
@@ -126,11 +123,16 @@ function Statistics() {
 
     setTimeout(() => {
       console.log(parameter, 'fix')
-      if (parameter.mulai !== null && parameter.selesai !== null) {
-        doGetStatistikByFilter();
-      }
+      doGetStatistikByFilter();
     }, 1000)
   };
+
+  // console.log(dataDummy, 'dm');
+  useEffect(() => {
+    dispatch(updateBreadcrumb([{ path: '/statistics', title: 'Statistik' }]));
+    getDataStatistik();
+    doGetStatistikByFilter();
+  }, []);
 
   return (
     <div>
@@ -143,18 +145,18 @@ function Statistics() {
                 <span className="label-text"> Mulai</span>
               </label>
 
-              <input type="date" name="" id="tanggal_mulai" onChange={handleFilter} className="input w-full max-w-full input-bordered" />
+              <input type="date" name="" id="tanggal_mulai" defaultValue={format} onChange={handleFilter} className="input w-full max-w-full input-bordered" />
             </div>
             <div className="form-control">
               <label htmlFor="tanggal" className="label font-semibold">
                 <span className="label-text"> Selesai</span>
               </label>
 
-              <input type="date" name="" id="tanggal_selesai" onChange={handleFilter} className="input w-full max-w-full input-bordered" />
+              <input type="date" name="" id="tanggal_selesai" defaultValue={format} onChange={handleFilter} className="input w-full max-w-full input-bordered" />
             </div>
           </div>
           <ResponsiveContainer width="100%" height="100%" aspect="1">
-            <BarChart
+            <LineChart
               width={500}
               height={300}
               data={dataFilter}
@@ -174,8 +176,9 @@ function Statistics() {
               <Bar dataKey="jogja" fill="#0f7d9e" />
               <Bar dataKey="solo" fill="#82ca9d" />
               <Bar dataKey="purwokerto" fill="#f89c38" /> */}
-              <Bar dataKey="total" fill="#c2f23d" />
-            </BarChart>
+              {/* <Bar dataKey="total" fill="#c2f23d" /> */}
+              <Line type="monotone" dataKey="total" stroke="#82ca9d" />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
