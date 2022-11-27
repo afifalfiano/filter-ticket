@@ -13,7 +13,7 @@ import Navbar from '../navbar/Navbar';
 import { selectBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function RequireAuth() {
-  // const { data } = useSelector(selectCurrentUser);
+  const { data } = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const breadcrumb = useSelector(selectBreadcrumb);

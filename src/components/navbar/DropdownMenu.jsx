@@ -53,7 +53,7 @@ const DropdownMenu = () => {
         localStorage.clear();
         navigate('/sign_in', {replace: true});
       } else {
-        toast.error(userData?.data?.message || 'Terjadi Kesalahan', {
+        toast.error(userLogout?.data?.message || 'Terjadi Kesalahan', {
           style: {
             padding: '16px',
             backgroundColor: '#ff492d',
@@ -67,7 +67,7 @@ const DropdownMenu = () => {
       }
 
     } catch (err) {
-      toast.error(userData?.data?.message || 'Terjadi Kesalahan', {
+      toast.error(err?.message || 'Terjadi Kesalahan', {
         style: {
           padding: '16px',
           backgroundColor: '#ff492d',

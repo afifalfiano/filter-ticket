@@ -6,7 +6,7 @@
         "title": "Data Keluhan Baru",
         "body": "Keluhan Baru",
         "icon": "https://www.pngitem.com/pimgs/m/79-793143_file-a-complaint-file-a-complaint-icon-hd.png",
-        "deep_link": "http://localhost:3000/dashboard/1"
+        "deep_link": "http://localhost:3000/dashboard/detail/30"
       }
     },
     "data": {
