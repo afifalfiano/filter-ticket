@@ -10,7 +10,13 @@ export const graphApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getStatistikFilter: builder.mutation({
+      query: (param) => ({
+        url: `/statistik-range${param}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
-export const { useGetStatistikMutation } = graphApiSlice;
+export const { useGetStatistikMutation, useGetStatistikFilterMutation } = graphApiSlice;

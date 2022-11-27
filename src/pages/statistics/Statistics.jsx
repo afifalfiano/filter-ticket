@@ -21,13 +21,41 @@ import {
   BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
-import { useGetStatistikMutation } from '../../store/features/graph/graphApiSlice';
+import { useGetStatistikFilterMutation, useGetStatistikMutation } from '../../store/features/graph/graphApiSlice';
 import dataInit from './data_init';
+
+const dataInitFilter = [
+  {
+    name: 'all_pop',
+    total: 0
+  },
+  {
+    name: 'jogja',
+    total: 0
+  },
+  {
+    name: 'solo',
+    total: 0
+  },
+  {
+    name: 'purwokerto',
+    total: 0
+  },
+  {
+    name: 'all_rfo_gangguan',
+    total: 0
+  },
+]
 
 function Statistics() {
   const dispatch = useDispatch();
   const [dataGraph, setDataGraph] = useState(dataInit);
+  // const [tanggalMulai, setTanggalMulai] = useState(null);
+  // const [tanggalSelesai, setTanggalSelesai] = useState(null);
+  const [parameter, setParameter] = useState({ mulai: null, selesai: null });
+  const [dataFilter, setDataFilter] = useState(dataInitFilter);
   const [getStatistik] = useGetStatistikMutation();
+  const [getStatistikFilter] = useGetStatistikFilterMutation();
 
   const getDataStatistik = async () => {
     try {
@@ -47,8 +75,111 @@ function Statistics() {
     getDataStatistik();
   }, []);
 
+  const doGetStatistikByFilter = async () => {
+    try {
+      console.log(parameter, 'prm');
+      const param = `?dari=${parameter?.mulai}&sampai=${parameter?.selesai}`;
+      const data = await getStatistikFilter(param).unwrap();
+      if (data.status === 'success') {
+        console.log(data, 'staistik param');
+        const dataFix = [
+          {
+            name: 'all_pop',
+            total: data.data.all_rfo_gangguan
+          },
+          {
+            name: 'jogja',
+            total: data.data.jogja
+          },
+          {
+            name: 'solo',
+            total: data.data.solo
+          },
+          {
+            name: 'purwokerto',
+            total: data.data.purwokerto
+          },
+          {
+            name: 'all_rfo_gangguan',
+            total: data.data.all_rfo_gangguan
+          },
+        ]
+        setDataFilter(dataFix);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleFilter = (event) => {
+    const { id, value } = event.target;
+    if (id === 'tanggal_mulai') {
+      setParameter({ mulai: value, selesai: parameter.selesai });
+      console.log(value, 'val mulai');
+      console.log(parameter, 'param 1');
+    }
+    if (id === 'tanggal_selesai') {
+      setParameter({ mulai: parameter.mulai, selesai: value });
+      console.log(value, 'val seelsai');
+      console.log(parameter, 'param 2');
+    }
+
+    setTimeout(() => {
+      console.log(parameter, 'fix')
+      if (parameter.mulai !== null && parameter.selesai !== null) {
+        doGetStatistikByFilter();
+      }
+    }, 1000)
+  };
+
   return (
     <div>
+      <div className="flex justify-center">
+        <div className="w-1/2">
+          <p className="label font-semibold justify-center">Filter Berdasarkan Tanggal</p>
+          <div className="flex justify-between gap-10 mb-5">
+            <div className="form-control">
+              <label htmlFor="tanggal" className="label font-semibold">
+                <span className="label-text"> Mulai</span>
+              </label>
+
+              <input type="date" name="" id="tanggal_mulai" onChange={handleFilter} className="input w-full max-w-full input-bordered" />
+            </div>
+            <div className="form-control">
+              <label htmlFor="tanggal" className="label font-semibold">
+                <span className="label-text"> Selesai</span>
+              </label>
+
+              <input type="date" name="" id="tanggal_selesai" onChange={handleFilter} className="input w-full max-w-full input-bordered" />
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height="100%" aspect="1">
+            <BarChart
+              width={500}
+              height={300}
+              data={dataFilter}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              {/* <Bar dataKey="all_pop" fill="#8884d8" />
+              <Bar dataKey="jogja" fill="#0f7d9e" />
+              <Bar dataKey="solo" fill="#82ca9d" />
+              <Bar dataKey="purwokerto" fill="#f89c38" /> */}
+              <Bar dataKey="total" fill="#c2f23d" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+      <hr className="mt-5" />
       <div className="flex justify-between flex-wrap">
         <div className="card p-5 w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Semua</p>
