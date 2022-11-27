@@ -35,8 +35,8 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         action(clearBTS());
         action(clearComplain());
       });
-      // localStorage.clear();
-      // window.location.reload();
+      localStorage.clear();
+      window.location.reload();
     }
 
     if (result?.error?.data?.message === '\nPlease login first') {
@@ -45,8 +45,8 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         action(clearBTS());
         action(clearComplain());
       });
-      // localStorage.clear();
-      // window.location.reload();
+      localStorage.clear();
+      window.location.reload();
     }
 
     if (result?.error?.status === 'FETCH_ERROR') {

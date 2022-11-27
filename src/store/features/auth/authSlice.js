@@ -2,8 +2,11 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
+const dataLocal = localStorage.getItem('user');
+const dataParse = JSON.parse(dataLocal);
+
 const initialState = {
-  data: null,
+  data: dataParse || null,
 };
 
 const authSlice = createSlice({
