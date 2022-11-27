@@ -299,7 +299,7 @@ function Statistics() {
         <div className="card p-5 w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Bulan Ini</p>
           <ResponsiveContainer width="100%" height="100%" aspect="1">
-            <BarChart
+            <LineChart
               width={500}
               height={300}
               data={dataGraph?.this_month}
@@ -315,8 +315,9 @@ function Statistics() {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="Total" fill="#8884d8" />
-            </BarChart>
+              {/* <Bar dataKey="Total" fill="#8884d8" /> */}
+              <Line type="monotone" dataKey="Total" stroke="#8884d8" />
+            </LineChart>
           </ResponsiveContainer>
         </div>
 
