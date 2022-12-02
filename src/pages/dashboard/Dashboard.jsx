@@ -182,10 +182,22 @@ function Dashboard() {
 
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = rows.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
+      const searchResult = dataRow.data.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
       setRows(searchResult);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     } else {
       setRows(dataRow.data);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     }
   }
 
@@ -201,8 +213,20 @@ function Dashboard() {
     if (event.target.value === 'all') {
       console.log(dataRow, 'cek gan');
       setRows(dataRow.data.filter((item) => item.status === statusData));
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     } else {
       setRows(dataChanged);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     }
   };
 
@@ -288,6 +312,12 @@ function Dashboard() {
       }
     })
     setRows(dataChanged);
+    setPagination({
+      currentPage: 1,
+      currentFilterPage: 100,
+      pageNumbers: [1],
+      filterPage: [5, 10, 25, 50, 100]
+    });
   };
 
   const getInfo = ($event) => {
