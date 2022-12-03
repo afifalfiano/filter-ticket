@@ -1,3 +1,6 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable no-plusplus */
+/* eslint-disable default-param-last */
 /* eslint-disable max-len */
 /* eslint-disable array-callback-return */
 /* eslint-disable consistent-return */
@@ -34,12 +37,12 @@ import Pagination from '../../../components/common/table/Pagination';
 function BaseTransceiverStation() {
   const columns = [
     'No',
+    'POP',
     'Nama',
     'Penanggung Jawab',
     'No Penanggung Jawab',
     'Lokasi',
     'Koordinat',
-    'POP',
     'Aksi',
   ];
 
@@ -55,6 +58,54 @@ function BaseTransceiverStation() {
 
   const dataRow = useSelector(selectAllBTS);
 
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    currentFilterPage: 5,
+    pageNumbers: [1],
+    filterPage: [5, 10, 25, 50, 100]
+  });
+
+  const handlePagination = (targetPage = 1, data) => {
+    console.log(data, 'opo ikih');
+    setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
+    console.log(pagination, 'cek ombak');
+    const indexOfLastPost = targetPage * pagination.currentFilterPage;
+    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
+    let currentPosts;
+    if (data === undefined) {
+      currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    } else {
+      currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+    }
+    setRows(currentPosts);
+  }
+
+  const doGetPageNumber = (dataFix) => {
+    console.log(dataFix, 'fixxxxxx ');
+    console.log(pagination.currentFilterPage, 'filpter');
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers });
+  }
+
+  const handleFilterPagination = (selectFilter) => {
+    // setPagination({ ...pagination, currentFilterPage: selectFilter });
+    const indexOfLastPost = pagination.currentPage * selectFilter;
+    const indexOfFirstPost = indexOfLastPost - selectFilter;
+    const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    setRows(currentPosts);
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
+    console.log('cek ombak filter', pagination);
+  }
+
   const onHandleSearch = (event) => {
     event.preventDefault();
     console.log(event.target.value);
@@ -63,16 +114,47 @@ function BaseTransceiverStation() {
 
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = rows.filter((item) => item.nama_bts.match(regex) || item.nama_pic.match(regex));
+      const searchResult = dataRow.data.filter((item) => {
+        if (+item.pop.id_pop === +pop) {
+          if (item.nama_bts.match(regex) || item.nama_pic.match(regex)) {
+            return item;
+          }
+        }
+        if (pop === 'all') {
+          if (item.nama_bts.match(regex) || item.nama_pic.match(regex)) {
+            return item;
+          }
+        }
+      });
       setRows(searchResult);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     } else {
-      setRows(dataRow.data);
+      setRows(dataRow.data.filter((item) => {
+        if (+item.pop.id_pop === +pop) {
+          return item;
+        }
+        if (pop === 'all') {
+          return item;
+        }
+      }));
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     }
   }
 
   const handlePOP = (event) => {
     console.log(event.target, 'cek');
     setPOPLocal(event.target.value);
+    // setPOP(event.target.value);
     console.log(event.target.value, 'how');
     const dataChanged = dataRow.data.filter((item) => {
       if (+item.pop_id === +event.target.value) {
@@ -81,9 +163,21 @@ function BaseTransceiverStation() {
     })
     if (event.target.value === 'all') {
       console.log(dataRow, 'cek gan');
-      setRows(dataRow.data);
+      setRows(dataRow.data)
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     } else {
       setRows(dataChanged);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     }
   };
 
@@ -110,6 +204,8 @@ function BaseTransceiverStation() {
       if (data.message === 'success') {
         dispatch(setBTS({ ...data }));
         setRows(data.data);
+        handlePagination(1, data.data);
+        doGetPageNumber(data.data);
         console.log(data, 'data rows');
       }
     } catch (err) {
@@ -210,12 +306,30 @@ function BaseTransceiverStation() {
             { rows.map((item, index) => (
               <tr className="text-center" id={item.id}>
                 <td id={item.id}>{index + 1}</td>
+                <td>
+                  { item?.pop?.pop === 'Yogyakarta' ? (
+                    <span className="badge badge-success text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  ) : item?.pop?.pop === 'Solo' ? (
+                    <span className="badge badge-warning text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  ) : item?.pop?.pop === 'Purwokerto' ? (
+                    <span className="badge badge-info text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  ) : (
+                    <span className="badge text-white">
+                      {item?.pop?.pop}
+                    </span>
+                  )}
+                </td>
                 <td>{item.nama_bts}</td>
                 <td>{item.nama_pic}</td>
                 <td>{item.nomor_pic}</td>
                 <td>{item.lokasi}</td>
                 <td>{item.kordinat}</td>
-                <td>{item.pop.pop}</td>
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
                     <div className="tooltip" data-tip="Edit">
@@ -261,7 +375,7 @@ function BaseTransceiverStation() {
         </table>
       </div>
       )}
-      {!isLoading && (<Pagination />)}
+      {!isLoading && <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} onClick={(i) => handlePagination(i.target.id, undefined)} handlePerPage={(x) => handleFilterPagination(x.target.value)} />}
       {/* end table */}
     </div>
   );
