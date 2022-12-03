@@ -111,6 +111,7 @@ function ReasonOfOutage() {
         { path: '/reason_of_outage', title: 'Reason Of Outage' },
       ])
     );
+    setStatusData('sendiri');
     getAllRFO();
     getAllRFOMasal();
   }, []);
@@ -168,13 +169,13 @@ function ReasonOfOutage() {
           <select
             className="select w-full max-w-full input-bordered"
             onChange={handleStatus}
-            value={statusData}
+            defaultValue={statusData}
           >
             <option disabled>Pilih Status</option>
             {/* <option value="all" label="Semua">
               Semua
             </option> */}
-            <option value="sendiri" label="Sendiri" defaultValue>
+            <option value="sendiri" label="Sendiri">
               Sendiri
             </option>
             <option value="masal" label="Masal">
