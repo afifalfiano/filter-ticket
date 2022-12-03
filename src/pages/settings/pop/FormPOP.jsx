@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 import * as Yup from 'yup';
+import * as uuid from "uuid";
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import {
   useAddBtsMutation,
@@ -33,6 +34,7 @@ function FormPOP({ getInfo, detail, titleAction }) {
 
   const onSubmitData = async (payload, resetForm) => {
     const body = {
+      id_pop: Math.floor(Math.random() * 90 + 10),
       pop: payload.pop,
       user_id: user.id_user,
     };
