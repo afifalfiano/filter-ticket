@@ -236,10 +236,14 @@ function Report() {
           dataFix = dataFilter
           dispatch(setReport({ data: dataFix }));
           setRows(dataFix);
+          handlePagination(1, dataFix);
+          doGetPageNumber(dataFix);
           console.log(dataFix, 'data complain');
         } else {
           dispatch(setReport({ ...data }));
           setRows(data.data);
+          handlePagination(1, data.data);
+          doGetPageNumber(data.data);
         }
         // dispatch(setReport({ ...data }));
         // setRows(data.data);
