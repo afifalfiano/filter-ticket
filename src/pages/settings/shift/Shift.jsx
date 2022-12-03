@@ -1,3 +1,5 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable default-param-last */
 /* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/no-unknown-property */
@@ -30,6 +32,53 @@ function Shift() {
   const [title, setTitle] = useState('update');
   const dataRow = useSelector(selectAllShift);
 
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    currentFilterPage: 5,
+    pageNumbers: [1],
+    filterPage: [5, 10, 25, 50, 100]
+  });
+
+  const handlePagination = (targetPage = 1, data) => {
+    console.log(data, 'opo ikih');
+    setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
+    console.log(pagination, 'cek ombak');
+    const indexOfLastPost = targetPage * pagination.currentFilterPage;
+    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
+    let currentPosts;
+    if (data === undefined) {
+      currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    } else {
+      currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+    }
+    setRows(currentPosts);
+  }
+
+  const doGetPageNumber = (dataFix) => {
+    console.log(dataFix, 'fixxxxxx ');
+    console.log(pagination.currentFilterPage, 'filpter');
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers });
+  }
+
+  const handleFilterPagination = (selectFilter) => {
+    // setPagination({ ...pagination, currentFilterPage: selectFilter });
+    const indexOfLastPost = pagination.currentPage * selectFilter;
+    const indexOfFirstPost = indexOfLastPost - selectFilter;
+    const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    setRows(currentPosts);
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
+    console.log('cek ombak filter', pagination);
+  }
   const getAllShift = async () => {
     try {
       const data = await indexShift().unwrap();
@@ -37,6 +86,8 @@ function Shift() {
       if (data.status === 'success') {
         dispatch(setShift({ ...data }));
         setRows(data.data);
+        handlePagination(1, data.data);
+        doGetPageNumber(data.data);
         console.log({ ...data }, 'data rows');
       }
     } catch (err) {
@@ -48,10 +99,22 @@ function Shift() {
     setSearch(event.target.value);
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = rows.filter((item) => item.mulai.match(regex) || item.selesai.match(regex));
+      const searchResult = dataRow.data.filter((item) => item.mulai.match(regex) || item.selesai.match(regex));
       setRows(searchResult);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     } else {
       setRows(dataRow.data);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     }
   };
 
@@ -182,7 +245,7 @@ function Shift() {
           </table>
         </div>
       )}
-      {!isLoading && <Pagination />}
+      {!isLoading && <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} onClick={(i) => handlePagination(i.target.id, undefined)} handlePerPage={(x) => handleFilterPagination(x.target.value)} />}
       {/* end table */}
     </div>
   );

@@ -19,8 +19,8 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     updateShift: builder.mutation({
-      query: ({ body }) => ({
-        url: '/shift',
+      query: ({ id, body }) => ({
+        url: `/shift/${id}`,
         method: 'PUT',
         body
       }),

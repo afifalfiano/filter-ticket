@@ -37,7 +37,7 @@ function FormShift({ getInfo, detail, titleAction }) {
       // create
       console.log(detail, 'dt');
       if (detail === null) {
-        const add = await createShift({ ...body });
+        const add = await createShift({ body });
         if (add.data.status === 'success') {
           toast.success('Berhasil tambah data Shift.', {
             style: {
@@ -181,16 +181,18 @@ function FormShift({ getInfo, detail, titleAction }) {
                 <label htmlFor="mulai" className="label">
                   <span className="label-text"> Mulai:</span>
                 </label>
-                <Field
+                {/* <Field
                   id="mulai"
                   name="mulai"
+                  component="time"
                   placeholder="Nomor mulai"
                   value={values.mulai}
                   disabled={titleAction === 'read'}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
-                />
+                /> */}
+                <input type="time" name="mulai" id="mulai" disabled={titleAction === 'read'} value={values.mulai} onChange={handleChange} onBlur={handleBlur} className="input input-md input-bordered  max-w-full" />
                 {errors.mulai && touched.mulai ? (
                   <div className="label label-text text-red-500">{errors.mulai}</div>
                 ) : null}
@@ -200,16 +202,18 @@ function FormShift({ getInfo, detail, titleAction }) {
                 <label htmlFor="selesai" className="label">
                   <span className="label-text"> Selesai:</span>
                 </label>
-                <Field
+                <input type="time" name="selesai" id="selesai" disabled={titleAction === 'read'} value={values.selesai} onChange={handleChange} onBlur={handleBlur} className="input input-md input-bordered  max-w-full" />
+                {/* <Field
                   id="selesai"
                   name="selesai"
+                  component="time"
                   placeholder="Nomor selesai"
                   value={values.selesai}
                   disabled={titleAction === 'read'}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
-                />
+                /> */}
                 {errors.selesai && touched.selesai ? (
                   <div className="label label-text text-red-500">{errors.selesai}</div>
                 ) : null}
