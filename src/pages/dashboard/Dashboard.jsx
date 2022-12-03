@@ -182,7 +182,13 @@ function Dashboard() {
 
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = dataRow.data.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
+      const searchResult = dataRow.data.filter((item) => {
+        if (item.status === statusData && +item.pop.id_pop === +pop) {
+          if (item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex)) {
+            return item;
+          }
+        }
+      });
       setRows(searchResult);
       setPagination({
         currentPage: 1,
@@ -191,7 +197,13 @@ function Dashboard() {
         filterPage: [5, 10, 25, 50, 100]
       });
     } else {
-      setRows(dataRow.data);
+      console.log(statusData, 'status');
+      console.log(pop, 'local pop');
+      setRows(dataRow.data.filter((item) => {
+        if (item.status === statusData && +item.pop.id_pop === +pop) {
+          return item;
+        }
+      }));
       setPagination({
         currentPage: 1,
         currentFilterPage: 100,
@@ -307,7 +319,7 @@ function Dashboard() {
     console.log(event.target.value, 'status');
     console.log(dataRow, 'row');
     const dataChanged = dataRow.data.filter((item) => {
-      if (item.status === event.target.value) {
+      if (item.status === event.target.value && +item.pop.id_pop === +pop) {
         return item;
       }
     })

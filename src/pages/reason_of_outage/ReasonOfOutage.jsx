@@ -123,7 +123,7 @@ function ReasonOfOutage() {
 
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = rows.filter((item) => item.problem.match(regex));
+      const searchResult = allData.filter((item) => item.problem.match(regex));
       setRows(searchResult);
     } else {
       setRows(allData);
