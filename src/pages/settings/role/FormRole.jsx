@@ -26,6 +26,7 @@ function FormRole({ getInfo, detail, titleAction }) {
 
   const onSubmitData = async (payload, resetForm) => {
     const body = {
+      id_role: Math.floor(Math.random() * 90 + 10),
       role: payload.role,
       user_id: user.id_user,
     };
