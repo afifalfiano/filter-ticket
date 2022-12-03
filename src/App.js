@@ -12,7 +12,7 @@ import ReasonOfOutage from './pages/reason_of_outage/ReasonOfOutage';
 import Report from './pages/report/Report';
 import HistoryDashboard from './pages/history_dashboard/HistoryDashboard';
 import Profile from './pages/profile/Profile';
-import BaseTransceiverStation from './pages/base_transceiver_station/BaseTransceiverStation';
+import BaseTransceiverStation from './pages/settings/base_transceiver_station/BaseTransceiverStation';
 import VerificationEmail from './pages/auth/verification_email/VerificationEmail';
 import VerificationSuccess from './pages/auth/verification_success/VerificationSuccess';
 import DashboardDetail from './pages/dashboard/detail/DashboardDetail';

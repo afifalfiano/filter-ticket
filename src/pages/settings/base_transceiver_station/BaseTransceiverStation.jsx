@@ -19,17 +19,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import { selectAllBTS, setBTS } from '../../store/features/bts/btsSlice';
+import { selectAllBTS, setBTS } from '../../../store/features/bts/btsSlice';
 import styles from './BaseTransceiverStation.module.css';
-import { useAllBtsMutation } from '../../store/features/bts/btsApiSlice';
+import { useAllBtsMutation } from '../../../store/features/bts/btsApiSlice';
 import FormBTS from './FormBTS';
-import DeleteModal from '../../components/common/DeleteModal';
-import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
-import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
-import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import DeleteModal from '../../../components/common/DeleteModal';
+import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
+import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
+import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 
-import SkeletonTable from '../../components/common/table/SkeletonTable';
-import Pagination from '../../components/common/table/Pagination';
+import SkeletonTable from '../../../components/common/table/SkeletonTable';
+import Pagination from '../../../components/common/table/Pagination';
 
 function BaseTransceiverStation() {
   const columns = [

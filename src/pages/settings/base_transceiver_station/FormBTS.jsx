@@ -13,14 +13,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useState, useEffect } from 'react';
 import * as Yup from 'yup';
-import { selectCurrentUser } from '../../store/features/auth/authSlice';
+import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import {
   useAddBtsMutation,
   useUpdateBtsMutation,
-} from '../../store/features/bts/btsApiSlice';
-import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
-import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
-import { FormBTSSchema } from '../../utils/schema_validation_form';
+} from '../../../store/features/bts/btsApiSlice';
+import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
+import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
+import { FormBTSSchema } from '../../../utils/schema_validation_form';
 
 function FormBTS({ getInfo, detail, titleAction }) {
   console.log(detail, 'cek render');
