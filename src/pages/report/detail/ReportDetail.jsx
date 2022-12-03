@@ -62,6 +62,21 @@ function ReportDetail({ detailData }) {
     document.getElementById('my-modal-detail').click();
   }
 
+  const downloadFile = (url, fileName) => {
+    fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
+      .then((res) => res.blob())
+      .then((res) => {
+        const aElement = document.createElement('a');
+        aElement.setAttribute('download', fileName);
+        const href = URL.createObjectURL(res);
+        aElement.href = href;
+        // aElement.setAttribute('href', href);
+        aElement.setAttribute('target', '_blank');
+        aElement.click();
+        URL.revokeObjectURL(href);
+      });
+  }
+
   return (
     <div className="modal">
       <div className="modal-box max-w-2xl">
@@ -116,6 +131,7 @@ function ReportDetail({ detailData }) {
                 <th>File Laporan</th>
                 <td>:</td>
                 <td><a href={detailData?.lampiran_laporan} className="link link-hover" target="_blank" rel="noreferrer">Download file</a></td>
+                {/* <td><p onClick={() => downloadFile(detailData?.lampiran_laporan, 'Laporan.pdf')} className="link link-hover">Download file</p></td> */}
               </tr>
             </tbody>
           </table>
