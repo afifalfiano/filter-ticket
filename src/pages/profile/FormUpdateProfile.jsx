@@ -153,13 +153,14 @@ function FormUpdateProfile({ handleForm, profile }) {
                 </div>
                 <div className="flex justify-center">
                   <HiPencil
+                    size={24}
                     className="link link-primary"
                     onClick={() => {
                       document.getElementById('my-modal-3').click();
                     }}
                   />
                 </div>
-                <h1 className="font-semibold text-xl mt-5">Ubah Profile</h1>
+                <h1 className="font-semibold text-xl mt-5">Ubah Informasi</h1>
                 <div className="my-5 flex justify-center gap-7">
                   <div className="border-gray-200 rounded-md border-2 w-80 h-auto items-center flex-1 flex-row justify-center">
                     <div className="px-5 py-5">
