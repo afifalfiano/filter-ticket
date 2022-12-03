@@ -148,14 +148,17 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
           id: 'success',
           icon: false,
         });
-        const formData = new FormData();
-        formData.append('balasan_id', add?.data?.id_balasan);
-        for (let index = 0; index < filesLocal.length; index++) {
-          formData.append(`path[${index}]`, filesLocal[index])
-        }
 
-        const dataLampiran = await lampiranFileBalasan({ body: formData }).unwrap();
-        console.log(dataLampiran, 'lampiran');
+        if (filesLocal.length > 0) {
+          const formData = new FormData();
+          formData.append('balasan_id', add?.data?.id_balasan);
+          for (let index = 0; index < filesLocal.length; index++) {
+            formData.append(`path[${index}]`, filesLocal[index])
+          }
+
+          const dataLampiran = await lampiranFileBalasan({ body: formData }).unwrap();
+          console.log(dataLampiran, 'lampiran');
+        }
         getComplainById();
       } else {
         toast.error(`${add.data.message}`, {
