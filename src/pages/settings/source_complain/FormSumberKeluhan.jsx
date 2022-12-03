@@ -26,6 +26,7 @@ function FormSumberKeluhan({ getInfo, detail, titleAction }) {
 
   const onSubmitData = async (payload, resetForm) => {
     const body = {
+      id_sumber: Math.floor(Math.random() * 90 + 10),
       sumber: payload.sumber,
       user_id: user.id_user,
     };
