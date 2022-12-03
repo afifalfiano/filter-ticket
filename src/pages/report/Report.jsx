@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-plusplus */
+/* eslint-disable default-param-last */
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable jsx-a11y/anchor-has-content */
@@ -53,7 +56,7 @@ function Report() {
     'Aksi',
   ];
   const [showTable, setShowTable] = useState(true);
-  // const [pop, setPOP] = useState('all');
+  const [pop, setPOPLocal] = useState('all');
   const [dataPOP, setdataPOP] = useState([]);
   const [rows, setRows] = useState([]);
   const [detail, setDetail] = useState(null);
@@ -64,6 +67,54 @@ function Report() {
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
   const { data: user } = useSelector(selectCurrentUser);
+
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    currentFilterPage: 5,
+    pageNumbers: [1],
+    filterPage: [5, 10, 25, 50, 100]
+  });
+
+  const handlePagination = (targetPage = 1, data) => {
+    console.log(data, 'opo ikih');
+    setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
+    console.log(pagination, 'cek ombak');
+    const indexOfLastPost = targetPage * pagination.currentFilterPage;
+    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
+    let currentPosts;
+    if (data === undefined) {
+      currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    } else {
+      currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+    }
+    setRows(currentPosts);
+  }
+
+  const doGetPageNumber = (dataFix) => {
+    console.log(dataFix, 'fixxxxxx ');
+    console.log(pagination.currentFilterPage, 'filpter');
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers });
+  }
+
+  const handleFilterPagination = (selectFilter) => {
+    // setPagination({ ...pagination, currentFilterPage: selectFilter });
+    const indexOfLastPost = pagination.currentPage * selectFilter;
+    const indexOfFirstPost = indexOfLastPost - selectFilter;
+    const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+    setRows(currentPosts);
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
+      pageNumbers.push(i);
+    }
+    console.log(pageNumbers, 'cekk');
+    setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
+    console.log('cek ombak filter', pagination);
+  }
 
   const getAllPOP = async () => {
     try {
@@ -97,7 +148,8 @@ function Report() {
 
   const handlePOP = (event) => {
     console.log(event.target, 'cek');
-    setPOP(event.target.value);
+    setPOPLocal(event.target.value);
+    // setPOP(event.target.value);
     console.log(event.target.value, 'how');
     const dataChanged = dataRow.data.filter((item) => {
       if (+item.pop_id === +event.target.value) {
@@ -107,8 +159,20 @@ function Report() {
     if (event.target.value === 'all') {
       console.log(dataRow, 'cek gan');
       setRows(dataRow.data)
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     } else {
       setRows(dataChanged);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     }
   };
 
@@ -120,10 +184,40 @@ function Report() {
 
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = rows.filter((item) => item.petugas.match(regex) || item.pop.pop.match(regex));
+      const searchResult = dataRow.data.filter((item) => {
+        if (+item.pop.id_pop === +pop) {
+          if (item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
+            return item;
+          }
+        }
+        if (pop === 'all') {
+          if (item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
+            return item;
+          }
+        }
+      });
       setRows(searchResult);
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     } else {
-      setRows(dataRow.data);
+      setRows(dataRow.data.filter((item) => {
+        if (+item.pop.id_pop === +pop) {
+          return item;
+        }
+        if (pop === 'all') {
+          return item;
+        }
+      }));
+      setPagination({
+        currentPage: 1,
+        currentFilterPage: 100,
+        pageNumbers: [1],
+        filterPage: [5, 10, 25, 50, 100]
+      });
     }
   }
 
@@ -319,7 +413,7 @@ function Report() {
           </tbody>
         </table>
       </div>
-      <Pagination />
+      <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} onClick={(i) => handlePagination(i.target.id, undefined)} handlePerPage={(x) => handleFilterPagination(x.target.value)} />
       {/* end table */}
     </div>
   )
