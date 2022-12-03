@@ -132,7 +132,7 @@ function ReasonOfOutage() {
 
   const columns = [
     'No',
-    'Pelanggan',
+    statusData === 'sendiri' ? 'Pelanggan' : 'Topik',
     'Waktu Gangguan',
     'Durasi',
     'Masalah',
@@ -171,9 +171,9 @@ function ReasonOfOutage() {
             value={statusData}
           >
             <option disabled>Pilih Status</option>
-            <option value="all" label="Semua">
+            {/* <option value="all" label="Semua">
               Semua
-            </option>
+            </option> */}
             <option value="sendiri" label="Sendiri" defaultValue>
               Sendiri
             </option>
