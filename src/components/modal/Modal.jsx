@@ -5,11 +5,11 @@ import ReactDOM from 'react-dom';
 
 import styles from './Modal.module.css';
 
-const RenderModal = (props) => ReactDOM.createPortal(
+const Modal = (props) => ReactDOM.createPortal(
   <div>
     {props.children}
   </div>,
   document.getElementById('modal-root')
 );
 
-export default RenderModal;
+export default Modal;

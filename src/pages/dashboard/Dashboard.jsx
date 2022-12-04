@@ -36,7 +36,6 @@ import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { selectAllComplain, setComplain } from '../../store/features/complain/complainSlice';
 import DeleteModal from '../../components/common/DeleteModal';
-import RenderModal from '../../components/modal/Modal';
 import ComplainModalForm from './modal/ComplainModalForm';
 import RFOMasalModal from './modal/RFOMasalModal';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
@@ -48,6 +47,8 @@ import ReopenModal from '../history_dashboard/ReopenModal';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
 import Pagination from '../../components/common/table/Pagination';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
+import { ModalActivity } from '../../components/modal/ModalActivity';
+import Modal from '../../components/modal/Modal';
 
 const override = {
   display: "block",
@@ -360,7 +361,7 @@ function Dashboard() {
           htmlFor="my-modal-complain"
           onClick={() => {
             setDetail(null);
-            setShowModal(true);
+            // setShowModal(true);
             document.getElementById('my-modal-complain').click();
           }}
         >
@@ -456,7 +457,7 @@ function Dashboard() {
           <tbody>
             {rows.map((item, index) => (
               <tr className="text-center">
-                <th>{index + 1}</th>
+                <th className="bg-opacity-100">{index + 1}</th>
                 <td className="text-left">
                   { item?.pop?.pop === 'Yogyakarta' ? (
                     <span className="badge badge-success text-white">
@@ -640,6 +641,15 @@ function Dashboard() {
         </div>
       </div>
       )}
+      {/* <button
+        onClick={() => {
+          window.scrollTo(0, 0);
+          setShowModal(true);
+        }}
+        className="btn btn-info"
+      >Test Modal
+      </button> */}
+      <Modal>{showModal && <ModalActivity onClose={setShowModal} detail={detail} title="add" />}</Modal>
     </div>
   );
 }

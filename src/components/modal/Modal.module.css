@@ -1,4 +1,4 @@
-.modal {
+/* .modal {
   width: 100%;
   height: 100%;
   position: fixed;
@@ -6,6 +6,14 @@
   top: 0;
   left: 0;
   z-index: 1;
+} */
+
+.modal-box-custom {
+  @apply modal-box max-w-2xl modal-box-2;
+}
+
+.modal-box-2 {
+  max-height: calc(120vh - 5em) !important;
 }
 
 .modalContent {
