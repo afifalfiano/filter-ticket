@@ -188,6 +188,11 @@ function Dashboard() {
             return item;
           }
         }
+        if (item.status === statusData && pop === 'all') {
+          if (item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex)) {
+            return item;
+          }
+        }
       });
       setRows(searchResult);
       setPagination({
@@ -201,6 +206,10 @@ function Dashboard() {
       console.log(pop, 'local pop');
       setRows(dataRow.data.filter((item) => {
         if (item.status === statusData && +item.pop.id_pop === +pop) {
+          return item;
+        }
+
+        if (item.status === statusData && pop === 'all') {
           return item;
         }
       }));
