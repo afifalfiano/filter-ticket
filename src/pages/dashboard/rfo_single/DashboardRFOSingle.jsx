@@ -442,7 +442,7 @@ function DashboardRFOSingle() {
                     />
                   </div>
 
-                  <div className="form-control flex-1">
+                  {/* <div className="form-control flex-1">
                     <label htmlFor="durasi" className="label">
                       <span className="label-text"> Durasi (Hari)</span>
                     </label>
@@ -461,7 +461,7 @@ function DashboardRFOSingle() {
                     {errors.durasi && touched.durasi ? (
                       <div className="label label-text text-red-500">{errors.durasi}</div>
                     ) : null}
-                  </div>
+                  </div> */}
                 </div>
 
                 {(!history && idRfoKeluhan === 'null' && detailComplain?.status === 'open') ? (

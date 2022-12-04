@@ -251,7 +251,7 @@ function RFODetailMass() {
                   />
                 </div>
 
-                <div className="form-control flex-1">
+                {/* <div className="form-control flex-1">
                   <label htmlFor="durasi" className="label">
                     <span className="label-text"> Durasi (Hari)</span>
                   </label>
@@ -272,7 +272,7 @@ function RFODetailMass() {
                       {errors.durasi}
                     </div>
                   ) : null}
-                </div>
+                </div> */}
               </div>
 
               <div className="modal-action justify-center mt-10">
