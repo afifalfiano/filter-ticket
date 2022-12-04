@@ -222,7 +222,7 @@ function Pop() {
                         />
                       </div>
 
-                      <div className="tooltip" data-tip="Detail">
+                      {/* <div className="tooltip" data-tip="Detail">
                         <HiEye
                           size={20}
                           color="#0D68F1"
@@ -233,7 +233,7 @@ function Pop() {
                             document.getElementById('my-modal-3').click();
                           }}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </td>
                 </tr>
