@@ -162,8 +162,8 @@ function Statistics() {
               data={dataFilter}
               margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 0,
+                left: 0,
                 bottom: 5,
               }}
             >
@@ -171,7 +171,7 @@ function Statistics() {
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
               {/* <Bar dataKey="all_pop" fill="#8884d8" />
               <Bar dataKey="jogja" fill="#0f7d9e" />
               <Bar dataKey="solo" fill="#82ca9d" />
@@ -193,8 +193,8 @@ function Statistics() {
               data={dataGraph?.all}
               margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 0,
+                left: 0,
                 bottom: 5,
               }}
             >
@@ -202,7 +202,7 @@ function Statistics() {
               <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
               <Bar dataKey="Semua_Keluhan" fill="#8884d8" />
               <Bar dataKey="Semua_Keluhan_Closed" fill="#0f7d9e" />
               <Bar dataKey="Semua_Keluhan_Open" fill="#82ca9d" />
@@ -221,8 +221,8 @@ function Statistics() {
               data={dataGraph?.today}
               margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 0,
+                left: 0,
                 bottom: 5,
               }}
             >
@@ -230,7 +230,7 @@ function Statistics() {
               <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
               <Bar dataKey="Semua_Keluhan" fill="#8884d8" />
               <Bar dataKey="Semua_Keluhan_Closed" fill="#0f7d9e" />
               <Bar dataKey="Semua_Keluhan_Open" fill="#82ca9d" />
@@ -249,8 +249,8 @@ function Statistics() {
               data={dataGraph?.yesterday}
               margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 0,
+                left: 0,
                 bottom: 5,
               }}
             >
@@ -258,7 +258,7 @@ function Statistics() {
               <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
               <Bar dataKey="Semua_Keluhan" fill="#8884d8" />
               <Bar dataKey="Semua_Keluhan_Closed" fill="#0f7d9e" />
               <Bar dataKey="Semua_Keluhan_Open" fill="#82ca9d" />
@@ -277,8 +277,8 @@ function Statistics() {
               data={dataGraph?.a_week_ago}
               margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 0,
+                left: 0,
                 bottom: 5,
               }}
             >
@@ -286,7 +286,7 @@ function Statistics() {
               <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
               <Bar dataKey="Semua_Keluhan" fill="#8884d8" />
               <Bar dataKey="Semua_Keluhan_Closed" fill="#0f7d9e" />
               <Bar dataKey="Semua_Keluhan_Open" fill="#82ca9d" />
@@ -305,8 +305,8 @@ function Statistics() {
               data={dataGraph?.this_month}
               margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 0,
+                left: 0,
                 bottom: 5,
               }}
             >
@@ -314,7 +314,7 @@ function Statistics() {
               <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
               {/* <Bar dataKey="Total" fill="#8884d8" /> */}
               <Line type="monotone" dataKey="Total" stroke="#8884d8" />
             </LineChart>
@@ -330,8 +330,8 @@ function Statistics() {
               data={dataGraph?.this_year}
               margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 0,
+                left: 0,
                 bottom: 5,
               }}
             >
@@ -339,7 +339,7 @@ function Statistics() {
               <XAxis dataKey="Nama" />
               <YAxis />
               <Tooltip />
-              <Legend />
+              <Legend layout="horizontal" verticalAlign="bottom" align="center" />
               <Bar dataKey="Semua POP" fill="#f86042" />
               <Bar dataKey="Purwokerto" fill="#0f7d9e" />
               <Bar dataKey="Surakarta" fill="#82ca9d" />
