@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-shadow */
@@ -454,6 +455,14 @@ function ReportCreate() {
       </div>
       <div className="mt-5">
         <div className="flex justify-center gap-5">
+          <button
+            type="button"
+            onClick={() => {
+              navigate('/report');
+            }}
+            className="btn btn-md text-white border-none"
+          >Kembali
+          </button>
           <label
             htmlFor="dropzone-file"
             className="btn btn-md bg-slate-500 text-white cursor-pointer border-none "

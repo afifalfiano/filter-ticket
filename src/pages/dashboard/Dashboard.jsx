@@ -49,6 +49,7 @@ import Pagination from '../../components/common/table/Pagination';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { ModalActivity } from '../../components/modal/ModalActivity';
 import Modal from '../../components/modal/Modal';
+import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 
 const override = {
   display: "block",
@@ -73,13 +74,21 @@ function Dashboard() {
   const [statusData, setStatusData] = useState('open');
   const [detail, setDetail] = useState(null);
   const [showLoading, setShowLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [allComplain, { isLoading, isSuccess }] = useAllComplainMutation();
   const dispatch = useDispatch();
 
   const { data: user } = useSelector(selectCurrentUser);
+  const stateModal = useSelector(selectModalState);
+  console.log(stateModal, 'modalzzž;');
+
+  const openModal = () => {
+    const newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showAddModalComplain: true } };
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
 
   const [search, setSearch] = useState('');
   const [dataPOP, setdataPOP] = useState([]);
@@ -427,7 +436,7 @@ function Dashboard() {
       <input type="checkbox" id="my-modal-complain" className="modal-toggle" />
       {/* <RenderModal> */}
       {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
-      <ComplainModalForm onClose={setShowModal} detail={detail} getInfo={getInfo} />
+      <ComplainModalForm detail={detail} getInfo={getInfo} />
       {/* </RenderModal> */}
 
       {/* Modal rfo masal */}
@@ -643,13 +652,12 @@ function Dashboard() {
       )}
       {/* <button
         onClick={() => {
-          window.scrollTo(0, 0);
-          setShowModal(true);
+          openModal();
         }}
         className="btn btn-info"
       >Test Modal
       </button> */}
-      <Modal>{showModal && <ModalActivity onClose={setShowModal} detail={detail} title="add" />}</Modal>
+      <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal>
     </div>
   );
 }

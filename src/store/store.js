@@ -14,6 +14,7 @@ import usersReducer from './features/users/usersSlice';
 import reportReducer from './features/report/reportSlice';
 import shiftReducer from './features/shift/shiftSlice';
 import notificationReducer from './features/notification/notificationSlice';
+import modalReducer from './features/modal/modalSlice';
 // eslint-disable-next-line import/prefer-default-export
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     report: reportReducer,
     shift: shiftReducer,
     notification: notificationReducer,
+    modal: modalReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   devTools: true,

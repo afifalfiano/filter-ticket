@@ -8,12 +8,22 @@ import { Field, Form, Formik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setModal } from '../../store/features/modal/modalSlice';
 import UploadFile from '../common/forms/UploadFile';
 import styles from './Modal.module.css';
 
-export function ModalActivity({ onClose, detail, title }) {
+export function ModalActivity({ stateModal, detail, title }) {
   console.log(detail, 'modal portal');
   useEffect(() => {}, []);
+
+  const dispatch = useDispatch();
+  const onBtnClose = () => {
+    const newState = {
+      ...stateModal,
+      dashboard: { ...stateModal.dashboard, showAddModalComplain: false },
+    };
+    dispatch(setModal(newState));
+  };
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
@@ -21,7 +31,7 @@ export function ModalActivity({ onClose, detail, title }) {
         <button
           htmlFor="my-modal-complain"
           className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={() => onClose(false)}
+          onClick={onBtnClose}
         >
           ✕
         </button>
@@ -190,7 +200,7 @@ export function ModalActivity({ onClose, detail, title }) {
             type="button"
             htmlFor="my-modal-complain"
             className="btn btn-md"
-            onClick={() => onClose(false)}
+            onClick={onBtnClose}
           >
             Batal
           </button>
@@ -198,7 +208,7 @@ export function ModalActivity({ onClose, detail, title }) {
             type="button"
             htmlFor="my-modal-complain"
             className="btn btn-md btn-success"
-            onClick={() => onClose(false)}
+            onClick={onBtnClose}
           >
             Simpan
           </button>

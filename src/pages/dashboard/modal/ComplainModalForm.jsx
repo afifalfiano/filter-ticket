@@ -42,7 +42,7 @@ import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/feature
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ComplainFormSchema } from '../../../utils/schema_validation_form';
 
-function ComplainModalForm({ getInfo, detail, onClose }) {
+function ComplainModalForm({ getInfo, detail }) {
   const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
   const [updateComplain, { isSuccess: isSuccessUpdate }] = useUpdateComplainMutation();
   const { data: user } = useSelector(selectCurrentUser);
@@ -208,7 +208,6 @@ function ComplainModalForm({ getInfo, detail, onClose }) {
 
   const onHandleReset = (reset) => {
     reset();
-    onClose(false);
     document.getElementById('my-modal-complain').click();
   };
 
