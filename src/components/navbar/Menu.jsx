@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-unused-vars */
@@ -25,28 +26,36 @@ function Menu() {
         CCO
       </Link>
       <Link
-        className="btn btn-ghost normal-case text-sm"
+        className={`btn btn-ghost normal-case text-sm ${
+          window.location.pathname === '/dashboard' && 'btn-active'
+        }`}
         to="/dashboard"
         activeclassname="btn-active"
       >
         Dasbor
       </Link>
       <Link
-        className="btn btn-ghost normal-case text-sm"
+        className={`btn btn-ghost normal-case text-sm ${
+          window.location.pathname === '/reason_of_outage' && 'btn-active'
+        }`}
         to="/reason_of_outage"
         activeclassname="btn-active"
       >
         Reason of Outage
       </Link>
       <Link
-        className="btn btn-ghost normal-case text-sm"
+        className={`btn btn-ghost normal-case text-sm ${
+          window.location.pathname === '/report' && 'btn-active'
+        }`}
         to="/report"
         activeclassname="btn-active"
       >
         Laporan
       </Link>
       <Link
-        className="btn btn-ghost normal-case text-sm"
+        className={`btn btn-ghost normal-case text-sm ${
+          window.location.pathname === '/history_dashboard' && 'btn-active'
+        }`}
         to="/history_dashboard"
         activeclassname="btn-active"
       >
@@ -54,7 +63,10 @@ function Menu() {
       </Link>
       {user?.role_id === 1 && (
         <Link
-          className="btn btn-ghost normal-case text-sm"
+          className={`btn btn-ghost normal-case text-sm ${
+            window.location.pathname === '/base_transceiver_station' &&
+            'btn-active'
+          }`}
           to="/base_transceiver_station"
           activeclassname="btn-active"
         >
@@ -62,7 +74,9 @@ function Menu() {
         </Link>
       )}
       <Link
-        className="btn btn-ghost normal-case text-sm"
+        className={`btn btn-ghost normal-case text-sm ${
+          window.location.pathname === '/statistics' && 'btn-active'
+        }`}
         to="/statistics"
         activeclassname="btn-active"
       >
@@ -72,7 +86,20 @@ function Menu() {
       {/* if admin */}
       {user?.role_id === 0 && (
         <div className="dropdown">
-          <label tabIndex={0} className="btn m-1 capitalize">
+          <label
+            tabIndex={0}
+            className={`btn m-1 capitalize ${
+              (window.location.pathname === '/base_transceiver_station' &&
+                'btn-active') ||
+              (window.location.pathname === '/users' && 'btn-active') ||
+              (window.location.pathname === '/pop' && 'btn-active') ||
+              (window.location.pathname === '/source_complain' &&
+                'btn-active') ||
+              (window.location.pathname === '/role' && 'btn-active') ||
+              (window.location.pathname === '/shift' && 'btn-active')
+            }
+            `}
+          >
             Pengaturan
           </label>
           <ul
