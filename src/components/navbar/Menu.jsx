@@ -22,7 +22,7 @@ function Menu() {
         to="/dashboard"
         activeclassname="btn-active"
       >
-        Filtering Ticket
+        CCO
       </Link>
       <Link
         className="btn btn-ghost normal-case text-sm"

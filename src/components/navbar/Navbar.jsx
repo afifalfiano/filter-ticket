@@ -12,18 +12,6 @@ const  Navbar = () => {
 
   const navigasi = useSelector(selectBreadcrumb)
 
-  // const getBreadcrumb = (event) => {
-  //   console.log(event, 'log');
-  //   let title = event.target.innerText;
-  //   if (event.target.innerText === 'Filtering Ticket') {
-  //     title = 'Dasbor';
-  //   }
-  //   setBreadcrumb([{
-  //     title,
-  //     path: event.target.pathname
-  //   }]);
-  // }
-
   return (
     <>
     <div className="navbar bg-neutral text-neutral-content ">
