@@ -39,9 +39,9 @@ const ModalNotification = ({ data = [] }) => {
             <div className="card-body bg-white rounded-md">
             <span className="text-base text-gray-900">Comming Soon...</span>
             </div> */}
-          <div className="card-actions mt-3">
+          {/* <div className="card-actions mt-3">
             <button className="btn btn-primary btn-block btn-sm">Lihat Semua</button>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
