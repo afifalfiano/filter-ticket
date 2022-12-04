@@ -322,6 +322,9 @@ function Dashboard() {
       if (item.status === event.target.value && +item.pop.id_pop === +pop) {
         return item;
       }
+      if (item.status === event.target.value && pop === 'all') {
+        return item;
+      }
     })
     setRows(dataChanged);
     setPagination({
