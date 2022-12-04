@@ -13,11 +13,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { useChangeAvatarMutation } from '../../store/features/auth/authApiSlice';
+import { notifChangeProfile } from '../../store/features/auth/authSlice';
 
 function PreviewImage({ getInfo }) {
   const [avatar, setAvatar] = useState(null);
   const [file, setFile] = useState(null);
   const [changeAvatar] = useChangeAvatarMutation();
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     console.log(e.target.files);
     setAvatar(URL.createObjectURL(e.target.files[0]));
@@ -43,6 +45,7 @@ function PreviewImage({ getInfo }) {
           id: 'success',
           icon: false,
         });
+        dispatch(notifChangeProfile('updated'));
         setTimeout(() => {
           getInfo({ status: 'success' });
           document.getElementById('my-modal-3').click();

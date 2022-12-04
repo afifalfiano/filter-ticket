@@ -163,7 +163,7 @@ function ReasonOfOutage() {
       <div className="flex gap-5">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Status Keluhan</span>
+            <span className="label-text"> Jenis RFO</span>
           </label>
 
           <select

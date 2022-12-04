@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom'
 import { useGetProfileMutation, useLogoutMutation } from '../../store/features/auth/authApiSlice';
-import { selectCurrentUser, setLogOut } from '../../store/features/auth/authSlice';
+import { selectCurrentUser, setLogOut, subscribeChangeProfile } from '../../store/features/auth/authSlice';
 import { clearBTS } from '../../store/features/bts/btsSlice';
 import { clearComplain } from '../../store/features/complain/complainSlice';
 import toast from 'react-hot-toast';
@@ -15,6 +15,8 @@ const DropdownMenu = () => {
 
   const [profile, setProfile] = useState(null);
   const [getProfile] = useGetProfileMutation();
+
+  const infoProfile = useSelector(subscribeChangeProfile);
 
   const doGetProfile = async () => {
     try {
@@ -30,7 +32,7 @@ const DropdownMenu = () => {
 
   useEffect(() => {
     doGetProfile();
-  }, [])
+  }, [infoProfile])
   
 
   let { data: user } = useSelector(selectCurrentUser);
