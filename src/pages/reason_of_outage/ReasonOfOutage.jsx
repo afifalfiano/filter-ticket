@@ -23,7 +23,9 @@ import { useNavigate } from 'react-router-dom';
 import DeleteModal from '../../components/common/DeleteModal';
 import Pagination from '../../components/common/table/Pagination';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
+import Modal from '../../components/modal/Modal';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import {
   useAllRFOMutation,
   useAllRFOMasalMutation,
@@ -48,11 +50,24 @@ function ReasonOfOutage() {
   const [allRFOMasal, { isLoading, isSuccess }] = useAllRFOMasalMutation();
 
   const dataKeluhan = useSelector(selectAllRFO);
+  const stateModal = useSelector(selectModalState);
   const dataGangguan = useSelector(selectAllRFOMasal);
   const allData = [].concat(dataKeluhan, dataGangguan);
   const [search, setSearch] = useState('');
   const [detail, setDetail] = useState(null);
 
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'add rfo gangguan') {
+      newState = { ...stateModal, rfo: { ...stateModal.rfo, showAddModalRFOTrouble: true } };
+    } else if (modal === 'update rfo gangguan') {
+      newState = { ...stateModal, rfo: { ...stateModal.rfo, showUpdateModalRFOTrouble: true } };
+    } else if (modal === 'delete rfo gangguan') {
+      newState = { ...stateModal, rfo: { ...stateModal.rfo, showDeleteModalRFOTrouble: true } };
+    }
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
   const handleStatus = (event) => {
     setStatusData(event.target.value);
     console.log(event.target.value, 'status');
@@ -208,7 +223,7 @@ function ReasonOfOutage() {
           { statusData === 'masal' && (
           <>
             <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> -</span>
+              <span className="label-text" style={{ visibility: 'hidden' }}> -</span>
             </label>
             <div className="mb-5">
               <button
@@ -217,10 +232,11 @@ function ReasonOfOutage() {
                 htmlFor="my-modal-3"
                 onClick={() => {
                   setDetail(null);
-                  document.getElementById('my-modal-3').click();
+                  // document.getElementById('my-modal-3').click();
+                  openModal('add rfo gangguan')
                 }}
               >
-                Tambah RFO Gangguan Masal
+                Tambah
               </button>
             </div>
           </>
@@ -229,9 +245,15 @@ function ReasonOfOutage() {
       </div>
       )}
 
+      <Modal>
+        {stateModal?.rfo?.showAddModalRFOTrouble && <RFOModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
+        {stateModal?.rfo?.showUpdateModalRFOTrouble && <RFOModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
+        {stateModal?.rfo?.showDeleteModalRFOTrouble && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="RFO Gangguan" />}
+      </Modal>
+
       {/* modal add or edit  */}
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <RFOModalForm getInfo={getInfo} detail={detail} />
+      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <RFOModalForm getInfo={getInfo} detail={detail} /> */}
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
@@ -317,7 +339,8 @@ function ReasonOfOutage() {
                           }
                           if (item.hasOwnProperty('id_rfo_gangguan')) {
                             setDetail(item);
-                            document.getElementById('my-modal-3').click();
+                            // document.getElementById('my-modal-3').click();
+                            openModal('update rfo gangguan')
                           }
                         }}
                       />
@@ -349,9 +372,10 @@ function ReasonOfOutage() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            document
-                              .getElementById('my-modal-delete')
-                              .click();
+                            // document
+                            //   .getElementById('my-modal-delete')
+                            //   .click();
+                            openModal('delete rfo gangguan');
                           }}
                         />
                       </div>

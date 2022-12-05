@@ -45,8 +45,9 @@ import styles from './RFOModalForm.module.css';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import UploadFile from '../../components/common/forms/UploadFile';
 import { RFOSingleSchema } from '../../utils/schema_validation_form';
+import { setModal } from '../../store/features/modal/modalSlice';
 
-function RFOModalForm({ getInfo, detail }) {
+function RFOModalForm({ stateModal, getInfo, detail }) {
   console.log(detail, 'cek render sajax');
   const initialValues = {
     problem: detail?.problem || '',
@@ -60,6 +61,16 @@ function RFOModalForm({ getInfo, detail }) {
     lampiran: '' || '',
 
   }
+
+  const dispatch = useDispatch();
+
+  const onBtnClose = (title) => {
+    const newState = {
+      ...stateModal,
+      rfo: { ...stateModal.rfo, showAddModalRFOTrouble: false, showUpdateModalRFOTrouble: false },
+    };
+    dispatch(setModal(newState));
+  };
 
   const { data: user } = useSelector(selectCurrentUser);
 
@@ -131,7 +142,8 @@ function RFOModalForm({ getInfo, detail }) {
           });
           resetForm();
           setTimeout(() => {
-            document.getElementById('my-modal-3').click();
+            onBtnClose();
+            // document.getElementById('my-modal-3').click();
             getInfo({ status: 'success' });
           }, 2000);
         } else {
@@ -168,7 +180,8 @@ function RFOModalForm({ getInfo, detail }) {
           });
           setTimeout(() => {
             getInfo({ status: 'success' });
-            document.getElementById('my-modal-3').click();
+            onBtnClose();
+            // document.getElementById('my-modal-3').click();
           }, 2000);
         } else {
           toast.error(update.data.message, {
@@ -201,14 +214,14 @@ function RFOModalForm({ getInfo, detail }) {
   };
 
   return (
-    <div className="modal">
-      <div className={`${styles['modal-box-custom']}`}>
-        <label
-          htmlFor="my-modal-3"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
+        <button
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">{detail === null ? ('Tambah Reason Of Outage Masal') : ('Ubah Reason Of Outage Masal')}</h3>
         <hr className="my-2" />
 
@@ -243,7 +256,7 @@ function RFOModalForm({ getInfo, detail }) {
                   component="textarea"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className="textarea textarea-bordered h-24"
+                  className="textarea textarea-bordered h-10"
                 />
                 {errors.problem && touched.problem ? (
                   <div className="label label-text text-red-500">{errors.problem}</div>
@@ -263,7 +276,7 @@ function RFOModalForm({ getInfo, detail }) {
                   component="textarea"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className="textarea textarea-bordered h-24"
+                  className="textarea textarea-bordered h-10"
                 />
                 {errors.action && touched.action ? (
                   <div className="label label-text text-red-500">{errors.action}</div>
@@ -283,7 +296,7 @@ function RFOModalForm({ getInfo, detail }) {
                   component="textarea"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className="textarea textarea-bordered h-24"
+                  className="textarea textarea-bordered h-10"
                 />
                 {errors.deskripsi && touched.deskripsi ? (
                   <div className="label label-text text-red-500">{errors.deskripsi}</div>
@@ -403,10 +416,7 @@ function RFOModalForm({ getInfo, detail }) {
                   htmlFor="my-modal-3"
                   type="button"
                   className="btn btn-md mr-5"
-                  onClick={() => {
-                    resetForm();
-                    document.getElementById('my-modal-3').click();
-                  }}
+                  onClick={onBtnClose}
                 >
                   Batal
                 </button>
