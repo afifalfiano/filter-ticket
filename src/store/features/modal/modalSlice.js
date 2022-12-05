@@ -53,6 +53,9 @@ export const initState = {
     showDeleteModalShift: false,
     showUpdateModalShift: false,
   },
+  profile: {
+    showPreviewImageModal: false,
+  },
 }
 
 const initialState = {

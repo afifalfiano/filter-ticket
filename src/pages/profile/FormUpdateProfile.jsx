@@ -16,6 +16,8 @@ import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcr
 import { ProfileSchema } from '../../utils/schema_validation_form';
 import PreviewImage from './PreviewImage';
 import { encryptLocalStorage } from '../../utils/helper';
+import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
+import Modal from '../../components/modal/Modal';
 
 /* eslint-disable react/prop-types */
 function FormUpdateProfile({ handleForm, profile }) {
@@ -120,11 +122,22 @@ function FormUpdateProfile({ handleForm, profile }) {
       handleForm(false);
     }
   };
+
+  const stateModal = useSelector(selectModalState);
+  const openModal = (modal) => {
+    const newState = { ...stateModal, profile: { ...stateModal.profile, showPreviewImageModal: true } };
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
+
   return (
     <div>
       {/* modal craete or update */}
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <PreviewImage getInfo={getInfo} />
+      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <PreviewImage getInfo={getInfo} /> */}
+      <Modal>
+        {stateModal?.profile?.showPreviewImageModal && <PreviewImage stateModal={stateModal} getInfo={getInfo} /> }
+      </Modal>
       <Formik
         enableReinitialize
         validationSchema={ProfileSchema}
@@ -158,7 +171,8 @@ function FormUpdateProfile({ handleForm, profile }) {
                     size={24}
                     className="link link-primary"
                     onClick={() => {
-                      document.getElementById('my-modal-3').click();
+                      // document.getElementById('my-modal-3').click();
+                      openModal()
                     }}
                   />
                 </div>

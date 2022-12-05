@@ -14,8 +14,9 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { useChangeAvatarMutation } from '../../store/features/auth/authApiSlice';
 import { notifChangeProfile } from '../../store/features/auth/authSlice';
+import { setModal } from '../../store/features/modal/modalSlice';
 
-function PreviewImage({ getInfo }) {
+function PreviewImage({ stateModal, getInfo }) {
   const [avatar, setAvatar] = useState(null);
   const [file, setFile] = useState(null);
   const [changeAvatar] = useChangeAvatarMutation();
@@ -25,6 +26,13 @@ function PreviewImage({ getInfo }) {
     setAvatar(URL.createObjectURL(e.target.files[0]));
     setFile(e.target.files[0]);
   }
+  const onBtnClose = (title) => {
+    const newState = {
+      ...stateModal,
+      profile: { ...stateModal.profile, showPreviewImageModal: false },
+    };
+    dispatch(setModal(newState));
+  };
   const onSubmitData = async () => {
     const formData = new FormData();
     formData.append('avatar', file);
@@ -48,7 +56,8 @@ function PreviewImage({ getInfo }) {
         dispatch(notifChangeProfile('updated'));
         setTimeout(() => {
           getInfo({ status: 'success' });
-          document.getElementById('my-modal-3').click();
+          // document.getElementById('my-modal-3').click();
+          onBtnClose();
         }, 2000);
       } else {
         toast.error(update.message, {
@@ -82,18 +91,20 @@ function PreviewImage({ getInfo }) {
   const onHandleReset = () => {
     setFile(null);
     setAvatar(null);
-    document.getElementById('my-modal-3').click();
+    // document.getElementById('my-modal-3').click();
+    onBtnClose();
   };
 
   return (
-    <div className="modal">
-      <div className="modal-box max-w-2xl">
-        <label
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className="modal-box max-w-2xl h-fit max-h-fit ">
+        <button
           htmlFor="my-modal-3"
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">Preview Profile Baru</h3>
         <hr className="my-2" />
         <div className="flex justify-center align-middle items-center  flex-col text-cennter">
@@ -130,7 +141,7 @@ function PreviewImage({ getInfo }) {
             disabled={avatar === null}
             type="submit"
             htmlFor="my-modal-3"
-            className="btn btn-md btn-success"
+            className="btn btn-md btn-success text-white"
             onClick={onSubmitData}
           >
             Simpan
