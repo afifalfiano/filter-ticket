@@ -644,13 +644,13 @@ function Dashboard() {
         </div>
       </div>
       )}
-      <button
+      {/* <button
         onClick={() => {
           openModal('revert complain');
         }}
         className="btn btn-info"
       >Test Modal
-      </button>
+      </button> */}
       {/* <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal> */}
       {/* Modal tambah */}
       {/* <input type="checkbox" id="my-modal-complain" className="modal-toggle" /> */}
