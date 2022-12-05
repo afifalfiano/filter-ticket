@@ -21,8 +21,9 @@ import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
 import { useAllTeamMutation } from '../../../store/features/team/teamApiSlice';
 import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
 import { selectAllTeam, setTeam } from '../../../store/features/team/teamSlice';
+import { setModal } from '../../../store/features/modal/modalSlice';
 
-function FormUser({ getInfo, detail, titleAction }) {
+function FormUser({ stateModal, getInfo, detail, titleAction }) {
   const [updateUsers] = useUpdateUsersMutation()
   const { data: user } = useSelector(selectCurrentUser);
   const initialValues = {
@@ -40,7 +41,13 @@ function FormUser({ getInfo, detail, titleAction }) {
   const dispatch = useDispatch();
   const [allPOP] = useAllPOPMutation();
   const [allTeam] = useAllTeamMutation();
-
+  const onBtnClose = (title) => {
+    const newState = {
+      ...stateModal,
+      user: { ...stateModal.user, showUpdateModalUser: false },
+    };
+    dispatch(setModal(newState));
+  };
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
@@ -108,7 +115,8 @@ function FormUser({ getInfo, detail, titleAction }) {
         });
         setTimeout(() => {
           getInfo({ status: 'success' });
-          document.getElementById('my-modal-3').click();
+          // document.getElementById('my-modal-3').click();
+          onBtnClose();
         }, 2000);
       } else {
         toast.error(update.data.message, {
@@ -141,18 +149,19 @@ function FormUser({ getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    document.getElementById('my-modal-3').click();
+    // document.getElementById('my-modal-3').click();
+    onBtnClose();
   };
 
   return (
-    <div className="modal">
-      <div className="modal-box max-w-2xl">
-        <label
-          htmlFor="my-modal-3"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className="modal-box h-fit max-h-fit max-w-lg">
+        <button
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah User' : titleAction === 'update' && 'Ubah User'}
           {titleAction === 'read' && 'Detail User'}

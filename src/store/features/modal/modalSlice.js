@@ -31,7 +31,7 @@ export const initState = {
     showDetailModalBts: false,
   },
   user: {
-    showUpdateModalBts: false,
+    showUpdateModalUser: false,
   },
   pop: {
     showAddModalPop: false,

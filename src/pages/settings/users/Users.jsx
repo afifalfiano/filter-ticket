@@ -17,6 +17,8 @@ import Pagination from '../../../components/common/table/Pagination';
 import { selectAllUsers, setUsers } from '../../../store/features/users/usersSlice';
 import { useAllUsersMutation } from '../../../store/features/users/usersApiSlice';
 import FormUser from './FormUser';
+import Modal from '../../../components/modal/Modal';
+import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 
 function Users() {
   const dispatch = useDispatch();
@@ -75,6 +77,16 @@ function Users() {
     console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
     console.log('cek ombak filter', pagination);
+  }
+
+  const stateModal = useSelector(selectModalState);
+  console.log(stateModal, 'modalzzž;');
+
+  const openModal = (modal) => {
+    const newState = { ...stateModal, user: { ...stateModal.user, showUpdateModalUser: true } };
+
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
   }
 
   const getAllUsers = async () => {
@@ -160,12 +172,15 @@ function Users() {
       )}
 
       {/* modal craete or update */}
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormUser getInfo={getInfo} detail={detail} titleAction={title} />
+      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <FormUser getInfo={getInfo} detail={detail} titleAction={title} /> */}
 
+      <Modal>
+        {stateModal?.user?.showUpdateModalUser && <FormUser stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+      </Modal>
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="POP" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" /> */}
+      {/* <DeleteModal getInfo={getInfo} detail={detail} title="POP" /> */}
 
       {isLoading && (
         <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
@@ -200,7 +215,8 @@ function Users() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            document.getElementById('my-modal-3').click();
+                            // document.getElementById('my-modal-3').click();
+                            openModal();
                           }}
                         />
                       </div>
