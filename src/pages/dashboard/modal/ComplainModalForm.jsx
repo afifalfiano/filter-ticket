@@ -41,8 +41,9 @@ import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_kelu
 import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ComplainFormSchema } from '../../../utils/schema_validation_form';
+import { setModal } from '../../../store/features/modal/modalSlice';
 
-function ComplainModalForm({ getInfo, detail }) {
+function ComplainModalForm({ stateModal, getInfo, detail }) {
   const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
   const [updateComplain, { isSuccess: isSuccessUpdate }] = useUpdateComplainMutation();
   const { data: user } = useSelector(selectCurrentUser);
@@ -64,6 +65,16 @@ function ComplainModalForm({ getInfo, detail }) {
     keluhan: detail?.keluhan || '',
     status: detail?.status || '',
     pop_id: detail?.pop_id || '',
+  };
+
+  const dispatch = useDispatch();
+
+  const onBtnClose = () => {
+    const newState = {
+      ...stateModal,
+      dashboard: { ...stateModal.dashboard, showAddModalComplain: false },
+    };
+    dispatch(setModal(newState));
   };
 
   const onSubmitData = async (payload, resetForm) => {
@@ -128,6 +139,7 @@ function ComplainModalForm({ getInfo, detail }) {
             setTimeout(() => {
               resetForm();
               document.getElementById('my-modal-complain').click();
+              onBtnClose();
               getInfo({ status: 'success' });
             }, 2000);
           } else {
@@ -217,16 +229,16 @@ function ComplainModalForm({ getInfo, detail }) {
   }
 
   return (
-    <div className="modal">
-      <div className={`${styles['modal-box-custom']}`}>
-        <label
-          htmlFor="my-modal-complain"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
+        <button
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">
-          {detail === null ? 'Tamba Keluhan' : 'Ubah Keluhan'}
+          {detail === null ? 'Tambah Keluhan' : 'Ubah Keluhan'}
         </h3>
         <hr className="my-2" />
 
@@ -431,9 +443,7 @@ function ComplainModalForm({ getInfo, detail }) {
                   type="button"
                   htmlFor="my-modal-complain"
                   className="btn btn-md"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
+                  onClick={onBtnClose}
                 >
                   Batal
                 </button>

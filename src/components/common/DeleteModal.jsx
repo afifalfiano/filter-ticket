@@ -119,7 +119,7 @@ function DeleteModal({ getInfo, detail, title }) {
             onClick={onSubmit}
             type="submit"
             htmlFor="my-modal-delete"
-            className="btn btn-md btn-error"
+            className="btn btn-md btn-error text-white"
           >
             Hapus
           </button>

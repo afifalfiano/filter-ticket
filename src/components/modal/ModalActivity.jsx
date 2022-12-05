@@ -214,18 +214,6 @@ export function ModalActivity({ stateModal, detail, title }) {
           </button>
         </div>
       </div>
-      {/* <form className={styles.modalContent}>
-        <div className={styles.container}>
-          <h1 style={{ fontSize: '20px' }}>Update Stock</h1>
-          <p style={{ fontSize: '14px' }}>
-            Masukkan jumlah stok yang tersedia di rak saat ini.
-          </p>
-          <div>Test</div>
-          <div className={styles.button}>
-            <button onClick={() => onClose(false)}>Kembali</button>
-          </div>
-        </div>
-      </form> */}
     </div>
   );
 }

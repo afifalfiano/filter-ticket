@@ -84,8 +84,11 @@ function Dashboard() {
   const stateModal = useSelector(selectModalState);
   console.log(stateModal, 'modalzzž;');
 
-  const openModal = () => {
-    const newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showAddModalComplain: true } };
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'add complain') {
+      newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showAddModalComplain: true } };
+    }
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
   }
@@ -371,7 +374,8 @@ function Dashboard() {
           onClick={() => {
             setDetail(null);
             // setShowModal(true);
-            document.getElementById('my-modal-complain').click();
+            openModal('add complain');
+            // document.getElementById('my-modal-complain').click();
           }}
         >
           Tambah
@@ -431,28 +435,6 @@ function Dashboard() {
           </div>
         </div>
       </div>
-
-      {/* Modal tambah */}
-      <input type="checkbox" id="my-modal-complain" className="modal-toggle" />
-      {/* <RenderModal> */}
-      {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
-      <ComplainModalForm detail={detail} getInfo={getInfo} />
-      {/* </RenderModal> */}
-
-      {/* Modal rfo masal */}
-      <input type="checkbox" id="my-modal-rfo-masal" className="modal-toggle" />
-      <RFOMasalModal detail={detail} getInfo={getInfo} />
-
-      {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="keluhan" />
-
-      {/* modal revert */}
-      <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
-      <ReopenModal getInfo={getInfo} detail={detail} />
-
-      {/* {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={3} />} */}
-      {/* start table */}
 
       <div className="overflow-x-auto mt-8">
         <table className="table table-zebra w-full">
@@ -657,7 +639,30 @@ function Dashboard() {
         className="btn btn-info"
       >Test Modal
       </button> */}
-      <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal>
+      {/* <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal> */}
+      {/* Modal tambah */}
+      {/* <input type="checkbox" id="my-modal-complain" className="modal-toggle" /> */}
+      {/* <RenderModal> */}
+      {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
+      {/* <ComplainModalForm detail={detail} getInfo={getInfo} /> */}
+      {/* <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal> */}
+      <Modal>{stateModal?.dashboard?.showAddModalComplain && <ComplainModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}</Modal>
+      {/* </RenderModal> */}
+
+      {/* Modal rfo masal */}
+      <input type="checkbox" id="my-modal-rfo-masal" className="modal-toggle" />
+      <RFOMasalModal detail={detail} getInfo={getInfo} />
+
+      {/* modal delete */}
+      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <DeleteModal getInfo={getInfo} detail={detail} title="keluhan" />
+
+      {/* modal revert */}
+      <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
+      <ReopenModal getInfo={getInfo} detail={detail} />
+
+      {/* {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={3} />} */}
+      {/* start table */}
     </div>
   );
 }
