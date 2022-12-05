@@ -156,8 +156,8 @@ function ReasonOfOutage() {
     <div>
 
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="RFO Gangguan" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" /> */}
+      {/* <DeleteModal getInfo={getInfo} detail={detail} title="RFO Gangguan" /> */}
 
       {!isLoading && (
       <div className="flex gap-5">

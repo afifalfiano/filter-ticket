@@ -23,14 +23,22 @@ import { useAllRFOMasalMutation, useUpdateKeluhanRFOGangguanMutation } from '../
 import { selectAllRFOMasal, setRFOMasal } from '../../../store/features/rfo/rfoSlice';
 import { RFOMasalFormSchema } from '../../../utils/schema_validation_form';
 import { useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
+import { setModal } from '../../../store/features/modal/modalSlice';
 
-function RFOMasalModal({ getInfo, detail }) {
+function RFOMasalModal({ stateModal, getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()
   const [updateKeluhanRFOGangguan] = useUpdateKeluhanRFOGangguanMutation()
   const [complainClosed] = useComplainClosedMutation()
   const dispatch = useDispatch()
   const [dataRFOMasal, setDataRFOMasal] = useState([])
 
+  const onBtnClose = () => {
+    const newState = {
+      ...stateModal,
+      dashboard: { ...stateModal.dashboard, showRFOTroubleModal: false },
+    };
+    dispatch(setModal(newState));
+  };
   const doGetAllRFOMasal = async () => {
     try {
       const data = await allRFOMasal();
@@ -87,7 +95,8 @@ function RFOMasalModal({ getInfo, detail }) {
             });
 
             setTimeout(async () => {
-              document.getElementById('my-modal-rfo-masal').click();
+              onBtnClose();
+              // document.getElementById('my-modal-rfo-masal').click();
               getInfo({ status: 'success' });
             }, 1000)
           } else {
@@ -140,14 +149,14 @@ function RFOMasalModal({ getInfo, detail }) {
   }
   console.log(detail, 'masal');
   return (
-    <div className="modal">
-      <div className={`${styles['modal-box-custom']}`}>
-        <label
-          htmlFor="my-modal-rfo-masal"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 pt-10 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
+        <button
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">Reason of Outage Masal</h3>
         <hr className="my-2" />
 
@@ -239,9 +248,9 @@ function RFOMasalModal({ getInfo, detail }) {
 
               <hr className="my-2 mt-5" />
               <div className="modal-action justify-center">
-                <label htmlFor="my-modal-rfo-masal" className="btn btn-md">
+                <button type="button" className="btn btn-md" onClick={onBtnClose}>
                   Batal
-                </label>
+                </button>
                 <button
                   type="submit"
                   htmlFor="my-modal-rfo-masal"

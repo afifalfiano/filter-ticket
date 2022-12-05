@@ -88,6 +88,14 @@ function Dashboard() {
     let newState;
     if (modal === 'add complain') {
       newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showAddModalComplain: true } };
+    } else if (modal === 'update complain') {
+      newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showUpdateModalComplain: true } };
+    } else if (modal === 'modal rfo masal') {
+      newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showRFOTroubleModal: true } };
+    } else if (modal === 'delete complain') {
+      newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showDeleteModalComplain: true } };
+    } else if (modal === 'revert complain') {
+      newState = { ...stateModal, dashboard: { ...stateModal.dashboard, showRevertModalComplain: true } };
     }
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
@@ -508,7 +516,8 @@ function Dashboard() {
                             color="#D98200"
                             onClick={() => {
                               setDetail(item);
-                              document.getElementById('my-modal-complain').click();
+                              // document.getElementById('my-modal-complain').click();
+                              openModal('update complain');
                             }}
                           />
                         </div>
@@ -519,9 +528,10 @@ function Dashboard() {
                             className="cursor-pointer"
                             onClick={() => {
                               setDetail(item);
-                              document
-                                .getElementById('my-modal-delete')
-                                .click();
+                              openModal('delete complain');
+                              // document
+                              //   .getElementById('my-modal-delete')
+                              //   .click();
                             }}
                           />
                         </div>
@@ -552,7 +562,8 @@ function Dashboard() {
                             className="cursor-pointer"
                             onClick={() => {
                               setDetail(item);
-                              document.getElementById('my-modal-rfo-masal').click();
+                              // document.getElementById('my-modal-rfo-masal').click();
+                              openModal('modal rfo masal');
                             }}
                           />
                         </div>
@@ -566,9 +577,10 @@ function Dashboard() {
                             className="cursor-pointer"
                             onClick={() => {
                               setDetail(item);
-                              document
-                                .getElementById('my-modal-revert')
-                                .click();
+                              // document
+                              //   .getElementById('my-modal-revert')
+                              //   .click();
+                              openModal('revert complain');
                             }}
                           />
                         </div>
@@ -632,13 +644,13 @@ function Dashboard() {
         </div>
       </div>
       )}
-      {/* <button
+      <button
         onClick={() => {
-          openModal();
+          openModal('revert complain');
         }}
         className="btn btn-info"
       >Test Modal
-      </button> */}
+      </button>
       {/* <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal> */}
       {/* Modal tambah */}
       {/* <input type="checkbox" id="my-modal-complain" className="modal-toggle" /> */}
@@ -646,20 +658,25 @@ function Dashboard() {
       {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
       {/* <ComplainModalForm detail={detail} getInfo={getInfo} /> */}
       {/* <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal> */}
-      <Modal>{stateModal?.dashboard?.showAddModalComplain && <ComplainModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}</Modal>
       {/* </RenderModal> */}
-
       {/* Modal rfo masal */}
-      <input type="checkbox" id="my-modal-rfo-masal" className="modal-toggle" />
-      <RFOMasalModal detail={detail} getInfo={getInfo} />
+      {/* <input type="checkbox" id="my-modal-rfo-masal" className="modal-toggle" /> */}
+      {/* <RFOMasalModal detail={detail} getInfo={getInfo} /> */}
+      <Modal>
+        {stateModal?.dashboard?.showAddModalComplain && <ComplainModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
+        {stateModal?.dashboard?.showRFOTroubleModal && <RFOMasalModal stateModal={stateModal} detail={detail} getInfo={getInfo} />}
+        {stateModal?.dashboard?.showDeleteModalComplain && <DeleteModal stateModal={stateModal} detail={detail} getInfo={getInfo} title="keluhan" />}
+        {stateModal?.dashboard?.showUpdateModalComplain && <ComplainModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
+        {stateModal?.dashboard?.showRevertModalComplain && <ReopenModal stateModal={stateModal} detail={detail} getInfo={getInfo} />}
+      </Modal>
 
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="keluhan" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" /> */}
+      {/* <DeleteModal getInfo={getInfo} detail={detail} title="keluhan" /> */}
 
       {/* modal revert */}
-      <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
-      <ReopenModal getInfo={getInfo} detail={detail} />
+      {/* <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
+      <ReopenModal getInfo={getInfo} detail={detail} /> */}
 
       {/* {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={3} />} */}
       {/* start table */}

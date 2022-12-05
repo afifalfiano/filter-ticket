@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-console */
@@ -69,10 +70,10 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
 
   const dispatch = useDispatch();
 
-  const onBtnClose = () => {
+  const onBtnClose = (title) => {
     const newState = {
       ...stateModal,
-      dashboard: { ...stateModal.dashboard, showAddModalComplain: false },
+      dashboard: { ...stateModal.dashboard, showAddModalComplain: false, showUpdateModalComplain: false },
     };
     dispatch(setModal(newState));
   };
@@ -186,6 +187,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
           });
           setTimeout(() => {
             getInfo({ status: 'success' });
+            onBtnClose();
             document.getElementById('my-modal-complain').click();
           }, 2000);
         } else {
@@ -451,7 +453,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                   type="submit"
                   disabled={!isValid}
                   htmlFor="my-modal-complain"
-                  className="btn btn-md btn-success"
+                  className="btn btn-md btn-success text-white"
                 >
                   Simpan
                 </button>

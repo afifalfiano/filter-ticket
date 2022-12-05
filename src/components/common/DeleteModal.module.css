@@ -1,5 +1,5 @@
 .modal-box-custom {
-    @apply modal-box max-w-2xl modal-box-2;
+    @apply modal-box max-w-lg modal-box-2;
 }
 
 .modal-box-2 {

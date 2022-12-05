@@ -1,9 +1,12 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/button-has-type */
 /* eslint-disable react/prop-types */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { HiQuestionMarkCircle } from 'react-icons/hi';
 import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import { useDeleteBtsMutation } from '../../store/features/bts/btsApiSlice';
 import styles from './DeleteModal.module.css';
 import { useDeleteComplainMutation } from '../../store/features/complain/complainApiSlice';
@@ -13,8 +16,9 @@ import { useDeleteSumberKeluhanMutation } from '../../store/features/sumber_kelu
 import { useDeleteRFOGangguanMutation } from '../../store/features/rfo/rfoApiSlice';
 import { useDeleteLaporanMutation } from '../../store/features/report/reportApiSlice';
 import { useDeleteShiftMutation } from '../../store/features/shift/shiftApiSlice';
+import { initState, setModal } from '../../store/features/modal/modalSlice';
 
-function DeleteModal({ getInfo, detail, title }) {
+function DeleteModal({ stateModal, getInfo, detail, title }) {
   console.log(detail, 'dtl');
 
   const [deleteBts] = useDeleteBtsMutation();
@@ -25,6 +29,11 @@ function DeleteModal({ getInfo, detail, title }) {
   const [deleteRFOGangguan] = useDeleteRFOGangguanMutation();
   const [deleteLaporan] = useDeleteLaporanMutation();
   const [deleteShift] = useDeleteShiftMutation();
+
+  const dispatch = useDispatch();
+  const onBtnClose = () => {
+    dispatch(setModal(initState));
+  };
 
   const onSubmit = async () => {
     try {
@@ -60,6 +69,7 @@ function DeleteModal({ getInfo, detail, title }) {
           icon: false,
         });
         setTimeout(() => {
+          onBtnClose();
           document.getElementById('my-modal-delete').click();
           getInfo({ status: 'success' });
         }, 2000);
@@ -93,14 +103,16 @@ function DeleteModal({ getInfo, detail, title }) {
   };
 
   return (
-    <div className="modal">
-      <div className={`${styles['modal-box-custom']}`}>
-        <label
-          htmlFor="my-modal-delete"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 pt-10 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div
+        className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}
+      >
+        <button
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">Hapus Data {title}</h3>
         <hr className="my-2" />
 
@@ -112,9 +124,9 @@ function DeleteModal({ getInfo, detail, title }) {
 
         <hr className="my-2 mt-5" />
         <div className="modal-action justify-center">
-          <label htmlFor="my-modal-delete" className="btn btn-md">
+          <button className="btn btn-md" onClick={onBtnClose}>
             Batal
-          </label>
+          </button>
           <button
             onClick={onSubmit}
             type="submit"
