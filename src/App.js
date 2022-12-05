@@ -36,8 +36,6 @@ import ForgetPassword from './pages/auth/forget_password/ForgetPassword';
 import { useState } from 'react';
 
 function App() {
-  const data = localStorage.getItem('user');
-  const user = JSON.parse(data);
   const [render, setRender] = useState(false);
 
   const getConditionRender = (event) => {

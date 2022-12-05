@@ -1,4 +1,8 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable consistent-return */
 /* eslint-disable import/prefer-default-export */
+import * as CryptoJS from 'crypto-js';
+
 function formatBytes(bytes, decimals = 2) {
   if (!+bytes) return '0 Bytes';
 
@@ -16,4 +20,23 @@ function daysCompare(startDate, endDate) {
   const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
   return TotalDays;
 }
-export { formatBytes, daysCompare };
+
+function encryptLocalStorage(key, data) {
+  // Encrypt Info
+  const encryptInfo = encodeURIComponent(
+    CryptoJS.AES.encrypt(JSON.stringify(data), 'CCO').toString()
+  );
+  localStorage.setItem(key, encryptInfo);
+}
+
+function decryptLocalStorage(key) {
+  // Decrypt Info
+  const dataLocal = localStorage.getItem(key);
+  if (dataLocal !== null) {
+    const data = CryptoJS.AES.decrypt(decodeURIComponent(dataLocal), 'CCO');
+    const decryptedInfo = JSON.parse(data.toString(CryptoJS.enc.Utf8));
+    return decryptedInfo;
+  }
+  return null;
+}
+export { formatBytes, daysCompare, encryptLocalStorage, decryptLocalStorage };

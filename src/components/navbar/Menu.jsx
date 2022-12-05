@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { decryptLocalStorage } from '../../utils/helper';
 // import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
 // eslint-disable-next-line react/prop-types
@@ -12,8 +13,7 @@ function Menu() {
   // const { data: user } = useSelector(selectCurrentUser);
   const [user, setUser] = useState(null);
   useEffect(() => {
-    const users = localStorage.getItem('user');
-    const data = JSON.parse(users);
+    const data = decryptLocalStorage('user_encrypt');
     setUser(data);
   }, []);
   return (

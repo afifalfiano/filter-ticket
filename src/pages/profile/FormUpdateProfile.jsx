@@ -15,6 +15,7 @@ import { useUpdateProfileMutation } from '../../store/features/auth/authApiSlice
 import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { ProfileSchema } from '../../utils/schema_validation_form';
 import PreviewImage from './PreviewImage';
+import { encryptLocalStorage } from '../../utils/helper';
 
 /* eslint-disable react/prop-types */
 function FormUpdateProfile({ handleForm, profile }) {
@@ -66,8 +67,9 @@ function FormUpdateProfile({ handleForm, profile }) {
         }
         dispatch(setCredentials({ ...newProfile }));
         console.log(newProfile, 'let');
-        const local = JSON.stringify(newProfile);
-        localStorage.setItem('user', local);
+        // const local = JSON.stringify(newProfile);
+        // localStorage.setItem('user', local);
+        encryptLocalStorage('user_encrypt', newProfile);
         toast.success('Berhasil memperbarui akun.', {
           style: {
             padding: '16px',

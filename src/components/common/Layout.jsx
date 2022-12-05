@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
+import { decryptLocalStorage } from '../../utils/helper';
 // import { selectBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function Layout({ render }) {
@@ -11,7 +12,7 @@ function Layout({ render }) {
   const urlChanges = window.location.pathname;
   // const breadcrumb = useSelector(selectBreadcrumb);
   useEffect(() => {
-    const datalocal = localStorage.getItem('user');
+    const datalocal = decryptLocalStorage('user_encrypt');
     // console.log(data, 'data state redux');
     console.log(datalocal, 'data state storage');
     if (datalocal) {

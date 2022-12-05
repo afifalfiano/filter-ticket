@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-prototype-builtins */
@@ -11,6 +12,7 @@ import * as Yup from 'yup';
 import { useLoginMutation } from '../../../store/features/auth/authApiSlice';
 import { setCredentials } from '../../../store/features/auth/authSlice';
 import { SignInSchema } from '../../../utils/schema_validation_form';
+import { encryptLocalStorage } from '../../../utils/helper';
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -26,8 +28,9 @@ function SignIn() {
       }).unwrap();
       if (userData.hasOwnProperty('bearer_token')) {
         dispatch(setCredentials({ ...userData }));
-        const local = JSON.stringify(userData);
-        localStorage.setItem('user', local);
+        encryptLocalStorage('user_encrypt', userData);
+        // const local = JSON.stringify(userData);
+        // localStorage.setItem('user', local);
         setTimeout(() => {
           navigate('/dashboard', { replace: true });
         }, 0);

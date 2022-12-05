@@ -2,12 +2,12 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import { decryptLocalStorage } from '../../../utils/helper';
 
-const dataLocal = localStorage.getItem('user');
-const dataParse = JSON.parse(dataLocal);
+const dataLocal = decryptLocalStorage('user_encrypt');
 
 const initialState = {
-  data: dataParse || null,
+  data: dataLocal || null,
   profile: null,
 };
 

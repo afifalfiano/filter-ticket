@@ -11,20 +11,21 @@ import {
 import Container from './Container';
 import Navbar from '../navbar/Navbar';
 import { selectBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import { decryptLocalStorage } from '../../utils/helper';
 
 function RequireAuth() {
   const { data } = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const breadcrumb = useSelector(selectBreadcrumb);
-  const user = localStorage.getItem('user');
+  const user = localStorage.getItem('user_encrypt');
   // const urlChanges = window.location.pathname.split('/').pop();
 
   useEffect(() => {
     // if (!data) {
     console.log(user, 'usr');
     if (user !== null) {
-      const local = JSON.parse(user);
+      const local = decryptLocalStorage('user_encrypt');
       console.log(local, 'lokal');
       dispatch(setCredentials(local));
     } else {
