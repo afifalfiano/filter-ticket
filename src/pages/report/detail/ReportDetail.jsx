@@ -29,11 +29,20 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
+import { setModal } from "../../../store/features/modal/modalSlice";
 import { useGetOneReportMutation } from "../../../store/features/report/reportApiSlice";
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-function ReportDetail({ detailData }) {
+function ReportDetail({ stateModal, detailData }) {
   console.log(detailData, 'detail data')
+  const dispatch = useDispatch()
+  const onBtnClose = (title) => {
+    const newState = {
+      ...stateModal,
+      report: { ...stateModal.report, showDetailModalReport: false },
+    };
+    dispatch(setModal(newState));
+  };
   // const navigasi = useSelector(selectBreadcrumb);
   // const { id } = useParams();
   // const dispatch = useDispatch();
@@ -78,15 +87,15 @@ function ReportDetail({ detailData }) {
   }
 
   return (
-    <div className="modal">
-      <div className="modal-box max-w-2xl">
-        <label
-          htmlFor="my-modal-3"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className="modal-box h-fit max-h-fit max-w-xl">
+        <button
+          type="button"
           className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnBack}
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">
           Detail Laporan
         </h3>
@@ -142,9 +151,7 @@ function ReportDetail({ detailData }) {
             type="button"
             htmlFor="my-modal-3"
             className="btn btn-md"
-            onClick={() => {
-              onBtnBack();
-            }}
+            onClick={onBtnClose}
           >
             Kembali
           </button>

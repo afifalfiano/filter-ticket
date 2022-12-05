@@ -44,6 +44,8 @@ import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import ReportDetail from './detail/ReportDetail';
+import Modal from '../../components/modal/Modal';
+import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 
 function Report() {
   const columns = [
@@ -67,7 +69,18 @@ function Report() {
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
   const { data: user } = useSelector(selectCurrentUser);
+  const stateModal = useSelector(selectModalState);
 
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'detail report') {
+      newState = { ...stateModal, report: { ...stateModal.report, showDetailModalReport: true } };
+    } else if (modal === 'delete report') {
+      newState = { ...stateModal, report: { ...stateModal.report, showDeleteModalReport: true } };
+    }
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
   const [pagination, setPagination] = useState({
     currentPage: 1,
     currentFilterPage: 5,
@@ -281,14 +294,18 @@ function Report() {
         </label>
       </div>
 
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="laporan" />
+      <Modal>
+        {stateModal?.report?.showDeleteModalReport && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="laporan" />}
+        {stateModal?.report?.showDetailModalReport && <ReportDetail stateModal={stateModal} detailData={detail} />}
+      </Modal>
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <DeleteModal getInfo={getInfo} detail={detail} title="laporan" /> */}
 
       {/* Modal tambah */}
-      <input type="checkbox" id="my-modal-detail" className="modal-toggle" />
+      {/* <input type="checkbox" id="my-modal-detail" className="modal-toggle" /> */}
       {/* <RenderModal> */}
       {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
-      <ReportDetail detailData={detail} />
+      {/* <ReportDetail detailData={detail} /> */}
 
       <div className="flex gap-5 mt-5">
         <div className="form-control">
@@ -375,9 +392,10 @@ function Report() {
                           // setDetail(item);
                           // navigate(`/report/detail/${item.id_laporan}`);
                           setDetail(item);
-                          document
-                            .getElementById('my-modal-detail')
-                            .click();
+                          // document
+                          //   .getElementById('my-modal-detail')
+                          //   .click();
+                          openModal('detail report')
                         }}
                       />
                     </div>
@@ -404,9 +422,10 @@ function Report() {
                         className="cursor-pointer"
                         onClick={() => {
                           setDetail(item);
-                          document
-                            .getElementById('my-modal-delete')
-                            .click();
+                          // document
+                          //   .getElementById('my-modal-delete')
+                          //   .click();
+                          openModal('delete report');
                         }}
                       />
                     </div>
