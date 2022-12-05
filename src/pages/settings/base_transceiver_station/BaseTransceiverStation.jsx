@@ -33,6 +33,8 @@ import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbS
 
 import SkeletonTable from '../../../components/common/table/SkeletonTable';
 import Pagination from '../../../components/common/table/Pagination';
+import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
+import Modal from '../../../components/modal/Modal';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -57,7 +59,21 @@ function BaseTransceiverStation() {
   const [title, setTitle] = useState('update');
 
   const dataRow = useSelector(selectAllBTS);
-
+  const stateModal = useSelector(selectModalState);
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'add bts') {
+      newState = { ...stateModal, bts: { ...stateModal.bts, showAddModalBts: true } };
+    } else if (modal === 'update bts') {
+      newState = { ...stateModal, bts: { ...stateModal.bts, showUpdateModalBts: true } };
+    } else if (modal === 'delete bts') {
+      newState = { ...stateModal, bts: { ...stateModal.bts, showDeleteModalBts: true } };
+    } else if (modal === 'detail bts') {
+      newState = { ...stateModal, bts: { ...stateModal.bts, showDetailModalBts: true } };
+    }
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
   const [pagination, setPagination] = useState({
     currentPage: 1,
     currentFilterPage: 5,
@@ -234,7 +250,8 @@ function BaseTransceiverStation() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            openModal('add bts');
           }}
         >
           Tambah
@@ -281,13 +298,19 @@ function BaseTransceiverStation() {
       </div>
       )}
 
-      {/* modal craete or update */}
+      {/* modal craete or update
       <input type="checkbox" id="my-modal-3" className="modal-toggle" />
       <FormBTS getInfo={getInfo} detail={detail} titleAction={title} />
 
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="BTS" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <DeleteModal getInfo={getInfo} detail={detail} title="BTS" /> */}
+      <Modal>
+        {stateModal?.bts?.showAddModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.bts?.showUpdateModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.bts?.showDeleteModalBts && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="BTS" />}
+        {stateModal?.bts?.showDetailModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+      </Modal>
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
@@ -340,7 +363,8 @@ function BaseTransceiverStation() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('update');
-                          document.getElementById('my-modal-3').click();
+                          // document.getElementById('my-modal-3').click();
+                          openModal('update bts');
                         }}
                       />
                     </div>
@@ -351,7 +375,8 @@ function BaseTransceiverStation() {
                         className="cursor-pointer"
                         onClick={() => {
                           setDetail(item);
-                          document.getElementById('my-modal-delete').click();
+                          // document.getElementById('my-modal-delete').click();
+                          openModal('delete bts');
                         }}
                       />
                     </div>
@@ -363,7 +388,8 @@ function BaseTransceiverStation() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('read');
-                          document.getElementById('my-modal-3').click();
+                          // document.getElementById('my-modal-3').click();
+                          openModal('detail bts');
                         }}
                       />
                     </div>
