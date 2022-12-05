@@ -38,6 +38,8 @@ import { setPOP } from '../../store/features/pop/popSlice';
 import Pagination from '../../components/common/table/Pagination';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
+import Modal from '../../components/modal/Modal';
+import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 
 function HistoryDashboard() {
   const initColumns = [
@@ -66,7 +68,12 @@ function HistoryDashboard() {
   const dispatch = useDispatch();
   const [allComplainHistory, { isLoading }] = useAllComplainHistoryMutation();
   const [detail, setDetail] = useState(null);
-
+  const stateModal = useSelector(selectModalState);
+  const openModal = (modal) => {
+    const newState = { ...stateModal, history_dashboard: { ...stateModal.history_dashboard, showRevertModalHistoryComplain: true } };
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
   const { data: user } = useSelector(selectCurrentUser);
 
   const getAllComplainHistory = async (page = 1) => {
@@ -209,8 +216,12 @@ function HistoryDashboard() {
     <div>
 
       {/* modal revert */}
-      <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
-      <ReopenModal getInfo={getInfo} detail={detail} />
+      {/* <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
+      <ReopenModal getInfo={getInfo} detail={detail} /> */}
+      {/* showRevertModalHistoryComplain */}
+      <Modal>
+        {stateModal?.history_dashboard?.showRevertModalHistoryComplain && <ReopenModal stateModal={stateModal} getInfo={getInfo} detail={detail} />}
+      </Modal>
 
       {!isLoading && (
       <div className="flex gap-5 mt-5">
@@ -342,9 +353,10 @@ function HistoryDashboard() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            document
-                              .getElementById('my-modal-revert')
-                              .click();
+                            openModal();
+                            // document
+                            //   .getElementById('my-modal-revert')
+                            //   .click();
                           }}
                         />
                       </div>
