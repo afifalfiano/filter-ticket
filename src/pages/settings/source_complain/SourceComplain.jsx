@@ -17,6 +17,8 @@ import Pagination from '../../../components/common/table/Pagination';
 import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import FormSumberKeluhan from './FormSumberKeluhan';
+import Modal from '../../../components/modal/Modal';
+import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 
 function SourceComplain() {
   const dispatch = useDispatch();
@@ -28,6 +30,19 @@ function SourceComplain() {
   const [search, setSearch] = useState('');
   const [title, setTitle] = useState('update');
   const dataRow = useSelector(selectAllSumberKeluhan);
+  const stateModal = useSelector(selectModalState);
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'add source') {
+      newState = { ...stateModal, source_complain: { ...stateModal.source_complain, showAddModalSourceComplain: true } };
+    } else if (modal === 'update source') {
+      newState = { ...stateModal, source_complain: { ...stateModal.source_complain, showUpdateModalSourceComplain: true } };
+    } else if (modal === 'delete source') {
+      newState = { ...stateModal, source_complain: { ...stateModal.source_complain, showDeleteModalSourceComplain: true } };
+    }
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -140,7 +155,8 @@ function SourceComplain() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            openModal('add source');
           }}
         >
           Tambah
@@ -173,12 +189,18 @@ function SourceComplain() {
       )}
 
       {/* modal craete or update */}
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormSumberKeluhan getInfo={getInfo} detail={detail} titleAction={title} />
+      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <FormSumberKeluhan getInfo={getInfo} detail={detail} titleAction={title} /> */}
 
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="Sumber Keluhan" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <DeleteModal getInfo={getInfo} detail={detail} title="Sumber Keluhan" /> */}
+
+      <Modal>
+        {stateModal?.source_complain?.showAddModalSourceComplain && <FormSumberKeluhan stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
+        {stateModal?.source_complain?.showUpdateModalSourceComplain && <FormSumberKeluhan stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.source_complain?.showDeleteModalSourceComplain && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="Sumber Keluhan" />}
+      </Modal>
 
       {isLoading && (
         <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
@@ -210,7 +232,8 @@ function SourceComplain() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            document.getElementById('my-modal-3').click();
+                            // document.getElementById('my-modal-3').click();
+                            openModal('update source');
                           }}
                         />
                       </div>
@@ -221,7 +244,8 @@ function SourceComplain() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            document.getElementById('my-modal-delete').click();
+                            // document.getElementById('my-modal-delete').click();
+                            openModal('delete source');
                           }}
                         />
                       </div>

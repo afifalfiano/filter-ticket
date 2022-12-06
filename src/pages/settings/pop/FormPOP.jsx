@@ -39,7 +39,7 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
   const onBtnClose = () => {
     const newState = {
       ...stateModal,
-      pop: { ...stateModal.pop, showAddModalPop: false, showUpdateModalPop: false },
+      pop: { ...stateModal.pop, showAddModalSourceComplain: false, showUpdateModalSourceComplain: false },
     };
     dispatch(setModal(newState));
   };
