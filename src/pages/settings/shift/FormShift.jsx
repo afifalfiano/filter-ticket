@@ -14,8 +14,9 @@ import toast from 'react-hot-toast';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { FormShiftSchema } from '../../../utils/schema_validation_form';
 import { useCreateShiftMutation, useUpdateShiftMutation } from '../../../store/features/shift/shiftApiSlice';
+import { setModal } from '../../../store/features/modal/modalSlice';
 
-function FormShift({ getInfo, detail, titleAction }) {
+function FormShift({ stateModal, getInfo, detail, titleAction }) {
   console.log(detail, 'cek render');
   const [createShift] = useCreateShiftMutation();
   const [updateShift] = useUpdateShiftMutation();
@@ -24,6 +25,16 @@ function FormShift({ getInfo, detail, titleAction }) {
     shift: detail?.shift || '',
     mulai: detail?.mulai || '',
     selesai: detail?.selesai || '',
+  };
+
+  const dispatch = useDispatch();
+
+  const onBtnClose = () => {
+    const newState = {
+      ...stateModal,
+      shift: { ...stateModal.shift, showAddModalShift: false, showUpdateModalShift: false },
+    };
+    dispatch(setModal(newState));
   };
 
   const onSubmitData = async (payload, resetForm) => {
@@ -52,7 +63,8 @@ function FormShift({ getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             resetForm();
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            onBtnClose();
             getInfo({ status: 'success' });
           }, 2000);
         } else {
@@ -89,7 +101,8 @@ function FormShift({ getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             getInfo({ status: 'success' });
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            onBtnClose();
           }, 2000);
         } else {
           toast.error(update.data.message, {
@@ -123,18 +136,19 @@ function FormShift({ getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    document.getElementById('my-modal-3').click();
+    // document.getElementById('my-modal-3').click();
+    onBtnClose();
   };
 
   return (
-    <div className="modal">
-      <div className="modal-box max-w-2xl">
-        <label
-          htmlFor="my-modal-3"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className="modal-box h-fit max-h-fit max-w-lg">
+        <button
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah Shift' : titleAction === 'update' && 'Ubah Shift'}
           {titleAction === 'read' && 'Detail Shift'}
@@ -236,7 +250,7 @@ function FormShift({ getInfo, detail, titleAction }) {
                   disabled={!isValid}
                   type="submit"
                   htmlFor="my-modal-3"
-                  className="btn btn-md btn-success"
+                  className="btn btn-md btn-success text-white"
                 >
                   Simpan
                 </button>

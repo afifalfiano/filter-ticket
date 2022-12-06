@@ -21,6 +21,8 @@ import {
   setShift,
 } from '../../../store/features/shift/shiftSlice';
 import FormShift from './FormShift';
+import Modal from '../../../components/modal/Modal';
+import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 
 function Shift() {
   const dispatch = useDispatch();
@@ -31,6 +33,19 @@ function Shift() {
   const [search, setSearch] = useState('');
   const [title, setTitle] = useState('update');
   const dataRow = useSelector(selectAllShift);
+  const stateModal = useSelector(selectModalState);
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'add shift') {
+      newState = { ...stateModal, shift: { ...stateModal.shift, showAddModalShift: true } };
+    } else if (modal === 'update shift') {
+      newState = { ...stateModal, shift: { ...stateModal.shift, showUpdateModalShift: true } };
+    } else if (modal === 'delete shift') {
+      newState = { ...stateModal, shift: { ...stateModal.shift, showDeleteModalShift: true } };
+    }
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
@@ -138,7 +153,8 @@ function Shift() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            openModal('add shift');
           }}
         >
           Tambah
@@ -171,12 +187,18 @@ function Shift() {
       )}
 
       {/* modal craete or update */}
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormShift getInfo={getInfo} detail={detail} titleAction={title} />
+      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <FormShift getInfo={getInfo} detail={detail} titleAction={title} /> */}
 
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="Shift" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <DeleteModal getInfo={getInfo} detail={detail} title="Shift" /> */}
+
+      <Modal>
+        {stateModal?.shift?.showAddModalShift && <FormShift stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
+        {stateModal?.shift?.showUpdateModalShift && <FormShift stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.shift?.showDeleteModalShift && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="Shift" />}
+      </Modal>
 
       {isLoading && (
         <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
@@ -210,7 +232,8 @@ function Shift() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            document.getElementById('my-modal-3').click();
+                            // document.getElementById('my-modal-3').click();
+                            openModal('update shift');
                           }}
                         />
                       </div>
@@ -221,7 +244,8 @@ function Shift() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            document.getElementById('my-modal-delete').click();
+                            // document.getElementById('my-modal-delete').click();
+                            openModal('delete shift');
                           }}
                         />
                       </div>
