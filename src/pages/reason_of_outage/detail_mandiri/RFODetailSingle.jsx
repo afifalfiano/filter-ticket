@@ -44,10 +44,11 @@ function RFODetailSingle() {
       if (data.status === 'success') {
         dispatch(setRFOById(data));
         setDetailRFO(data.data);
-        lastUpdate = detailRFO?.keluhan?.balasan?.length > 0
-          ? detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at
-          : detailRFO?.keluhan?.created_at
-        console.log(detailRFO, 'cek');
+        lastUpdate = data.data?.keluhan?.balasan?.length > 0
+          ? data.data?.keluhan?.balasan[data.data?.keluhan?.balasan?.length - 1].created_at
+          : data.data?.keluhan?.created_at
+        console.log(data.data, 'cek gan');
+        console.log(lastUpdate, 'updateeeeee');
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +100,6 @@ function RFODetailSingle() {
       status: 'closed',
       keluhan_id: detailRFO.keluhan.id_keluhan,
       deskripsi: payload.deskripsi,
-      lampiran_rfo_keluhan: payload.lampiran || '-',
       user_id: user.id_user,
     };
     try {

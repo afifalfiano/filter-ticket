@@ -120,7 +120,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
       status: payload.status,
       deskripsi: payload.deskripsi,
       durasi: payload.durasi,
-      lampiran_rfo_keluhan: payload.lampiran || '-',
       user_id: user.id_user,
     };
     console.log(payload, 'py');

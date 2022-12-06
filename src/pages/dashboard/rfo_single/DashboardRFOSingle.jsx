@@ -121,7 +121,6 @@ function DashboardRFOSingle() {
       action: payload.action,
       status: 'closed',
       deskripsi: payload.deskripsi,
-      lampiran_rfo_keluhan: payload.lampiran || '-',
       user_id: user.id_user,
       keluhan_id: detailComplain.id_keluhan
     };
