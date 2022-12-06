@@ -566,6 +566,10 @@ function ReportCreate() {
               </div>
             </div>
           </div>
+
+          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
+            <h2>Grafik</h2>
+          </div>
           {/* <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
           <p className="font-semibold mt-2">Petugas:</p>
           {
