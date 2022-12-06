@@ -464,14 +464,14 @@ function DashboardRFOSingle() {
                   </div> */}
                 </div>
 
-                {(!history && idRfoKeluhan === 'null' && detailComplain?.status === 'open') ? (
+                {/* {(!history && idRfoKeluhan === 'null' && detailComplain?.status === 'open') ? (
                   <UploadFile />
 
                 ) : (
                   <div className="mt-2 font-semibold">
                     File Upload: {detailComplain?.lampiran || '-'}
                   </div>
-                )}
+                )} */}
 
                 {(!history && detailComplain?.status === 'open') || idRfoKeluhan === 'null' ? (
                   <div className="modal-action justify-center mt-10">

@@ -152,7 +152,6 @@ function ReasonOfOutage() {
     'Waktu Gangguan',
     'Durasi',
     'Masalah',
-    'Lampiran',
     'Keterangan',
     'Status RFO',
     'Aksi',
@@ -305,13 +304,6 @@ function ReasonOfOutage() {
                 </td>
                 <td>{item?.durasi || 0}</td>
                 <td>{item?.problem}</td>
-                <td
-                  className={
-                    item?.lampiran_rfo_keluhan ? 'link-primary link' : ''
-                  }
-                >
-                  {item?.lampiran_rfo_keluhan || '-'}
-                </td>
                 <td>{item?.deskripsi || '-'}</td>
                 <td>
                   {item?.status === 'open' ? (

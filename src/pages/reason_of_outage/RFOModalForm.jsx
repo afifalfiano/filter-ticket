@@ -408,8 +408,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                 </div>
               </div>
 
-              <UploadFile />
-
               <hr className="my-2 mt-5" />
               <div className="modal-action justify-center">
                 <button
