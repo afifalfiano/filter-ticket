@@ -38,8 +38,8 @@ import { formatBytes } from "../../../utils/helper";
 import { setPOP } from "../../../store/features/pop/popSlice";
 
 const styleReport = {
-  fontSize: '12px',
-  padding: '12px'
+  width: '1110px !important',
+  height: '4500 !important'
 }
 
 function ReportCreate() {
@@ -143,20 +143,27 @@ function ReportCreate() {
   };
 
   const handleGeneratePdf = () => {
-    const doc = new jsPDF({
-      format: "a4",
-      unit: "px"
-    });
-
+    const doc = new jsPDF('p', 'mm', 'a4', true);
     doc.setFontSize(12);
     doc.html(document.getElementById('preview-report'), {
+      // async callback(doc) {
+      //   doc.setFontSize(12);
+      //   // doc.save("Laporan" + new Date().toString());
+      //   const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
+      //   doc.setProperties({ title: printFileName });
+      //   window.open(doc.output('bloburl'), '_blank');
+      // }
       async callback(doc) {
-        doc.setFontSize(12);
-        // doc.save("Laporan" + new Date().toString());
+        // Save the PDF
         const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
         doc.setProperties({ title: printFileName });
         window.open(doc.output('bloburl'), '_blank');
-      }
+      },
+      margin: [10, 10, 10, 10],
+      autoPaging: true,
+      image: { type: 'png', quality: 1 },
+      windowWidth: 3000,
+      width: 500,
     });
   };
 
@@ -387,9 +394,180 @@ function ReportCreate() {
         </label>
         {(keluhanLaporanLocal !== null && showPreview) && (
         <div id="preview-report" style={styleReport}>
-          <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
+          <h1 className="text-center font-bold text-2xl">Daily Complaint Report Helpdesk</h1>
+          <div className="flex justify-between align-middle items-center mt-5">
+            <div className="flex-1">
+              <div className="flex gap-5">
+                <div>
+                  <p>Tanggal</p>
+                  <p>Sesi</p>
+                  <p>POP</p>
+                  <p>Helpdesk</p>
+                  <p>NOC</p>
+                </div>
+                <div>
+                  <p>Senin, 5 Desember 2022</p>
+                  <p>2</p>
+                  <p>Yogyakarta</p>
+                  <p>Afif, Alfiano</p>
+                  <p>Farhan, Kurnia, Ragil</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex-1">
+              <div className="flex flex-col items-end">
+                <p>REF-ID-2022120521810</p>
+                <img src="/report_logo.png" alt="Repor" width={157} />
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
+            <h2>Keluhan Open</h2>
+          </div>
+
+          <div className="flex mt-5 border border-gray-300 rounded-lg">
+            <div className="flex-1 p-2 border border-gray-300 rounded-l-lg">
+              <div className="flex gap-5">
+                <div className="flex-1">
+                  <p>Nomor</p>
+                  <p>Nomor Keluhan</p>
+                  <p>ID Pelanggan</p>
+                  <p>Nama Pelanggan</p>
+                  <p>Sumber Keluhan</p>
+                  <p>Detail Sumber</p>
+                </div>
+                <div className="flex-1">
+                  <p>1</p>
+                  <p>#T2022120579089</p>
+                  <p>1234567890</p>
+                  <p>Farhan Kurnia</p>
+                  <p>Telepon</p>
+                  <p>0825616384562</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 p-2 border border-gray-300 rounded-r-lg">
+              <div className="flex gap-5">
+                <div className="flex-1">
+                  <p>Nomor</p>
+                  <p>Nomor Keluhan</p>
+                  <p>ID Pelanggan</p>
+                  <p>Nama Pelanggan</p>
+                  <p>Sumber Keluhan</p>
+                  <p>Detail Sumber</p>
+                </div>
+                <div className="flex-1">
+                  <p>1</p>
+                  <p>#T2022120579089</p>
+                  <p>1234567890</p>
+                  <p>Farhan Kurnia</p>
+                  <p>Telepon</p>
+                  <p>0825616384562</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
+            <h2>Keluhan Closed</h2>
+          </div>
+
+          <div className="flex mt-5 border border-gray-300 rounded-lg">
+            <div className="flex-1 p-2 border border-gray-300 rounded-l-lg">
+              <div className="flex gap-5">
+                <div className="flex-1">
+                  <p>Nomor</p>
+                  <p>Nomor Keluhan</p>
+                  <p>ID Pelanggan</p>
+                  <p>Nama Pelanggan</p>
+                  <p>Sumber Keluhan</p>
+                  <p>Detail Sumber</p>
+                </div>
+                <div className="flex-1">
+                  <p>1</p>
+                  <p>#T2022120579089</p>
+                  <p>1234567890</p>
+                  <p>Farhan Kurnia</p>
+                  <p>Telepon</p>
+                  <p>0825616384562</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 p-2 border border-gray-300 rounded-r-lg">
+              <div className="flex gap-5">
+                <div className="flex-1">
+                  <p>Nomor</p>
+                  <p>Nomor Keluhan</p>
+                  <p>ID Pelanggan</p>
+                  <p>Nama Pelanggan</p>
+                  <p>Sumber Keluhan</p>
+                  <p>Detail Sumber</p>
+                </div>
+                <div className="flex-1">
+                  <p>1</p>
+                  <p>#T2022120579089</p>
+                  <p>1234567890</p>
+                  <p>Farhan Kurnia</p>
+                  <p>Telepon</p>
+                  <p>0825616384562</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
+            <h2>RFO Gangguan</h2>
+          </div>
+
+          <div className="flex mt-5 border border-gray-300 rounded-lg">
+            <div className="flex-1 p-2 border border-gray-300 rounded-l-lg">
+              <div className="flex gap-5">
+                <div className="flex-1">
+                  <p>Nomor</p>
+                  <p>Nomor RFO Gangguan</p>
+                  <p>Mulai Gangguan</p>
+                  <p>Selesai Gangguan</p>
+                  <p>Problem</p>
+                  <p>Action</p>
+                  <p>Status</p>
+                </div>
+                <div className="flex-1">
+                  <p>1</p>
+                  <p>#RFOG111112</p>
+                  <p>2022-09-24 12:00</p>
+                  <p>2022-09-24 13:00</p>
+                  <p>Gangguan Upstream</p>
+                  <p>Re-route</p>
+                  <p>Open</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex-1 p-2 border border-gray-300 rounded-r-lg">
+              <div className="flex gap-5">
+                <div className="flex-1">
+                  <p>Nomor</p>
+                  <p>Nomor RFO Gangguan</p>
+                  <p>Mulai Gangguan</p>
+                  <p>Selesai Gangguan</p>
+                  <p>Problem</p>
+                  <p>Action</p>
+                  <p>Status</p>
+                </div>
+                <div className="flex-1">
+                  <p>1</p>
+                  <p>#RFOG111112</p>
+                  <p>2022-09-24 12:00</p>
+                  <p>2022-09-24 13:00</p>
+                  <p>Gangguan Upstream</p>
+                  <p>Re-route</p>
+                  <p>Open</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
           <p className="font-semibold mt-2">Petugas:</p>
-          {/* {checkedState.map((item) => (<p>{item.toString()}</p>))} */}
           {
             checkedState.map((condition, indexcondition) => {
               let user = '';
@@ -404,7 +582,8 @@ function ReportCreate() {
               return user;
             })
           }
-          <p className="font-semibold mt-2">Total Keluhan: {keluhanLaporanLocal?.total_keluhan}</p>
+          <p className="font-semibold mt-2">Total Keluhan Open: {keluhanLaporanLocal?.total_keluhan_open}</p>
+          <p className="font-semibold mt-2">Total Keluhan Closed: {keluhanLaporanLocal?.total_keluhan_closed}</p>
           <p className="font-semibold mt-2">Total RFO Gangguan: {keluhanLaporanLocal?.total_rfo_gangguan}</p>
           <p className="font-semibold mt-2">Shift: {allShiftLocal?.map((item) => {
             if (item.id_shift === +bodyKeluhan.shift) {
@@ -416,41 +595,21 @@ function ReportCreate() {
           </p>
           <p className="font-semibold mt-2">Keluhan Open</p>
           <div>
-            {keluhanLaporanLocal?.keluhan.map((item) => {
-              if (item.status === 'open') {
-                return (
-                  <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>
-                )
-              }
-            })}
+            {keluhanLaporanLocal?.keluhan_open.map((item) => <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>)}
           </div>
           <p className="font-semibold mt-2">Keluhan Closed</p>
           <div>
-            {keluhanLaporanLocal?.keluhan.map((item) => {
-              if (item.status === 'closed') {
-                return (
-                  <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>
-                )
-              }
-            })}
+            {keluhanLaporanLocal?.keluhan_close.map((item) => <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>)}
           </div>
           <p className="font-semibold mt-2">RFO Gangguan</p>
           <div>
-            {keluhanLaporanLocal?.rfo_gangguan.map((item) => (
-              <>
-                <li>{item.problem}</li>
-                <p className="ml-5">Terdampak:</p>
-                <ul className="ml-5">
-                  {item.keluhan.map((efek) => <li>{efek.id_pelanggan} - {efek.nama_pelanggan}</li>)}
-                </ul>
-              </>
-            ))}
-          </div>
+            {keluhanLaporanLocal?.rfo_gangguan.map((item) => <li>{item.nomor_rfo_gangguan} - {item.problem}</li>)}
+          </div> */}
         </div>
         )}
       </div>
       <hr />
-      <div className="mt-2 font-semibold">
+      <div className="mt-5 font-semibold">
         File Upload: {file.name} - {formatBytes(file.size)}
       </div>
       <div className="mt-5">
