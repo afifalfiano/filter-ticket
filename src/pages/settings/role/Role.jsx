@@ -17,6 +17,8 @@ import Pagination from '../../../components/common/table/Pagination';
 import { useAllTeamMutation } from '../../../store/features/team/teamApiSlice';
 import { selectAllTeam, setTeam } from '../../../store/features/team/teamSlice';
 import FormRole from './FormRole';
+import Modal from '../../../components/modal/Modal';
+import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 
 function Role() {
   const dispatch = useDispatch();
@@ -27,7 +29,19 @@ function Role() {
   const [search, setSearch] = useState('');
   const [title, setTitle] = useState('update');
   const dataRow = useSelector(selectAllTeam);
-
+  const stateModal = useSelector(selectModalState);
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'add role') {
+      newState = { ...stateModal, role: { ...stateModal.role, showAddModalRole: true } };
+    } else if (modal === 'update role') {
+      newState = { ...stateModal, role: { ...stateModal.role, showUpdateModalRole: true } };
+    } else if (modal === 'delete role') {
+      newState = { ...stateModal, role: { ...stateModal.role, showDeleteModalRole: true } };
+    }
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
   const [pagination, setPagination] = useState({
     currentPage: 1,
     currentFilterPage: 5,
@@ -135,7 +149,8 @@ function Role() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            openModal('add role');
           }}
         >
           Tambah
@@ -168,12 +183,18 @@ function Role() {
       )}
 
       {/* modal craete or update */}
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormRole getInfo={getInfo} detail={detail} titleAction={title} />
+      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <FormRole getInfo={getInfo} detail={detail} titleAction={title} /> */}
 
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="Team" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
+      <DeleteModal getInfo={getInfo} detail={detail} title="Team" /> */}
+
+      <Modal>
+        {stateModal?.role?.showAddModalRole && <FormRole stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
+        {stateModal?.role?.showUpdateModalRole && <FormRole stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.role?.showDeleteModalRole && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="Team" />}
+      </Modal>
 
       {isLoading && (
         <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
@@ -205,7 +226,8 @@ function Role() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            document.getElementById('my-modal-3').click();
+                            // document.getElementById('my-modal-3').click();
+                            openModal('update role');
                           }}
                         />
                       </div>
@@ -216,7 +238,8 @@ function Role() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            document.getElementById('my-modal-delete').click();
+                            // document.getElementById('my-modal-delete').click();
+                            openModal('delete role');
                           }}
                         />
                       </div>

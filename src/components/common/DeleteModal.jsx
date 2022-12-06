@@ -70,7 +70,7 @@ function DeleteModal({ stateModal, getInfo, detail, title }) {
         });
         setTimeout(() => {
           onBtnClose();
-          document.getElementById('my-modal-delete').click();
+          // document.getElementById('my-modal-delete').click();
           getInfo({ status: 'success' });
         }, 2000);
       } else {

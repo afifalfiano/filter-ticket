@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable array-callback-return */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
@@ -14,14 +15,25 @@ import toast from 'react-hot-toast';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { useAddTeamMutation, useUpdateTeamMutation } from '../../../store/features/team/teamApiSlice';
 import { FormRoleSchema } from '../../../utils/schema_validation_form';
+import { setModal } from '../../../store/features/modal/modalSlice';
 
-function FormRole({ getInfo, detail, titleAction }) {
+function FormRole({ stateModal, getInfo, detail, titleAction }) {
   console.log(detail, 'cek render');
   const [addTeam] = useAddTeamMutation();
   const [updateTeam] = useUpdateTeamMutation();
   const { data: user } = useSelector(selectCurrentUser);
   const initialValues = {
     role: detail?.role || '',
+  };
+
+  const dispatch = useDispatch();
+
+  const onBtnClose = () => {
+    const newState = {
+      ...stateModal,
+      role: { ...stateModal.role, showAddModalRole: false, showUpdateModalRole: false },
+    };
+    dispatch(setModal(newState));
   };
 
   const onSubmitData = async (payload, resetForm) => {
@@ -49,7 +61,8 @@ function FormRole({ getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             resetForm();
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            onBtnClose();
             getInfo({ status: 'success' });
           }, 2000);
         } else {
@@ -86,7 +99,8 @@ function FormRole({ getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             getInfo({ status: 'success' });
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            onBtnClose();
           }, 2000);
         } else {
           toast.error(update.data.message, {
@@ -120,18 +134,19 @@ function FormRole({ getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    document.getElementById('my-modal-3').click();
+    // document.getElementById('my-modal-3').click();
+    onBtnClose();
   };
 
   return (
-    <div className="modal">
-      <div className="modal-box max-w-2xl">
-        <label
-          htmlFor="my-modal-3"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className="modal-box  h-fit max-h-fit max-w-lg">
+        <button
+          onClick={onBtnClose}
           className="btn btn-sm btn-circle absolute right-2 top-2"
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah Role' : titleAction === 'update' && 'Ubah Role'}
           {titleAction === 'read' && 'Detail Role'}
@@ -191,7 +206,7 @@ function FormRole({ getInfo, detail, titleAction }) {
                   disabled={!isValid}
                   type="submit"
                   htmlFor="my-modal-3"
-                  className="btn btn-md btn-success"
+                  className="btn btn-md btn-success text-white"
                 >
                   Simpan
                 </button>
