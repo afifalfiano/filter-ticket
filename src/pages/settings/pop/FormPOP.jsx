@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable array-callback-return */
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
@@ -22,14 +23,25 @@ import {
 import { useAddPOPMutation, useAllPOPMutation, useUpdatePOPMutation } from '../../../store/features/pop/popApiSlice';
 import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
 import { FormPOPSchema } from '../../../utils/schema_validation_form';
+import { setModal } from '../../../store/features/modal/modalSlice';
 
-function FormPOP({ getInfo, detail, titleAction }) {
+function FormPOP({ stateModal, getInfo, detail, titleAction }) {
   console.log(detail, 'cek render');
   const [addPOP] = useAddPOPMutation();
   const [updatePOP] = useUpdatePOPMutation();
   const { data: user } = useSelector(selectCurrentUser);
   const initialValues = {
     pop: detail?.pop || '',
+  };
+
+  const dispatch = useDispatch();
+
+  const onBtnClose = () => {
+    const newState = {
+      ...stateModal,
+      pop: { ...stateModal.pop, showAddModalPop: false, showUpdateModalPop: false },
+    };
+    dispatch(setModal(newState));
   };
 
   const onSubmitData = async (payload, resetForm) => {
@@ -57,7 +69,8 @@ function FormPOP({ getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             resetForm();
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            onBtnClose();
             getInfo({ status: 'success' });
           }, 2000);
         } else {
@@ -94,7 +107,8 @@ function FormPOP({ getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             getInfo({ status: 'success' });
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            onBtnClose();
           }, 2000);
         } else {
           toast.error(update.data.message, {
@@ -128,18 +142,20 @@ function FormPOP({ getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    document.getElementById('my-modal-3').click();
+    // document.getElementById('my-modal-3').click();
+    onBtnClose();
   };
 
   return (
-    <div className="modal">
-      <div className="modal-box max-w-2xl">
-        <label
-          htmlFor="my-modal-3"
+    <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
+      <div className="modal-box  h-fit max-h-fit  max-w-lg">
+        <button
+          type="button"
           className="btn btn-sm btn-circle absolute right-2 top-2"
+          onClick={onBtnClose}
         >
           ✕
-        </label>
+        </button>
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah POP' : titleAction === 'update' && 'Ubah POP'}
           {titleAction === 'read' && 'Detail POP'}

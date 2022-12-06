@@ -17,6 +17,8 @@ import Pagination from '../../../components/common/table/Pagination';
 import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
 import FormPOP from './FormPOP';
+import Modal from '../../../components/modal/Modal';
+import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 
 function Pop() {
   const dispatch = useDispatch();
@@ -28,7 +30,19 @@ function Pop() {
   const [search, setSearch] = useState('');
   const [title, setTitle] = useState('update');
   const dataRow = useSelector(selectAllPOP);
-
+  const stateModal = useSelector(selectModalState);
+  const openModal = (modal) => {
+    let newState;
+    if (modal === 'add pop') {
+      newState = { ...stateModal, pop: { ...stateModal.pop, showAddModalPop: true } };
+    } else if (modal === 'update pop') {
+      newState = { ...stateModal, pop: { ...stateModal.pop, showUpdateModalPop: true } };
+    } else if (modal === 'delete pop') {
+      newState = { ...stateModal, pop: { ...stateModal.pop, showDeleteModalPop: true } };
+    }
+    dispatch(setModal(newState));
+    window.scrollTo(0, 0);
+  }
   const [pagination, setPagination] = useState({
     currentPage: 1,
     currentFilterPage: 5,
@@ -136,7 +150,8 @@ function Pop() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            document.getElementById('my-modal-3').click();
+            // document.getElementById('my-modal-3').click();
+            openModal('add pop');
           }}
         >
           Tambah
@@ -169,12 +184,18 @@ function Pop() {
       )}
 
       {/* modal craete or update */}
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormPOP getInfo={getInfo} detail={detail} titleAction={title} />
+      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+      <FormPOP stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> */}
 
       {/* modal delete */}
-      <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="POP" />
+      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" /> */}
+      {/* <DeleteModal getInfo={getInfo} detail={detail} title="POP" /> */}
+
+      <Modal>
+        {stateModal?.pop?.showAddModalPop && <FormPOP stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
+        {stateModal?.pop?.showUpdateModalPop && <FormPOP stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.pop?.showDeleteModalPop && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="POP" />}
+      </Modal>
 
       {isLoading && (
         <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
@@ -206,7 +227,8 @@ function Pop() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            document.getElementById('my-modal-3').click();
+                            // document.getElementById('my-modal-3').click();
+                            openModal('update pop');
                           }}
                         />
                       </div>
@@ -217,7 +239,8 @@ function Pop() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            document.getElementById('my-modal-delete').click();
+                            // document.getElementById('my-modal-delete').click();
+                            openModal('delete pop');
                           }}
                         />
                       </div>
