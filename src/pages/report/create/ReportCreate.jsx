@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable object-curly-newline */
 /* eslint-disable no-prototype-builtins */
@@ -25,11 +26,15 @@ import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-hot-toast';
+import * as html2canvas from 'html2canvas';
 import {
   HiEye,
   HiEyeOff
 } from 'react-icons/hi';
 import { useNavigate } from "react-router-dom";
+import {
+  BarChart, LineChart, Bar, Line, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+} from 'recharts';
 import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
 import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation, useSaveReportMutation } from "../../../store/features/report/reportApiSlice";
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
@@ -41,6 +46,21 @@ const styleReport = {
   width: '1110px !important',
   height: '4500 !important'
 }
+
+const dataInit = [
+  {
+    label: 'Total Keluhan Dalam Pengecekan',
+    total: 10
+  },
+  {
+    label: 'Total Keluhan Selesai Pengecekan',
+    total: 10
+  },
+  {
+    label: 'Total RFO Gangguan',
+    total: 10
+  },
+]
 
 function ReportCreate() {
   const [allUserLocal, setAllUserLocal] = useState([]);
@@ -143,27 +163,28 @@ function ReportCreate() {
   };
 
   const handleGeneratePdf = () => {
-    const doc = new jsPDF('p', 'mm', 'a4', true);
+    const doc = new jsPDF('p', 'pt', 'a4');
     doc.setFontSize(12);
-    doc.html(document.getElementById('preview-report'), {
-      // async callback(doc) {
-      //   doc.setFontSize(12);
-      //   // doc.save("Laporan" + new Date().toString());
-      //   const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
-      //   doc.setProperties({ title: printFileName });
-      //   window.open(doc.output('bloburl'), '_blank');
-      // }
+    const content = document.getElementById('preview-report');
+    const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
+    doc.html(content, {
       async callback(doc) {
         // Save the PDF
-        const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
+        const pressure = await html2canvas(document.getElementById('graph'), { width: 1110, height: 600 });
+        const imgData = pressure.toDataURL('image/png');
+        const imgHeight = 600 * 190 / 1110;
+        doc.addImage(imgData, 'png', 10, 50, 180, imgHeight, '', 'MEDIUM');
         doc.setProperties({ title: printFileName });
         window.open(doc.output('bloburl'), '_blank');
       },
-      margin: [10, 10, 10, 10],
+      windowWidth: 800,
+      width: 500,
+      margin: 10,
+      filename: printFileName,
       autoPaging: true,
       image: { type: 'png', quality: 1 },
-      windowWidth: 3000,
-      width: 500,
+      // width: 1000, // <- here
+      // windowWidth: 1000 // <- here
     });
   };
 
@@ -393,7 +414,13 @@ function ReportCreate() {
           )}
         </label>
         {(keluhanLaporanLocal !== null && showPreview) && (
-        <div id="preview-report" style={styleReport}>
+        <div
+          id="preview-report"
+          className="w-full max-w-screen-xl m-0 p-9"
+          style={{
+            width: '1440px !important',
+            height: '4500px !important' }}
+        >
           <h1 className="text-center font-bold text-2xl">Daily Complaint Report Helpdesk</h1>
           <div className="flex justify-between align-middle items-center mt-5">
             <div className="flex-1">
@@ -417,7 +444,7 @@ function ReportCreate() {
             <div className="flex-1">
               <div className="flex flex-col items-end">
                 <p>REF-ID-2022120521810</p>
-                <img src="/report_logo.png" alt="Repor" width={157} />
+                <img src="/report_logo.png" alt="Repor" width={157} className="image-full mt-4" />
               </div>
             </div>
           </div>
@@ -569,6 +596,28 @@ function ReportCreate() {
 
           <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
             <h2>Grafik</h2>
+          </div>
+          <div className="mt-5 my-5 max-w-xl justify-center flex p-5 w-1/2" style={{ margin: '0 auto' }}>
+            <ResponsiveContainer width="100%" height={300} id="graph">
+              <BarChart
+                width={500}
+                height={300}
+                data={dataInit}
+                margin={{
+                  top: 5,
+                  right: 0,
+                  left: 0,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="label" />
+                <YAxis />
+                <Tooltip />
+                <Legend layout="horizontal" verticalAlign="bottom" align="center" />
+                <Bar dataKey="total" fill="#f89c38" />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
           {/* <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
           <p className="font-semibold mt-2">Petugas:</p>
