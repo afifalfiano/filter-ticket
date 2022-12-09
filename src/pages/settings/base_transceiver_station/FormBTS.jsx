@@ -153,7 +153,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    document.getElementById('my-modal-3').click();
+    // document.getElementById('my-modal-3').click();
   };
 
   return (

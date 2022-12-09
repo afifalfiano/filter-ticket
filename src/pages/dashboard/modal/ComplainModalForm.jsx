@@ -139,7 +139,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             }
             setTimeout(() => {
               resetForm();
-              document.getElementById('my-modal-complain').click();
+              // document.getElementById('my-modal-complain').click();
               onBtnClose();
               getInfo({ status: 'success' });
             }, 2000);
@@ -188,7 +188,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
           setTimeout(() => {
             getInfo({ status: 'success' });
             onBtnClose();
-            document.getElementById('my-modal-complain').click();
+            // document.getElementById('my-modal-complain').click();
           }, 2000);
         } else {
           toast.error(update.data.message, {
@@ -222,7 +222,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
 
   const onHandleReset = (reset) => {
     reset();
-    document.getElementById('my-modal-complain').click();
+    // document.getElementById('my-modal-complain').click();
   };
 
   const onHandleFileUpload = ($event) => {

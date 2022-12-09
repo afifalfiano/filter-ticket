@@ -68,7 +68,7 @@ function ReportDetail({ stateModal, detailData }) {
   }, [])
 
   const onBtnBack = () => {
-    document.getElementById('my-modal-detail').click();
+    // document.getElementById('my-modal-detail').click();
   }
 
   const downloadFile = (url, fileName) => {
