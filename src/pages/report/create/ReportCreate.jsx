@@ -485,7 +485,7 @@ function ReportCreate() {
             </div>
             <div className="flex-1">
               <div className="flex flex-col items-end">
-                <p>REF-ID-2022120521810</p>
+                {/* <p>REF-ID-2022120521810</p> */}
                 <img src="/report_logo.png" alt="Repor" width={157} className="image-full mt-4" />
               </div>
             </div>
