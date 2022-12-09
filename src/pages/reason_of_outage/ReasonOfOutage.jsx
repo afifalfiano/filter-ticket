@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable max-len */
@@ -306,7 +307,11 @@ function ReasonOfOutage() {
                 <td>{item?.problem}</td>
                 <td>{item?.deskripsi || '-'}</td>
                 <td>
-                  {item?.status === 'open' ? (
+                  {statusData === 'sendiri' ? (
+                    <span className="badge badge-info text-white">
+                      closed
+                    </span>
+                  ) : item?.status === 'open' ? (
                     <span className="badge badge-accent text-white">
                       {item?.status}
                     </span>
