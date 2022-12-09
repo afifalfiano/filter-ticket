@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../store/features/auth/authSlice";
 import { useGetNotificationMutation, useReadNotificationMutation } from "../../store/features/notification/notificationApiSlice";
-import { selectAllNotification, setTotalCount } from "../../store/features/notification/notificationSlice";
+import { selectAllNotification, selectTotalCountNotification, setTotalCount } from "../../store/features/notification/notificationSlice";
 
 const ModalNotification = ({totalCount, data}) => {
 
@@ -16,20 +16,26 @@ const ModalNotification = ({totalCount, data}) => {
   const [readNotification ] = useReadNotificationMutation();
   const {data: user} = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
+  const totalCountState = useSelector(selectTotalCountNotification);
   
   const getAllNotification = async () => {
     try {
       const data = await getNotification().unwrap();
       console.log(data, 'data notif');
       setDataNotification(data.data);
-      dispatch(setTotalCount(0));
+      let total = 0;
       data.data.forEach((item, i) => {
         const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
         console.log(index, 'berapa ya');
         if (index === -1) {
-            dispatch(setTotalCount(i + 1));
-          }
-        })
+          console.log('masuk keranjang');
+          total++;
+        }
+      })
+      setTimeout(() => {
+        dispatch(setTotalCount(total));
+        console.log(total, 'ini totalnya');
+      }, 1000);
     } catch (error) {
       console.log(error, 'error');
     }
@@ -61,6 +67,7 @@ const ModalNotification = ({totalCount, data}) => {
     console.log(id_keluhan, id_notifikasi, title, 'cek click');
     if (title === 'unread') {
       doReadNotification(id_notifikasi);
+      dispatch(setTotalCount(+totalCountState - 1));
       setTimeout(() => {
         navigate(`/dashboard/detail/${id_keluhan}`);
       }, 500)

@@ -53,10 +53,9 @@ function Notification() {
       <label tabIndex={0} className="btn btn-ghost btn-circle">
         <div className="indicator">
           <HiOutlineBell size="24" />
-          {totalNotif > 0 && <span className="indicator-item badge badge-sm badge-accent">
+          <span className="indicator-item badge badge-sm badge-accent">
             {totalNotif}
           </span>
-        }
         </div>
       </label>
       <ModalNotification data={getNotif.data}/>

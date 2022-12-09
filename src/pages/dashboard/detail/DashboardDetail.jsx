@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable default-param-last */
 /* eslint-disable react/button-has-type */
 /* eslint-disable no-undef */
@@ -23,6 +24,7 @@ import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/brea
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ReplySchema } from '../../../utils/schema_validation_form';
+import { usePostNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 
 function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   console.log(idComplain, 'zuuu');
@@ -116,6 +118,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
 
   const { data: user } = useSelector(selectCurrentUser);
   const historyUrl = location.pathname.includes('history');
+  const [postNotification] = usePostNotificationMutation();
 
   useEffect(() => {
     getComplainById();
@@ -124,6 +127,19 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       dispatch(updateBreadcrumb(data))
     }
   }, [])
+
+  const doPostNotification = async (keluhan_id) => {
+    try {
+      const body = {
+        keluhan_id,
+        pop_id: user.pop_id
+      }
+      const data = await postNotification({ body }).unwrap();
+      console.log(data, 'res');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const onSubmitData = async (payload, resetForm) => {
     console.log(detailComplain, 'log');
@@ -159,6 +175,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
           const dataLampiran = await lampiranFileBalasan({ body: formData }).unwrap();
           console.log(dataLampiran, 'lampiran');
         }
+        doPostNotification(detailComplain.id_keluhan)
         getComplainById();
       } else {
         toast.error(`${add.data.message}`, {
