@@ -581,7 +581,7 @@ function ReportCreate() {
           </div>
 
           <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
-            <h2>Kesimpulan</h2>
+            <h2>Total</h2>
           </div>
 
           <div className="flex mt-5 border border-gray-300 rounded-lg flex-wrap">
