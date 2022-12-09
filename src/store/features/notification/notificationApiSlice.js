@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable prettier/prettier */
 import { apiSlice } from '../../../api/apiSlice';
 
@@ -7,6 +8,13 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
       query: () => ({
         url: '/notifikasi2',
         method: 'GET',
+      }),
+    }),
+    postNotification: builder.mutation({
+      query: ({ body }) => ({
+        url: '/notifikasi2',
+        method: 'POST',
+        body
       }),
     }),
     readNotification: builder.mutation({
@@ -19,4 +27,4 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetNotificationMutation, useReadNotificationMutation } = notificationApiSlice;
+export const { useGetNotificationMutation, usePostNotificationMutation, useReadNotificationMutation } = notificationApiSlice;

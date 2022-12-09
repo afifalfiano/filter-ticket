@@ -51,20 +51,20 @@ const ModalNotification = ({totalCount, data}) => {
     getAllNotification();
     const intervalId = setInterval(() => {
       getAllNotification();
-    }, 30000);
+    }, 1000);
     return () => {
       clearInterval(intervalId);
     };
   }, [])
 
   const onClickNotification = (id_keluhan, id_notifikasi, title) => {
-
-    if (title === 'read') {
+    console.log(id_keluhan, id_notifikasi, title, 'cek click');
+    if (title === 'unread') {
+      doReadNotification(id_notifikasi);
       setTimeout(() => {
         navigate(`/dashboard/detail/${id_keluhan}`);
       }, 500)
     } else {
-      doReadNotification(id_notifikasi);
       setTimeout(() => {
         navigate(`/dashboard/detail/${id_keluhan}`);
       }, 500)
@@ -86,7 +86,7 @@ const ModalNotification = ({totalCount, data}) => {
               console.log(index, 'ketemu');
               if (index > -1) {
                 return (
-                  <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'unread')} >
+                  <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'read')} >
                   <span className="text-base text-white">{item.judul}</span>
                   <span className="text-sm text-white">{item.detail}</span>
                   <span className="text-white text-xs">{new Date(item.created_at).toLocaleString('id-ID')}</span>
@@ -95,7 +95,7 @@ const ModalNotification = ({totalCount, data}) => {
                 )
               } else {
                 return (
-                  <div className="card-body bg-white rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'read')} >
+                  <div className="card-body bg-white rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'unread')} >
                   <span className="text-base text-slate-800">{item.judul}</span>
                   <span className="text-sm text-slate-500">{item.detail}</span>
                   <span className="text-slate-400 text-xs">{new Date(item.created_at).toLocaleString('id-ID')}</span>

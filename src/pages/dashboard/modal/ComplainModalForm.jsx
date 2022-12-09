@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable max-len */
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable no-plusplus */
@@ -43,6 +44,7 @@ import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/feature
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ComplainFormSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
+import { usePostNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 
 function ComplainModalForm({ stateModal, getInfo, detail }) {
   const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
@@ -54,6 +56,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
 
   const dataSumber = useSelector(selectAllSumberKeluhan);
   const [lampiranFile] = useLampiranFileMutation();
+  const [postNotification] = usePostNotificationMutation();
 
   const initialValues = {
     id_pelanggan: detail?.id_pelanggan || '',
@@ -77,6 +80,19 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
     };
     dispatch(setModal(newState));
   };
+
+  const doPostNotification = async (keluhan_id) => {
+    try {
+      const body = {
+        keluhan_id,
+        pop_id: user.pop_id
+      }
+      const data = await postNotification({ body }).unwrap();
+      console.log(data, 'res');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const onSubmitData = async (payload, resetForm) => {
     try {
@@ -136,6 +152,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
               const dataLampiran = await lampiranFile({ body: formData }).unwrap();
               console.log(dataLampiran, 'lampiran');
             }
+            doPostNotification(add?.data?.id_keluhan?.id_keluhan);
             setTimeout(() => {
               resetForm();
               // document.getElementById('my-modal-complain').click();
