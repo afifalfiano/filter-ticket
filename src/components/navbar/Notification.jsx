@@ -6,6 +6,7 @@ import * as PusherPushNotifications from '@pusher/push-notifications-web';
 import ModalNotification from './ModalNotification';
 import {
   selectAllNotification,
+  selectTotalCountNotification,
   // eslint-disable-next-line no-unused-vars
   setNotification,
 } from '../../store/features/notification/notificationSlice';
@@ -15,6 +16,7 @@ function Notification() {
 
   const getNotif = useSelector(selectAllNotification)
   const dispatch = useDispatch();
+  const totalNotif = useSelector(selectTotalCountNotification);
 
   console.log(getNotif.data, 'notif');
   useEffect(() => {
@@ -45,13 +47,14 @@ function Notification() {
     .then(() => beamsClient.getDeviceInterests())
     .then((interests) => console.log("Current interests:", interests))
   }, []);
+
   return (
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle">
         <div className="indicator">
           <HiOutlineBell size="24" />
-          {getNotif.data.length > 0 && <span className="indicator-item badge badge-sm badge-accent">
-            {getNotif.data.length}
+          {totalNotif > 0 && <span className="indicator-item badge badge-sm badge-accent">
+            {totalNotif}
           </span>
         }
         </div>

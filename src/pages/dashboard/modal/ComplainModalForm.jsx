@@ -103,7 +103,6 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             nama_pelanggan: payload.nama_pelanggan,
             nama_pelapor: payload.nama_pelapor,
             nomor_pelapor: payload.nomor_pelapor,
-            nomor_keluhan: payload.nomor_keluhan || Math.random(5),
             sumber_id: payload.sumber,
             detail_sumber: payload.detail_sumber,
             keluhan: payload.keluhan,

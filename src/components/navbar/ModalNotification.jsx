@@ -2,13 +2,72 @@
 
 import { useState } from "react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectAllNotification } from "../../store/features/notification/notificationSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { selectCurrentUser } from "../../store/features/auth/authSlice";
+import { useGetNotificationMutation, useReadNotificationMutation } from "../../store/features/notification/notificationApiSlice";
+import { selectAllNotification, setTotalCount } from "../../store/features/notification/notificationSlice";
 
-const ModalNotification = ({ data = [] }) => {
+const ModalNotification = ({totalCount, data}) => {
 
   console.log(data, 'data nihhhhh')
+  const [dataNotification, setDataNotification] = useState([]);
+  const [getNotification ] = useGetNotificationMutation();
+  const [readNotification ] = useReadNotificationMutation();
+  const {data: user} = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+  
+  const getAllNotification = async () => {
+    try {
+      const data = await getNotification().unwrap();
+      console.log(data, 'data notif');
+      setDataNotification(data.data);
+      dispatch(setTotalCount(0));
+      data.data.forEach((item, i) => {
+        const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
+        console.log(index, 'berapa ya');
+        if (index === -1) {
+            dispatch(setTotalCount(i + 1));
+          }
+        })
+    } catch (error) {
+      console.log(error, 'error');
+    }
+  }
 
+  const doReadNotification = async (id) => {
+    try {
+      const data = await readNotification({body: {notifikasi_id: id } });
+      console.log(data, 'success read');
+      getAllNotification();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setInterval(() => {
+      getAllNotification();
+    }, 5000);
+  }, [])
+
+  const onClickNotification = (id_keluhan, id_notifikasi, title) => {
+
+    if (title === 'read') {
+      setTimeout(() => {
+        navigate(`/dashboard/detail/${id_keluhan}`);
+      }, 500)
+    } else {
+      doReadNotification(id_notifikasi);
+      setTimeout(() => {
+        navigate(`/dashboard/detail/${id_keluhan}`);
+      }, 500)
+    }
+    
+  }
+  
   return (
     <>
       <div
@@ -18,18 +77,34 @@ const ModalNotification = ({ data = [] }) => {
         <div className="card-body">
           <span className="font-bold text-lg">Pemberitahuan</span>
           {
-            data?.map((item) => (
-            <div className="card-body bg-white rounded-md" id={item.id}>
-            <span className="text-base text-slate-800">{item.title}</span>
-            <span className="text-small text-slate-400">{item.desc}</span>
-            </div>
-            ))
+            dataNotification?.map((item) => {
+              const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
+              console.log(index, 'ketemu');
+              if (index > -1) {
+                return (
+                  <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'unread')} >
+                  <span className="text-base text-white">{item.judul}</span>
+                  <span className="text-sm text-white">{item.detail}</span>
+                  <span className="text-white text-xs">{new Date(item.created_at).toLocaleString('id-ID')}</span>
+                  </div>
+      
+                )
+              } else {
+                return (
+                  <div className="card-body bg-white rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'read')} >
+                  <span className="text-base text-slate-800">{item.judul}</span>
+                  <span className="text-sm text-slate-500">{item.detail}</span>
+                  <span className="text-slate-400 text-xs">{new Date(item.created_at).toLocaleString('id-ID')}</span>
+                  </div>
+                )
+              }
+            })
           }
-          {data.length === 0 && (
+          {/* {data.length === 0 && (
             <div className="card-body bg-white rounded-md text-center">
             <span className="text-base text-gray-900">Tidak ada pemberitahuan</span>
             </div>
-          )}
+          )} */}
             {/* <div className="card-body bg-white rounded-md">
             <span className="text-base text-gray-900">Comming Soon...</span>
             </div>
