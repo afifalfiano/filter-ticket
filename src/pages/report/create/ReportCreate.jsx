@@ -164,7 +164,7 @@ function ReportCreate() {
   };
 
   const handleGeneratePdf = () => {
-    const doc = new jsPDF('p', 'pt', 'a4');
+    const doc = new jsPDF('p', 'px', 'a4');
     doc.setFontSize(12);
     const content = document.getElementById('preview-report');
     const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
@@ -178,7 +178,7 @@ function ReportCreate() {
         doc.setProperties({ title: printFileName });
         window.open(doc.output('bloburl'), '_blank');
       },
-      windowWidth: 900,
+      windowWidth: 1500,
       width: 500,
       margin: 10,
       filename: printFileName,
@@ -456,7 +456,7 @@ function ReportCreate() {
             width: '1440px !important',
             height: '4500px !important' }}
         >
-          <h1 className="text-center font-bold text-2xl">Daily Complaint Report Helpdesk</h1>
+          <h1 className="text-center font-bold text-2xl mt-0 pt-0">Daily Complaint Report Helpdesk</h1>
           <div className="flex justify-between align-middle items-center mt-5">
             <div className="flex-1">
               <div className="flex gap-5">
