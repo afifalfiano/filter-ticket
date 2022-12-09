@@ -48,9 +48,13 @@ const ModalNotification = ({totalCount, data}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setInterval(() => {
+    getAllNotification();
+    const intervalId = setInterval(() => {
       getAllNotification();
-    }, 5000);
+    }, 30000);
+    return () => {
+      clearInterval(intervalId);
+    };
   }, [])
 
   const onClickNotification = (id_keluhan, id_notifikasi, title) => {
