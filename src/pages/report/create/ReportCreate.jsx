@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable object-curly-newline */
@@ -170,14 +171,14 @@ function ReportCreate() {
     doc.html(content, {
       async callback(doc) {
         // Save the PDF
-        const pressure = await html2canvas(document.getElementById('graph'), { width: 1110, height: 600 });
-        const imgData = pressure.toDataURL('image/png');
-        const imgHeight = 600 * 190 / 1110;
-        doc.addImage(imgData, 'png', 10, 50, 180, imgHeight, '', 'MEDIUM');
+        // const pressure = await html2canvas(document.getElementById('graph'), { width: 1110, height: 600 });
+        // const imgData = pressure.toDataURL('image/png');
+        // const imgHeight = 600 * 190 / 1110;
+        // doc.addImage(imgData, 'png', 10, 50, 180, imgHeight, '', 'MEDIUM');
         doc.setProperties({ title: printFileName });
         window.open(doc.output('bloburl'), '_blank');
       },
-      windowWidth: 800,
+      windowWidth: 900,
       width: 500,
       margin: 10,
       filename: printFileName,
@@ -230,6 +231,40 @@ function ReportCreate() {
         icon: false,
       });
     }
+  }
+
+  const getAllNOC = () => {
+    let userNOC = '';
+    checkedState.forEach((condition, indexcondition) => {
+      if (condition) {
+        allUserLocal.forEach((item, index) => {
+          if (indexcondition === index) {
+            if (item.role.role === 'NOC') {
+              userNOC += item.name;
+            }
+          }
+        }
+        )
+      }
+    })
+    return userNOC;
+  }
+
+  const getAllHelpdesk = () => {
+    let userHelpdesk = '';
+    checkedState.forEach((condition, indexcondition) => {
+      if (condition) {
+        allUserLocal.forEach((item, index) => {
+          if (indexcondition === index) {
+            if (item.role.role === 'HELPDESK') {
+              userHelpdesk += item.name;
+            }
+          }
+        }
+        )
+      }
+    })
+    return userHelpdesk;
   }
 
   const onRequestLaporan = () => {
@@ -433,11 +468,18 @@ function ReportCreate() {
                   <p>NOC</p>
                 </div>
                 <div>
-                  <p>Senin, 5 Desember 2022</p>
-                  <p>2</p>
-                  <p>Yogyakarta</p>
-                  <p>Afif, Alfiano</p>
-                  <p>Farhan, Kurnia, Ragil</p>
+                  <p>{new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                  <div className="">{allShiftLocal?.map((item) => {
+                    if (item.id_shift === +bodyKeluhan.shift) {
+                      return (
+                        <span>{`${item.shift} (${item.mulai})-(${item.selesai})`}</span>
+                      );
+                    }
+                  })}
+                  </div>
+                  <p>{allPOPLocal.find((item) => item.id_pop === +bodyKeluhan.pop_id)['pop']}</p>
+                  <p>{getAllHelpdesk()}</p>
+                  <p>{getAllNOC()}</p>
                 </div>
               </div>
             </div>
@@ -453,171 +495,110 @@ function ReportCreate() {
             <h2>Keluhan Open</h2>
           </div>
 
-          <div className="flex mt-5 border border-gray-300 rounded-lg">
-            <div className="flex-1 p-2 border border-gray-300 rounded-l-lg">
-              <div className="flex gap-5">
-                <div className="flex-1">
-                  <p>Nomor</p>
-                  <p>Nomor Keluhan</p>
-                  <p>ID Pelanggan</p>
-                  <p>Nama Pelanggan</p>
-                  <p>Sumber Keluhan</p>
-                  <p>Detail Sumber</p>
-                </div>
-                <div className="flex-1">
-                  <p>1</p>
-                  <p>#T2022120579089</p>
-                  <p>1234567890</p>
-                  <p>Farhan Kurnia</p>
-                  <p>Telepon</p>
-                  <p>0825616384562</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 p-2 border border-gray-300 rounded-r-lg">
-              <div className="flex gap-5">
-                <div className="flex-1">
-                  <p>Nomor</p>
-                  <p>Nomor Keluhan</p>
-                  <p>ID Pelanggan</p>
-                  <p>Nama Pelanggan</p>
-                  <p>Sumber Keluhan</p>
-                  <p>Detail Sumber</p>
-                </div>
-                <div className="flex-1">
-                  <p>1</p>
-                  <p>#T2022120579089</p>
-                  <p>1234567890</p>
-                  <p>Farhan Kurnia</p>
-                  <p>Telepon</p>
-                  <p>0825616384562</p>
+          <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
+            {keluhanLaporanLocal?.keluhan_open.map((item, index) => (
+              <div className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
+                <div className="flex gap-5 w-full">
+                  <div className="flex-1">
+                    <p>Nomor</p>
+                    <p>Nomor Keluhan</p>
+                    <p>ID Pelanggan</p>
+                    <p>Nama Pelanggan</p>
+                    <p>Sumber Keluhan</p>
+                    <p>Detail Sumber</p>
+                  </div>
+                  <div className="flex-1">
+                    <p>{index + 1}</p>
+                    <p>#{item?.nomor_keluhan}</p>
+                    <p>{item?.id_pelanggan}</p>
+                    <p>{item?.nama_pelanggan}</p>
+                    <p>{item?.sumber?.sumber}</p>
+                    <p>{item?.detail_sumber}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
 
           <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
             <h2>Keluhan Closed</h2>
           </div>
 
-          <div className="flex mt-5 border border-gray-300 rounded-lg">
-            <div className="flex-1 p-2 border border-gray-300 rounded-l-lg">
-              <div className="flex gap-5">
-                <div className="flex-1">
-                  <p>Nomor</p>
-                  <p>Nomor Keluhan</p>
-                  <p>ID Pelanggan</p>
-                  <p>Nama Pelanggan</p>
-                  <p>Sumber Keluhan</p>
-                  <p>Detail Sumber</p>
-                </div>
-                <div className="flex-1">
-                  <p>1</p>
-                  <p>#T2022120579089</p>
-                  <p>1234567890</p>
-                  <p>Farhan Kurnia</p>
-                  <p>Telepon</p>
-                  <p>0825616384562</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 p-2 border border-gray-300 rounded-r-lg">
-              <div className="flex gap-5">
-                <div className="flex-1">
-                  <p>Nomor</p>
-                  <p>Nomor Keluhan</p>
-                  <p>ID Pelanggan</p>
-                  <p>Nama Pelanggan</p>
-                  <p>Sumber Keluhan</p>
-                  <p>Detail Sumber</p>
-                </div>
-                <div className="flex-1">
-                  <p>1</p>
-                  <p>#T2022120579089</p>
-                  <p>1234567890</p>
-                  <p>Farhan Kurnia</p>
-                  <p>Telepon</p>
-                  <p>0825616384562</p>
+          <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
+            {keluhanLaporanLocal?.keluhan_close.map((item, index) => (
+              <div className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
+                <div className="flex gap-5 w-full">
+                  <div className="flex-1">
+                    <p>Nomor</p>
+                    <p>Nomor Keluhan</p>
+                    <p>ID Pelanggan</p>
+                    <p>Nama Pelanggan</p>
+                    <p>Sumber Keluhan</p>
+                    <p>Detail Sumber</p>
+                  </div>
+                  <div className="flex-1">
+                    <p>{index + 1}</p>
+                    <p>#{item?.nomor_keluhan}</p>
+                    <p>{item?.id_pelanggan}</p>
+                    <p>{item?.nama_pelanggan}</p>
+                    <p>{item?.sumber?.sumber}</p>
+                    <p>{item?.detail_sumber}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
 
           <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
             <h2>RFO Gangguan</h2>
           </div>
 
-          <div className="flex mt-5 border border-gray-300 rounded-lg">
-            <div className="flex-1 p-2 border border-gray-300 rounded-l-lg">
-              <div className="flex gap-5">
-                <div className="flex-1">
-                  <p>Nomor</p>
-                  <p>Nomor RFO Gangguan</p>
-                  <p>Mulai Gangguan</p>
-                  <p>Selesai Gangguan</p>
-                  <p>Problem</p>
-                  <p>Action</p>
-                  <p>Status</p>
-                </div>
-                <div className="flex-1">
-                  <p>1</p>
-                  <p>#RFOG111112</p>
-                  <p>2022-09-24 12:00</p>
-                  <p>2022-09-24 13:00</p>
-                  <p>Gangguan Upstream</p>
-                  <p>Re-route</p>
-                  <p>Open</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1 p-2 border border-gray-300 rounded-r-lg">
-              <div className="flex gap-5">
-                <div className="flex-1">
-                  <p>Nomor</p>
-                  <p>Nomor RFO Gangguan</p>
-                  <p>Mulai Gangguan</p>
-                  <p>Selesai Gangguan</p>
-                  <p>Problem</p>
-                  <p>Action</p>
-                  <p>Status</p>
-                </div>
-                <div className="flex-1">
-                  <p>1</p>
-                  <p>#RFOG111112</p>
-                  <p>2022-09-24 12:00</p>
-                  <p>2022-09-24 13:00</p>
-                  <p>Gangguan Upstream</p>
-                  <p>Re-route</p>
-                  <p>Open</p>
+          <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
+            {keluhanLaporanLocal?.rfo_gangguan.map((item, index) => (
+              <div className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
+                <div className="flex gap-5 w-full">
+                  <div className="flex-1">
+                    <p>Nomor</p>
+                    <p>Nomor RFO Gangguan</p>
+                    <p>Mulai Gangguan</p>
+                    <p>Selesai Gangguan</p>
+                    <p>Problem</p>
+                    <p>Action</p>
+                    <p>Status</p>
+                  </div>
+                  <div className="flex-1">
+                    <p>{index + 1}</p>
+                    <p>#{item?.nomor_rfo_gangguan}</p>
+                    <p>{item?.mulai_gangguan}</p>
+                    <p>{item?.selesai_gangguan}</p>
+                    <p>{item?.problem}</p>
+                    <p>{item?.action}</p>
+                    <p>{item?.status}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
 
           <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
-            <h2>Grafik</h2>
+            <h2>Kesimpulan</h2>
           </div>
-          <div className="mt-5 my-5 max-w-xl justify-center flex p-5 w-1/2" style={{ margin: '0 auto' }}>
-            <ResponsiveContainer width="100%" height={300} id="graph">
-              <BarChart
-                width={500}
-                height={300}
-                data={dataInit}
-                margin={{
-                  top: 5,
-                  right: 0,
-                  left: 0,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="label" />
-                <YAxis />
-                <Tooltip />
-                <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-                <Bar dataKey="total" fill="#f89c38" />
-              </BarChart>
-            </ResponsiveContainer>
+
+          <div className="flex mt-5 border border-gray-300 rounded-lg flex-wrap">
+            <div className="flex p-2 border border-gray-300 rounded-l-lg rounded-r-lg w-full">
+              <div className="flex gap-5 w-full">
+                <div className="flex-1">
+                  <p>Total Keluhan Open</p>
+                  <p>Total Keluhan Closed</p>
+                  <p>Total RFO Gangguan</p>
+                </div>
+                <div className="flex-1">
+                  <p>{keluhanLaporanLocal?.total_keluhan_open}</p>
+                  <p>{keluhanLaporanLocal?.total_keluhan_closed}</p>
+                  <p>{keluhanLaporanLocal?.total_rfo_gangguan}</p>
+                </div>
+              </div>
+            </div>
           </div>
           {/* <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
           <p className="font-semibold mt-2">Petugas:</p>

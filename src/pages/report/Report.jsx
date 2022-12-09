@@ -50,6 +50,7 @@ import { selectModalState, setModal } from '../../store/features/modal/modalSlic
 function Report() {
   const columns = [
     'No',
+    'Nomor Laporan',
     'POP',
     'Tanggal',
     'Shift',
@@ -358,6 +359,7 @@ function Report() {
             {rows.map((item, index) => (
               <tr className="text-center">
                 <th>{index + 1}</th>
+                <th>{item?.nomor_laporan}</th>
                 <td>
                   { item?.pop?.pop === 'Yogyakarta' ? (
                     <span className="badge badge-success text-white">
