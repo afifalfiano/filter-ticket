@@ -85,7 +85,7 @@ const ModalNotification = ({totalCount, data}) => {
         tabIndex={0}
         className="mt-3 card card-compact dropdown-content w-96 bg-neutral shadow"
       >
-        <div className="card-body">
+        <div className="card-body max-h-96 h-96 overflow-y-auto">
           <span className="font-bold text-lg">Pemberitahuan</span>
           <div className="flex flex-col-reverse gap-3">
           {
