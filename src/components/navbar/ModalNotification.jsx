@@ -51,7 +51,7 @@ const ModalNotification = ({totalCount, data}) => {
     getAllNotification();
     const intervalId = setInterval(() => {
       getAllNotification();
-    }, 1000);
+    }, 5000);
     return () => {
       clearInterval(intervalId);
     };
@@ -80,6 +80,7 @@ const ModalNotification = ({totalCount, data}) => {
       >
         <div className="card-body">
           <span className="font-bold text-lg">Pemberitahuan</span>
+          <div className="flex flex-col-reverse gap-3">
           {
             dataNotification?.map((item) => {
               const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
@@ -104,6 +105,7 @@ const ModalNotification = ({totalCount, data}) => {
               }
             })
           }
+          </div>
           {/* {data.length === 0 && (
             <div className="card-body bg-white rounded-md text-center">
             <span className="text-base text-gray-900">Tidak ada pemberitahuan</span>
