@@ -43,7 +43,7 @@ function Notification() {
     .then((deviceId) =>
       console.log("Successfully registered with Beams. Device ID:", deviceId)
     )
-    .then(() => beamsClient.addDeviceInterest("hello"))
+    .then(() => beamsClient.addDeviceInterest("update"))
     .then(() => beamsClient.getDeviceInterests())
     .then((interests) => console.log("Current interests:", interests))
   }, []);
