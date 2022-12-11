@@ -97,9 +97,10 @@ const ModalNotification = ({totalCount, data}) => {
         tabIndex={0}
         className="mt-3 card card-compact dropdown-content w-96 bg-neutral shadow"
       >
-        <div className="card-body max-h-96 h-96 overflow-y-auto">
-          <span className="font-bold text-lg">Pemberitahuan</span>
-          <div className="flex flex-col-reverse gap-3">
+        <div className="card-body" style={{height: '700px'}}>
+          <span className="font-bold text-lg">Pemberitahuan ({totalCountState})</span>
+          <span className="font-semibold text-md font-white cursor-pointer" onClick={() => console.log('read all')}>Baca semua</span>
+          <div className="flex flex-col-reverse gap-3 overflow-y-auto">
           {
             dataNotification?.map((item) => {
               // const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
