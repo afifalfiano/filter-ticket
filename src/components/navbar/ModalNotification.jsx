@@ -25,13 +25,25 @@ const ModalNotification = ({totalCount, data}) => {
       setDataNotification(data.data);
       let total = 0;
       data.data.forEach((item, i) => {
-        const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
-        console.log(index, 'berapa ya');
-        if (index === -1) {
-          console.log('masuk keranjang');
+        if (item.is_read === false) {
           total++;
         }
       })
+
+        // const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
+        // console.log(index, 'berapa ya');
+        // if (index === -1) {
+        //   console.log('masuk keranjang');
+        //   total++;
+        // }
+        // item.notifikasi_read.forEach(notif => {
+        //   if (+notif.user_id === +user.id_user) {
+        //     if (notif.is_read === false) {
+        //       total++;
+        //     }
+        //   }
+        // })
+      // )}
       setTimeout(() => {
         dispatch(setTotalCount(total));
         console.log(total, 'ini totalnya');
@@ -90,26 +102,26 @@ const ModalNotification = ({totalCount, data}) => {
           <div className="flex flex-col-reverse gap-3">
           {
             dataNotification?.map((item) => {
-              const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
-              console.log(index, 'ketemu');
-              if (index > -1) {
-                return (
-                  <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'read')} >
-                  <span className="text-base text-slate-800">{item.judul} ({item?.pop?.pop})</span>
-                  <span className="text-sm text-white">{item.detail}</span>
-                  <span className="text-white text-xs">{new Date(item.created_at).toLocaleString('id-ID')}</span>
-                  </div>
-      
-                )
-              } else {
-                return (
-                  <div className="card-body bg-white rounded-md cursor-pointer" id={item.id_notifikasi} onClick={() => onClickNotification(item.keluhan_id, item.id_notifikasi, 'unread')} >
-                  <span className="text-base text-slate-800">{item.judul} ({item?.pop?.pop})</span>
-                  <span className="text-sm text-slate-500">{item.detail}</span>
-                  <span className="text-slate-400 text-xs">{new Date(item.created_at).toLocaleString('id-ID')}</span>
-                  </div>
-                )
-              }
+              // const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
+              // console.log(index, 'ketemu');
+                  if (item.is_read === true) {
+                    return (
+                      <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.notifikasi.id_notifikasi} onClick={() => onClickNotification(item.notifikasi.keluhan_id, item.notifikasi.id_notifikasi, 'read')} >
+                      <span className="text-base text-slate-800">{item.notifikasi.judul}</span>
+                      <span className="text-sm text-white">{item.notifikasi.detail}</span>
+                      <span className="text-white text-xs">{new Date(item.notifikasi.created_at).toLocaleString('id-ID')}</span>
+                      </div>
+          
+                    )
+                  } else {
+                    return (
+                      <div className="card-body bg-white rounded-md cursor-pointer" id={item.notifikasi.id_notifikasi} onClick={() => onClickNotification(item.notifikasi.keluhan_id, item.notifikasi.id_notifikasi, 'unread')} >
+                      <span className="text-base text-slate-800">{item.notifikasi.judul}</span>
+                      <span className="text-sm text-slate-500">{item.notifikasi.detail}</span>
+                      <span className="text-slate-400 text-xs">{new Date(item.notifikasi.created_at).toLocaleString('id-ID')}</span>
+                      </div>
+                    )
+                  }
             })
           }
           </div>

@@ -44,7 +44,7 @@ import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/feature
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ComplainFormSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
-import { usePostNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
+import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 
 function ComplainModalForm({ stateModal, getInfo, detail }) {
   const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
@@ -57,6 +57,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
   const dataSumber = useSelector(selectAllSumberKeluhan);
   const [lampiranFile] = useLampiranFileMutation();
   const [postNotification] = usePostNotificationMutation();
+  const [storeAllNotification] = useStoreAllNotificationMutation()
 
   const initialValues = {
     id_pelanggan: detail?.id_pelanggan || '',
@@ -81,6 +82,18 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
     dispatch(setModal(newState));
   };
 
+  const doStoreAllNotiification = async (notifikasi_id) => {
+    try {
+      const body = {
+        notifikasi_id,
+      }
+      const data = await storeAllNotification({ body }).unwrap();
+      console.log(data, 'res');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const doPostNotification = async (keluhan_id) => {
     try {
       const body = {
@@ -89,6 +102,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
       }
       const data = await postNotification({ body }).unwrap();
       console.log(data, 'res');
+      return data;
     } catch (error) {
       console.log(error);
     }
@@ -152,7 +166,9 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
               const dataLampiran = await lampiranFile({ body: formData }).unwrap();
               console.log(dataLampiran, 'lampiran');
             }
-            doPostNotification(add?.data?.id_keluhan?.id_keluhan);
+            const dataNotification = await doPostNotification(add?.data?.id_keluhan?.id_keluhan);
+            console.log(dataNotification, 'log data notif');
+            doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
             setTimeout(() => {
               resetForm();
               // document.getElementById('my-modal-complain').click();
