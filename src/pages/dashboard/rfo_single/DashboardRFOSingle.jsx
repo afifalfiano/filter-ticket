@@ -108,15 +108,19 @@ function DashboardRFOSingle() {
 
   const onSubmitData = async (payload, resetForm) => {
     const start = new Date(detailComplain.created_at);
-    const end = new Date(lastUpdate);
+    const lastTime = detailComplain?.balasan.length > 0
+      ? detailComplain?.balasan[detailComplain.balasan.length - 1].created_at
+      : detailComplain?.created_at
+    console.log(lastTime);
+    const end = new Date(lastTime);
     // const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} ${start.getHours()}:${start.getMinutes()}:${start.getSeconds()}:${start.getMilliseconds()}`;
     // const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} ${end.getHours()}:${end.getMinutes()}:${end.getSeconds()}:${end.getMilliseconds()}`;
     const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
     const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
     const body = {
       nomor_tiket: payload.nomor_tiket,
-      mulai_gangguan: formatStart,
-      selesai_gangguan: formatEnd,
+      mulai_keluhan: formatStart,
+      selesai_keluhan: formatEnd,
       problem: payload.problem,
       action: payload.action,
       status: 'closed',
