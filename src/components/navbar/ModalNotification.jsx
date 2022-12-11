@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../store/features/auth/authSlice";
-import { useGetNotificationMutation, useReadNotificationMutation } from "../../store/features/notification/notificationApiSlice";
+import { useGetNotificationMutation, useReadAllNotificationMutation, useReadNotificationMutation } from "../../store/features/notification/notificationApiSlice";
 import { selectAllNotification, selectTotalCountNotification, setTotalCount } from "../../store/features/notification/notificationSlice";
 
 const ModalNotification = ({totalCount, data}) => {
@@ -14,6 +14,7 @@ const ModalNotification = ({totalCount, data}) => {
   const [dataNotification, setDataNotification] = useState([]);
   const [getNotification ] = useGetNotificationMutation();
   const [readNotification ] = useReadNotificationMutation();
+  const [readAllNotification] = useReadAllNotificationMutation();
   const {data: user} = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
   const totalCountState = useSelector(selectTotalCountNotification);
@@ -55,7 +56,7 @@ const ModalNotification = ({totalCount, data}) => {
 
   const doReadNotification = async (id) => {
     try {
-      const data = await readNotification({body: {notifikasi_id: id } });
+      const data = await readNotification({body: {notifikasi_id: id } }).unwrap();
       console.log(data, 'success read');
       getAllNotification();
     } catch (error) {
@@ -64,6 +65,16 @@ const ModalNotification = ({totalCount, data}) => {
   }
 
   const navigate = useNavigate();
+
+  const doReadAllNotification = async () => {
+    try {
+      const data = await readAllNotification().unwrap();
+      console.log(data, 'success read all');
+      getAllNotification();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     getAllNotification();
@@ -99,7 +110,7 @@ const ModalNotification = ({totalCount, data}) => {
       >
         <div className="card-body" style={{height: '700px'}}>
           <span className="font-bold text-lg">Pemberitahuan ({totalCountState})</span>
-          <span className="font-semibold text-md font-white cursor-pointer" onClick={() => console.log('read all')}>Baca semua</span>
+          <span className="font-semibold text-md font-white cursor-pointer" onClick={() => doReadAllNotification()}>Baca semua</span>
           <div className="flex flex-col-reverse gap-3 overflow-y-auto">
           {
             dataNotification?.map((item) => {
@@ -108,8 +119,8 @@ const ModalNotification = ({totalCount, data}) => {
                   if (item.is_read === true) {
                     return (
                       <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.notifikasi.id_notifikasi} onClick={() => onClickNotification(item.notifikasi.keluhan_id, item.notifikasi.id_notifikasi, 'read')} >
-                      <span className="text-base text-slate-800">{item.notifikasi.judul}</span>
-                      <span className="text-sm text-white">{item.notifikasi.detail}</span>
+                      <span className="text-base text-white">{item.notifikasi.judul}</span>
+                      <span className="text-sm text-slate-200">{item.notifikasi.detail}</span>
                       <span className="text-white text-xs">{new Date(item.notifikasi.created_at).toLocaleString('id-ID')}</span>
                       </div>
           

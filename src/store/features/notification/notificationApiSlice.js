@@ -7,13 +7,13 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotification: builder.mutation({
       query: () => ({
-        url: '/notifikasi3',
+        url: '/notifikasi',
         method: 'GET',
       }),
     }),
     postNotification: builder.mutation({
       query: ({ body }) => ({
-        url: '/notifikasi2',
+        url: '/notifikasi',
         method: 'POST',
         body
       }),
@@ -27,12 +27,18 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
     }),
     storeAllNotification: builder.mutation({
       query: ({ body }) => ({
-        url: `/storeall-notifikasi`,
+        url: `/broadcast-notifikasi`,
         method: 'POST',
         body,
+      }),
+    }),
+    readAllNotification: builder.mutation({
+      query: () => ({
+        url: `/read-all-notifikasi`,
+        method: 'GET',
       }),
     }),
   }),
 });
 
-export const { useGetNotificationMutation, usePostNotificationMutation, useReadNotificationMutation, useStoreAllNotificationMutation } = notificationApiSlice;
+export const { useGetNotificationMutation, usePostNotificationMutation, useReadNotificationMutation, useStoreAllNotificationMutation, useReadAllNotificationMutation } = notificationApiSlice;

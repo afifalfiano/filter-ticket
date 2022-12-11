@@ -24,7 +24,7 @@ import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/brea
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ReplySchema } from '../../../utils/schema_validation_form';
-import { usePostNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
+import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 
 function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   console.log(idComplain, 'zuuu');
@@ -51,6 +51,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   //   setPagination({ ...pagination, pageNumbers });
   // }
   const [lampiranFileBalasan] = useLampiranFileBalasanMutation();
+  const [storeAllNotification] = useStoreAllNotificationMutation();
 
   const detailState = useSelector(selectDetailComplain);
 
@@ -136,6 +137,19 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       }
       const data = await postNotification({ body }).unwrap();
       console.log(data, 'res');
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const doStoreAllNotiification = async (notifikasi_id) => {
+    try {
+      const body = {
+        notifikasi_id,
+      }
+      const data = await storeAllNotification({ body }).unwrap();
+      console.log(data, 'res');
     } catch (error) {
       console.log(error);
     }
@@ -175,7 +189,9 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
           const dataLampiran = await lampiranFileBalasan({ body: formData }).unwrap();
           console.log(dataLampiran, 'lampiran');
         }
-        doPostNotification(detailComplain.id_keluhan)
+        const dataNotification = await doPostNotification(add?.data?.id_keluhan?.id_keluhan);
+        console.log(dataNotification, 'log data notif');
+        doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
         getComplainById();
       } else {
         toast.error(`${add.data.message}`, {
