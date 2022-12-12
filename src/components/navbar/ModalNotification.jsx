@@ -56,7 +56,7 @@ const ModalNotification = ({totalCount, data}) => {
 
   const doReadNotification = async (id) => {
     try {
-      const data = await readNotification({body: {notifikasi_id: id } }).unwrap();
+      const data = await readNotification({body: {id_notifikasiread: id } }).unwrap();
       console.log(data, 'success read');
       getAllNotification();
     } catch (error) {
@@ -118,7 +118,7 @@ const ModalNotification = ({totalCount, data}) => {
               // console.log(index, 'ketemu');
                   if (item.is_read === true) {
                     return (
-                      <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.notifikasi.id_notifikasi} onClick={() => onClickNotification(item.notifikasi.keluhan_id, item.notifikasi.id_notifikasi, 'read')} >
+                      <div className="card-body bg-gray-500 rounded-md cursor-pointer" id={item.id_notifikasiread} onClick={() => onClickNotification(item.notifikasi.keluhan_id, item.id_notifikasiread, 'read')} >
                       <span className="text-base text-white">{item.notifikasi.judul}</span>
                       <span className="text-sm text-slate-200">{item.notifikasi.detail}</span>
                       <span className="text-white text-xs">{new Date(item.notifikasi.created_at).toLocaleString('id-ID')}</span>
@@ -127,7 +127,7 @@ const ModalNotification = ({totalCount, data}) => {
                     )
                   } else {
                     return (
-                      <div className="card-body bg-white rounded-md cursor-pointer" id={item.notifikasi.id_notifikasi} onClick={() => onClickNotification(item.notifikasi.keluhan_id, item.notifikasi.id_notifikasi, 'unread')} >
+                      <div className="card-body bg-white rounded-md cursor-pointer" id={item.id_notifikasiread} onClick={() => onClickNotification(item.notifikasi.keluhan_id, item.id_notifikasiread, 'unread')} >
                       <span className="text-base text-slate-800">{item.notifikasi.judul}</span>
                       <span className="text-sm text-slate-500">{item.notifikasi.detail}</span>
                       <span className="text-slate-400 text-xs">{new Date(item.notifikasi.created_at).toLocaleString('id-ID')}</span>
