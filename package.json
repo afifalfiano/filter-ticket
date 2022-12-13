@@ -44,6 +44,7 @@
     "pretty": "prettier --write .",
     "prepare": "husky install"
   },
+  "proxy": "http://localhost:8000",
   "eslintConfig": {
     "extends": [
       "react-app",
