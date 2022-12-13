@@ -105,8 +105,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
   };
 
   const onSubmitData = async (payload, resetForm) => {
-    // const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} ${start.getHours()}:${start.getMinutes()}:${start.getSeconds()}:${start.getMilliseconds()}`;
-    // const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} ${end.getHours()}:${end.getMinutes()}:${end.getSeconds()}:${end.getMilliseconds()}`;
     const start = new Date(payload.mulai_gangguan);
     const end = new Date(payload.selesai_gangguan);
     const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
@@ -142,7 +140,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
           resetForm();
           setTimeout(() => {
             onBtnClose();
-            // document.getElementById('my-modal-3').click();
             getInfo({ status: 'success' });
           }, 2000);
         } else {
@@ -180,7 +177,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
           setTimeout(() => {
             getInfo({ status: 'success' });
             onBtnClose();
-            // document.getElementById('my-modal-3').click();
           }, 2000);
         } else {
           toast.error(update.data.message, {
@@ -363,26 +359,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   />
                 </div>
 
-                {/* <div className="form-control flex-1">
-                  <label htmlFor="durasi" className="label">
-                    <span className="label-text"> Durasi (Hari)</span>
-                  </label>
-
-                  <Field
-                    id="durasi"
-                    name="durasi"
-                    placeholder=""
-                    value={values.durasi}
-                    // daysCompare(new Date(values?.selesai_gangguan), new Date(values?.mulai_gangguan)
-                    type="text"
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    className="input input-md input-bordered  max-w-full"
-                  />
-                  {errors.durasi && touched.durasi ? (
-                    <div className="label label-text text-red-500">{errors.durasi}</div>
-                  ) : null}
-                </div> */}
                 <div className="form-control flex-1">
                   <label htmlFor="location" className="label">
                     <span className="label-text"> Status</span>

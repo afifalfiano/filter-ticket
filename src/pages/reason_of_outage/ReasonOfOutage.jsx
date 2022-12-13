@@ -169,11 +169,6 @@ function ReasonOfOutage() {
 
   return (
     <div>
-
-      {/* modal delete */}
-      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" /> */}
-      {/* <DeleteModal getInfo={getInfo} detail={detail} title="RFO Gangguan" /> */}
-
       {!isLoading && (
       <div className="flex gap-5">
         <div className="form-control">
@@ -187,9 +182,6 @@ function ReasonOfOutage() {
             defaultValue={statusData}
           >
             <option disabled>Pilih Status</option>
-            {/* <option value="all" label="Semua">
-              Semua
-            </option> */}
             <option value="sendiri" label="Sendiri">
               Sendiri
             </option>
@@ -232,7 +224,6 @@ function ReasonOfOutage() {
                 htmlFor="my-modal-3"
                 onClick={() => {
                   setDetail(null);
-                  // document.getElementById('my-modal-3').click();
                   openModal('add rfo gangguan')
                 }}
               >
@@ -250,10 +241,6 @@ function ReasonOfOutage() {
         {stateModal?.rfo?.showUpdateModalRFOTrouble && <RFOModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
         {stateModal?.rfo?.showDeleteModalRFOTrouble && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="RFO Gangguan" />}
       </Modal>
-
-      {/* modal add or edit  */}
-      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <RFOModalForm getInfo={getInfo} detail={detail} /> */}
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
@@ -336,7 +323,6 @@ function ReasonOfOutage() {
                           }
                           if (item.hasOwnProperty('id_rfo_gangguan')) {
                             setDetail(item);
-                            // document.getElementById('my-modal-3').click();
                             openModal('update rfo gangguan')
                           }
                         }}
@@ -369,9 +355,6 @@ function ReasonOfOutage() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            // document
-                            //   .getElementById('my-modal-delete')
-                            //   .click();
                             openModal('delete rfo gangguan');
                           }}
                         />

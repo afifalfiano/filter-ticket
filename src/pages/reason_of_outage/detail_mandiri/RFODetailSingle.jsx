@@ -63,12 +63,6 @@ function RFODetailSingle() {
     getRFOKeluhanById();
   }, []);
 
-  const daysCompare = (startDate, endDate) => {
-    const difference = startDate.getTime() - endDate.getTime();
-    const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-    return TotalDays;
-  };
-
   const initialValues = {
     problem: detailRFO?.problem || '',
     action: detailRFO?.action || '',
@@ -87,8 +81,6 @@ function RFODetailSingle() {
   const onSubmitData = async (payload) => {
     const start = new Date(detailRFO?.keluhan.created_at);
     const end = new Date(lastUpdate);
-    // const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} ${start.getHours()}:${start.getMinutes()}:${start.getSeconds()}:${start.getMilliseconds()}`;
-    // const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} ${end.getHours()}:${end.getMinutes()}:${end.getSeconds()}:${end.getMilliseconds()}`;
     const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
     const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
     const body = {
@@ -147,18 +139,6 @@ function RFODetailSingle() {
       });
     }
   };
-
-  function formatBytes(bytes, decimals = 2) {
-    if (!+bytes) return '0 Bytes'
-
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
-  }
 
   const navigate = useNavigate();
   return (
@@ -389,29 +369,6 @@ function RFODetailSingle() {
                       className="input input-md input-bordered  max-w-full"
                     />
                   </div>
-
-                  {/* <div className="form-control flex-1">
-                    <label htmlFor="durasi" className="label">
-                      <span className="label-text"> Durasi (Hari)</span>
-                    </label>
-
-                    <Field
-                      id="durasi"
-                      name="durasi"
-                      placeholder=""
-                      value={values.durasi}
-                      type="text"
-                      disabled
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      className="input input-md input-bordered  max-w-full"
-                    />
-                    {errors.durasi && touched.durasi ? (
-                      <div className="label label-text text-red-500">
-                        {errors.durasi}
-                      </div>
-                    ) : null}
-                  </div> */}
                 </div>
 
                 <div className="modal-action justify-center mt-10">

@@ -27,41 +27,17 @@ import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-hot-toast';
-import * as html2canvas from 'html2canvas';
 import {
   HiEye,
   HiEyeOff
 } from 'react-icons/hi';
 import { useNavigate } from "react-router-dom";
-import {
-  BarChart, LineChart, Bar, Line, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
-} from 'recharts';
 import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
 import { useAllShiftMutation, useGetKeluhanLaporanMutation, useGetUserLaporanMutation, useSaveReportMutation } from "../../../store/features/report/reportApiSlice";
 import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
 import { selectCurrentUser } from "../../../store/features/auth/authSlice";
 import { formatBytes } from "../../../utils/helper";
 import { setPOP } from "../../../store/features/pop/popSlice";
-
-const styleReport = {
-  width: '1110px !important',
-  height: '4500 !important'
-}
-
-const dataInit = [
-  {
-    label: 'Total Keluhan Dalam Pengecekan',
-    total: 10
-  },
-  {
-    label: 'Total Keluhan Selesai Pengecekan',
-    total: 10
-  },
-  {
-    label: 'Total RFO Gangguan',
-    total: 10
-  },
-]
 
 function ReportCreate() {
   const [allUserLocal, setAllUserLocal] = useState([]);
@@ -82,7 +58,6 @@ function ReportCreate() {
 
   const handleShowPreview = (event) => {
     console.log(event);
-    // const update = showPreview ? !showPreview : showPreview;
     setShowPreview(!event);
   }
 
@@ -93,8 +68,6 @@ function ReportCreate() {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
       if (data.status === 'success') {
-        // console.log('set pop', data);
-        // setAllPOPLocal(data.data);
         let dataFix;
         if (user?.role_id === 2) {
           const dataFilter = data.data.filter((pop) => {
@@ -170,11 +143,6 @@ function ReportCreate() {
     const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
     doc.html(content, {
       async callback(doc) {
-        // Save the PDF
-        // const pressure = await html2canvas(document.getElementById('graph'), { width: 1110, height: 600 });
-        // const imgData = pressure.toDataURL('image/png');
-        // const imgHeight = 600 * 190 / 1110;
-        // doc.addImage(imgData, 'png', 10, 50, 180, imgHeight, '', 'MEDIUM');
         doc.setProperties({ title: printFileName });
         window.open(doc.output('bloburl'), '_blank');
       },
@@ -184,8 +152,6 @@ function ReportCreate() {
       filename: printFileName,
       autoPaging: true,
       image: { type: 'png', quality: 1 },
-      // width: 1000, // <- here
-      // windowWidth: 1000 // <- here
     });
   };
 
@@ -485,7 +451,6 @@ function ReportCreate() {
             </div>
             <div className="flex-1">
               <div className="flex flex-col items-end">
-                {/* <p>REF-ID-2022120521810</p> */}
                 <img src="/report_logo.png" alt="Repor" width={157} className="image-full mt-4" />
               </div>
             </div>
@@ -600,45 +565,6 @@ function ReportCreate() {
               </div>
             </div>
           </div>
-          {/* <p className="font-semibold">Tanggal: {new Date().toLocaleDateString('id-ID')}</p>
-          <p className="font-semibold mt-2">Petugas:</p>
-          {
-            checkedState.map((condition, indexcondition) => {
-              let user = '';
-              if (condition) {
-                allUserLocal.forEach((item, index) => {
-                  if (indexcondition === index) {
-                    user = <p>{item.name} ({item.role.role})</p>
-                  }
-                }
-                )
-              }
-              return user;
-            })
-          }
-          <p className="font-semibold mt-2">Total Keluhan Open: {keluhanLaporanLocal?.total_keluhan_open}</p>
-          <p className="font-semibold mt-2">Total Keluhan Closed: {keluhanLaporanLocal?.total_keluhan_closed}</p>
-          <p className="font-semibold mt-2">Total RFO Gangguan: {keluhanLaporanLocal?.total_rfo_gangguan}</p>
-          <p className="font-semibold mt-2">Shift: {allShiftLocal?.map((item) => {
-            if (item.id_shift === +bodyKeluhan.shift) {
-              return (
-                <span>{`${item.shift} (${item.mulai}) - (${item.selesai})`}</span>
-              );
-            }
-          })}
-          </p>
-          <p className="font-semibold mt-2">Keluhan Open</p>
-          <div>
-            {keluhanLaporanLocal?.keluhan_open.map((item) => <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>)}
-          </div>
-          <p className="font-semibold mt-2">Keluhan Closed</p>
-          <div>
-            {keluhanLaporanLocal?.keluhan_close.map((item) => <li>{item.id_pelanggan} - {item.nama_pelanggan}</li>)}
-          </div>
-          <p className="font-semibold mt-2">RFO Gangguan</p>
-          <div>
-            {keluhanLaporanLocal?.rfo_gangguan.map((item) => <li>{item.nomor_rfo_gangguan} - {item.problem}</li>)}
-          </div> */}
         </div>
         )}
       </div>

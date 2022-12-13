@@ -61,7 +61,6 @@ function FormRole({ stateModal, getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             resetForm();
-            // document.getElementById('my-modal-3').click();
             onBtnClose();
             getInfo({ status: 'success' });
           }, 2000);
@@ -99,7 +98,6 @@ function FormRole({ stateModal, getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             getInfo({ status: 'success' });
-            // document.getElementById('my-modal-3').click();
             onBtnClose();
           }, 2000);
         } else {
@@ -134,7 +132,6 @@ function FormRole({ stateModal, getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    // document.getElementById('my-modal-3').click();
     onBtnClose();
   };
 

@@ -43,48 +43,20 @@ function ReportDetail({ stateModal, detailData }) {
     };
     dispatch(setModal(newState));
   };
-  // const navigasi = useSelector(selectBreadcrumb);
-  // const { id } = useParams();
-  // const dispatch = useDispatch();
-  // const [getOneReport] = useGetOneReportMutation();
-  // const [detail, setDetail] = useState(null);
 
-  // const getDetailReport = async () => {
-  //   try {
-  //     const id = detailData.id_laporan;
-  //     const data = await getOneReport(id).unwrap();
-  //     console.log(data, 'data');
-  //     if (data.status === 'success') {
-  //       setDetail(data.data);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
+  // const downloadFile = (url, fileName) => {
+  //   fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
+  //     .then((res) => res.blob())
+  //     .then((res) => {
+  //       const aElement = document.createElement('a');
+  //       aElement.setAttribute('download', fileName);
+  //       const href = URL.createObjectURL(res);
+  //       aElement.href = href;
+  //       aElement.setAttribute('target', '_blank');
+  //       aElement.click();
+  //       URL.revokeObjectURL(href);
+  //     });
   // }
-  useEffect(() => {
-    // const data = [...navigasi.data, { path: `/report/detail/${id}`, title: 'Detail' }]
-    // dispatch(updateBreadcrumb(data))
-    // getDetailReport();
-  }, [])
-
-  const onBtnBack = () => {
-    // document.getElementById('my-modal-detail').click();
-  }
-
-  const downloadFile = (url, fileName) => {
-    fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
-      .then((res) => res.blob())
-      .then((res) => {
-        const aElement = document.createElement('a');
-        aElement.setAttribute('download', fileName);
-        const href = URL.createObjectURL(res);
-        aElement.href = href;
-        // aElement.setAttribute('href', href);
-        aElement.setAttribute('target', '_blank');
-        aElement.click();
-        URL.revokeObjectURL(href);
-      });
-  }
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
@@ -103,12 +75,7 @@ function ReportDetail({ stateModal, detailData }) {
         <div className="overflow-x-auto">
           <table className="table w-full border-0">
             <thead>
-              <tr>
-                {/* <th />
-                <th>Name</th>
-                <th>Job</th>
-                <th>Favorite Color</th> */}
-              </tr>
+              <tr />
             </thead>
             <tbody>
               <tr>
@@ -140,7 +107,6 @@ function ReportDetail({ stateModal, detailData }) {
                 <th>File Laporan</th>
                 <td>:</td>
                 <td><a href={detailData?.lampiran_laporan} className="link link-hover" target="_blank" rel="noreferrer">Download file</a></td>
-                {/* <td><p onClick={() => downloadFile(detailData?.lampiran_laporan, 'Laporan.pdf')} className="link link-hover">Download file</p></td> */}
               </tr>
             </tbody>
           </table>

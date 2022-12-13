@@ -76,7 +76,6 @@ function Role() {
   }
 
   const handleFilterPagination = (selectFilter) => {
-    // setPagination({ ...pagination, currentFilterPage: selectFilter });
     const indexOfLastPost = pagination.currentPage * selectFilter;
     const indexOfFirstPost = indexOfLastPost - selectFilter;
     const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
@@ -149,7 +148,6 @@ function Role() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            // document.getElementById('my-modal-3').click();
             openModal('add role');
           }}
         >
@@ -181,14 +179,6 @@ function Role() {
           </div>
         </div>
       )}
-
-      {/* modal craete or update */}
-      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormRole getInfo={getInfo} detail={detail} titleAction={title} /> */}
-
-      {/* modal delete */}
-      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="Team" /> */}
 
       <Modal>
         {stateModal?.role?.showAddModalRole && <FormRole stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
@@ -226,7 +216,6 @@ function Role() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            // document.getElementById('my-modal-3').click();
                             openModal('update role');
                           }}
                         />
@@ -238,23 +227,10 @@ function Role() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            // document.getElementById('my-modal-delete').click();
                             openModal('delete role');
                           }}
                         />
                       </div>
-                      {/* <div className="tooltip" data-tip="Detail">
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('read');
-                            document.getElementById('my-modal-3').click();
-                          }}
-                        />
-                      </div> */}
                     </div>
                   </td>
                 </tr>

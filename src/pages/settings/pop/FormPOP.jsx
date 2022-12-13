@@ -12,16 +12,8 @@
 import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
-import { useState, useEffect } from 'react';
-import * as Yup from 'yup';
-import * as uuid from "uuid";
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
-import {
-  useAddBtsMutation,
-  useUpdateBtsMutation,
-} from '../../../store/features/bts/btsApiSlice';
-import { useAddPOPMutation, useAllPOPMutation, useUpdatePOPMutation } from '../../../store/features/pop/popApiSlice';
-import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
+import { useAddPOPMutation, useUpdatePOPMutation } from '../../../store/features/pop/popApiSlice';
 import { FormPOPSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 
@@ -69,7 +61,6 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             resetForm();
-            // document.getElementById('my-modal-3').click();
             onBtnClose();
             getInfo({ status: 'success' });
           }, 2000);
@@ -107,7 +98,6 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
           });
           setTimeout(() => {
             getInfo({ status: 'success' });
-            // document.getElementById('my-modal-3').click();
             onBtnClose();
           }, 2000);
         } else {
@@ -142,7 +132,6 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    // document.getElementById('my-modal-3').click();
     onBtnClose();
   };
 

@@ -20,23 +20,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
 import {
-  HiOutlineCloudUpload,
   HiSearch,
-  HiPencil,
   HiTrash,
   HiEye,
-  HiOutlineClipboardCheck,
-  HiOutlineClipboardList,
-  HiQuestionMarkCircle,
-  HiExclamation,
   HiOutlinePrinter
 } from 'react-icons/hi';
-import { FaUndoAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './Report.module.css';
+import { useNavigate } from 'react-router-dom';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
-import { useAllReportMutation } from '../../store/features/report/reportApiSlice';
 import Pagination from '../../components/common/table/Pagination';
 import DeleteModal from '../../components/common/DeleteModal';
 import { selectAllReport, setReport } from '../../store/features/report/reportSlice';
@@ -46,6 +37,7 @@ import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import ReportDetail from './detail/ReportDetail';
 import Modal from '../../components/modal/Modal';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
+import { useAllReportMutation } from '../../store/features/report/reportApiSlice';
 
 function Report() {
   const columns = [
@@ -116,7 +108,6 @@ function Report() {
   }
 
   const handleFilterPagination = (selectFilter) => {
-    // setPagination({ ...pagination, currentFilterPage: selectFilter });
     const indexOfLastPost = pagination.currentPage * selectFilter;
     const indexOfFirstPost = indexOfLastPost - selectFilter;
     const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
@@ -150,10 +141,6 @@ function Report() {
         console.log('set data', data);
         setdataPOP(dataFix);
         console.log(dataPOP, 'pp');
-        // dispatch(setPOP({ ...data }));
-        // console.log('set data', data);
-        // setdataPOP(data.data)
-        // console.log(dataPOP, 'pp');
       }
     } catch (error) {
       console.log(error);
@@ -259,9 +246,6 @@ function Report() {
           handlePagination(1, data.data);
           doGetPageNumber(data.data);
         }
-        // dispatch(setReport({ ...data }));
-        // setRows(data.data);
-        // console.log(data.data, 'rw');
       }
     } catch (error) {
       console.log(error);
@@ -299,14 +283,6 @@ function Report() {
         {stateModal?.report?.showDeleteModalReport && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="laporan" />}
         {stateModal?.report?.showDetailModalReport && <ReportDetail stateModal={stateModal} detailData={detail} />}
       </Modal>
-      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="laporan" /> */}
-
-      {/* Modal tambah */}
-      {/* <input type="checkbox" id="my-modal-detail" className="modal-toggle" /> */}
-      {/* <RenderModal> */}
-      {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
-      {/* <ReportDetail detailData={detail} /> */}
 
       <div className="flex gap-5 mt-5">
         <div className="form-control">
@@ -391,12 +367,7 @@ function Report() {
                         color="#0D68F1"
                         className="cursor-pointer"
                         onClick={() => {
-                          // setDetail(item);
-                          // navigate(`/report/detail/${item.id_laporan}`);
                           setDetail(item);
-                          // document
-                          //   .getElementById('my-modal-detail')
-                          //   .click();
                           openModal('detail report')
                         }}
                       />
@@ -407,12 +378,11 @@ function Report() {
                         color="#0D68F1"
                         className="cursor-pointer"
                         onClick={(e) => {
-                          // <a href={item.lampiran_laporan} target="_blank" rel="noreferrer" />
                           e.preventDefault();
                           e.stopPropagation();
                           window.open(
                             `${item.lampiran_laporan}`,
-                            '_blank' // <- This is what makes it open in a new window.
+                            '_blank'
                           );
                         }}
                       />
@@ -424,9 +394,6 @@ function Report() {
                         className="cursor-pointer"
                         onClick={() => {
                           setDetail(item);
-                          // document
-                          //   .getElementById('my-modal-delete')
-                          //   .click();
                           openModal('delete report');
                         }}
                       />

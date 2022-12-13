@@ -14,8 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
-import { FormShiftSchema, FormUserSchema } from '../../../utils/schema_validation_form';
-import { useCreateShiftMutation, useUpdateShiftMutation } from '../../../store/features/shift/shiftApiSlice';
+import { FormUserSchema } from '../../../utils/schema_validation_form';
 import { useUpdateUsersMutation } from '../../../store/features/users/usersApiSlice';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
 import { useAllTeamMutation } from '../../../store/features/team/teamApiSlice';
@@ -115,7 +114,6 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
         });
         setTimeout(() => {
           getInfo({ status: 'success' });
-          // document.getElementById('my-modal-3').click();
           onBtnClose();
         }, 2000);
       } else {
@@ -149,7 +147,6 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
 
   const onHandleReset = (reset) => {
     reset();
-    // document.getElementById('my-modal-3').click();
     onBtnClose();
   };
 
@@ -270,25 +267,6 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                   ))}
                 </Field>
               </div>
-
-              {/* <div className="form-control">
-                <label htmlFor="selesai" className="label">
-                  <span className="label-text"> Selesai:</span>
-                </label>
-                <Field
-                  id="selesai"
-                  name="selesai"
-                  placeholder="Nomor selesai"
-                  value={values.selesai}
-                  disabled={titleAction === 'read'}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  className="input input-md input-bordered  max-w-full"
-                />
-                {errors.selesai && touched.selesai ? (
-                  <div className="label label-text text-red-500">{errors.selesai}</div>
-                ) : null}
-              </div> */}
 
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (

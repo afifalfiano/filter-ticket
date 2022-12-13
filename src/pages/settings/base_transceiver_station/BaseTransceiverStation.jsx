@@ -20,15 +20,12 @@ import {
 } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { selectAllBTS, setBTS } from '../../../store/features/bts/btsSlice';
-import styles from './BaseTransceiverStation.module.css';
 import { useAllBtsMutation } from '../../../store/features/bts/btsApiSlice';
 import FormBTS from './FormBTS';
 import DeleteModal from '../../../components/common/DeleteModal';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
-import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
+import { setPOP } from '../../../store/features/pop/popSlice';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 
 import SkeletonTable from '../../../components/common/table/SkeletonTable';
@@ -51,7 +48,7 @@ function BaseTransceiverStation() {
   const [rows, setRows] = useState([]);
   const [dataPOP, setdataPOP] = useState([]);
   const [pop, setPOPLocal] = useState('all');
-  const [allBts, { isLoading, isSuccess }] = useAllBtsMutation();
+  const [allBts, { isLoading }] = useAllBtsMutation();
   const dispatch = useDispatch();
   const [detail, setDetail] = useState(null);
   const [search, setSearch] = useState('');
@@ -108,7 +105,6 @@ function BaseTransceiverStation() {
   }
 
   const handleFilterPagination = (selectFilter) => {
-    // setPagination({ ...pagination, currentFilterPage: selectFilter });
     const indexOfLastPost = pagination.currentPage * selectFilter;
     const indexOfFirstPost = indexOfLastPost - selectFilter;
     const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
@@ -250,7 +246,6 @@ function BaseTransceiverStation() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            // document.getElementById('my-modal-3').click();
             openModal('add bts');
           }}
         >
@@ -298,13 +293,6 @@ function BaseTransceiverStation() {
       </div>
       )}
 
-      {/* modal craete or update
-      <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormBTS getInfo={getInfo} detail={detail} titleAction={title} />
-
-      {/* modal delete */}
-      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="BTS" /> */}
       <Modal>
         {stateModal?.bts?.showAddModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
         {stateModal?.bts?.showUpdateModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
@@ -363,7 +351,6 @@ function BaseTransceiverStation() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('update');
-                          // document.getElementById('my-modal-3').click();
                           openModal('update bts');
                         }}
                       />
@@ -375,7 +362,6 @@ function BaseTransceiverStation() {
                         className="cursor-pointer"
                         onClick={() => {
                           setDetail(item);
-                          // document.getElementById('my-modal-delete').click();
                           openModal('delete bts');
                         }}
                       />
@@ -388,7 +374,6 @@ function BaseTransceiverStation() {
                         onClick={() => {
                           setDetail(item);
                           setTitle('read');
-                          // document.getElementById('my-modal-3').click();
                           openModal('detail bts');
                         }}
                       />

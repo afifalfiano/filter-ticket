@@ -69,8 +69,6 @@ function FormUpdateProfile({ handleForm, profile }) {
         }
         dispatch(setCredentials({ ...newProfile }));
         console.log(newProfile, 'let');
-        // const local = JSON.stringify(newProfile);
-        // localStorage.setItem('user', local);
         encryptLocalStorage('user_encrypt', newProfile);
         toast.success('Berhasil memperbarui akun.', {
           style: {
@@ -171,7 +169,6 @@ function FormUpdateProfile({ handleForm, profile }) {
                     size={24}
                     className="link link-primary"
                     onClick={() => {
-                      // document.getElementById('my-modal-3').click();
                       openModal()
                     }}
                   />

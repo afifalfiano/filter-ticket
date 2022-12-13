@@ -8,12 +8,10 @@ import { useEffect, useState } from 'react';
 import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import * as Yup from 'yup';
 import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
-import { useRfoByIdMutation, useRfoGangguanByIdMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { useRfoGangguanByIdMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setRFOGangguanById } from '../../../store/features/rfo/rfoSlice';
-import DashboardDetail from '../../dashboard/detail/DashboardDetail';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { RFOMasalSchema } from '../../../utils/schema_validation_form';
@@ -61,18 +59,6 @@ function RFODetailMass() {
 
   const onSubmitData = async (payload) => {
   };
-
-  function formatBytes(bytes, decimals = 2) {
-    if (!+bytes) return '0 Bytes'
-
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
-  }
 
   const navigasi = useSelector(selectBreadcrumb);
 
@@ -250,29 +236,6 @@ function RFODetailMass() {
                     className="input input-md input-bordered  max-w-full"
                   />
                 </div>
-
-                {/* <div className="form-control flex-1">
-                  <label htmlFor="durasi" className="label">
-                    <span className="label-text"> Durasi (Hari)</span>
-                  </label>
-
-                  <Field
-                    id="durasi"
-                    name="durasi"
-                    placeholder=""
-                    value={values.durasi}
-                    type="text"
-                    disabled
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    className="input input-md input-bordered  max-w-full"
-                  />
-                  {errors.durasi && touched.durasi ? (
-                    <div className="label label-text text-red-500">
-                      {errors.durasi}
-                    </div>
-                  ) : null}
-                </div> */}
               </div>
 
               <div className="modal-action justify-center mt-10">
