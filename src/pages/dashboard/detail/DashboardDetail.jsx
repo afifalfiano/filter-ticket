@@ -126,6 +126,13 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
     if (idComplain === undefined) {
       const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
       dispatch(updateBreadcrumb(data))
+
+      const intervalId = setInterval(() => {
+        getComplainById();
+      }, 30000);
+      return () => {
+        clearInterval(intervalId);
+      };
     }
   }, [])
 
