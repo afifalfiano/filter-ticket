@@ -61,18 +61,6 @@ function Menu() {
       >
         Riwayat Dasbor
       </Link>
-      {user?.role_id === 1 && (
-        <Link
-          className={`btn btn-ghost normal-case text-sm ${
-            window.location.pathname === '/base_transceiver_station' &&
-            'btn-active'
-          }`}
-          to="/base_transceiver_station"
-          activeclassname="btn-active"
-        >
-          BTS
-        </Link>
-      )}
       <Link
         className={`btn btn-ghost normal-case text-sm ${
           window.location.pathname === '/statistics' && 'btn-active'
