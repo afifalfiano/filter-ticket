@@ -1,29 +1,14 @@
-/* eslint-disable max-len */
-/* eslint-disable no-console */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable react/prop-types */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import toast, { Toaster } from 'react-hot-toast';
 import { Formik, Field, Form } from 'formik';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
 import styles from './RFOMasalModal.module.css';
 import { useAllRFOMasalMutation, useUpdateKeluhanRFOGangguanMutation } from '../../../store/features/rfo/rfoApiSlice';
-import { selectAllRFOMasal, setRFOMasal } from '../../../store/features/rfo/rfoSlice';
+import { setRFOMasal } from '../../../store/features/rfo/rfoSlice';
 import { RFOMasalFormSchema } from '../../../utils/schema_validation_form';
 import { useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
 import { setModal } from '../../../store/features/modal/modalSlice';
+import handleResponse from '../../../services/handleResponse';
+import catchError from '../../../services/catchError';
 
 function RFOMasalModal({ stateModal, getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()
@@ -42,15 +27,14 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
   const doGetAllRFOMasal = async () => {
     try {
       const data = await allRFOMasal();
-      console.log(data, 'ms zl');
-      if (data.data.status === 'success') {
+      if (data.data.status === 'success' || data.data.status === 'Success') {
         dispatch(setRFOMasal({ ...data.data }))
         setDataRFOMasal([...data.data.data]);
-        console.log(data.data.data, 'cekkkz');
-        console.log(dataRFOMasal, 'hee');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
   useEffect(() => {
@@ -64,90 +48,25 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
         rfo_gangguan_id: payload.rfo_gangguan
       };
       const data = await updateKeluhanRFOGangguan({ id: detail.id_keluhan, body });
-      console.log(data, 'res');
-      if (data.data.status === 'success') {
-        toast.success(data.data.message, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
-
-        setTimeout(async () => {
-          const closed = await complainClosed(detail.id_keluhan);
-          console.log(closed, 'cls');
-          if (closed?.data?.status === 'success') {
-            toast.success('Data Keluhan Berhasil Ditutup.', {
-              style: {
-                padding: '16px',
-                backgroundColor: '#36d399',
-                color: 'white',
-              },
-              duration: 2000,
-              position: 'top-right',
-              id: 'success',
-              icon: false,
-            });
-
-            setTimeout(async () => {
-              onBtnClose();
-              // document.getElementById('my-modal-rfo-masal').click();
-              getInfo({ status: 'success' });
-            }, 1000)
-          } else {
-            toast.error(`${closed?.data?.message}`, {
-              style: {
-                padding: '16px',
-                backgroundColor: '#ff492d',
-                color: 'white',
-              },
-              duration: 2000,
-              position: 'top-right',
-              id: 'error',
-              icon: false,
-            });
-          }
-          console.log(closed, 'cek');
-        }, 1000);
-
-        // setTimeout(() => {
-        //   document.getElementById('my-modal-rfo-masal').click();
-        //   getInfo({ status: 'success' });
-        // }, 2000)
+      if (data.data.status === 'success' || data.data.status === 'Success') {
+        handleResponse(data);
+        const closed = await complainClosed(detail.id_keluhan);
+        if (closed?.data?.status === 'success' || closed?.data?.status === 'Success') {
+          handleResponse(closed);
+          setTimeout(async () => {
+            onBtnClose();
+            getInfo({ status: 'success' });
+          }, 1000)
+        } else {
+          catchError(closed);
+        }
       } else {
-        toast.error(`${data.data.message}`, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   }
-  console.log(detail, 'masal');
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 pt-10 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
@@ -254,7 +173,7 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
                 <button
                   type="submit"
                   htmlFor="my-modal-rfo-masal"
-                  className="btn btn-md btn-success"
+                  className="btn btn-md btn-success text-white"
                   disabled={!isValid}
                 >
                   Simpan
