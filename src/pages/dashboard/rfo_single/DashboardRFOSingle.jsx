@@ -1,32 +1,17 @@
-/* eslint-disable import/named */
-/* eslint-disable max-len */
-/* eslint-disable no-irregular-whitespace */
-/* eslint-disable import/order */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-promise-executor-return */
-/* eslint-disable no-alert */
 import { useEffect, useState } from 'react';
-import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useComplainByIdMutation, useComplainClosedMutation } from '../../../store/features/complain/complainApiSlice';
 import { useAddRFOKeluhanMutation, useRfoByIdMutation, useUpdateKeluhanRFOKeluhanMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setComplainById } from '../../../store/features/complain/complainSlice';
-import { selectRFODetail, setRFOById } from '../../../store/features/rfo/rfoSlice';
+import { setRFOById } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../detail/DashboardDetail';
 import { Formik, Field, Form } from 'formik';
-import toast from 'react-hot-toast';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
-import UploadFile from '../../../components/common/forms/UploadFile';
 import { RFOSingleSchema } from '../../../utils/schema_validation_form';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function DashboardRFOSingle() {
   const navigate = useNavigate();
@@ -40,13 +25,12 @@ function DashboardRFOSingle() {
 
   const [detailComplain, setDetailComplain] = useState(null);
   const [rfoKeluhan, setRfoKeluhan] = useState(null);
-  const [complainById, { isSuccess: isSuccessComplainById }] = useComplainByIdMutation();
-  const [rfoById, { isSuccess: isSuccessRfoById }] = useRfoByIdMutation();
-  const [addRFOKeluhan, { isSuccess }] = useAddRFOKeluhanMutation()
+  const [complainById] = useComplainByIdMutation();
+  const [rfoById] = useRfoByIdMutation();
+  const [addRFOKeluhan] = useAddRFOKeluhanMutation()
   const [updateRFOKeluhan] = useUpdateRFOKeluhanMutation()
   const [complainClosed] = useComplainClosedMutation()
   const [updateKeluhanRFOKeluhan] = useUpdateKeluhanRFOKeluhanMutation()
-  let lastUpdate = null;
   const { data: user } = useSelector(selectCurrentUser);
   let initialValues = {
     problem: rfoKeluhan?.problem || '',
@@ -60,11 +44,10 @@ function DashboardRFOSingle() {
 
   }
 
-  // this function running if the complain have rfo gangguan id
   const getRFOKeluhanById = async () => {
     try {
       const data = await rfoById(idRfoKeluhan).unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setRFOById(data.data))
         setRfoKeluhan(data.data);
         initialValues = {
@@ -77,10 +60,11 @@ function DashboardRFOSingle() {
           durasi: rfoKeluhan?.durasi,
           lampiran: rfoKeluhan?.lammpiran,
         }
-        console.log(rfoKeluhan, 'yuhuz');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
 
@@ -89,11 +73,8 @@ function DashboardRFOSingle() {
       const data = await complainById(id).unwrap();
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
-      lastUpdate = detailComplain?.balasan.length > 0
-        ? detailComplain?.balasan[detailComplain.balasan.length - 1].created_at
-        : detailComplain?.created_at
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      catchError(error);
     }
   };
 
@@ -111,7 +92,6 @@ function DashboardRFOSingle() {
     const lastTime = detailComplain?.balasan.length > 0
       ? detailComplain?.balasan[detailComplain.balasan.length - 1].created_at
       : detailComplain?.created_at
-    console.log(lastTime);
     const end = new Date(lastTime);
     // const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} ${start.getHours()}:${start.getMinutes()}:${start.getSeconds()}:${start.getMilliseconds()}`;
     // const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} ${end.getHours()}:${end.getMinutes()}:${end.getSeconds()}:${end.getMilliseconds()}`;
@@ -131,112 +111,35 @@ function DashboardRFOSingle() {
     try {
       // create
       let data;
-      let message;
       if (idRfoKeluhan === 'null') {
         data = await addRFOKeluhan(body).unwrap();
-        message = 'Berhasil menambahkan RFO';
       } else {
         data = await updateRFOKeluhan({ id: idRfoKeluhan, body }).unwrap();
-        message = 'Berhasil memperbarui RFO';
       }
-      console.log(body, 'body');
-      if (data?.status === 'success') {
-        toast.success(message, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
-
-        setTimeout(async () => {
-          console.log(data, 'cek data baru')
+      if (data?.status === 'success' || data?.status === 'Success') {
+          handleResponse(data);
           const bodyUpdate = {
             rfo_keluhan_id: data.id_rfo_keluhan
           }
           const updateKeluhan = await updateKeluhanRFOKeluhan({ id, body: bodyUpdate })
-
-          if (updateKeluhan.data.status === 'success') {
-            toast.success(updateKeluhan.data.message, {
-              style: {
-                padding: '16px',
-                backgroundColor: '#36d399',
-                color: 'white',
-              },
-              duration: 2000,
-              position: 'top-right',
-              id: 'success',
-              icon: false,
-            });
-
-            setTimeout(async () => {
+          if (updateKeluhan.data.status === 'success' || updateKeluhan.data.status === 'Success') {
+              handleResponse(updateKeluhan);
               const closed = await complainClosed(detailComplain.id_keluhan);
-              console.log(closed, 'cls');
-              if (closed?.data?.status === 'success') {
-                toast.success('Data Keluhan Berhasil Ditutup.', {
-                  style: {
-                    padding: '16px',
-                    backgroundColor: '#36d399',
-                    color: 'white',
-                  },
-                  duration: 2000,
-                  position: 'top-right',
-                  id: 'success',
-                  icon: false,
-                });
-
-                setTimeout(async () => {
+              if (closed?.data?.status === 'success' || closed?.data?.status === 'Success') {
+                handleResponse(closed);
+                setTimeout(() => {
                   resetForm();
                   navigate('/dashboard', { replace: true })
                 }, 1000)
               } else {
-                toast.error(`${closed?.data?.message}`, {
-                  style: {
-                    padding: '16px',
-                    backgroundColor: '#ff492d',
-                    color: 'white',
-                  },
-                  duration: 2000,
-                  position: 'top-right',
-                  id: 'error',
-                  icon: false,
-                });
+                catchError(closed);
               }
-              console.log(closed, 'cek');
-            }, 2000);
           }
-        }, 0);
       } else {
-        console.log(data, 'err');
-        toast.error(data?.message, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error?.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 
@@ -306,12 +209,9 @@ function DashboardRFOSingle() {
               values,
               errors,
               touched,
-              isSubmitting,
               isValid,
-              setFieldValue,
               handleChange,
               handleBlur,
-              resetForm,
             }) => (
               <Form>
                 <div className="flex flex-col gap-3">
@@ -444,38 +344,7 @@ function DashboardRFOSingle() {
                       className="input input-md input-bordered  max-w-full"
                     />
                   </div>
-
-                  {/* <div className="form-control flex-1">
-                    <label htmlFor="durasi" className="label">
-                      <span className="label-text"> Durasi (Hari)</span>
-                    </label>
-
-                    <Field
-                      id="durasi"
-                      name="durasi"
-                      placeholder=""
-                      value={values.durasi}
-                      type="text"
-                      onBlur={handleBlur}
-                      disabled
-                      onChange={handleChange}
-                      className="input input-md input-bordered  max-w-full"
-                    />
-                    {errors.durasi && touched.durasi ? (
-                      <div className="label label-text text-red-500">{errors.durasi}</div>
-                    ) : null}
-                  </div> */}
                 </div>
-
-                {/* {(!history && idRfoKeluhan === 'null' && detailComplain?.status === 'open') ? (
-                  <UploadFile />
-
-                ) : (
-                  <div className="mt-2 font-semibold">
-                    File Upload: {detailComplain?.lampiran || '-'}
-                  </div>
-                )} */}
-
                 {(!history && detailComplain?.status === 'open') || idRfoKeluhan === 'null' ? (
                   <div className="modal-action justify-center mt-10">
                     <button
@@ -503,7 +372,6 @@ function DashboardRFOSingle() {
                         } else {
                           navigate('/dashboard');
                         }
-                        // navigate('/dashboard');
                       }}
                     >
                       Kembali
