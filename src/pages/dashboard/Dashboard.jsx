@@ -85,12 +85,15 @@ const Dashboard = () => {
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let currentPosts;
+    let filterPage;
     if (data === undefined) {
       currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
+      filterPage = currentPosts.filter((item) => item.status === statusData);
     } else {
       currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+      filterPage = currentPosts.filter((item) => item.status === statusData);
     }
-    setRows(currentPosts);
+    setRows(filterPage);
   }
 
   const doGetPageNumber = (dataFix) => {
