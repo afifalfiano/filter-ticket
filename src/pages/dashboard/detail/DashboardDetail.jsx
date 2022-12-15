@@ -1,23 +1,9 @@
-/* eslint-disable camelcase */
-/* eslint-disable default-param-last */
-/* eslint-disable react/button-has-type */
 /* eslint-disable no-undef */
-/* eslint-disable no-plusplus */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable react/prop-types */
-/* eslint-disable max-len */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable no-unused-vars */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
-import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
+import { HiDocumentText } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
 import { useAddReplyMutation, useComplainByIdMutation, useLampiranFileBalasanMutation } from '../../../store/features/complain/complainApiSlice';
 import { selectDetailComplain, setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
@@ -25,31 +11,23 @@ import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ReplySchema } from '../../../utils/schema_validation_form';
 import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
-  console.log(idComplain, 'zuuu');
   const location = useLocation();
-  console.log(location, ';loc');
   const [detailComplain, setDetailComplain] = useState(null);
   const [filesLocal, setFilesLocal] = useState([]);
   const { id } = useParams();
-  console.log(id, 'param');
   const navigate = useNavigate();
-  const [complainById, { ...status }] = useComplainByIdMutation();
-  const [addReply, { isSuccess: isSuccessReplpy }] = useAddReplyMutation();
+  const [complainById] = useComplainByIdMutation();
+  const [addReply] = useAddReplyMutation();
   const [pagination, setPagination] = useState({
     currentPage: 1,
     currentFilterPage: 10,
     pageNumbers: [1],
   });
   const dispatch = useDispatch();
-  // const doGetPageNumber = (dataFix) => {
-  //   const pageNumbers = [];
-  //   for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
-  //     pageNumbers.push(i);
-  //   }
-  //   setPagination({ ...pagination, pageNumbers });
-  // }
   const [lampiranFileBalasan] = useLampiranFileBalasanMutation();
   const [storeAllNotification] = useStoreAllNotificationMutation();
 
@@ -57,15 +35,10 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
 
   const navigasi = useSelector(selectBreadcrumb);
   const onHandleFileUpload = ($event) => {
-    console.log($event, 'file');
     setFilesLocal($event);
-    console.log(detailState, 'cekk detail state');
   }
 
   const handlePagination = (targetPage = 1, data = undefined) => {
-    console.log(data, 'opo ikih');
-    console.log(detailState, 'opo ikih part 2');
-    console.log(pagination, 'cek ombak');
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let reply;
@@ -88,9 +61,6 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       pageNumbers.push(i);
     }
     setPagination({ ...pagination, currentPage: +targetPage, pageNumbers })
-    console.log('reply', reply);
-    console.log('new state', newState);
-    // console.log(newState, 'cek reply pagination');
     setDetailComplain(newState);
   }
 
@@ -106,14 +76,10 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
       if (showPaginate) {
-        console.log(data.data, 'mantapq');
         handlePagination(1, data.data);
-        console.log(idComplain, 'id aja');
-        // doGetPageNumber(data.data.balasan)
       }
-      console.log(data, 'data');
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      catchError(error)
     }
   };
 
@@ -143,10 +109,9 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
         pop_id: user.pop_id
       }
       const data = await postNotification({ body }).unwrap();
-      console.log(data, 'res');
       return data;
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
 
@@ -156,36 +121,23 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
         notifikasi_id,
       }
       const data = await storeAllNotification({ body }).unwrap();
-      console.log(data, 'res');
+      return data;
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
 
   const onSubmitData = async (payload, resetForm) => {
-    console.log(detailComplain, 'log');
     try {
       const body = {
         balasan: payload.balasan,
         user_id: user.id_user,
         keluhan_id: detailComplain.id_keluhan
       }
-      console.log(body);
       const add = await addReply({ ...body });
-      if (add.data.status === 'success') {
+      if (add.data.status === 'success' || add.data.status === 'Success') {
         resetForm()
-        toast.success('Berhasil membalasa data keluhan.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
-
+        handleResponse(add);
         if (filesLocal.length > 0) {
           const formData = new FormData();
           formData.append('balasan_id', add?.data?.id_balasan);
@@ -193,38 +145,24 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
             formData.append(`path[${index}]`, filesLocal[index])
           }
 
-          const dataLampiran = await lampiranFileBalasan({ body: formData }).unwrap();
-          console.log(dataLampiran, 'lampiran');
+          await lampiranFileBalasan({ body: formData }).unwrap();
         }
         const dataNotification = await doPostNotification(add?.data?.id_keluhan?.id_keluhan);
-        console.log(dataNotification, 'log data notif');
-        doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
-        getComplainById();
+        if (dataNotification?.status === 'Success') {
+          const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
+          if (dataPost?.status === 'Success') {
+            getComplainById();
+          } else {
+            catchError(dataPost);
+          }
+        } else {
+          catchError(dataNotification);
+        }
       } else {
-        toast.error(`${add.data.message}`, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(add);
       }
     } catch (error) {
-      toast.error(`${error.data.message}`, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   }
 

@@ -123,6 +123,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
               await lampiranFile({ body: formData }).unwrap();
             }
             const dataNotification = await doPostNotification(add?.data?.id_keluhan?.id_keluhan);
+            console.log(dataNotification, 'data');
             if (dataNotification?.status === 'Success') {
               const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
               if (dataPost?.status === 'Success') {
