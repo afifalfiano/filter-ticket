@@ -1,59 +1,26 @@
-/* eslint-disable camelcase */
-/* eslint-disable max-len */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-console */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable react/prop-types */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState, useEffect } from 'react';
-import {
-  HiOutlineCloudUpload,
-  HiSearch,
-  HiPencil,
-  HiTrash,
-  HiEye,
-  HiOutlineClipboardCheck,
-  HiOutlineClipboardList,
-  HiQuestionMarkCircle,
-  HiExclamation,
-} from 'react-icons/hi';
-import { FaUndoAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import styles from './ComplainModalForm.module.css';
 import { useAddComplainMutation, useLampiranFileMutation, useUpdateComplainMutation } from '../../../store/features/complain/complainApiSlice';
 import { selectAllPOP } from '../../../store/features/pop/popSlice';
-import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
-import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
+import { selectAllSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import { ComplainFormSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function ComplainModalForm({ stateModal, getInfo, detail }) {
-  const [addComplain, { isSuccess: isSuccessCreate }] = useAddComplainMutation();
-  const [updateComplain, { isSuccess: isSuccessUpdate }] = useUpdateComplainMutation();
+  const [addComplain] = useAddComplainMutation();
+  const [updateComplain] = useUpdateComplainMutation();
   const { data: user } = useSelector(selectCurrentUser);
   const popData = useSelector(selectAllPOP);
-  console.log(popData, 'pop nih')
   const [filesLocal, setFilesLocal] = useState([]);
-
+  const dispatch = useDispatch();
   const dataSumber = useSelector(selectAllSumberKeluhan);
   const [lampiranFile] = useLampiranFileMutation();
   const [postNotification] = usePostNotificationMutation();
@@ -72,9 +39,8 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
     pop_id: detail?.pop_id || '',
   };
 
-  const dispatch = useDispatch();
 
-  const onBtnClose = (title) => {
+  const onBtnClose = () => {
     const newState = {
       ...stateModal,
       dashboard: { ...stateModal.dashboard, showAddModalComplain: false, showUpdateModalComplain: false },
@@ -88,9 +54,9 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
         notifikasi_id,
       }
       const data = await storeAllNotification({ body }).unwrap();
-      console.log(data, 'res');
+      return data;
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
 
@@ -101,33 +67,35 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
         pop_id: user.pop_id
       }
       const data = await postNotification({ body }).unwrap();
-      console.log(data, 'res');
       return data;
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
+  }
+
+
+  const testSentimentData = async (payload) => {
+    const test = {
+      string: payload.keluhan,
+    }
+    const sentimen = await fetch('https://tediyanwibowo.pythonanywhere.com/model', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(test),
+    }); 
+    const resultSentimen = await sentimen.json()
+    return resultSentimen;
   }
 
   const onSubmitData = async (payload, resetForm) => {
     try {
       // create
-      console.log(detail, 'dt');
       if (detail === null) {
-        const test = {
-          string: payload.keluhan,
-        }
-        const sentimen = await fetch('https://tediyanwibowo.pythonanywhere.com/model', {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(test),
-        });
-
-        const resultSentimen = await sentimen.json()
-        console.log(resultSentimen, 'sentimen');
-        if (resultSentimen.hasOwnProperty('sentiment')) {
+        const request = await testSentimentData(payload);
+        if (request.hasOwnProperty('sentiment')) {
           const body = {
             id_pelanggan: payload.id_pelanggan,
             nama_pelanggan: payload.nama_pelanggan,
@@ -139,22 +107,12 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             status: 'open',
             pop_id: payload.pop_id,
             user_id: user.id_user,
-            sentimen_analisis: resultSentimen.sentiment,
+            sentimen_analisis: request.sentiment,
             lampiran: '',
           };
           const add = await addComplain({ ...body });
-          if (add.data.status === 'success') {
-            toast.success('Berhasil tambah data keluhan.', {
-              style: {
-                padding: '16px',
-                backgroundColor: '#36d399',
-                color: 'white',
-              },
-              duration: 2000,
-              position: 'top-right',
-              id: 'success',
-              icon: false,
-            });
+          if (add.data.status === 'success' || add.data.status === 'Success') {
+            handleResponse(add);
 
             if (filesLocal.length > 0) {
               const formData = new FormData();
@@ -162,103 +120,62 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
               for (let index = 0; index < filesLocal.length; index++) {
                 formData.append(`path[${index}]`, filesLocal[index])
               }
-
-              const dataLampiran = await lampiranFile({ body: formData }).unwrap();
-              console.log(dataLampiran, 'lampiran');
+              await lampiranFile({ body: formData }).unwrap();
             }
             const dataNotification = await doPostNotification(add?.data?.id_keluhan?.id_keluhan);
-            console.log(dataNotification, 'log data notif');
-            doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
-            setTimeout(() => {
-              resetForm();
-              // document.getElementById('my-modal-complain').click();
-              onBtnClose();
-              getInfo({ status: 'success' });
-            }, 2000);
+            if (dataNotification?.status === 'Success') {
+              const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
+              if (dataPost?.status === 'Success') {
+                setTimeout(() => {
+                  resetForm();
+                  onBtnClose();
+                  getInfo({ status: 'success' });
+                }, 2000);
+              } else {
+                catchError(dataPost);
+              }
+            } else {
+              catchError(dataNotification);
+            }
           } else {
-            toast.error(`${add.data.message}`, {
-              style: {
-                padding: '16px',
-                backgroundColor: '#ff492d',
-                color: 'white',
-              },
-              duration: 2000,
-              position: 'top-right',
-              id: 'error',
-              icon: false,
-            });
+            catchError(add);
           }
         }
       } else {
-        const body = {
-          nama_pelapor: payload.nama_pelapor,
-          nomor_pelapor: payload.nomor_pelapor,
-          sumber_id: payload.sumber,
-          detail_sumber: payload.detail_sumber,
-          keluhan: payload.keluhan,
-          pop_id: payload.pop_id,
-        };
-        // update
-
-        const update = await updateComplain({
-          id: detail.id_keluhan,
-          body: { ...body },
-        });
-        console.log(body, 'body');
-        if (update.data.status === 'success') {
-          toast.success('Berhasil ubah data komplain.', {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-          setTimeout(() => {
-            getInfo({ status: 'success' });
-            onBtnClose();
-            // document.getElementById('my-modal-complain').click();
-          }, 2000);
-        } else {
-          toast.error(update.data.message, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#ff492d',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'error',
-            icon: false,
-          });
-        }
+        doUpdateComplain(payload);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 
-  const onHandleReset = (reset) => {
-    reset();
-    // document.getElementById('my-modal-complain').click();
-  };
+  const doUpdateComplain = async (payload) => {
+    const body = {
+      nama_pelapor: payload.nama_pelapor,
+      nomor_pelapor: payload.nomor_pelapor,
+      sumber_id: payload.sumber,
+      detail_sumber: payload.detail_sumber,
+      keluhan: payload.keluhan,
+      pop_id: payload.pop_id,
+    };
+    // update
+
+    const update = await updateComplain({
+      id: detail.id_keluhan,
+      body: { ...body },
+    });
+    if (update.data.status === 'success' || update.data.status === 'Success') {
+      handleResponse(update);
+      setTimeout(() => {
+        getInfo({ status: 'success' });
+        onBtnClose();
+      }, 2000);
+    } else {
+      catchError(update);
+    }
+  }
 
   const onHandleFileUpload = ($event) => {
-    console.log($event, 'file');
     setFilesLocal($event);
   }
 
@@ -287,12 +204,10 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
           {({
             values,
             errors,
-            isSubmitting,
             isValid,
             touched,
             handleChange,
             handleBlur,
-            resetForm,
           }) => (
             <Form>
               <div className="flex flex-row gap-3">
