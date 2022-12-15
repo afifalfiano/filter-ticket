@@ -4,7 +4,6 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
-import { useSelector } from 'react-redux';
 import SignIn from './pages/auth/sign_in/SignIn';
 import SignUp from './pages/auth/sign_up/SignUp';
 import Dashboard from './pages/dashboard/Dashboard';
@@ -24,7 +23,6 @@ import Layout from './components/common/Layout';
 import RequireAuth from './components/common/RequireAuth';
 import 'react-loading-skeleton/dist/skeleton.css';
 import NotFound from './pages/not_found/NotFound';
-import { selectCurrentUser } from './store/features/auth/authSlice';
 import Users from './pages/settings/users/Users';
 import Pop from './pages/settings/pop/Pop';
 import SourceComplain from './pages/settings/source_complain/SourceComplain';

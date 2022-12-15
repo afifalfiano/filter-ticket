@@ -18,9 +18,6 @@ const baseQuery = fetchBaseQuery({
     if (token?.bearer_token) {
       headers.set('authorization', `Bearer ${token?.bearer_token}`);
     }
-    // if (endpoint === 'addComplain') {
-    //   headers.set('Content-Type', 'multipart/form-data');
-    // }
     return headers;
   },
 });
@@ -36,7 +33,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         action(clearComplain());
       });
       localStorage.clear();
-      window.location.reload();
+      // window.location.reload();
     }
 
     if (result?.error?.data?.message === '\nPlease login first') {
@@ -46,7 +43,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         action(clearComplain());
       });
       localStorage.clear();
-      window.location.reload();
+      // window.location.reload();
     }
 
     if (result?.error?.status === 'FETCH_ERROR') {

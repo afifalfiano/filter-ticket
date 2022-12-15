@@ -1,19 +1,12 @@
-/* eslint-disable no-console */
-/* eslint-disable prettier/prettier */
-/* eslint-disable operator-linebreak */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
 import { Formik, Field, Form } from 'formik';
 import { useRegisterMutation } from '../../../store/features/auth/authApiSlice';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
 import { useAllTeamPublicMutation } from '../../../store/features/team/teamApiSlice';
 import { SignUpSchema } from '../../../utils/schema_validation_form';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function SignUp() {
   const navigate = useNavigate();
@@ -21,17 +14,8 @@ function SignUp() {
   const [allPOP] = useAllPOPMutation();
   const [allTeamPublic] = useAllTeamPublicMutation();
 
-  const [optionTeam, setOptionTeam] = useState([
-    { label: 'Pilih Role', value: '' },
-    // { label: 'HELPDESK', value: 1 },
-    // { label: 'NOC', value: 2 },
-  ])
-  const [optionPOP, setOptionPOP] = useState([
-    { label: 'Pilih POP', value: '' },
-    // { label: 'Yogyakarta', value: 1 },
-    // { label: 'Solo', value: 2 },
-    // { label: 'Surakarta', value: 3 },
-  ])
+  const [optionTeam, setOptionTeam] = useState([])
+  const [optionPOP, setOptionPOP] = useState([])
 
   const initialValues = {
     name: '',
@@ -45,55 +29,50 @@ function SignUp() {
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'Success' || data.status === 'success') {
         const mapPOP = data.data.map((item) => ({
           label: item.pop,
           value: item.id_pop
         }))
-        mapPOP.unshift(
-          { label: 'Pilih POP', value: '' },
-        )
+        mapPOP.unshift({ label: 'Pilih POP', value: '' });
         setOptionPOP(mapPOP);
+      } else {
+        setOptionPOP([{ label: 'Pilih POP', value: '' }]);
+        catchError(data);
       }
-      console.log(data);
     } catch (error) {
-      console.log(error);
-      setOptionPOP([
-        { label: 'Pilih POP', value: '' },
-      ]);
+      setOptionPOP([{ label: 'Pilih POP', value: '' }]);
+      catchError(error);
     }
   }
 
   const getAllTeam = async () => {
     try {
       const data = await allTeamPublic().unwrap();
-      console.log(data);
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         const mapTeam = data.data.map((item) => ({
           label: item.role,
           value: item.id_role
         }))
-        mapTeam.unshift(
-          { label: 'Pilih Role', value: '' },
-        )
+        mapTeam.unshift({ label: 'Pilih Role', value: '' })
         setOptionTeam(mapTeam);
+      } else {
+        setOptionTeam([{ label: 'Pilih Team', value: '' }]);
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
-      setOptionTeam([
-        { label: 'Pilih Team', value: '' },
-      ]);
+      setOptionTeam([{ label: 'Pilih Team', value: '' }]);
+      catchError(error);
     }
   }
 
   useEffect(() => {
     getAllPOP();
     getAllTeam();
-  }, [])
+  }, []);
 
   const onSubmitData = async (payload, resetForm) => {
     try {
-      // create
       const body = {
         name: payload.name.toUpperCase(),
         pop_id: payload.pop_id,
@@ -103,51 +82,17 @@ function SignUp() {
         password_confirmation: payload.password_confirmation,
       };
       const registerRes = await register(body);
-      console.log(registerRes, 'res');
-      console.log(body, 'body');
       if (registerRes.data.message === 'Successfully created!') {
-        toast.success('Berhasil membuat akun baru.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
-        resetForm();
-
+        handleResponse(registerRes);
         setTimeout(() => {
+          resetForm();
           navigate('/verification_email', { replace: true });
         }, 2000)
       } else {
-        toast.error(`${registerRes.data.message}`, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(registerRes);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 

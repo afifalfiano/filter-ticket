@@ -1,20 +1,3 @@
-/* eslint-disable default-param-last */
-/* eslint-disable no-plusplus */
-/* eslint-disable no-shadow */
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable max-len */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
 import {
   HiOutlineCloudUpload,

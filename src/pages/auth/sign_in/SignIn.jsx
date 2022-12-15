@@ -1,64 +1,35 @@
-/* eslint-disable consistent-return */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import { Formik, Field, Form } from 'formik';
-import * as Yup from 'yup';
 import { useLoginMutation } from '../../../store/features/auth/authApiSlice';
 import { setCredentials } from '../../../store/features/auth/authSlice';
 import { SignInSchema } from '../../../utils/schema_validation_form';
 import { encryptLocalStorage } from '../../../utils/helper';
+import catchError from '../../../services/catchError';
 
 function SignIn() {
   const dispatch = useDispatch();
-  const [login, { isSuccess }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const navigate = useNavigate();
 
-  const onSubmitLogin = async (payload) => {
+  const onSubmitLogin = async (payload, resetForm) => {
     try {
-      const userData = await login({
+      const body = {
         email: payload.email,
         password: payload.password,
-      }).unwrap();
+      }
+      const userData = await login({...body}).unwrap();
       if (userData.hasOwnProperty('bearer_token')) {
         dispatch(setCredentials({ ...userData }));
         encryptLocalStorage('user_encrypt', userData);
-        // const local = JSON.stringify(userData);
-        // localStorage.setItem('user', local);
-        setTimeout(() => {
-          navigate('/dashboard', { replace: true });
-        }, 0);
+        resetForm();
+        navigate('/dashboard', { replace: true });
       } else {
-        toast.error(userData?.data?.message || 'Terjadi Kesalahan Sistem', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(userData);
       }
     } catch (err) {
-      toast.error(err?.data?.message || 'Terjadi Kesalahan Sistem', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(err);
     }
   };
 
@@ -75,10 +46,7 @@ function SignIn() {
           validationSchema={SignInSchema}
           initialValues={{ email: '', password: '' }}
           onSubmit={(values, { resetForm }) => {
-            setTimeout(() => {
-              resetForm();
-            }, 500);
-            onSubmitLogin(values);
+            onSubmitLogin(values, resetForm);
           }}
         >
           {({
