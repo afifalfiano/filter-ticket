@@ -1,21 +1,16 @@
 import { useState, useEffect } from 'react';
 import {
-  HiOutlineCloudUpload,
   HiSearch,
   HiPencil,
   HiTrash,
   HiEye,
   HiOutlineClipboardCheck,
   HiOutlineClipboardList,
-  HiQuestionMarkCircle,
-  HiExclamation,
 } from 'react-icons/hi';
 import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import ClipLoader from "react-spinners/ClipLoader";
-import styles from './Dashboard.module.css';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { selectAllComplain, setComplain } from '../../store/features/complain/complainSlice';
 import DeleteModal from '../../components/common/DeleteModal';
@@ -27,45 +22,46 @@ import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlic
 import { useAllSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import ReopenModal from '../history_dashboard/ReopenModal';
-import SkeletonTable from '../../components/common/table/SkeletonTable';
 import Pagination from '../../components/common/table/Pagination';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
-import { ModalActivity } from '../../components/modal/ModalActivity';
 import Modal from '../../components/modal/Modal';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
+import catchError from '../../services/catchError';
 
-const override = {
-  display: "block",
-  margin: "0 auto",
-  // borderColor: "red",
-};
+const initColumns = [
+  'No',
+  'POP',
+  'ID Pelanggan',
+  'Nama Pelanggan',
+  'Kontak',
+  'Keluhan',
+  'Progress',
+  'Waktu',
+  'Status',
+  'Aksi',
+];
 
-function Dashboard() {
-  const initColumns = [
-    'No',
-    'POP',
-    'ID Pelanggan',
-    'Nama Pelanggan',
-    'Kontak',
-    'Keluhan',
-    'Progress',
-    'Waktu',
-    'Status',
-    'Aksi',
-  ];
+const Dashboard = () => {
   const [columns, setColumns] = useState(initColumns);
   const [statusData, setStatusData] = useState('open');
   const [detail, setDetail] = useState(null);
   const [showLoading, setShowLoading] = useState(true);
-  // const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
-  const [allComplain, { isLoading, isSuccess }] = useAllComplainMutation();
+  const [allComplain ] = useAllComplainMutation();
   const dispatch = useDispatch();
-
   const { data: user } = useSelector(selectCurrentUser);
   const stateModal = useSelector(selectModalState);
-  console.log(stateModal, 'modalzzž;');
+  const [search, setSearch] = useState('');
+  const [dataPOP, setdataPOP] = useState([]);
+  const [pop, setPOPLocal] = useState('all');
+  const dataRow = useSelector(selectAllComplain);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    currentFilterPage: 5,
+    pageNumbers: [1],
+    filterPage: [5, 10, 25, 50, 100]
+  });
 
   const openModal = (modal) => {
     let newState;
@@ -84,22 +80,8 @@ function Dashboard() {
     window.scrollTo(0, 0);
   }
 
-  const [search, setSearch] = useState('');
-  const [dataPOP, setdataPOP] = useState([]);
-  const [pop, setPOPLocal] = useState('all');
-  const dataRow = useSelector(selectAllComplain);
-  const [reRequest, setRerequest] = useState(0);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    currentFilterPage: 5,
-    pageNumbers: [1],
-    filterPage: [5, 10, 25, 50, 100]
-  });
-
   const handlePagination = (targetPage = 1, data) => {
-    console.log(data, 'opo ikih');
     setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    console.log(pagination, 'cek ombak');
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let currentPosts;
@@ -112,18 +94,14 @@ function Dashboard() {
   }
 
   const doGetPageNumber = (dataFix) => {
-    console.log(dataFix, 'fixxxxxx ');
-    console.log(pagination.currentFilterPage, 'filpter');
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers });
   }
 
   const handleFilterPagination = (selectFilter) => {
-    // setPagination({ ...pagination, currentFilterPage: selectFilter });
     const indexOfLastPost = pagination.currentPage * selectFilter;
     const indexOfFirstPost = indexOfLastPost - selectFilter;
     const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
@@ -132,17 +110,14 @@ function Dashboard() {
     for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-    console.log('cek ombak filter', pagination);
   }
 
   const getAllComplain = async () => {
-    console.log(pagination, 'pggag');
     setShowLoading(true);
     try {
       const data = await allComplain().unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
           const dataFilter = data.data.filter((item) => {
@@ -155,7 +130,6 @@ function Dashboard() {
           setRows(dataFix);
           handlePagination(1, dataFix);
           doGetPageNumber(dataFix);
-          console.log(dataFix, 'data complain');
         } else {
           const dataFilter = data.data.filter((item) => {
             if (item.status === statusData) {
@@ -166,22 +140,21 @@ function Dashboard() {
           setRows(dataFilter);
           handlePagination(1, data.data);
           doGetPageNumber(data.data);
-          console.log(dataFilter, 'data complain');
         }
 
         setTimeout(() => {
           setShowLoading(false);
         }, 1500);
+      } else {
+        catchError(data);
       }
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      catchError(error);
     }
   };
 
   const onHandleSearch = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
-    console.log(event.target.value.length, 'ooo');
     setSearch(event.target.value);
 
     if (event.target.value.length > 0) {
@@ -206,8 +179,6 @@ function Dashboard() {
         filterPage: [5, 10, 25, 50, 100]
       });
     } else {
-      console.log(statusData, 'status');
-      console.log(pop, 'local pop');
       setRows(dataRow.data.filter((item) => {
         if (item.status === statusData && +item.pop.id_pop === +pop) {
           return item;
@@ -227,16 +198,13 @@ function Dashboard() {
   }
 
   const handlePOP = (event) => {
-    console.log(event.target, 'cek');
     setPOPLocal(event.target.value);
-    console.log(event.target.value, 'how');
     const dataChanged = dataRow.data.filter((item) => {
       if (+item.pop_id === +event.target.value && item.status === statusData) {
         return item;
       }
     })
     if (event.target.value === 'all') {
-      console.log(dataRow, 'cek gan');
       setRows(dataRow.data.filter((item) => item.status === statusData));
       setPagination({
         currentPage: 1,
@@ -262,21 +230,20 @@ function Dashboard() {
   const getAllSumberKeluhan = async () => {
     try {
       const data = await allSumberKeluhan().unwrap();
-      console.log(data, 'ceksaja sumber');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setSumberKeluhan({ ...data }));
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      console.log(data, 'ceksaja');
-      if (data.status === 'success') {
-        console.log(user, 'user nih');
+      if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
           const dataFilter = data.data.filter((pop) => {
@@ -289,12 +256,12 @@ function Dashboard() {
           dataFix = data.data
         }
         dispatch(setPOP({ data: dataFix }));
-        console.log('set data', data);
         setdataPOP(dataFix);
-        console.log(dataPOP, 'pp');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
@@ -329,8 +296,6 @@ function Dashboard() {
 
   const handleStatus = (event) => {
     setStatusData(event.target.value);
-    console.log(event.target.value, 'status');
-    console.log(dataRow, 'row');
     const dataChanged = dataRow.data.filter((item) => {
       if (item.status === event.target.value && +item.pop.id_pop === +pop) {
         return item;
@@ -349,7 +314,6 @@ function Dashboard() {
   };
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       getAllComplain();
     }
@@ -364,9 +328,7 @@ function Dashboard() {
           htmlFor="my-modal-complain"
           onClick={() => {
             setDetail(null);
-            // setShowModal(true);
             openModal('add complain');
-            // document.getElementById('my-modal-complain').click();
           }}
         >
           Tambah
@@ -499,7 +461,6 @@ function Dashboard() {
                             color="#D98200"
                             onClick={() => {
                               setDetail(item);
-                              // document.getElementById('my-modal-complain').click();
                               openModal('update complain');
                             }}
                           />
@@ -512,9 +473,6 @@ function Dashboard() {
                             onClick={() => {
                               setDetail(item);
                               openModal('delete complain');
-                              // document
-                              //   .getElementById('my-modal-delete')
-                              //   .click();
                             }}
                           />
                         </div>
@@ -545,7 +503,6 @@ function Dashboard() {
                             className="cursor-pointer"
                             onClick={() => {
                               setDetail(item);
-                              // document.getElementById('my-modal-rfo-masal').click();
                               openModal('modal rfo masal');
                             }}
                           />
@@ -560,9 +517,6 @@ function Dashboard() {
                             className="cursor-pointer"
                             onClick={() => {
                               setDetail(item);
-                              // document
-                              //   .getElementById('my-modal-revert')
-                              //   .click();
                               openModal('revert complain');
                             }}
                           />
@@ -627,24 +581,6 @@ function Dashboard() {
         </div>
       </div>
       )}
-      {/* <button
-        onClick={() => {
-          openModal('revert complain');
-        }}
-        className="btn btn-info"
-      >Test Modal
-      </button> */}
-      {/* <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal> */}
-      {/* Modal tambah */}
-      {/* <input type="checkbox" id="my-modal-complain" className="modal-toggle" /> */}
-      {/* <RenderModal> */}
-      {/* {showModal && <ModalActivity onClose={setShowModal} detail={detail} title="edit" />} */}
-      {/* <ComplainModalForm detail={detail} getInfo={getInfo} /> */}
-      {/* <Modal>{stateModal?.dashboard?.showAddModalComplain && <ModalActivity stateModal={stateModal} detail={detail} title="add" />}</Modal> */}
-      {/* </RenderModal> */}
-      {/* Modal rfo masal */}
-      {/* <input type="checkbox" id="my-modal-rfo-masal" className="modal-toggle" /> */}
-      {/* <RFOMasalModal detail={detail} getInfo={getInfo} /> */}
       <Modal>
         {stateModal?.dashboard?.showAddModalComplain && <ComplainModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
         {stateModal?.dashboard?.showRFOTroubleModal && <RFOMasalModal stateModal={stateModal} detail={detail} getInfo={getInfo} />}
@@ -652,17 +588,6 @@ function Dashboard() {
         {stateModal?.dashboard?.showUpdateModalComplain && <ComplainModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
         {stateModal?.dashboard?.showRevertModalComplain && <ReopenModal stateModal={stateModal} detail={detail} getInfo={getInfo} />}
       </Modal>
-
-      {/* modal delete */}
-      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" /> */}
-      {/* <DeleteModal getInfo={getInfo} detail={detail} title="keluhan" /> */}
-
-      {/* modal revert */}
-      {/* <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
-      <ReopenModal getInfo={getInfo} detail={detail} /> */}
-
-      {/* {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={3} />} */}
-      {/* start table */}
     </div>
   );
 }
