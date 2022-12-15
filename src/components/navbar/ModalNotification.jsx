@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import catchError from "../../services/catchError";
 import { selectCurrentUser } from "../../store/features/auth/authSlice";
 import { useGetNotificationMutation, useReadAllNotificationMutation, useReadNotificationMutation } from "../../store/features/notification/notificationApiSlice";
 import { selectAllNotification, selectTotalCountNotification, setTotalCount } from "../../store/features/notification/notificationSlice";
@@ -30,21 +31,6 @@ const ModalNotification = ({totalCount, data}) => {
           total++;
         }
       })
-
-        // const index = item.notifikasi_read.findIndex(item => +item.user_id === +user.id_user);
-        // console.log(index, 'berapa ya');
-        // if (index === -1) {
-        //   console.log('masuk keranjang');
-        //   total++;
-        // }
-        // item.notifikasi_read.forEach(notif => {
-        //   if (+notif.user_id === +user.id_user) {
-        //     if (notif.is_read === false) {
-        //       total++;
-        //     }
-        //   }
-        // })
-      // )}
       setTimeout(() => {
         dispatch(setTotalCount(total));
         console.log(total, 'ini totalnya');
@@ -89,15 +75,35 @@ const ModalNotification = ({totalCount, data}) => {
   const onClickNotification = (id_keluhan, id_notifikasi, title) => {
     console.log(id_keluhan, id_notifikasi, title, 'cek click');
     if (title === 'unread') {
-      doReadNotification(id_notifikasi);
-      dispatch(setTotalCount(+totalCountState - 1));
-      setTimeout(() => {
-        navigate(`/dashboard/detail/${id_keluhan}`);
-      }, 500)
+      if (id_keluhan !== null) {
+        doReadNotification(id_notifikasi);
+        dispatch(setTotalCount(+totalCountState - 1));
+        setTimeout(() => {
+          navigate(`/dashboard/detail/${id_keluhan}`);
+        }, 500)
+      } else {
+        const response = {
+          status: 500,
+          data: {
+            message: 'Data keluhan tidak ada.'
+          }
+        };
+        catchError(response);
+      }
     } else {
-      setTimeout(() => {
-        navigate(`/dashboard/detail/${id_keluhan}`);
-      }, 500)
+      if (id_keluhan !== null) {
+        setTimeout(() => {
+          navigate(`/dashboard/detail/${id_keluhan}`);
+        }, 500)
+      } else {
+        const response = {
+          status: 500,
+          data: {
+            message: 'Data keluhan tidak ada.'
+          }
+        };
+        catchError(response);
+      }
     }
     
   }

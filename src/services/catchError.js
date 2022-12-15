@@ -29,6 +29,9 @@ const catchError = (body) => {
       case 404:
         message = body?.data?.message;
         break;
+      case 500:
+        message = body?.data?.message || 'Internal Server Error';
+        break;
       default:
         message = 'Kesalahan Pada Sistem';
         break;
