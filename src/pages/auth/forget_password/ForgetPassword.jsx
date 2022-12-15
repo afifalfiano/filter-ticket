@@ -1,15 +1,11 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
 import {
   useRequestOTPMutation,
   useResetPasswordMutation,
 } from '../../../store/features/auth/authApiSlice';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function ForgetPassword() {
   const [email, setEmail] = useState('');
@@ -35,51 +31,19 @@ function ForgetPassword() {
   const requestAPIOTP = async () => {
     try {
       const data = await requestOTP(email).unwrap();
-      console.log(data);
       if (data.status === 'Success') {
-        toast.success('OTP berhasil dikirim. Silahkan cek email anda.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+        handleResponse(data);
         setOTP('');
         setPassword('');
         setShowOTP(true);
       } else {
-        toast.success('OTP gagal dikirim.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(data);
         setShowOTP(false);
         setOTP('');
         setPassword('');
       }
     } catch (error) {
-      console.log(error);
-      toast.success('OTP gagal dikirim.', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
       setShowOTP(false);
       setOTP('');
       setPassword('');
@@ -90,50 +54,18 @@ function ForgetPassword() {
     try {
       const params = `?otp=${otp}&password=${password}`;
       const data = await resetPassword(params).unwrap();
-      console.log(data);
       if (data.status === 'Success') {
-        toast.success('Password berhasil direset.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+        handleResponse(data);
         setShowOTP(true);
         setTimeout(() => {
           navigate('/sign_in');
         }, 2000);
       } else {
-        toast.success('OTP tidak valid.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(data);
         setShowOTP(false);
       }
     } catch (error) {
-      console.log(error);
-      toast.success('OTP tidak valid.', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
       setShowOTP(false);
     }
   };
@@ -203,7 +135,7 @@ function ForgetPassword() {
           </Link>
           <button
             type="submit"
-            className="btn btn-md btn-block btn-success"
+            className="btn btn-md btn-block btn-success text-white"
             onClick={onSubmitData}
             disabled={showOTP ? otp === '' || password === '' : email === ''}
           >

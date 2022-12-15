@@ -1,6 +1,3 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable max-len */
-/* eslint-disable prettier/prettier */
 import { apiSlice } from '../../../api/apiSlice';
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -52,7 +49,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     resetPassword: builder.mutation({
       query: (param) => ({
-        url: `/lupa-password${param}`,
+        url: `/forget-password${param}`,
         method: 'GET',
       }),
     }),

@@ -26,6 +26,9 @@ const catchError = (body) => {
       case 422:
         message = 'Periksa Kembali Isian Form';  
         break;
+      case 404:
+        message = body?.data?.message;
+        break;
       default:
         message = 'Kesalahan Pada Sistem';
         break;
