@@ -1,9 +1,10 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
-import toast from 'react-hot-toast';
+import { Link, useLocation } from 'react-router-dom';
 import { useVerificationEmailMutation } from '../../../store/features/auth/authApiSlice';
+import handleResponse from '../../../services/handleResponse';
+import catchError from '../../../services/catchError';
 
 function VerificationSuccess() {
   const params = useLocation();
@@ -12,33 +13,14 @@ function VerificationSuccess() {
   const verificationToken = async () => {
     try {
       const body = params.search.split('=');
-      console.log(body[1]);
       const data = await verificationEmail(body[1]).unwrap();
-      console.log(data);
-      toast.success('Berhasil verifikasi akun.', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#36d399',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'success',
-        icon: false,
-      });
+      if (data.status === 'Success') {
+        handleResponse(data);
+      } else {
+        catchError(data);
+      }
     } catch (error) {
-      console.log(error);
-      toast.success('Gagal verifikasi akun.', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'success',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 

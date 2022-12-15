@@ -18,9 +18,11 @@ function Layout({ render }) {
     if (datalocal) {
       navigate('/dashboard', { replace: true });
       render(false);
+    } else if (urlChanges.match(/verification/)) {
+      render(true);
     } else {
       navigate(urlChanges, { replace: true });
-      render(true);
+      render(true); 
     }
   }, [urlChanges]);
 
