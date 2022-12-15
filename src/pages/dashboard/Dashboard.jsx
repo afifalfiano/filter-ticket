@@ -108,7 +108,8 @@ const Dashboard = () => {
     const indexOfLastPost = pagination.currentPage * selectFilter;
     const indexOfFirstPost = indexOfLastPost - selectFilter;
     const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
-    setRows(currentPosts);
+    const filterPage = currentPosts.filter((item) => item.status === statusData); 
+    setRows(filterPage);
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
       pageNumbers.push(i);
@@ -124,7 +125,7 @@ const Dashboard = () => {
         let dataFix;
         if (user?.role_id === 2) {
           const dataFilter = data.data.filter((item) => {
-            if (item.pop_id === user.pop_id) {
+            if (item.pop_id === user.pop_id && item.status === statusData) {
               return item;
             }
           });
