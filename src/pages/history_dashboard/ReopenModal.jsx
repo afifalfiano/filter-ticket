@@ -1,15 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
 import {
   HiOutlineCloudUpload,
@@ -43,7 +31,7 @@ function ReopenModal({ stateModal, getInfo, detail }) {
       if (detail.rfo_keluhan_id !== null) {
         // if (deleteKeluhan.data.status === 'success') {
         const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
-        if (reopenComplain.data.status === 'success') {
+        if (reopenComplain.data.status === 'success' || reopenComplain.data.status === 'Success') {
           toast.success(`Berhasil membuka kembali keluhan.`, {
             style: {
               padding: '16px',
@@ -57,7 +45,7 @@ function ReopenModal({ stateModal, getInfo, detail }) {
           });
 
           const deleteKeluhan = await deleteRFOKeluhan(detail.rfo_keluhan_id);
-          if (deleteKeluhan.data.status === 'success') {
+          if (deleteKeluhan.data.status === 'success' || deleteKeluhan.data.status === 'Success') {
             setTimeout(() => {
               // document.getElementById('my-modal-revert').click();
               dispatch(setModal(initState));
@@ -69,7 +57,7 @@ function ReopenModal({ stateModal, getInfo, detail }) {
       } else {
         const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
 
-        if (reopenComplain.data.status === 'success') {
+        if (reopenComplain.data.status === 'success' || reopenComplain.data.status === 'Success') {
           toast.success(`Berhasil membuka kembali keluhan.`, {
             style: {
               padding: '16px',

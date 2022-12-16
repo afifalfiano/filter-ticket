@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.modal-box-custom {
+    @apply modal-box max-w-lg modal-box-2;
+}
+
+.modal-box-2 {
+    max-height: calc(110vh - 5em) !important;
+}

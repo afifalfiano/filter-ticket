@@ -1,28 +1,3 @@
-/* eslint-disable dot-notation */
-/* eslint-disable no-mixed-operators */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-shadow */
-/* eslint-disable new-cap */
-/* eslint-disable no-return-assign */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable function-paren-newline */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable max-len */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,7 +42,7 @@ function ReportCreate() {
     try {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
           const dataFilter = data.data.filter((pop) => {
@@ -92,7 +67,7 @@ function ReportCreate() {
     try {
       const data = await getUserLaporan().unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         let dataLocal = [];
         if (data.user.helpdesk.length > 0) {
           dataLocal = [...dataLocal, ...data.user.helpdesk];
@@ -114,7 +89,7 @@ function ReportCreate() {
     try {
       const data = await allShift().unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         console.log('set shift', data);
         setAllShiftLocal(data.data);
       }
@@ -269,7 +244,7 @@ function ReportCreate() {
 
     try {
       const data = await saveReport({ body }).unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         toast.success('Berhasil simpan laporan.', {
           style: {
             padding: '16px',

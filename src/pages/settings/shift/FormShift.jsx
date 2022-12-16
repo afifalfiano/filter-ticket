@@ -1,13 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-promise-executor-return */
-/* eslint-disable no-alert */
 import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
@@ -49,7 +39,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
       console.log(detail, 'dt');
       if (detail === null) {
         const add = await createShift({ body });
-        if (add.data.status === 'success') {
+        if (add.data.status === 'success' || add.data.status === 'Success') {
           toast.success('Berhasil tambah data Shift.', {
             style: {
               padding: '16px',
@@ -86,7 +76,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
           body: { ...body, id_shift: detail.id_shift },
         });
         console.log(body, 'body');
-        if (update.data.status === 'success') {
+        if (update.data.status === 'success' || update.data.status === 'Success') {
           toast.success('Berhasil ubah data shift.', {
             style: {
               padding: '16px',

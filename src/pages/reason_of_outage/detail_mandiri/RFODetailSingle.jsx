@@ -1,10 +1,3 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable max-len */
-/* eslint-disable no-irregular-whitespace */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +12,6 @@ import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { RFOSingleSchema } from '../../../utils/schema_validation_form';
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
 function RFODetailSingle() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -41,7 +33,7 @@ function RFODetailSingle() {
     try {
       const data = await rfoById(id).unwrap();
       console.log(data);
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setRFOById(data));
         setDetailRFO(data.data);
         lastUpdate = data.data?.keluhan?.balasan?.length > 0
@@ -98,7 +90,7 @@ function RFODetailSingle() {
       // create
       const update = await updateRFOKeluhan({ id, body }).unwrap();
       console.log(body, 'body');
-      if (update?.status === 'success') {
+      if (update?.status === 'success' || update?.status === 'Success') {
         toast.success('Berhasil memperbarui RFO Keluhan.', {
           style: {
             padding: '16px',

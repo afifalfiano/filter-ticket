@@ -16,7 +16,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable prefer-template */
 /* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */

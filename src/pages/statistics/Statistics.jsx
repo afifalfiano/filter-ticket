@@ -7,7 +7,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable prefer-template */
 /* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
@@ -63,7 +63,7 @@ function Statistics() {
   const getDataStatistik = async () => {
     try {
       const data = await getStatistik().unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         setDataGraph(data);
       }
       console.log(data, 'staistik');
@@ -77,7 +77,7 @@ function Statistics() {
       console.log(parameter, 'prm');
       const param = `?dari=${parameter?.mulai}&sampai=${parameter?.selesai}`;
       const data = await getStatistikFilter(param).unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         console.log(data, 'staistik param');
         const dataFix = [
           {

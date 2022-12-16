@@ -1,15 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable max-len */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-unused-vars */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
 import {
   HiOutlineCloudUpload,
@@ -96,7 +84,7 @@ function ReasonOfOutage() {
   const getAllRFOMasal = async () => {
     try {
       const data = await allRFOMasal().unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         setShowTable(true);
         dispatch(setRFOMasal({ ...data }));
         setRowsMasal(data.data);
@@ -110,7 +98,7 @@ function ReasonOfOutage() {
   const getAllRFO = async () => {
     try {
       const data = await allRFO().unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         setShowTable(true);
         dispatch(setRFO({ ...data }));
         setRows(data.data);

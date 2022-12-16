@@ -1,14 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-console */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-/* eslint-disable prettier/prettier */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-
-import { useState } from 'react';
-
-/* eslint-disable react/button-has-type */
 function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 5, currentPage = 1, countPage = [1], onClick, serverMode = true, handlePerPage }) {
   console.log(perPage, 'items per page');
   console.log(currentFilterPage, 'current filter per page');

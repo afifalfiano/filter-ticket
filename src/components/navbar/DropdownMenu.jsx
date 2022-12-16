@@ -2,11 +2,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom'
 import { useGetProfileMutation, useLogoutMutation } from '../../store/features/auth/authApiSlice';
-import { selectCurrentUser, setLogOut, subscribeChangeProfile } from '../../store/features/auth/authSlice';
+import { setLogOut, subscribeChangeProfile } from '../../store/features/auth/authSlice';
 import { clearBTS } from '../../store/features/bts/btsSlice';
 import { clearComplain } from '../../store/features/complain/complainSlice';
-import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
+import catchError from '../../services/catchError';
 
 const DropdownMenu = () => {
 
@@ -21,12 +21,13 @@ const DropdownMenu = () => {
   const doGetProfile = async () => {
     try {
       const data = await getProfile().unwrap();
-      console.log(data, 'profile');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         setProfile(data.data);
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
@@ -35,18 +36,12 @@ const DropdownMenu = () => {
   }, [infoProfile])
   
 
-  let { data: user } = useSelector(selectCurrentUser);
-  console.log(user, 'usr');
-  // eslint-disable-next-line no-unused-vars
   const [logout] = useLogoutMutation();
 
   const onLogout = async (e) => {
-    e.preventDefault();
-
     try {
       const userLogout = await logout().unwrap();
-      console.log(userLogout, 'lg');
-      if (userLogout?.status === 'success') {
+      if (userLogout?.status === 'success' || userLogout?.status === 'Success') {
         dispatch((action) => {
           action(setLogOut());
           action(clearBTS());
@@ -55,31 +50,11 @@ const DropdownMenu = () => {
         localStorage.clear();
         navigate('/sign_in', {replace: true});
       } else {
-        toast.error(userLogout?.data?.message || 'Terjadi Kesalahan', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(userLogout);
       }
 
     } catch (err) {
-      toast.error(err?.message || 'Terjadi Kesalahan', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
 
   }

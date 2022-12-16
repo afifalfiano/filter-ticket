@@ -124,9 +124,9 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             }
             const dataNotification = await doPostNotification(add?.data?.id_keluhan?.id_keluhan);
             console.log(dataNotification, 'data');
-            if (dataNotification?.status === 'Success') {
+            if (dataNotification?.status === 'Success' || dataNotification?.status === 'success') {
               const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
-              if (dataPost?.status === 'Success') {
+              if (dataPost?.status === 'Success' || dataPost?.status === 'success') {
                 setTimeout(() => {
                   resetForm();
                   onBtnClose();

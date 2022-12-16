@@ -1,14 +1,6 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/prop-types */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { HiQuestionMarkCircle } from 'react-icons/hi';
-import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { useDeleteBtsMutation } from '../../store/features/bts/btsApiSlice';
-import styles from './DeleteModal.module.css';
 import { useDeleteComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { useDeletePOPMutation } from '../../store/features/pop/popApiSlice';
 import { useDeleteTeamMutation } from '../../store/features/team/teamApiSlice';
@@ -17,10 +9,10 @@ import { useDeleteRFOGangguanMutation } from '../../store/features/rfo/rfoApiSli
 import { useDeleteLaporanMutation } from '../../store/features/report/reportApiSlice';
 import { useDeleteShiftMutation } from '../../store/features/shift/shiftApiSlice';
 import { initState, setModal } from '../../store/features/modal/modalSlice';
+import catchError from '../../services/catchError';
+import handleResponse from '../../services/handleResponse';
 
 function DeleteModal({ stateModal, getInfo, detail, title }) {
-  console.log(detail, 'dtl');
-
   const [deleteBts] = useDeleteBtsMutation();
   const [deleteComplain] = useDeleteComplainMutation();
   const [deletePOP] = useDeletePOPMutation();
@@ -55,57 +47,24 @@ function DeleteModal({ stateModal, getInfo, detail, title }) {
       } else if (title === 'Shift') {
         deleteData = await deleteShift(detail.id_shift);
       }
-      console.log(deleteData);
-      if (deleteData?.data?.status === 'success') {
-        toast.success(`Berhasil hapus data ${title}.`, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+      if (deleteData?.data?.status === 'success' || deleteData?.data?.status === 'Success') {
+        handleResponse(deleteData);
         setTimeout(() => {
           onBtnClose();
-          // document.getElementById('my-modal-delete').click();
           getInfo({ status: 'success' });
         }, 2000);
       } else {
-        toast.error(deleteData?.data?.message || 'Gagal hapus data', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(deleteData);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error?.data?.message || 'Gagal hapus data', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 pt-10 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div
-        className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}
+        className={`modal-box h-fit max-h-fit modal-box-custom`}
       >
         <button
           className="btn btn-sm btn-circle absolute right-2 top-2"

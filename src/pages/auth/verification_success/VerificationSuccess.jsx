@@ -14,7 +14,7 @@ function VerificationSuccess() {
     try {
       const body = params.search.split('=');
       const data = await verificationEmail(body[1]).unwrap();
-      if (data.status === 'Success') {
+      if (data.status === 'Success' || data.status === 'success') {
         handleResponse(data);
       } else {
         catchError(data);

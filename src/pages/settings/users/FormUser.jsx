@@ -1,14 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable array-callback-return */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-promise-executor-return */
-/* eslint-disable no-alert */
 import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
@@ -51,7 +40,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
     try {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
         console.log(pop, 'ppp');
         const index = pop.data.find((item) => item.id_pop === user.pop_id);
@@ -67,7 +56,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
     try {
       const data = await allTeam().unwrap();
       console.log(data, 'zxc');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setTeam({ ...data }));
         console.log(role, 'tm');
         const index = role.data.find((item) => +item.id_role === +user?.role_id);
@@ -100,7 +89,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
         body: { ...body, id_user: detail.id_user },
       });
       console.log(body, 'body');
-      if (update.data.status === 'success') {
+      if (update.data.status === 'success' || update.data.status === 'Success') {
         toast.success('Berhasil ubah data user.', {
           style: {
             padding: '16px',

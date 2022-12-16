@@ -1,18 +1,3 @@
-/* eslint-disable no-plusplus */
-/* eslint-disable no-shadow */
-/* eslint-disable max-len */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
 import {
   HiOutlineCloudUpload,
@@ -81,7 +66,7 @@ function HistoryDashboard() {
     const param = `?page=${page}`;
     try {
       const data = await allComplainHistory(param).unwrap();
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         setShowTable(true);
         let dataFix;
         if (user?.role_id === 2) {
@@ -125,7 +110,7 @@ function HistoryDashboard() {
     try {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
           const dataFilter = data.data.filter((pop) => {

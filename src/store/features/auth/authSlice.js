@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 /* eslint-disable camelcase */
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';

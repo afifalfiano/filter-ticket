@@ -1,13 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-unused-vars */
-/* eslint-disable object-curly-newline */
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-promise-executor-return */
-/* eslint-disable no-alert */
 import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
@@ -41,7 +31,7 @@ function PreviewImage({ stateModal, getInfo }) {
       // update
       const update = await changeAvatar(formData).unwrap();
       console.log(update, 'body');
-      if (update.status === 'success') {
+      if (update.status === 'success' || update.status === 'Success') {
         toast.success('Berhasil ubah foto profile.', {
           style: {
             padding: '16px',

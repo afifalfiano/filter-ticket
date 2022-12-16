@@ -1,12 +1,3 @@
-/* eslint-disable object-curly-newline */
-/* eslint-disable array-callback-return */
-/* eslint-disable operator-linebreak */
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/require-default-props */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-
 import { useState } from 'react';
 import { HiSearch } from 'react-icons/hi';
 import PropTypes from 'prop-types';

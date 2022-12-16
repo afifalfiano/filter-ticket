@@ -31,7 +31,7 @@ function ForgetPassword() {
   const requestAPIOTP = async () => {
     try {
       const data = await requestOTP(email).unwrap();
-      if (data.status === 'Success') {
+      if (data.status === 'Success' || data.status === 'success') {
         handleResponse(data);
         setOTP('');
         setPassword('');
@@ -54,7 +54,7 @@ function ForgetPassword() {
     try {
       const params = `?otp=${otp}&password=${password}`;
       const data = await resetPassword(params).unwrap();
-      if (data.status === 'Success') {
+      if (data.status === 'Success' || data.status === 'success') {
         handleResponse(data);
         setShowOTP(true);
         setTimeout(() => {

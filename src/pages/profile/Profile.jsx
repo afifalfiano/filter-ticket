@@ -33,7 +33,7 @@ function Profile() {
     try {
       const data = await getProfile().unwrap();
       console.log(data, 'profile');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         setProfile(data.data);
       }
     } catch (error) {
@@ -45,7 +45,7 @@ function Profile() {
     try {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
         console.log(pop, 'ppp');
         const index = pop.data.find((item) => item.id_pop === user.pop_id);
@@ -61,7 +61,7 @@ function Profile() {
     try {
       const data = await allTeam().unwrap();
       console.log(data, 'zxc');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setTeam({ ...data }));
         console.log(role, 'tm');
         const index = role.data.find(

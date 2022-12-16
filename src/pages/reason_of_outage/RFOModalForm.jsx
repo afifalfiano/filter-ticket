@@ -1,19 +1,3 @@
-/* eslint-disable no-irregular-whitespace */
-/* eslint-disable max-len */
-/* eslint-disable no-console */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable react/prop-types */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useEffect, useState } from 'react';
 import {
   HiOutlineCloudUpload,
@@ -125,7 +109,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
       // create
       if (detail === null) {
         const add = await addRFOGangguan({ ...body });
-        if (add.data.status === 'success') {
+        if (add.data.status === 'success' || add.data.status === 'Success') {
           toast.success('Berhasil Tambah RFO Gangguan.', {
             style: {
               padding: '16px',
@@ -162,7 +146,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
           body: { ...body },
         });
         console.log(body, 'body');
-        if (update.data.status === 'success') {
+        if (update.data.status === 'success' || update.data.status === 'Success') {
           toast.success('Berhasil Ubah RFO Gangguan.', {
             style: {
               padding: '16px',

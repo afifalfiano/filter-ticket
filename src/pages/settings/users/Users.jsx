@@ -1,12 +1,3 @@
-/* eslint-disable default-param-last */
-/* eslint-disable no-plusplus */
-/* eslint-disable max-len */
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable no-unused-vars */
-/* eslint-disable object-curly-newline */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable react/button-has-type */
 import { useDispatch, useSelector } from 'react-redux';
 import { HiSearch, HiTrash, HiEye, HiPencil } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
@@ -93,7 +84,7 @@ function Users() {
     try {
       const data = await allUsers().unwrap();
       console.log(data, 'dat nig');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setUsers({ ...data }));
         setRows(data.data);
         handlePagination(1, data.data);

@@ -1,7 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
-/* eslint-disable prettier/prettier */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
@@ -63,7 +59,7 @@ function FormUpdateProfile({ handleForm, profile }) {
       const data = await updateProfile(body).unwrap();
       console.log(data, 'res cek saja');
       console.log(body, 'body');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         const newProfile = {
           ...user, bearer_token: data.bearer_token, role_id: data.data[0]?.role_id, pop_id: data.data[0].pop_id, username: data.data[0].name
         }

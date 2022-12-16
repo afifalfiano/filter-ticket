@@ -1,16 +1,8 @@
-/* eslint-disable operator-linebreak */
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-// import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { decryptLocalStorage } from '../../utils/helper';
-// import { selectCurrentUser } from '../../store/features/auth/authSlice';
 
-// eslint-disable-next-line react/prop-types
 function Menu() {
-  // const { data: user } = useSelector(selectCurrentUser);
   const [user, setUser] = useState(null);
   useEffect(() => {
     const data = decryptLocalStorage('user_encrypt');

@@ -1,16 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-plusplus */
-/* eslint-disable default-param-last */
-/* eslint-disable max-len */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable prettier/prettier */
-/* eslint-disable operator-linebreak */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/button-has-type */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import {
   HiSearch,
   HiQuestionMarkCircle,
@@ -199,7 +186,7 @@ function BaseTransceiverStation() {
     try {
       const data = await allPOP().unwrap();
       console.log(data, 'ceksaja');
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
         console.log('set data', data);
         setdataPOP(data.data)

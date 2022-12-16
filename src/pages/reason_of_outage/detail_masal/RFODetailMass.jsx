@@ -1,9 +1,3 @@
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable max-len */
-/* eslint-disable no-irregular-whitespace */
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,7 +28,7 @@ function RFODetailMass() {
     try {
       const data = await rfoGangguanById(id).unwrap();
       console.log(data);
-      if (data.status === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setRFOGangguanById(data));
         setDetailRFOMasal(data.data);
         console.log(detailRFOMasal, 'cek');

@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
-/* eslint-disable prettier/prettier */
+
 import { apiSlice } from '../../../api/apiSlice';
 
 export const shiftApiSlice = apiSlice.injectEndpoints({
