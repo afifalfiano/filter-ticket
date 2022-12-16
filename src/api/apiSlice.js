@@ -14,7 +14,7 @@ const baseQuery = fetchBaseQuery({
   mode: 'cors',
   prepareHeaders: (headers, { getState, endpoint }) => {
     const token = getState().auth.data;
-    console.log(endpoint, 'hd');
+    console.log(endpoint, 'endpoint');
     if (token?.bearer_token) {
       headers.set('authorization', `Bearer ${token?.bearer_token}`);
     }

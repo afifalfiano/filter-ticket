@@ -1,8 +1,4 @@
 function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 5, currentPage = 1, countPage = [1], onClick, serverMode = true, handlePerPage }) {
-  console.log(perPage, 'items per page');
-  console.log(currentFilterPage, 'current filter per page');
-  console.log(currentPage, 'current page');
-  console.log(countPage, 'count page');
   return (
     <div className="flex justify-between mt-5 pb-20">
       {serverMode && (

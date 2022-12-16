@@ -8,7 +8,6 @@ import { selectTotalCountNotification, setTotalCount } from "../../store/feature
 
 const ModalNotification = ({totalCount, data}) => {
 
-  console.log(data, 'data nihhhhh')
   const [dataNotification, setDataNotification] = useState([]);
   const [getNotification ] = useGetNotificationMutation();
   const [readNotification ] = useReadNotificationMutation();
@@ -41,7 +40,6 @@ const ModalNotification = ({totalCount, data}) => {
   const doReadNotification = async (id) => {
     try {
       const data = await readNotification({body: {id_notifikasiread: id } }).unwrap();
-      console.log(data, 'success read');
       getAllNotification();
     } catch (error) {
       catchError(error);
@@ -53,7 +51,6 @@ const ModalNotification = ({totalCount, data}) => {
   const doReadAllNotification = async () => {
     try {
       const data = await readAllNotification().unwrap();
-      console.log(data, 'success read all');
       getAllNotification();
     } catch (error) {
       catchError(error);
