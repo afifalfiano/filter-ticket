@@ -1,6 +1,5 @@
 import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import {
   useAddBtsMutation,
@@ -9,9 +8,10 @@ import {
 import { selectAllPOP } from '../../../store/features/pop/popSlice';
 import { FormBTSSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function FormBTS({ stateModal, getInfo, detail, titleAction }) {
-  console.log(detail, 'cek render');
   const [addData] = useAddBtsMutation();
   const [updateBts] = useUpdateBtsMutation();
   const { data: user } = useSelector(selectCurrentUser);
@@ -35,7 +35,6 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
   };
 
   const dataPOP = useSelector(selectAllPOP);
-  console.log(dataPOP, 'cek pop');
 
   const onSubmitData = async (payload, resetForm) => {
     const body = {
@@ -49,91 +48,46 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
     };
     try {
       // create
-      console.log(detail, 'dt');
       if (detail === null) {
-        const add = await addData({ ...body });
-        if (add.data.status === 'success' || add.data.status === 'Success') {
-          toast.success('Berhasil tambah data bts.', {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-          setTimeout(() => {
-            resetForm();
-            onBtnClose();
-            getInfo({ status: 'success' });
-          }, 2000);
-        } else {
-          toast.error(add.data.message, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#ff492d',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'error',
-            icon: false,
-          });
-        }
+        doCreate(body, resetForm);
       } else {
         // update
-        const update = await updateBts({
-          id: detail.id_bts,
-          body: { ...body },
-        });
-        console.log(body, 'body');
-        if (update.data.status === 'success' || update.data.status === 'Success') {
-          toast.success('Berhasil ubah data bts.', {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-          setTimeout(() => {
-            getInfo({ status: 'success' });
-            onBtnClose();
-          }, 2000);
-        } else {
-          toast.error(update.data.message, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#ff492d',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'error',
-            icon: false,
-          });
-        }
+        doUpdate(body);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
+
+  const doUpdate = async (body) => {
+    const update = await updateBts({
+      id: detail.id_bts,
+      body: { ...body },
+    });
+    if (update.data.status === 'success' || update.data.status === 'Success') {
+      handleResponse(update);
+      setTimeout(() => {
+        getInfo({ status: 'success' });
+        onBtnClose();
+      }, 2000);
+    } else {
+      catchError(update);
+    }
+  }
+
+  const doCreate = async (body, resetForm) => {
+    const add = await addData({ ...body });
+    if (add.data.status === 'success' || add.data.status === 'Success') {
+      handleResponse(add);
+      setTimeout(() => {
+        resetForm();
+        onBtnClose();
+        getInfo({ status: 'success' });
+      }, 2000);
+    } else {
+      catchError(add);
+    }
+  }
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
@@ -309,7 +263,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                   disabled={!isValid}
                   type="submit"
                   htmlFor="my-modal-3"
-                  className="btn btn-md btn-success"
+                  className="btn btn-md btn-success text-white"
                 >
                   Simpan
                 </button>

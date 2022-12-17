@@ -1,6 +1,5 @@
 import {
   HiSearch,
-  HiQuestionMarkCircle,
   HiTrash,
   HiEye,
   HiPencil,
@@ -19,6 +18,7 @@ import SkeletonTable from '../../../components/common/table/SkeletonTable';
 import Pagination from '../../../components/common/table/Pagination';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import Modal from '../../../components/modal/Modal';
+import catchError from '../../../services/catchError';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -66,9 +66,7 @@ function BaseTransceiverStation() {
   });
 
   const handlePagination = (targetPage = 1, data) => {
-    console.log(data, 'opo ikih');
     setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    console.log(pagination, 'cek ombak');
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let currentPosts;
@@ -81,13 +79,10 @@ function BaseTransceiverStation() {
   }
 
   const doGetPageNumber = (dataFix) => {
-    console.log(dataFix, 'fixxxxxx ');
-    console.log(pagination.currentFilterPage, 'filpter');
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers });
   }
 
@@ -100,15 +95,11 @@ function BaseTransceiverStation() {
     for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-    console.log('cek ombak filter', pagination);
   }
 
   const onHandleSearch = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
-    console.log(event.target.value.length, 'ooo');
     setSearch(event.target.value);
 
     if (event.target.value.length > 0) {
@@ -151,17 +142,13 @@ function BaseTransceiverStation() {
   }
 
   const handlePOP = (event) => {
-    console.log(event.target, 'cek');
     setPOPLocal(event.target.value);
-    // setPOP(event.target.value);
-    console.log(event.target.value, 'how');
     const dataChanged = dataRow.data.filter((item) => {
       if (+item.pop_id === +event.target.value) {
         return item;
       }
     })
     if (event.target.value === 'all') {
-      console.log(dataRow, 'cek gan');
       setRows(dataRow.data)
       setPagination({
         currentPage: 1,
@@ -185,30 +172,30 @@ function BaseTransceiverStation() {
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      console.log(data, 'ceksaja');
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
-        console.log('set data', data);
         setdataPOP(data.data)
-        console.log(dataPOP, 'pp');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
   const getAllBTS = async () => {
     try {
       const data = await allBts().unwrap();
-      if (data.message === 'success') {
+      if (data.status === 'success' || data.status === 'Success') {
         dispatch(setBTS({ ...data }));
         setRows(data.data);
         handlePagination(1, data.data);
         doGetPageNumber(data.data);
-        console.log(data, 'data rows');
+      } else {
+        catchError(data);
       }
     } catch (err) {
-      console.log(err);
+      catchError(err);
     }
   };
 
@@ -219,7 +206,6 @@ function BaseTransceiverStation() {
   }, []);
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       getAllBTS();
     }
