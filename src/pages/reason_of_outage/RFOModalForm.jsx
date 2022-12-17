@@ -1,38 +1,17 @@
-import { useEffect, useState } from 'react';
-import {
-  HiOutlineCloudUpload,
-  HiSearch,
-  HiPencil,
-  HiTrash,
-  HiEye,
-  HiQuestionMarkCircle,
-} from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
 import { Formik, Field, Form } from 'formik';
 import toast from 'react-hot-toast';
-import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import {
-  useAllRFOMutation,
-  useAllRFOMasalMutation,
-  useAddRFOGangguanMutation,
-  useUpdateRFOGangguanMutation,
+  useAddRFOGangguanMutation, useUpdateRFOGangguanMutation,
 } from '../../store/features/rfo/rfoApiSlice';
-import {
-  selectAllRFO,
-  selectAllRFOMasal,
-  setRFO,
-  setRFOMasal,
-} from '../../store/features/rfo/rfoSlice';
 import styles from './RFOModalForm.module.css';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
-import UploadFile from '../../components/common/forms/UploadFile';
-import { RFOSingleSchema } from '../../utils/schema_validation_form';
 import { setModal } from '../../store/features/modal/modalSlice';
+import { RFOSingleSchema } from '../../utils/schema_validation_form';
+import catchError from '../../services/catchError';
+import handleResponse from '../../services/handleResponse';
 
 function RFOModalForm({ stateModal, getInfo, detail }) {
-  console.log(detail, 'cek render sajax');
   const initialValues = {
     problem: detail?.problem || '',
     action: detail?.action || '',
@@ -40,7 +19,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
     mulai_gangguan: detail?.mulai_gangguan.split(' ')[0] || '',
     selesai_gangguan: detail?.selesai_gangguan.split(' ')[0] || '',
     nomor_tiket: detail?.nomor_tiket || '',
-    // durasi: detail?.durasi || '',
     status: detail?.status || '',
     lampiran: '' || '',
 
@@ -58,35 +36,8 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
 
   const { data: user } = useSelector(selectCurrentUser);
 
-  const [files, setFiles] = useState([]);
-
-  function formatBytes(bytes, decimals = 2) {
-    if (!+bytes) return '0 Bytes'
-
-    const k = 1024
-    const dm = decimals < 0 ? 0 : decimals
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-
-    return `${parseFloat((bytes / k ** i).toFixed(dm))} ${sizes[i]}`
-  }
-
-  const onHandleFileUpload = ($event) => {
-    console.log($event.target.files, 'file');
-    console.log($event.target.files.length, 'file');
-    const file = $event.target.files;
-    file.length > 0 ? setFiles(file[0]) : setFiles([]);
-  }
-
   const [addRFOGangguan] = useAddRFOGangguanMutation()
   const [updateRFOGangguan] = useUpdateRFOGangguanMutation()
-
-  const daysCompare = (startDate, endDate) => {
-    const difference = startDate.getTime() - endDate.getTime();
-    const TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-    return TotalDays;
-  };
 
   const onSubmitData = async (payload, resetForm) => {
     const start = new Date(payload.mulai_gangguan);
@@ -104,93 +55,48 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
       durasi: payload.durasi,
       user_id: user.id_user,
     };
-    console.log(payload, 'py');
     try {
       // create
       if (detail === null) {
-        const add = await addRFOGangguan({ ...body });
-        if (add.data.status === 'success' || add.data.status === 'Success') {
-          toast.success('Berhasil Tambah RFO Gangguan.', {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-          resetForm();
-          setTimeout(() => {
-            onBtnClose();
-            getInfo({ status: 'success' });
-          }, 2000);
-        } else {
-          toast.error(add.data.message, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#ff492d',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'error',
-            icon: false,
-          });
-        }
+        doCreate(body, resetForm)
       } else {
         // update
-        const update = await updateRFOGangguan({
-          id: detail.id_rfo_gangguan,
-          body: { ...body },
-        });
-        console.log(body, 'body');
-        if (update.data.status === 'success' || update.data.status === 'Success') {
-          toast.success('Berhasil Ubah RFO Gangguan.', {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-          setTimeout(() => {
-            getInfo({ status: 'success' });
-            onBtnClose();
-          }, 2000);
-        } else {
-          toast.error(update.data.message, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#ff492d',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'error',
-            icon: false,
-          });
-        }
+        doUpdate(body);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error?.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
+
+  const doCreate = async (body, resetForm) => {
+    const add = await addRFOGangguan({ ...body });
+    if (add.data.status === 'success' || add.data.status === 'Success') {
+     handleResponse(add);
+     setTimeout(() => {
+        resetForm();
+        onBtnClose();
+        getInfo({ status: 'success' });
+      }, 2000);
+    } else {
+      catchError(add);
+    }
+  }
+
+  const doUpdate = async (body) => {
+    const update = await updateRFOGangguan({
+      id: detail.id_rfo_gangguan,
+      body: { ...body },
+    });
+    if (update.data.status === 'success' || update.data.status === 'Success') {
+      handleResponse(update);
+      setTimeout(() => {
+        getInfo({ status: 'success' });
+        onBtnClose();
+      }, 2000);
+    } else {
+      catchError(update);
+    }
+  }
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
@@ -377,7 +283,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                 >
                   Batal
                 </button>
-                <button type="submit" htmlFor="my-modal-3" className="btn btn-md btn-success" disabled={!isValid}>
+                <button type="submit" htmlFor="my-modal-3" className="btn btn-md btn-success text-white" disabled={!isValid}>
                   Simpan
                 </button>
               </div>

@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
-import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import * as Yup from 'yup';
 import { Formik, Field, Form } from 'formik';
-import toast from 'react-hot-toast';
 import { useRfoByIdMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setRFOById } from '../../../store/features/rfo/rfoSlice';
 import DashboardDetail from '../../dashboard/detail/DashboardDetail';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { RFOSingleSchema } from '../../../utils/schema_validation_form';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function RFODetailSingle() {
   const { id } = useParams();
@@ -18,32 +17,20 @@ function RFODetailSingle() {
   const isEditData = searchParams.get('edit');
   const [rfoById, { isSuccess }] = useRfoByIdMutation();
   const [detailRFO, setDetailRFO] = useState(null);
-  const [files, setFiles] = useState([]);
-  const onHandleFileUpload = ($event) => {
-    console.log($event.target.files, 'file');
-    console.log($event.target.files.length, 'file');
-    const file = $event.target.files;
-    file.length > 0 ? setFiles(file[0]) : setFiles([]);
-  };
 
   const dispatch = useDispatch();
-  let lastUpdate = null;
 
   const getRFOKeluhanById = async () => {
     try {
       const data = await rfoById(id).unwrap();
-      console.log(data);
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setRFOById(data));
         setDetailRFO(data.data);
-        lastUpdate = data.data?.keluhan?.balasan?.length > 0
-          ? data.data?.keluhan?.balasan[data.data?.keluhan?.balasan?.length - 1].created_at
-          : data.data?.keluhan?.created_at
-        console.log(data.data, 'cek gan');
-        console.log(lastUpdate, 'updateeeeee');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
@@ -72,7 +59,9 @@ function RFODetailSingle() {
 
   const onSubmitData = async (payload) => {
     const start = new Date(detailRFO?.keluhan.created_at);
-    const end = new Date(lastUpdate);
+    const end = detailRFO.data?.keluhan?.balasan?.length > 0
+    ? detailRFO.data?.keluhan?.balasan[detailRFO.data?.keluhan?.balasan?.length - 1].created_at
+    : detailRFO.data?.keluhan?.created_at
     const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth()}` : start.getMonth()}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
     const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth()}` : end.getMonth()}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
     const body = {
@@ -89,46 +78,13 @@ function RFODetailSingle() {
     try {
       // create
       const update = await updateRFOKeluhan({ id, body }).unwrap();
-      console.log(body, 'body');
       if (update?.status === 'success' || update?.status === 'Success') {
-        toast.success('Berhasil memperbarui RFO Keluhan.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+        handleResponse(update);
       } else {
-        console.log(update, 'err');
-        toast.error(update?.message, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(update);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error?.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 

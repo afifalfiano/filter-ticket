@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import {
-  HiOutlineCloudUpload,
   HiSearch,
   HiPencil,
   HiTrash,
   HiEye,
-  HiQuestionMarkCircle,
 } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +11,7 @@ import DeleteModal from '../../components/common/DeleteModal';
 import Pagination from '../../components/common/table/Pagination';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
 import Modal from '../../components/modal/Modal';
+import catchError from '../../services/catchError';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import {
@@ -25,19 +24,15 @@ import {
   setRFO,
   setRFOMasal,
 } from '../../store/features/rfo/rfoSlice';
-import styles from './ReasonOfOutage.module.css';
 import RFOModalForm from './RFOModalForm';
 
 function ReasonOfOutage() {
   const [statusData, setStatusData] = useState('sendiri');
-  const [showTable, setShowTable] = useState(false);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
-  const [rowsMasal, setRowsMasal] = useState([]);
   const dispatch = useDispatch();
   const [allRFO] = useAllRFOMutation();
-  const [allRFOMasal, { isLoading, isSuccess }] = useAllRFOMasalMutation();
-
+  const [allRFOMasal, {isLoading}] = useAllRFOMasalMutation();
   const dataKeluhan = useSelector(selectAllRFO);
   const stateModal = useSelector(selectModalState);
   const dataGangguan = useSelector(selectAllRFOMasal);
@@ -59,9 +54,6 @@ function ReasonOfOutage() {
   }
   const handleStatus = (event) => {
     setStatusData(event.target.value);
-    console.log(event.target.value, 'status');
-    console.log(dataKeluhan, 'row keluhan');
-    console.log(dataGangguan, 'row gangguan');
     const dataChanged = allData.filter((item) => {
       if (event.target.value === 'sendiri') {
         if (item.hasOwnProperty('id_rfo_keluhan')) {
@@ -74,7 +66,6 @@ function ReasonOfOutage() {
       }
     });
     if (event.target.value === 'all') {
-      console.log(allData, 'cek gan');
       setRows(allData);
     } else {
       setRows(dataChanged);
@@ -85,13 +76,12 @@ function ReasonOfOutage() {
     try {
       const data = await allRFOMasal().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        setShowTable(true);
         dispatch(setRFOMasal({ ...data }));
-        setRowsMasal(data.data);
-        console.log(data, 'data rfo masal');
+      } else {
+        catchError(data);  
       }
     } catch (err) {
-      console.log(err);
+      catchError(err);
     }
   };
 
@@ -99,13 +89,13 @@ function ReasonOfOutage() {
     try {
       const data = await allRFO().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        setShowTable(true);
         dispatch(setRFO({ ...data }));
         setRows(data.data);
-        console.log(data, 'data rfo');
+      } else {
+        catchError(data);
       }
     } catch (err) {
-      console.log(err);
+      catchError(err);
     }
   };
 
@@ -122,8 +112,6 @@ function ReasonOfOutage() {
 
   const onHandleSearch = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
-    console.log(event.target.value.length, 'ooo');
     setSearch(event.target.value);
 
     if (event.target.value.length > 0) {
@@ -147,11 +135,11 @@ function ReasonOfOutage() {
   ];
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       setDetail(null);
       getAllRFOMasal();
       getAllRFO();
+      setStatusData('sendiri');
     }
   };
 

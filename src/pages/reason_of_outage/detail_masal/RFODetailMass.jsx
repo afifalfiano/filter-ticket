@@ -1,40 +1,29 @@
 import { useEffect, useState } from 'react';
-import { HiDocumentText, HiOutlineCloudUpload } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
-import toast from 'react-hot-toast';
-import { useRfoGangguanByIdMutation, useUpdateRFOKeluhanMutation } from '../../../store/features/rfo/rfoApiSlice';
+import { useRfoGangguanByIdMutation } from '../../../store/features/rfo/rfoApiSlice';
 import { setRFOGangguanById } from '../../../store/features/rfo/rfoSlice';
-import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { RFOMasalSchema } from '../../../utils/schema_validation_form';
+import catchError from '../../../services/catchError';
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
 function RFODetailMass() {
   const { id } = useParams();
   const [rfoGangguanById, { isSuccess }] = useRfoGangguanByIdMutation();
   const [detailRFOMasal, setDetailRFOMasal] = useState([]);
-  const [files, setFiles] = useState([]);
-  const onHandleFileUpload = ($event) => {
-    console.log($event.target.files, 'file');
-    console.log($event.target.files.length, 'file');
-    const file = $event.target.files;
-    file.length > 0 ? setFiles(file[0]) : setFiles([]);
-  };
-
   const dispatch = useDispatch();
   const getRFOMasalKeluhanById = async () => {
     try {
       const data = await rfoGangguanById(id).unwrap();
-      console.log(data);
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setRFOGangguanById(data));
         setDetailRFOMasal(data.data);
-        console.log(detailRFOMasal, 'cek');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
@@ -47,11 +36,6 @@ function RFODetailMass() {
     nomor_tiket: detailRFOMasal?.nomor_tiket || '',
     durasi: detailRFOMasal?.durasi || '',
     lampiran: detailRFOMasal?.lampiran || '',
-  };
-
-  const { data: user } = useSelector(selectCurrentUser);
-
-  const onSubmitData = async (payload) => {
   };
 
   const navigasi = useSelector(selectBreadcrumb);
@@ -72,20 +56,13 @@ function RFODetailMass() {
           enableReinitialize
           validationSchema={RFOMasalSchema}
           initialValues={initialValues}
-          onSubmit={(values, { resetForm }) => {
-            onSubmitData(values, resetForm);
-          }}
         >
           {({
             values,
             errors,
             touched,
-            isSubmitting,
-            isValid,
-            setFieldValue,
             handleChange,
-            handleBlur,
-            resetForm,
+            handleBlur
           }) => (
             <Form>
               <div className="flex flex-col gap-3">
