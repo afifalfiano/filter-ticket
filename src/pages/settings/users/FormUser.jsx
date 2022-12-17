@@ -1,6 +1,5 @@
 import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { FormUserSchema } from '../../../utils/schema_validation_form';
@@ -10,6 +9,8 @@ import { useAllTeamMutation } from '../../../store/features/team/teamApiSlice';
 import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
 import { selectAllTeam, setTeam } from '../../../store/features/team/teamSlice';
 import { setModal } from '../../../store/features/modal/modalSlice';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function FormUser({ stateModal, getInfo, detail, titleAction }) {
   const [updateUsers] = useUpdateUsersMutation()
@@ -21,15 +22,15 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
     role_id: detail?.role_id || '',
   };
 
-  const [currentRole, setCurrentRole] = useState(null);
-  const [currentPop, setCurrentPop] = useState(null);
+  const [, setCurrentRole] = useState(null);
+  const [, setCurrentPop] = useState(null);
 
   const role = useSelector(selectAllTeam);
   const pop = useSelector(selectAllPOP);
   const dispatch = useDispatch();
   const [allPOP] = useAllPOPMutation();
   const [allTeam] = useAllTeamMutation();
-  const onBtnClose = (title) => {
+  const onBtnClose = () => {
     const newState = {
       ...stateModal,
       user: { ...stateModal.user, showUpdateModalUser: false },
@@ -39,32 +40,30 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      console.log(data, 'ceksaja');
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
-        console.log(pop, 'ppp');
         const index = pop.data.find((item) => item.id_pop === user.pop_id);
         setCurrentPop(index);
-        console.log(index, 'match');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
   const getAllTeam = async () => {
     try {
       const data = await allTeam().unwrap();
-      console.log(data, 'zxc');
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setTeam({ ...data }));
-        console.log(role, 'tm');
         const index = role.data.find((item) => +item.id_role === +user?.role_id);
         setCurrentRole(index);
-        console.log(index, 'match');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
@@ -81,56 +80,21 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
       pop_id: payload.pop_id,
     };
     try {
-      // create
-      console.log(detail, 'dt');
-      // update
       const update = await updateUsers({
         id: detail.id_user,
         body: { ...body, id_user: detail.id_user },
       });
-      console.log(body, 'body');
       if (update.data.status === 'success' || update.data.status === 'Success') {
-        toast.success('Berhasil ubah data user.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+        handleResponse(update);
         setTimeout(() => {
           getInfo({ status: 'success' });
           onBtnClose();
         }, 2000);
       } else {
-        toast.error(update.data.message, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(update);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 

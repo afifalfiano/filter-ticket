@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HiSearch, HiTrash, HiEye, HiPencil } from 'react-icons/hi';
+import { HiSearch, HiPencil } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
-import DeleteModal from '../../../components/common/DeleteModal';
 import SkeletonTable from '../../../components/common/table/SkeletonTable';
 import Pagination from '../../../components/common/table/Pagination';
 import { selectAllUsers, setUsers } from '../../../store/features/users/usersSlice';
@@ -10,6 +9,7 @@ import { useAllUsersMutation } from '../../../store/features/users/usersApiSlice
 import FormUser from './FormUser';
 import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
+import catchError from '../../../services/catchError';
 
 function Users() {
   const dispatch = useDispatch();
@@ -30,9 +30,7 @@ function Users() {
   });
 
   const handlePagination = (targetPage = 1, data) => {
-    console.log(data, 'opo ikih');
     setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    console.log(pagination, 'cek ombak');
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let currentPosts;
@@ -45,18 +43,14 @@ function Users() {
   }
 
   const doGetPageNumber = (dataFix) => {
-    console.log(dataFix, 'fixxxxxx ');
-    console.log(pagination.currentFilterPage, 'filpter');
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers });
   }
 
   const handleFilterPagination = (selectFilter) => {
-    // setPagination({ ...pagination, currentFilterPage: selectFilter });
     const indexOfLastPost = pagination.currentPage * selectFilter;
     const indexOfFirstPost = indexOfLastPost - selectFilter;
     const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
@@ -65,15 +59,12 @@ function Users() {
     for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-    console.log('cek ombak filter', pagination);
   }
 
   const stateModal = useSelector(selectModalState);
-  console.log(stateModal, 'modalzzž;');
 
-  const openModal = (modal) => {
+  const openModal = () => {
     const newState = { ...stateModal, user: { ...stateModal.user, showUpdateModalUser: true } };
 
     dispatch(setModal(newState));
@@ -83,16 +74,16 @@ function Users() {
   const getAllUsers = async () => {
     try {
       const data = await allUsers().unwrap();
-      console.log(data, 'dat nig');
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setUsers({ ...data }));
         setRows(data.data);
         handlePagination(1, data.data);
         doGetPageNumber(data.data);
-        console.log({ ...data }, 'data rows');
+      } else {
+        catchError(data);
       }
     } catch (err) {
-      console.log(err);
+      catchError(err);
     }
   };
 
@@ -120,7 +111,6 @@ function Users() {
   };
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       getAllUsers();
     }
@@ -162,17 +152,9 @@ function Users() {
         </div>
       )}
 
-      {/* modal craete or update */}
-      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormUser getInfo={getInfo} detail={detail} titleAction={title} /> */}
-
       <Modal>
         {stateModal?.user?.showUpdateModalUser && <FormUser stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
       </Modal>
-      {/* modal delete */}
-      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" /> */}
-      {/* <DeleteModal getInfo={getInfo} detail={detail} title="POP" /> */}
-
       {isLoading && (
         <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
       )}
@@ -206,34 +188,10 @@ function Users() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            // document.getElementById('my-modal-3').click();
                             openModal();
                           }}
                         />
                       </div>
-                      {/* <div className="tooltip" data-tip="Hapus">
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                          // document.getElementById('my-modal-delete').click();
-                          }}
-                        />
-                      </div> */}
-                      {/* <div className="tooltip" data-tip="Detail">
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('read');
-                          // document.getElementById('my-modal-3').click();
-                          }}
-                        />
-                      </div> */}
                     </div>
                   </td>
                 </tr>
