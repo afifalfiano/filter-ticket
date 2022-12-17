@@ -14,6 +14,9 @@ const breadcrumbSlice = createSlice({
       const data = action.payload;
       state.data = data;
     },
+    resetBreadcrumb: (state) => {
+      state.data = [];
+    }
   },
 });
 

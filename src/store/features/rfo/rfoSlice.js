@@ -30,6 +30,8 @@ const rfoSlice = createSlice({
     clearRFO: (state) => {
       state.data = null;
       state.detail = null;
+      state.rfo_masal = null;
+      state.detail = null;
     },
     setRFOMasal: (state, action) => {
       const { data } = action.payload;

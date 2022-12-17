@@ -21,6 +21,7 @@ const authSlice = createSlice({
     },
     setLogOut: (state) => {
       state.data = null;
+      state.profile = null;
     },
     notifChangeProfile: (state, action) => {
       state.profile = action.payload;

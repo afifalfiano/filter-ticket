@@ -21,6 +21,7 @@ const notificationSlice = createSlice({
     },
     clearNotification: (state) => {
       state.data = [];
+      state.totalNotification = 0;
     },
   },
 });

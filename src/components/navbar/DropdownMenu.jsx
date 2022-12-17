@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useDispatch, useSelector } from 'react-redux';
 import {Link, useNavigate} from 'react-router-dom'
 import { useGetProfileMutation, useLogoutMutation } from '../../store/features/auth/authApiSlice';
@@ -7,6 +6,16 @@ import { clearBTS } from '../../store/features/bts/btsSlice';
 import { clearComplain } from '../../store/features/complain/complainSlice';
 import { useEffect, useState } from 'react';
 import catchError from '../../services/catchError';
+import { clearComplainHistory } from '../../store/features/complain_history/complainHistorySlice';
+import { clearModal } from '../../store/features/modal/modalSlice';
+import { clearNotification } from '../../store/features/notification/notificationSlice';
+import { clearPOP } from '../../store/features/pop/popSlice';
+import { clearReport } from '../../store/features/report/reportSlice';
+import { clearRFO } from '../../store/features/rfo/rfoSlice';
+import { clearShift } from '../../store/features/shift/shiftSlice';
+import { clearSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKeluhanSlice';
+import { clearTeam } from '../../store/features/team/teamSlice';
+import { clearUsers } from '../../store/features/users/usersSlice';
 
 const DropdownMenu = () => {
 
@@ -46,6 +55,16 @@ const DropdownMenu = () => {
           action(setLogOut());
           action(clearBTS());
           action(clearComplain());
+          action(clearComplainHistory());
+          action(clearModal());
+          action(clearNotification());
+          action(clearPOP());
+          action(clearReport());
+          action(clearRFO());
+          action(clearShift());
+          action(clearSumberKeluhan());
+          action(clearTeam());
+          action(clearUsers());
         });
         localStorage.clear();
         navigate('/sign_in', {replace: true});
@@ -53,7 +72,7 @@ const DropdownMenu = () => {
         catchError(userLogout);
       }
 
-    } catch (err) {
+    } catch (error) {
       catchError(error);
     }
 
