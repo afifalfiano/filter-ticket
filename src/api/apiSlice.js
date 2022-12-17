@@ -1,13 +1,8 @@
-/* eslint-disable consistent-return */
-/* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
-/* eslint-disable import/prefer-default-export */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import { setCredentials, setLogOut } from '../store/features/auth/authSlice';
+import { setLogOut } from '../store/features/auth/authSlice';
 import { clearBTS } from '../store/features/bts/btsSlice';
 import { clearComplain } from '../store/features/complain/complainSlice';
+import catchError from '../services/catchError';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: '/api',
@@ -33,7 +28,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         action(clearComplain());
       });
       localStorage.clear();
-      // window.location.reload();
+      window.location.reload();
     }
 
     if (result?.error?.data?.message === '\nPlease login first') {
@@ -43,25 +38,15 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         action(clearComplain());
       });
       localStorage.clear();
-      // window.location.reload();
+      window.location.reload();
     }
 
     if (result?.error?.status === 'FETCH_ERROR') {
-      toast.error('Kesalahan Pada Server', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(result.error);
     }
     return result;
   } catch (error) {
-    console.log(error, 'err');
+    catchError(error);
   }
 };
 
