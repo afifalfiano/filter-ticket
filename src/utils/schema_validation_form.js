@@ -48,7 +48,7 @@ const ComplainFormSchema = Yup.object().shape({
   detail_sumber: Yup.string().required('Wajib diisi.'),
   nama_pelapor: Yup.string().required('Wajib diisi.'),
   nomor_pelapor: Yup.number().required('Wajib diisi.'),
-  keluhan: Yup.string().required('Wajib diisi.'),
+  keluhan: Yup.string().optional(),
 });
 
 const RFOMasalFormSchema = Yup.object().shape({

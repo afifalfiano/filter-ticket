@@ -13,6 +13,7 @@ import { setModal } from '../../../store/features/modal/modalSlice';
 import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import TextEditor from '../../../components/common/forms/TextEditor';
 
 function ComplainModalForm({ stateModal, getInfo, detail }) {
   const [addComplain] = useAddComplainMutation();
@@ -213,6 +214,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             touched,
             handleChange,
             handleBlur,
+            setFieldValue,
           }) => (
             <Form>
               <div className="flex flex-row gap-3">
@@ -365,12 +367,12 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                 </div>
               </div>
 
-              <div className="form-control">
+              <div className="form-control mt-2">
                 <label htmlFor="keluhan" className="label">
                   <span className="label-text"> Keluhan Awal:</span>
                 </label>
 
-                <Field
+                {/* <Field
                   id="keluhan"
                   name="keluhan"
                   component="textarea"
@@ -380,6 +382,11 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                   onBlur={handleBlur}
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full h-28"
+                /> */}
+                <div></div>
+                <TextEditor
+                  setFieldValue={(val) => setFieldValue('keluhan', val)}
+                  value={values.keluhan}
                 />
                 {errors.keluhan && touched.keluhan ? (
                   <div className="label label-text text-red-500">{errors.keluhan}</div>
@@ -387,7 +394,9 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
               </div>
 
               {!detail && (
-                <UploadFile getFile={onHandleFileUpload} />
+                <div className="">
+                  <UploadFile getFile={onHandleFileUpload} />
+                </div>
 
               )}
 

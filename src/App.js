@@ -22,6 +22,7 @@ import Statistics from './pages/statistics/Statistics';
 import Layout from './components/common/Layout';
 import RequireAuth from './components/common/RequireAuth';
 import 'react-loading-skeleton/dist/skeleton.css';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import NotFound from './pages/not_found/NotFound';
 import Users from './pages/settings/users/Users';
 import Pop from './pages/settings/pop/Pop';

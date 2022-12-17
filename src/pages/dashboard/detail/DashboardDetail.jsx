@@ -240,11 +240,12 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
             </p>
           </div>
           <div className="form-control">
-            <textarea
+            {/* <textarea
               className={`textarea textarea-bordered resize-none ${detailComplain?.keluhan.length > 1500 ? 'h-96' : 'h-28'}`}
               disabled
               value={detailComplain?.keluhan}
-            />
+            /> */}
+            <div dangerouslySetInnerHTML={{__html: detailComplain?.keluhan}} className={`textarea resize-none bg-gray-100 ${detailComplain?.keluhan.length > 1500 ? 'h-96' : 'h-28'}`}/>
           </div>
           <div className="py-2">
             {detailComplain?.lampiranbalasan?.map((file) => {
