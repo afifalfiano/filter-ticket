@@ -241,7 +241,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
           </div>
           <div className="form-control">
             <textarea
-              className="textarea textarea-bordered resize-none h-28"
+              className={`textarea textarea-bordered resize-none ${detailComplain?.keluhan.length > 1500 ? 'h-96' : 'h-28'}`}
               disabled
               value={detailComplain?.keluhan}
             />
