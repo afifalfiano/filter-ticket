@@ -1,7 +1,6 @@
 import { jsPDF } from "jspdf";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from 'react-hot-toast';
 import {
   HiEye,
   HiEyeOff
