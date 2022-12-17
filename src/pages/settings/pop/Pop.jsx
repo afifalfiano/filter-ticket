@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HiSearch, HiTrash, HiEye, HiPencil } from 'react-icons/hi';
+import { HiSearch, HiTrash, HiPencil } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import DeleteModal from '../../../components/common/DeleteModal';
@@ -10,6 +10,7 @@ import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
 import FormPOP from './FormPOP';
 import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
+import catchError from '../../../services/catchError';
 
 function Pop() {
   const dispatch = useDispatch();
@@ -42,9 +43,7 @@ function Pop() {
   });
 
   const handlePagination = (targetPage = 1, data) => {
-    console.log(data, 'opo ikih');
     setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    console.log(pagination, 'cek ombak');
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let currentPosts;
@@ -57,13 +56,10 @@ function Pop() {
   }
 
   const doGetPageNumber = (dataFix) => {
-    console.log(dataFix, 'fixxxxxx ');
-    console.log(pagination.currentFilterPage, 'filpter');
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers });
   }
 
@@ -76,24 +72,22 @@ function Pop() {
     for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-    console.log('cek ombak filter', pagination);
   }
 
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      console.log(data, 'dat nig');
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
         setRows(data.data);
         handlePagination(1, data.data);
         doGetPageNumber(data.data);
-        console.log({ ...data }, 'data rows');
+      } else {
+        catchError(data);
       }
     } catch (err) {
-      console.log(err);
+      catchError(err);
     }
   };
 
@@ -121,7 +115,6 @@ function Pop() {
   };
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       getAllPOP();
     }

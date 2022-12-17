@@ -1,13 +1,13 @@
 import { Formik, Field, Form } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { useAddPOPMutation, useUpdatePOPMutation } from '../../../store/features/pop/popApiSlice';
 import { FormPOPSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
+import catchError from '../../../services/catchError';
+import handleResponse from '../../../services/handleResponse';
 
 function FormPOP({ stateModal, getInfo, detail, titleAction }) {
-  console.log(detail, 'cek render');
   const [addPOP] = useAddPOPMutation();
   const [updatePOP] = useUpdatePOPMutation();
   const { data: user } = useSelector(selectCurrentUser);
@@ -20,7 +20,7 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
   const onBtnClose = () => {
     const newState = {
       ...stateModal,
-      pop: { ...stateModal.pop, showAddModalSourceComplain: false, showUpdateModalSourceComplain: false },
+      pop: { ...stateModal.pop, showAddModalPop: false, showUpdateModalPop: false },
     };
     dispatch(setModal(newState));
   };
@@ -33,91 +33,46 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
     };
     try {
       // create
-      console.log(detail, 'dt');
       if (detail === null) {
-        const add = await addPOP({ ...body });
-        if (add.data.status === 'success' || add.data.status === 'Success') {
-          toast.success('Berhasil tambah data POP.', {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-          setTimeout(() => {
-            resetForm();
-            onBtnClose();
-            getInfo({ status: 'success' });
-          }, 2000);
-        } else {
-          toast.error(add.data.message, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#ff492d',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'error',
-            icon: false,
-          });
-        }
+        doCreate(body, resetForm);
       } else {
         // update
-        const update = await updatePOP({
-          id: detail.id_pop,
-          body: { ...body, id_pop: detail.id_pop },
-        });
-        console.log(body, 'body');
-        if (update.data.status === 'success' || update.data.status === 'Success') {
-          toast.success('Berhasil ubah data POP.', {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-          setTimeout(() => {
-            getInfo({ status: 'success' });
-            onBtnClose();
-          }, 2000);
-        } else {
-          toast.error(update.data.message, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#ff492d',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'error',
-            icon: false,
-          });
-        }
+        doUpdate(body);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
+
+  const doUpdate = async (body) => {
+    const update = await updatePOP({
+      id: detail.id_pop,
+      body: { ...body, id_pop: detail.id_pop },
+    });
+    if (update.data.status === 'success' || update.data.status === 'Success') {
+      handleResponse(update);
+      setTimeout(() => {
+        getInfo({ status: 'success' });
+        onBtnClose();
+      }, 2000);
+    } else {
+      catchError(update);
+    }
+  }
+
+  const doCreate = async (body, resetForm) => {
+    const add = await addPOP({ ...body });
+    if (add.data.status === 'success' || add.data.status === 'Success') {
+      handleResponse(add);
+      setTimeout(() => {
+        resetForm();
+        onBtnClose();
+        getInfo({ status: 'success' });
+      }, 2000);
+    } else {
+      catchError(add);
+    }
+  }
 
   const onHandleReset = (reset) => {
     reset();
@@ -193,7 +148,7 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
                   disabled={!isValid}
                   type="submit"
                   htmlFor="my-modal-3"
-                  className="btn btn-md btn-success"
+                  className="btn btn-md btn-success text-white"
                 >
                   Simpan
                 </button>
