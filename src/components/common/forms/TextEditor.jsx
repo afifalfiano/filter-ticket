@@ -28,6 +28,12 @@ const TextEditor = ({ value, setFieldValue }) => {
   return (
     <div>
       <Editor
+        toolbar={{
+        options: ["inline", "list"],
+        list: {
+        options: ["unordered", "ordered"],
+        },
+        }}
         editorState={editorState}
         toolbarClassName="toolbarClassName"
         wrapperClassName="custom-wrapper"
