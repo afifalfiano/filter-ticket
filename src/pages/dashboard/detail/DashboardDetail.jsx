@@ -241,10 +241,9 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
           </div>
           <div className="form-control">
             <textarea
-              className="textarea textarea-bordered h-28"
+              className="textarea textarea-bordered resize-none h-28"
               disabled
               value={detailComplain?.keluhan}
-              style={{ resize: 'none' }}
             />
           </div>
           <div className="py-2">
@@ -280,10 +279,9 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
               </div>
               <div className="form-control">
                 <textarea
-                  className="textarea textarea-bordered h-28"
+                  className={`textarea textarea-bordered resize-none ${item?.balasan.length > 1500 ? 'h-96' : 'h-28'}`}
                   disabled
                   value={item?.balasan}
-                  style={{ resize: 'none' }}
                 />
               </div>
               <div className="py-2">
@@ -363,7 +361,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                     >
                       Kembali
                     </button>
-                    <button type="submit" className="btn btn-md btn-success" disabled={!isValid}>
+                    <button type="submit" className="btn btn-md btn-success text-white" disabled={!isValid}>
                       Simpan
                     </button>
                   </div>
