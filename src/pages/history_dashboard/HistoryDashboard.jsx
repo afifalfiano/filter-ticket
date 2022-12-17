@@ -1,23 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {
-  HiOutlineCloudUpload,
   HiSearch,
-  HiPencil,
-  HiTrash,
   HiEye,
   HiOutlineClipboardCheck,
-  HiOutlineClipboardList,
-  HiQuestionMarkCircle,
-  HiExclamation,
+  HiOutlineClipboardList
 } from 'react-icons/hi';
 import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './HistoryDashboard.module.css';
 import { useAllComplainHistoryMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
 import { selectAllComplainHistory, setComplainHistory } from '../../store/features/complain_history/complainHistorySlice';
 import ReopenModal from './ReopenModal';
-import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
 import Pagination from '../../components/common/table/Pagination';
@@ -25,6 +18,8 @@ import SkeletonTable from '../../components/common/table/SkeletonTable';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import Modal from '../../components/modal/Modal';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
+import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import catchError from '../../services/catchError';
 
 function HistoryDashboard() {
   const initColumns = [
@@ -44,7 +39,6 @@ function HistoryDashboard() {
   const [perPage, setPerPage] = useState([5]);
   const [countPage, setCountPage] = useState([1]);
 
-  const [showTable, setShowTable] = useState(false);
   const [pop, setPOPLocal] = useState('all');
   const [dataPOP, setdataPOP] = useState([]);
   const [search, setSearch] = useState('');
@@ -54,7 +48,7 @@ function HistoryDashboard() {
   const [allComplainHistory, { isLoading }] = useAllComplainHistoryMutation();
   const [detail, setDetail] = useState(null);
   const stateModal = useSelector(selectModalState);
-  const openModal = (modal) => {
+  const openModal = () => {
     const newState = { ...stateModal, history_dashboard: { ...stateModal.history_dashboard, showRevertModalHistoryComplain: true } };
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
@@ -62,12 +56,10 @@ function HistoryDashboard() {
   const { data: user } = useSelector(selectCurrentUser);
 
   const getAllComplainHistory = async (page = 1) => {
-    console.log(page, 'cek');
     const param = `?page=${page}`;
     try {
       const data = await allComplainHistory(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        setShowTable(true);
         let dataFix;
         if (user?.role_id === 2) {
           const dataFilter = data.data.data.filter((item) => {
@@ -78,7 +70,6 @@ function HistoryDashboard() {
           dataFix = dataFilter
           dispatch(setComplainHistory({ data: dataFix }));
           setRows(dataFix);
-          console.log(dataFix, 'data complain');
         } else {
           dispatch(setComplainHistory({ ...data.data }));
           setRows(data.data.data);
@@ -87,18 +78,15 @@ function HistoryDashboard() {
 
           const countPaginate = [];
           for (let i = 0; i < data.data.last_page; i++) {
-            console.log(i, 'iiii');
             countPaginate.push(i + 1);
           }
           setCountPage(countPaginate);
-          console.log(countPaginate, 'count');
         }
-        // dispatch(setComplainHistory({ ...data.data }));
-        // setRows(data.data.data);
-        console.log(data, 'data complain');
+      } else {
+        catchError(data);
       }
     } catch (err) {
-      console.log(err);
+      catchError(err);
     }
   };
 
@@ -109,7 +97,6 @@ function HistoryDashboard() {
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      console.log(data, 'ceksaja');
       if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
@@ -123,24 +110,17 @@ function HistoryDashboard() {
           dataFix = data.data
         }
         dispatch(setPOP({ data: dataFix }));
-        console.log('set data', data);
         setdataPOP(dataFix);
-        console.log(dataPOP, 'pp');
-
-        // dispatch(setPOP({ ...data }));
-        // console.log('set data', data);
-        // setdataPOP(data.data)
-        // console.log(dataPOP, 'pp');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
   const onHandleSearch = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
-    console.log(event.target.value.length, 'ooo');
     setSearch(event.target.value);
 
     if (event.target.value.length > 0) {
@@ -174,16 +154,13 @@ function HistoryDashboard() {
   }, []);
 
   const handlePOP = (event) => {
-    console.log(event.target, 'cek');
     setPOPLocal(event.target.value);
-    console.log(event.target.value, 'how');
     const dataChanged = dataRow.data.filter((item) => {
       if (+item.pop_id === +event.target.value) {
         return item;
       }
     })
     if (event.target.value === 'all') {
-      console.log(dataRow, 'cek gan');
       setRows(dataRow.data);
     } else {
       setRows(dataChanged);
@@ -191,7 +168,6 @@ function HistoryDashboard() {
   };
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       getAllComplainHistory();
     }
@@ -199,11 +175,6 @@ function HistoryDashboard() {
 
   return (
     <div>
-
-      {/* modal revert */}
-      {/* <input type="checkbox" id="my-modal-revert" className="modal-toggle" />
-      <ReopenModal getInfo={getInfo} detail={detail} /> */}
-      {/* showRevertModalHistoryComplain */}
       <Modal>
         {stateModal?.history_dashboard?.showRevertModalHistoryComplain && <ReopenModal stateModal={stateModal} getInfo={getInfo} detail={detail} />}
       </Modal>
@@ -339,9 +310,6 @@ function HistoryDashboard() {
                           onClick={() => {
                             setDetail(item);
                             openModal();
-                            // document
-                            //   .getElementById('my-modal-revert')
-                            //   .click();
                           }}
                         />
                       </div>

@@ -1,21 +1,13 @@
-import React, { useState, useEffect } from 'react';
 import {
-  HiOutlineCloudUpload,
-  HiSearch,
-  HiPencil,
-  HiTrash,
-  HiEye,
-  HiOutlineClipboardCheck,
-  HiOutlineClipboardList,
-  HiQuestionMarkCircle,
   HiExclamation,
 } from 'react-icons/hi';
-import toast from 'react-hot-toast';
 import { useDispatch } from 'react-redux';
 import { useComplainHistoryReopenMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
 import styles from './ReopenModal.module.css';
 import { useDeleteRFOKeluhanMutation } from '../../store/features/rfo/rfoApiSlice';
 import { initState, setModal } from '../../store/features/modal/modalSlice';
+import catchError from '../../services/catchError';
+import handleResponse from '../../services/handleResponse';
 
 function ReopenModal({ stateModal, getInfo, detail }) {
   const [complainHistoryReopen] = useComplainHistoryReopenMutation()
@@ -27,57 +19,37 @@ function ReopenModal({ stateModal, getInfo, detail }) {
   };
   const onSubmit = async () => {
     try {
-      console.log(detail, 'dtl');
       if (detail.rfo_keluhan_id !== null) {
-        // if (deleteKeluhan.data.status === 'success') {
         const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
         if (reopenComplain.data.status === 'success' || reopenComplain.data.status === 'Success') {
-          toast.success(`Berhasil membuka kembali keluhan.`, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
-
+          handleResponse(reopenComplain);
           const deleteKeluhan = await deleteRFOKeluhan(detail.rfo_keluhan_id);
           if (deleteKeluhan.data.status === 'success' || deleteKeluhan.data.status === 'Success') {
             setTimeout(() => {
-              // document.getElementById('my-modal-revert').click();
               dispatch(setModal(initState));
               getInfo({ status: 'success' });
             }, 2000);
+          } else {
+            catchError(deleteKeluhan);
           }
+        } else {
+          catchError(reopenComplain);
         }
-        // }
       } else {
         const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
 
         if (reopenComplain.data.status === 'success' || reopenComplain.data.status === 'Success') {
-          toast.success(`Berhasil membuka kembali keluhan.`, {
-            style: {
-              padding: '16px',
-              backgroundColor: '#36d399',
-              color: 'white',
-            },
-            duration: 2000,
-            position: 'top-right',
-            id: 'success',
-            icon: false,
-          });
+          handleResponse(reopenComplain);
           setTimeout(() => {
-            // document.getElementById('my-modal-revert').click();
             dispatch(setModal(initState));
             getInfo({ status: 'success' });
           }, 2000);
+        } else {
+          catchError(reopenComplain);
         }
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
