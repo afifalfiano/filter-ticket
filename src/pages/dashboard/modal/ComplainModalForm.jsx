@@ -110,7 +110,18 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             sentimen_analisis: request.sentiment,
             lampiran: '',
           };
-          const add = await addComplain({ ...body });
+          doCreate(body, resetForm);
+        }
+      } else {
+        doUpdateComplain(payload);
+      }
+    } catch (error) {
+      catchError(error);
+    }
+  };
+
+  const doCreate = async (body, resetForm) => {
+    const add = await addComplain({ ...body });
           if (add.data.status === 'success' || add.data.status === 'Success') {
             handleResponse(add);
 
@@ -141,14 +152,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
           } else {
             catchError(add);
           }
-        }
-      } else {
-        doUpdateComplain(payload);
-      }
-    } catch (error) {
-      catchError(error);
-    }
-  };
+  }
 
   const doUpdateComplain = async (payload) => {
     const body = {

@@ -18,6 +18,7 @@ import ReportDetail from './detail/ReportDetail';
 import Modal from '../../components/modal/Modal';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import { useAllReportMutation } from '../../store/features/report/reportApiSlice';
+import catchError from '../../services/catchError';
 
 function Report() {
   const columns = [
@@ -30,7 +31,6 @@ function Report() {
     'Petugas Helpdesk',
     'Aksi',
   ];
-  const [showTable, setShowTable] = useState(true);
   const [pop, setPOPLocal] = useState('all');
   const [dataPOP, setdataPOP] = useState([]);
   const [rows, setRows] = useState([]);
@@ -62,9 +62,7 @@ function Report() {
   });
 
   const handlePagination = (targetPage = 1, data) => {
-    console.log(data, 'opo ikih');
     setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    console.log(pagination, 'cek ombak');
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let currentPosts;
@@ -77,13 +75,10 @@ function Report() {
   }
 
   const doGetPageNumber = (dataFix) => {
-    console.log(dataFix, 'fixxxxxx ');
-    console.log(pagination.currentFilterPage, 'filpter');
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers });
   }
 
@@ -96,15 +91,12 @@ function Report() {
     for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-    console.log('cek ombak filter', pagination);
   }
 
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      console.log(data, 'ceksaja');
       if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
@@ -118,27 +110,23 @@ function Report() {
           dataFix = data.data
         }
         dispatch(setPOP({ data: dataFix }));
-        console.log('set data', data);
         setdataPOP(dataFix);
-        console.log(dataPOP, 'pp');
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
   const handlePOP = (event) => {
-    console.log(event.target, 'cek');
     setPOPLocal(event.target.value);
-    // setPOP(event.target.value);
-    console.log(event.target.value, 'how');
     const dataChanged = dataRow.data.filter((item) => {
       if (+item.pop_id === +event.target.value) {
         return item;
       }
     })
     if (event.target.value === 'all') {
-      console.log(dataRow, 'cek gan');
       setRows(dataRow.data)
       setPagination({
         currentPage: 1,
@@ -159,8 +147,6 @@ function Report() {
 
   const onHandleSearch = (event) => {
     event.preventDefault();
-    console.log(event.target.value);
-    console.log(event.target.value.length, 'ooo');
     setSearch(event.target.value);
 
     if (event.target.value.length > 0) {
@@ -205,7 +191,6 @@ function Report() {
   const doGetAllReport = async () => {
     try {
       const data = await allReport().unwrap();
-      console.log(data, 'dat');
       if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
@@ -219,16 +204,17 @@ function Report() {
           setRows(dataFix);
           handlePagination(1, dataFix);
           doGetPageNumber(dataFix);
-          console.log(dataFix, 'data complain');
         } else {
           dispatch(setReport({ ...data }));
           setRows(data.data);
           handlePagination(1, data.data);
           doGetPageNumber(data.data);
         }
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
 
@@ -239,9 +225,8 @@ function Report() {
   }, [])
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
-      // getAllComplain();
+      doGetAllReport();
     }
   };
 

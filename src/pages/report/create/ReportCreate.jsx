@@ -13,6 +13,8 @@ import { useAllPOPMutation } from "../../../store/features/pop/popApiSlice"
 import { selectCurrentUser } from "../../../store/features/auth/authSlice";
 import { formatBytes } from "../../../utils/helper";
 import { setPOP } from "../../../store/features/pop/popSlice";
+import catchError from "../../../services/catchError";
+import handleResponse from "../../../services/handleResponse";
 
 function ReportCreate() {
   const [allUserLocal, setAllUserLocal] = useState([]);
@@ -32,7 +34,6 @@ function ReportCreate() {
   const dispatch = useDispatch();
 
   const handleShowPreview = (event) => {
-    console.log(event);
     setShowPreview(!event);
   }
 
@@ -41,7 +42,6 @@ function ReportCreate() {
   const getAllPOP = async () => {
     try {
       const data = await allPOP().unwrap();
-      console.log(data, 'ceksaja');
       if (data.status === 'success' || data.status === 'Success') {
         let dataFix;
         if (user?.role_id === 2) {
@@ -55,18 +55,18 @@ function ReportCreate() {
           dataFix = data.data
         }
         dispatch(setPOP({ data: dataFix }));
-        console.log('set data', data);
         setAllPOPLocal(dataFix);
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
   const getAllUserLapor = async () => {
     try {
       const data = await getUserLaporan().unwrap();
-      console.log(data, 'ceksaja');
       if (data.status === 'success' || data.status === 'Success') {
         let dataLocal = [];
         if (data.user.helpdesk.length > 0) {
@@ -75,26 +75,26 @@ function ReportCreate() {
         if (data.user.noc.length > 0) {
           dataLocal = [...dataLocal, ...data.user.noc];
         }
-        console.log(dataLocal, 'loc');
         setAllUserLocal(dataLocal);
         setCheckedState(new Array(dataLocal.length).fill(true))
-        console.log('set user lapor', checkedState);
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
   const getAllShift = async () => {
     try {
       const data = await allShift().unwrap();
-      console.log(data, 'ceksaja');
       if (data.status === 'success' || data.status === 'Success') {
-        console.log('set shift', data);
         setAllShiftLocal(data.data);
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   };
 
@@ -136,41 +136,19 @@ function ReportCreate() {
     const data = $event.target.files;
     data.length > 0 ? setFile(data[0]) : setFile([]);
   };
+
   const getKeluhanLaporanUser = async () => {
     try {
       const body = bodyKeluhan;
       const data = await getKeluhanLaporan({ body }).unwrap();
-      console.log(data, 'ceksaja');
-      if (data.status === 'succes') {
-        console.log('set cek', data);
+      if (data.status === 'succes' || data.status === 'Success') {
         setKeluhanLaporanLocal(data.data);
         setShowPreview(true);
       } else {
-        toast.error(data.message || 'Data Tidak Ditemukan', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ffd22e',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message || 'Data Tidak Ditemukan', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ffd22e',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   }
 
@@ -245,35 +223,15 @@ function ReportCreate() {
     try {
       const data = await saveReport({ body }).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        toast.success('Berhasil simpan laporan.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+        handleResponse(data);
+        setTimeout(() => {
+          navigate('/report', { replace: true });
+        }, 2000);
+      } else {
+        catchError(data);
       }
-      setTimeout(() => {
-        navigate('/report', { replace: true });
-      }, 2000);
-      console.log(data, 'dat');
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message || 'Gagal simpan laporan', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   }
 
@@ -289,20 +247,19 @@ function ReportCreate() {
 
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) => (index === position ? !item : item));
-    console.log(updatedCheckedState, 'cek dulu')
     setCheckedState(updatedCheckedState);
   };
   return (
     <div>
       <div className="flex gap-5 mt-5">
-        <div className="form-control">
+        <div className="form-control w-1/4">
           <label htmlFor="tanggal" className="label font-semibold">
             <span className="label-text"> Tanggal</span>
           </label>
 
           <input type="date" name="" id="tanggal" onChange={handleFilter} className="input w-full max-w-full input-bordered" />
         </div>
-        <div className="form-control">
+        <div className="form-control w-1/4">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> POP</span>
           </label>
@@ -318,7 +275,7 @@ function ReportCreate() {
             ))}
           </select>
         </div>
-        <div className="form-control">
+        <div className="form-control w-1/4">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Shift</span>
           </label>
@@ -334,15 +291,23 @@ function ReportCreate() {
             ))}
           </select>
         </div>
-        <div className="form-control justify-end">
-          <button type="button" onClick={onRequestLaporan} className="btn btn-md btn-success">
+        <div className="w-1/4 flex gap-5">
+        <div className="justify-end">
+          <label htmlFor="location" className="label font-semibold" style={{visibility: 'hidden'}}>
+            <span className="label-text">Generate</span>
+          </label>
+          <button type="button" onClick={onRequestLaporan} className="btn btn-md btn-success text-white">
             Generate Data
           </button>
         </div>
-        <div className="form-control justify-end">
+        <div className="justify-end">
+          <label htmlFor="location" className="label font-semibold" style={{visibility: 'hidden'}}>
+            <span className="label-text">Unduh</span>
+          </label>
           <button type="button" onClick={handleGeneratePdf} className="btn btn-md btn-primary" disabled={keluhanLaporanLocal === null}>
             Unduh Laporan
           </button>
+        </div>
         </div>
       </div>
       <div className="mt-5">

@@ -1,62 +1,15 @@
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-console */
-/* eslint-disable object-curly-newline */
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-shadow */
-/* eslint-disable new-cap */
-/* eslint-disable no-return-assign */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable function-paren-newline */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-unsafe-optional-chaining */
-/* eslint-disable max-len */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { selectBreadcrumb, updateBreadcrumb } from "../../../store/features/breadcrumb/breadcrumbSlice";
+import { useDispatch } from "react-redux";
 import { setModal } from "../../../store/features/modal/modalSlice";
-import { useGetOneReportMutation } from "../../../store/features/report/reportApiSlice";
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
 function ReportDetail({ stateModal, detailData }) {
-  console.log(detailData, 'detail data')
   const dispatch = useDispatch()
-  const onBtnClose = (title) => {
+  const onBtnClose = () => {
     const newState = {
       ...stateModal,
       report: { ...stateModal.report, showDetailModalReport: false },
     };
     dispatch(setModal(newState));
   };
-
-  // const downloadFile = (url, fileName) => {
-  //   fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
-  //     .then((res) => res.blob())
-  //     .then((res) => {
-  //       const aElement = document.createElement('a');
-  //       aElement.setAttribute('download', fileName);
-  //       const href = URL.createObjectURL(res);
-  //       aElement.href = href;
-  //       aElement.setAttribute('target', '_blank');
-  //       aElement.click();
-  //       URL.revokeObjectURL(href);
-  //     });
-  // }
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
