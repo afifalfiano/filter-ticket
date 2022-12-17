@@ -1,26 +1,9 @@
-/* eslint-disable no-use-before-define */
-/* eslint-disable no-console */
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable jsx-a11y/anchor-has-content */
-/* eslint-disable max-len */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable prefer-template */
-/* eslint-disable react/jsx-one-expression-per-line */
-
-/* eslint-disable no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/no-unknown-property */
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  BarChart, LineChart, Bar, Line, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+  BarChart, LineChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
+import catchError from '../../services/catchError';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useGetStatistikFilterMutation, useGetStatistikMutation } from '../../store/features/graph/graphApiSlice';
 import dataInit from './data_init';
@@ -51,11 +34,10 @@ const dataInitFilter = [
 function Statistics() {
   const dispatch = useDispatch();
   const [dataGraph, setDataGraph] = useState(dataInit);
-  // const [tanggalMulai, setTanggalMulai] = useState(null);
-  // const [tanggalSelesai, setTanggalSelesai] = useState(null);
   const today = new Date();
-  const format = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-  const [parameter, setParameter] = useState({ mulai: format, selesai: format });
+  const format = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+  const formatStart = `${today.getFullYear()}-${today.getMonth()}-${today.getDate() - 7}`;
+  const [parameter, setParameter] = useState({ mulai: formatStart, selesai: format });
   const [dataFilter, setDataFilter] = useState(dataInitFilter);
   const [getStatistik] = useGetStatistikMutation();
   const [getStatistikFilter] = useGetStatistikFilterMutation();
@@ -65,20 +47,19 @@ function Statistics() {
       const data = await getStatistik().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
         setDataGraph(data);
+      } else {
+        catchError(data);
       }
-      console.log(data, 'staistik');
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
 
   const doGetStatistikByFilter = async () => {
     try {
-      console.log(parameter, 'prm');
       const param = `?dari=${parameter?.mulai}&sampai=${parameter?.selesai}`;
       const data = await getStatistikFilter(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        console.log(data, 'staistik param');
         const dataFix = [
           {
             name: 'all_pop',
@@ -102,9 +83,11 @@ function Statistics() {
           },
         ]
         setDataFilter(dataFix);
+      } else {
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
+      catchError(error);
     }
   }
 
@@ -112,22 +95,16 @@ function Statistics() {
     const { id, value } = event.target;
     if (id === 'tanggal_mulai') {
       setParameter({ mulai: value, selesai: parameter.selesai });
-      console.log(value, 'val mulai');
-      console.log(parameter, 'param 1');
     }
     if (id === 'tanggal_selesai') {
       setParameter({ mulai: parameter.mulai, selesai: value });
-      console.log(value, 'val seelsai');
-      console.log(parameter, 'param 2');
     }
 
     setTimeout(() => {
-      console.log(parameter, 'fix')
       doGetStatistikByFilter();
     }, 1000)
   };
 
-  // console.log(dataDummy, 'dm');
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/statistics', title: 'Statistik' }]));
     getDataStatistik();
@@ -145,7 +122,7 @@ function Statistics() {
                 <span className="label-text"> Mulai</span>
               </label>
 
-              <input type="date" name="" id="tanggal_mulai" defaultValue={format} onChange={handleFilter} className="input w-full max-w-full input-bordered" />
+              <input type="date" name="" id="tanggal_mulai" defaultValue={formatStart} onChange={handleFilter} className="input w-full max-w-full input-bordered" />
             </div>
             <div className="form-control">
               <label htmlFor="tanggal" className="label font-semibold">
@@ -172,11 +149,6 @@ function Statistics() {
               <YAxis />
               <Tooltip />
               <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-              {/* <Bar dataKey="all_pop" fill="#8884d8" />
-              <Bar dataKey="jogja" fill="#0f7d9e" />
-              <Bar dataKey="solo" fill="#82ca9d" />
-              <Bar dataKey="purwokerto" fill="#f89c38" /> */}
-              {/* <Bar dataKey="total" fill="#c2f23d" /> */}
               <Line type="monotone" dataKey="total" stroke="#82ca9d" />
             </LineChart>
           </ResponsiveContainer>
@@ -315,7 +287,6 @@ function Statistics() {
               <YAxis />
               <Tooltip />
               <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-              {/* <Bar dataKey="Total" fill="#8884d8" /> */}
               <Line type="monotone" dataKey="Total" stroke="#8884d8" />
             </LineChart>
           </ResponsiveContainer>
