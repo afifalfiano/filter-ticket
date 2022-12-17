@@ -27,7 +27,7 @@ const catchError = (body) => {
         message = 'Periksa Kembali Isian Form';  
         break;
       case 404:
-        message = body?.data?.message;
+        message = body?.data?.message || 'Data Tidak Ditemukan';
         break;
       case 500:
         message = body?.data?.message || 'Internal Server Error';

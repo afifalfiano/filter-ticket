@@ -14,7 +14,7 @@ const baseQuery = fetchBaseQuery({
   mode: 'cors',
   prepareHeaders: (headers, { getState, endpoint }) => {
     const token = getState().auth.data;
-    console.log(endpoint, 'endpoint');
+    // console.log(endpoint, 'endpoint');
     if (token?.bearer_token) {
       headers.set('authorization', `Bearer ${token?.bearer_token}`);
     }
@@ -25,7 +25,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   try {
     const result = await baseQuery(args, api, extraOptions);
-    console.log(result, 'ts');
+    // console.log(result, 'ts');
     if (result?.error?.data?.message === 'Please login first') {
       api.dispatch((action) => {
         action(setLogOut());

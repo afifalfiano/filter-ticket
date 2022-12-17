@@ -1,7 +1,5 @@
-import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
-import * as Yup from 'yup';
 import { useEffect } from 'react';
 import { HiPencil } from 'react-icons/hi';
 import { selectCurrentUser, setCredentials } from '../../store/features/auth/authSlice';
@@ -14,8 +12,9 @@ import PreviewImage from './PreviewImage';
 import { encryptLocalStorage } from '../../utils/helper';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import Modal from '../../components/modal/Modal';
+import handleResponse from '../../services/handleResponse';
+import catchError from '../../services/catchError';
 
-/* eslint-disable react/prop-types */
 function FormUpdateProfile({ handleForm, profile }) {
   const { data: user } = useSelector(selectCurrentUser);
   const roleData = useSelector(selectAllTeam);
@@ -57,68 +56,33 @@ function FormUpdateProfile({ handleForm, profile }) {
         };
       }
       const data = await updateProfile(body).unwrap();
-      console.log(data, 'res cek saja');
-      console.log(body, 'body');
       if (data.status === 'success' || data.status === 'Success') {
         const newProfile = {
           ...user, bearer_token: data.bearer_token, role_id: data.data[0]?.role_id, pop_id: data.data[0].pop_id, username: data.data[0].name
         }
         dispatch(setCredentials({ ...newProfile }));
-        console.log(newProfile, 'let');
         encryptLocalStorage('user_encrypt', newProfile);
-        toast.success('Berhasil memperbarui akun.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+        handleResponse(data);
 
         setTimeout(() => {
           handleForm(false);
         }, 2000)
       } else {
-        toast.error(`${data.message}` || 'Gagal Perbarui Profile', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(data);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message || 'Gagal Perbarui Profile', {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       handleForm(false);
     }
   };
 
   const stateModal = useSelector(selectModalState);
-  const openModal = (modal) => {
+  const openModal = () => {
     const newState = { ...stateModal, profile: { ...stateModal.profile, showPreviewImageModal: true } };
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
@@ -126,9 +90,6 @@ function FormUpdateProfile({ handleForm, profile }) {
 
   return (
     <div>
-      {/* modal craete or update */}
-      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <PreviewImage getInfo={getInfo} /> */}
       <Modal>
         {stateModal?.profile?.showPreviewImageModal && <PreviewImage stateModal={stateModal} getInfo={getInfo} /> }
       </Modal>

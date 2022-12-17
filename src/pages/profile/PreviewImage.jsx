@@ -1,10 +1,10 @@
-import { Formik, Field, Form } from 'formik';
-import { useDispatch, useSelector } from 'react-redux';
-import toast from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useChangeAvatarMutation } from '../../store/features/auth/authApiSlice';
 import { notifChangeProfile } from '../../store/features/auth/authSlice';
 import { setModal } from '../../store/features/modal/modalSlice';
+import catchError from '../../services/catchError';
+import handleResponse from '../../services/handleResponse';
 
 function PreviewImage({ stateModal, getInfo }) {
   const [avatar, setAvatar] = useState(null);
@@ -12,11 +12,10 @@ function PreviewImage({ stateModal, getInfo }) {
   const [changeAvatar] = useChangeAvatarMutation();
   const dispatch = useDispatch();
   const handleChange = (e) => {
-    console.log(e.target.files);
     setAvatar(URL.createObjectURL(e.target.files[0]));
     setFile(e.target.files[0]);
   }
-  const onBtnClose = (title) => {
+  const onBtnClose = () => {
     const newState = {
       ...stateModal,
       profile: { ...stateModal.profile, showPreviewImageModal: false },
@@ -27,61 +26,26 @@ function PreviewImage({ stateModal, getInfo }) {
     const formData = new FormData();
     formData.append('avatar', file);
     try {
-      // create
-      // update
       const update = await changeAvatar(formData).unwrap();
-      console.log(update, 'body');
       if (update.status === 'success' || update.status === 'Success') {
-        toast.success('Berhasil ubah foto profile.', {
-          style: {
-            padding: '16px',
-            backgroundColor: '#36d399',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'success',
-          icon: false,
-        });
+        handleResponse(update);
         dispatch(notifChangeProfile('updated'));
         setTimeout(() => {
           getInfo({ status: 'success' });
-          // document.getElementById('my-modal-3').click();
           onBtnClose();
+          dispatch(notifChangeProfile(null));
         }, 2000);
       } else {
-        toast.error(update.message, {
-          style: {
-            padding: '16px',
-            backgroundColor: '#ff492d',
-            color: 'white',
-          },
-          duration: 2000,
-          position: 'top-right',
-          id: 'error',
-          icon: false,
-        });
+        catchError(update);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.data.message, {
-        style: {
-          padding: '16px',
-          backgroundColor: '#ff492d',
-          color: 'white',
-        },
-        duration: 2000,
-        position: 'top-right',
-        id: 'error',
-        icon: false,
-      });
+      catchError(error);
     }
   };
 
   const onHandleReset = () => {
     setFile(null);
     setAvatar(null);
-    // document.getElementById('my-modal-3').click();
     onBtnClose();
   };
 
