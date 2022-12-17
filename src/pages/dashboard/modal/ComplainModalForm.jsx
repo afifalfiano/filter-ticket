@@ -379,7 +379,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                   disabled={detail !== null}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className="input input-md input-bordered  max-w-full"
+                  className="input input-md input-bordered  max-w-full h-28"
                 />
                 {errors.keluhan && touched.keluhan ? (
                   <div className="label label-text text-red-500">{errors.keluhan}</div>

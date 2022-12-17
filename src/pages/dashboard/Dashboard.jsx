@@ -428,7 +428,9 @@ const Dashboard = () => {
                 <td>{(item?.id_pelanggan)}</td>
                 <td>{(item?.nama_pelanggan)}</td>
                 <td>{item?.nama_pelapor} - {item?.nomor_pelapor}</td>
-                <td className="text-left">{(item?.keluhan.length > 50 ? item?.keluhan.slice(0, 50) + '...' : item?.keluhan)}</td>
+                <td className="text-left">
+                  <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
+                </td>
                 <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan')}</td>
                 <td className="text-left">
                   <p>
