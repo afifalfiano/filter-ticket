@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HiSearch, HiTrash, HiEye, HiPencil } from 'react-icons/hi';
+import { HiSearch, HiTrash, HiPencil } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import DeleteModal from '../../../components/common/DeleteModal';
 import SkeletonTable from '../../../components/common/table/SkeletonTable';
 import Pagination from '../../../components/common/table/Pagination';
 import { useIndexShiftMutation } from '../../../store/features/shift/shiftApiSlice';
-import { selectAllTeam, setTeam } from '../../../store/features/team/teamSlice';
 import {
   selectAllShift,
   setShift,
@@ -14,6 +13,7 @@ import {
 import FormShift from './FormShift';
 import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
+import catchError from '../../../services/catchError';
 
 function Shift() {
   const dispatch = useDispatch();
@@ -46,9 +46,7 @@ function Shift() {
   });
 
   const handlePagination = (targetPage = 1, data) => {
-    console.log(data, 'opo ikih');
     setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    console.log(pagination, 'cek ombak');
     const indexOfLastPost = targetPage * pagination.currentFilterPage;
     const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
     let currentPosts;
@@ -61,18 +59,14 @@ function Shift() {
   }
 
   const doGetPageNumber = (dataFix) => {
-    console.log(dataFix, 'fixxxxxx ');
-    console.log(pagination.currentFilterPage, 'filpter');
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers });
   }
 
   const handleFilterPagination = (selectFilter) => {
-    // setPagination({ ...pagination, currentFilterPage: selectFilter });
     const indexOfLastPost = pagination.currentPage * selectFilter;
     const indexOfFirstPost = indexOfLastPost - selectFilter;
     const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
@@ -81,23 +75,21 @@ function Shift() {
     for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
       pageNumbers.push(i);
     }
-    console.log(pageNumbers, 'cekk');
     setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-    console.log('cek ombak filter', pagination);
   }
   const getAllShift = async () => {
     try {
       const data = await indexShift().unwrap();
-      console.log(data, 'dat tim');
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setShift({ ...data }));
         setRows(data.data);
         handlePagination(1, data.data);
         doGetPageNumber(data.data);
-        console.log({ ...data }, 'data rows');
+      } else {
+        catchError(data);
       }
     } catch (err) {
-      console.log(err);
+      catchError(err);
     }
   };
 
@@ -125,7 +117,6 @@ function Shift() {
   };
 
   const getInfo = ($event) => {
-    console.log($event);
     if ($event.status === 'success') {
       getAllShift();
     }
@@ -144,7 +135,6 @@ function Shift() {
           onClick={() => {
             setDetail(null);
             setTitle('create');
-            // document.getElementById('my-modal-3').click();
             openModal('add shift');
           }}
         >
@@ -176,14 +166,6 @@ function Shift() {
           </div>
         </div>
       )}
-
-      {/* modal craete or update */}
-      {/* <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-      <FormShift getInfo={getInfo} detail={detail} titleAction={title} /> */}
-
-      {/* modal delete */}
-      {/* <input type="checkbox" id="my-modal-delete" className="modal-toggle" />
-      <DeleteModal getInfo={getInfo} detail={detail} title="Shift" /> */}
 
       <Modal>
         {stateModal?.shift?.showAddModalShift && <FormShift stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
@@ -223,7 +205,6 @@ function Shift() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            // document.getElementById('my-modal-3').click();
                             openModal('update shift');
                           }}
                         />
@@ -235,23 +216,10 @@ function Shift() {
                           className="cursor-pointer"
                           onClick={() => {
                             setDetail(item);
-                            // document.getElementById('my-modal-delete').click();
                             openModal('delete shift');
                           }}
                         />
                       </div>
-                      {/* <div className="tooltip" data-tip="Detail">
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('read');
-                            document.getElementById('my-modal-3').click();
-                          }}
-                        />
-                      </div> */}
                     </div>
                   </td>
                 </tr>
