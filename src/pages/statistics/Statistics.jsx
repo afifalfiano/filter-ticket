@@ -133,7 +133,7 @@ function Statistics() {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart
+          <BarChart
               width={500}
               height={300}
               data={dataFilter}
@@ -149,8 +149,8 @@ function Statistics() {
               <YAxis />
               <Tooltip />
               <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-              <Line type="monotone" dataKey="total" stroke="#82ca9d" />
-            </LineChart>
+              <Bar dataKey="total" fill="#f89c38" />
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
@@ -271,7 +271,7 @@ function Statistics() {
         <div className="card p-5 w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Bulan Ini</p>
           <ResponsiveContainer width="100%" height={300}>
-            <LineChart
+          <BarChart
               width={500}
               height={300}
               data={dataGraph?.this_month}
@@ -287,15 +287,15 @@ function Statistics() {
               <YAxis />
               <Tooltip />
               <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-              <Line type="monotone" dataKey="Total" stroke="#8884d8" />
-            </LineChart>
+              <Bar dataKey="Total" fill="#8884d8" />
+            </BarChart>
           </ResponsiveContainer>
         </div>
 
         <div className="card p-5 w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Tahun</p>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart
+            <LineChart
               width={500}
               height={300}
               data={dataGraph?.this_year}
@@ -311,11 +311,11 @@ function Statistics() {
               <YAxis />
               <Tooltip />
               <Legend layout="horizontal" verticalAlign="bottom" align="center" />
-              <Bar dataKey="Semua POP" fill="#f86042" />
-              <Bar dataKey="Purwokerto" fill="#0f7d9e" />
-              <Bar dataKey="Surakarta" fill="#82ca9d" />
-              <Bar dataKey="Yogyakarta" fill="#f89c38" />
-            </BarChart>
+              <Line type="monotone" dataKey="Semua POP" stroke="#f86042" />
+              <Line type="monotone" dataKey="Purwokerto" stroke="#0f7d9e" />
+              <Line type="monotone" dataKey="Surakarta" stroke="#82ca9d" />
+              <Line type="monotone" dataKey="Yogyakarta" stroke="#f89c38" />
+            </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
