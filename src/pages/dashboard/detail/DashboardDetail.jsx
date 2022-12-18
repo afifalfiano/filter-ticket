@@ -106,7 +106,8 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
     try {
       const body = {
         keluhan_id,
-        pop_id: user.pop_id
+        pop_id: user.pop_id,
+        id_response: 1
       }
       const data = await postNotification({ body }).unwrap();
       return data;
@@ -147,7 +148,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
 
           await lampiranFileBalasan({ body: formData }).unwrap();
         }
-        const dataNotification = await doPostNotification(add?.data?.id_keluhan?.id_keluhan);
+        const dataNotification = await doPostNotification(detailComplain.id_keluhan);
         if (dataNotification?.status === 'Success' || dataNotification?.status === 'success') {
           const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
           if (dataPost?.status === 'Success' || dataPost?.status === 'success') {

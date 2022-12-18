@@ -65,7 +65,8 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
     try {
       const body = {
         keluhan_id,
-        pop_id: user.pop_id
+        pop_id: user.pop_id,
+        id_response: 0
       }
       const data = await postNotification({ body }).unwrap();
       return data;
