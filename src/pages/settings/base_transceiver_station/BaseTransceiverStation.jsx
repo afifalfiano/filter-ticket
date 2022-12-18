@@ -19,6 +19,7 @@ import Pagination from '../../../components/common/table/Pagination';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import Modal from '../../../components/modal/Modal';
 import catchError from '../../../services/catchError';
+import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 
 function BaseTransceiverStation() {
   const columns = [
@@ -39,6 +40,7 @@ function BaseTransceiverStation() {
   const dispatch = useDispatch();
   const [detail, setDetail] = useState(null);
   const [search, setSearch] = useState('');
+  const {data: user} = useSelector(selectCurrentUser);
 
   const [title, setTitle] = useState('update');
 
@@ -213,6 +215,7 @@ function BaseTransceiverStation() {
 
   return (
     <div>
+      {user?.role_id === 0 && (
       <div>
         <button
           className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
@@ -225,6 +228,7 @@ function BaseTransceiverStation() {
           Tambah
         </button>
       </div>
+      )}
 
       {!isLoading && (
       <div className="flex gap-5 mt-5">
@@ -315,44 +319,60 @@ function BaseTransceiverStation() {
                 <td>{item.lokasi}</td>
                 <td>{item.kordinat}</td>
                 <td>
-                  <div className="flex flex-row gap-3 justify-center">
-                    <div className="tooltip" data-tip="Edit">
-                      <HiPencil
-                        className="cursor-pointer"
-                        size={20}
-                        color="#D98200"
-                        onClick={() => {
-                          setDetail(item);
-                          setTitle('update');
-                          openModal('update bts');
-                        }}
-                      />
-                    </div>
-                    <div className="tooltip" data-tip="Hapus">
-                      <HiTrash
-                        size={20}
-                        color="#FF2E00"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setDetail(item);
-                          openModal('delete bts');
-                        }}
-                      />
-                    </div>
-                    <div className="tooltip" data-tip="Detail">
-                      <HiEye
-                        size={20}
-                        color="#0D68F1"
-                        className="cursor-pointer"
-                        onClick={() => {
-                          setDetail(item);
-                          setTitle('read');
-                          openModal('detail bts');
-                        }}
-                      />
-                    </div>
+                {user?.role_id === 0 ? (
+                <div className="flex flex-row gap-3 justify-center">
+                  <div className="tooltip" data-tip="Edit">
+                    <HiPencil
+                      className="cursor-pointer"
+                      size={20}
+                      color="#D98200"
+                      onClick={() => {
+                        setDetail(item);
+                        setTitle('update');
+                        openModal('update bts');
+                      }}
+                    />
                   </div>
-                </td>
+                  <div className="tooltip" data-tip="Hapus">
+                    <HiTrash
+                      size={20}
+                      color="#FF2E00"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setDetail(item);
+                        openModal('delete bts');
+                      }}
+                    />
+                  </div>
+                  <div className="tooltip" data-tip="Detail">
+                    <HiEye
+                      size={20}
+                      color="#0D68F1"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        setDetail(item);
+                        setTitle('read');
+                        openModal('detail bts');
+                      }}
+                    />
+                  </div>
+                </div>
+                ) : (
+                  <div className="tooltip" data-tip="Detail">
+                  <HiEye
+                    size={20}
+                    color="#0D68F1"
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setDetail(item);
+                      setTitle('read');
+                      openModal('detail bts');
+                    }}
+                  />
+                </div>
+                )}
+              </td>
+
               </tr>
             ))}
           </tbody>
