@@ -5,7 +5,7 @@ import { HiPencil } from 'react-icons/hi';
 import { selectCurrentUser, setCredentials } from '../../store/features/auth/authSlice';
 import { selectAllPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam } from '../../store/features/team/teamSlice';
-import { useUpdateProfileMutation } from '../../store/features/auth/authApiSlice';
+import { useChangePasswordMutation } from '../../store/features/auth/authApiSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { ProfileSchema } from '../../utils/schema_validation_form';
 import PreviewImage from './PreviewImage';
@@ -20,7 +20,7 @@ function FormUpdateProfile({ handleForm, profile }) {
   const roleData = useSelector(selectAllTeam);
   const popData = useSelector(selectAllPOP);
 
-  const [updateProfile,] = useUpdateProfileMutation();
+  const [changePassword,] = useChangePasswordMutation();
   const dispatch = useDispatch()
 
   const navigasi = useSelector(selectBreadcrumb);
@@ -55,7 +55,7 @@ function FormUpdateProfile({ handleForm, profile }) {
           email: payload.email,
         };
       }
-      const data = await updateProfile(body).unwrap();
+      const data = await changePassword(body).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
         const newProfile = {
           ...user, bearer_token: data.bearer_token, role_id: data.data[0]?.role_id, pop_id: data.data[0].pop_id, username: data.data[0].name
@@ -143,6 +143,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                           id="name"
                           name="name"
                           placeholder=""
+                          disabled={user?.role_id !== 3}
                           value={values.name}
                           onBlur={handleBlur}
                           onChange={handleChange}
@@ -223,28 +224,6 @@ function FormUpdateProfile({ handleForm, profile }) {
                   <div className="border-gray-200 rounded-md border-2 w-80 h-auto items-center flex-1 flex-row justify-center">
                     <div className="px-5 py-5">
                       <div className="form-control ">
-                        <label htmlFor="old_password" className="label">
-                          <span className="label-text"> Password Lama:</span>
-                        </label>
-                        <Field
-                          type="password"
-                          component="input"
-                          id="old_password"
-                          name="old_password"
-                          placeholder="***************"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          value={values.old_password}
-                          className="input input-md input-bordered  max-w-full"
-                        />
-                        {errors.old_password && touched.old_password ? (
-                          <div className="label label-text text-red-500">
-                            {errors.old_password}
-                          </div>
-                        ) : null}
-                      </div>
-
-                      <div className="form-control ">
                         <label htmlFor="password" className="label">
                           <span className="label-text"> Password:</span>
                         </label>
@@ -303,6 +282,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                   <button
                     type="submit"
                     className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-24 bg-success border-none"
+                    disabled={!isValid}
                   >
                     Simpan
                   </button>

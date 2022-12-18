@@ -70,9 +70,9 @@ const ProfileSchema = Yup.object().shape({
   pop_id: Yup.string().optional(),
   role_id: Yup.string().optional(),
   old_password: Yup.string().optional().min(6, 'Password minimal 6 karakter.'),
-  password: Yup.string().optional().min(6, 'Password minimal 6 karakter.'),
+  password: Yup.string().required('Wajib diisi').min(6, 'Password minimal 6 karakter.'),
   password_confirmation: Yup.string()
-    .optional()
+    .required('Wajib diisi')
     .oneOf([Yup.ref('password'), null], 'Password tidak cocok'),
 });
 
