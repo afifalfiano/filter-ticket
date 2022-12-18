@@ -20,7 +20,6 @@ import { clearTeam } from '../../store/features/team/teamSlice';
 
 function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
 
-  console.log(payload, 'valueform');
   const [changePassword,] = useChangePasswordMutation();
   const dispatch = useDispatch();
   const onBtnClose = () => {
@@ -65,7 +64,6 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
 
   const onSubmitDataChangePassword = async (payload) => {
     try {
-        console.log(payload, 'py');
       // create
       let body;
       if (payload.password.trim().length > 0 && payload.password_confirmation.trim().length > 0) {

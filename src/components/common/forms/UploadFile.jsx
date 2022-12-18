@@ -18,7 +18,6 @@ function UploadFile({ uploaded = false, getFile }) {
 
   const onHandleFileUpload = ($event) => {
     const data = $event.target.files;
-    console.log(data, 'dat');
     data.length > 0 ? setFile(data) : setFile([]);
     getFile(data);
   };

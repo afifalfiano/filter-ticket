@@ -10,7 +10,6 @@ function Layout({ render }) {
   const urlChanges = window.location.pathname;
   useEffect(() => {
     const datalocal = decryptLocalStorage('user_encrypt');
-    console.log(datalocal, 'data state storage');
     if (datalocal) {
       navigate('/dashboard', { replace: true });
       render(false);
