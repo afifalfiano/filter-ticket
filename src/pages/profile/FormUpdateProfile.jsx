@@ -2,27 +2,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
 import { useEffect } from 'react';
 import { HiPencil } from 'react-icons/hi';
-import { selectCurrentUser, setCredentials } from '../../store/features/auth/authSlice';
+import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { selectAllPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam } from '../../store/features/team/teamSlice';
-import { useChangePasswordMutation } from '../../store/features/auth/authApiSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { ProfileSchema } from '../../utils/schema_validation_form';
 import PreviewImage from './PreviewImage';
-import { encryptLocalStorage } from '../../utils/helper';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import Modal from '../../components/modal/Modal';
-import handleResponse from '../../services/handleResponse';
-import catchError from '../../services/catchError';
+import ModalProfile from './ModalProfile';
+import { useState } from 'react';
 
 function FormUpdateProfile({ handleForm, profile }) {
   const { data: user } = useSelector(selectCurrentUser);
+  const [valueForm, setValueForm] = useState(null);
   const roleData = useSelector(selectAllTeam);
   const popData = useSelector(selectAllPOP);
 
-  const [changePassword,] = useChangePasswordMutation();
   const dispatch = useDispatch()
-
   const navigasi = useSelector(selectBreadcrumb);
 
   useEffect(() => {
@@ -34,47 +31,6 @@ function FormUpdateProfile({ handleForm, profile }) {
     handleForm(false);
   };
 
-  const onSubmitData = async (payload) => {
-    try {
-      // create
-      let body;
-      if (payload.password.trim().length > 0 && payload.password_confirmation.trim().length > 0) {
-        body = {
-          name: payload.name,
-          pop_id: payload.pop_id,
-          role_id: payload?.role_id,
-          email: payload.email,
-          password: payload.password,
-          password_confirmation: payload.password_confirmation,
-        };
-      } else {
-        body = {
-          name: payload.name,
-          pop_id: payload.pop_id,
-          role_id: payload?.role_id,
-          email: payload.email,
-        };
-      }
-      const data = await changePassword(body).unwrap();
-      if (data.status === 'success' || data.status === 'Success') {
-        const newProfile = {
-          ...user, bearer_token: data.bearer_token, role_id: data.data[0]?.role_id, pop_id: data.data[0].pop_id, username: data.data[0].name
-        }
-        dispatch(setCredentials({ ...newProfile }));
-        encryptLocalStorage('user_encrypt', newProfile);
-        handleResponse(data);
-
-        setTimeout(() => {
-          handleForm(false);
-        }, 2000)
-      } else {
-        catchError(data);
-      }
-    } catch (error) {
-      catchError(error);
-    }
-  };
-
   const getInfo = ($event) => {
     if ($event.status === 'success') {
       handleForm(false);
@@ -82,8 +38,14 @@ function FormUpdateProfile({ handleForm, profile }) {
   };
 
   const stateModal = useSelector(selectModalState);
-  const openModal = () => {
-    const newState = { ...stateModal, profile: { ...stateModal.profile, showPreviewImageModal: true } };
+  const openModal = (title, value) => {
+    let newState;
+    if (title === 'preview') {
+      newState = { ...stateModal, profile: { ...stateModal.profile, showPreviewImageModal: true } };
+    } else if (title === 'change-password') {
+      newState = { ...stateModal, change_password: { ...stateModal.change_password, showChangePasswordModal: true } };
+      setValueForm(value);
+    }
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
   }
@@ -92,6 +54,7 @@ function FormUpdateProfile({ handleForm, profile }) {
     <div>
       <Modal>
         {stateModal?.profile?.showPreviewImageModal && <PreviewImage stateModal={stateModal} getInfo={getInfo} /> }
+        {stateModal?.change_password?.showChangePasswordModal && <ModalProfile stateModal={stateModal} getInfo={getInfo} payload={valueForm} /> }
       </Modal>
       <Formik
         enableReinitialize
@@ -100,7 +63,8 @@ function FormUpdateProfile({ handleForm, profile }) {
           name: user?.username, email: user?.email, pop_id: user?.pop_id, role_id: user?.role_id, old_password: '', password: '', password_confirmation: ''
         }}
         onSubmit={(values) => {
-          onSubmitData(values);
+          // onSubmitData(values);
+          openModal('change-password', values);
         }}
       >
         {({

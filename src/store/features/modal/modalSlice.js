@@ -56,6 +56,9 @@ export const initState = {
   profile: {
     showPreviewImageModal: false,
   },
+  change_password: {
+    showChangePasswordModal: false
+  }
 }
 
 const initialState = {
