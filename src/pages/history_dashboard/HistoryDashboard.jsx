@@ -25,8 +25,7 @@ function HistoryDashboard() {
   const initColumns = [
     'No',
     'POP',
-    'ID Pelanggan',
-    'Nama Pelanggan',
+    'Pelanggan',
     'Kontak',
     'Keluhan',
     'Progress',
@@ -140,8 +139,7 @@ function HistoryDashboard() {
       setColumns([
         'No',
         'POP',
-        'ID Pelanggan',
-        'Nama Pelanggan',
+        'Pelanggan',
         'Kontak',
         'Keluhan',
         'Progress',
@@ -259,15 +257,8 @@ function HistoryDashboard() {
                             )
                           }
                   </td>
-                  <td>{item.id_pelanggan}</td>
-                  <td>{item.nama_pelanggan}</td>
-                  <td>
-                    {item.nama_pelapor}
-                    {' '}
-                    -
-                    {' '}
-                    {item.nomor_pelapor}
-                  </td>
+                  <td className="text-left">{(item?.id_pelanggan)} - {(item?.nama_pelanggan)}</td>
+                  <td className="text-left">{item?.nama_pelapor} - {item?.nomor_pelapor}</td>
                   <td className="text-left">
                   <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
                   </td>
