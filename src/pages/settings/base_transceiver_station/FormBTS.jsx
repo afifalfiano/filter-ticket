@@ -17,6 +17,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
   const { data: user } = useSelector(selectCurrentUser);
   const initialValues = {
     nama_bts: detail?.nama_bts || '',
+    deskripsi: detail?.deskripsi || '',
     nama_pic: detail?.nama_pic || '',
     nomor_pic: detail?.nomor_pic || '',
     lokasi: detail?.lokasi || '',
@@ -39,6 +40,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
   const onSubmitData = async (payload, resetForm) => {
     const body = {
       nama_bts: payload.nama_bts,
+      deskripsi: payload.deskripsi,
       nama_pic: payload.nama_pic,
       nomor_pic: payload.nomor_pic,
       lokasi: payload.lokasi,
@@ -140,6 +142,25 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                 />
                 {errors.nama_bts && touched.nama_bts ? (
                   <div className="label label-text text-red-500">{errors.nama_bts}</div>
+                ) : null}
+              </div>
+
+              <div className="form-control">
+                <label htmlFor="deskripsi" className="label">
+                  <span className="label-text"> Deskripsi BTS:</span>
+                </label>
+                <Field
+                  id="deskripsi"
+                  name="deskripsi"
+                  placeholder="Deskripsi BTS"
+                  value={values.deskripsi}
+                  disabled={titleAction === 'read'}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  className="input input-md input-bordered  max-w-full"
+                />
+                {errors.deskripsi && touched.deskripsi ? (
+                  <div className="label label-text text-red-500">{errors.deskripsi}</div>
                 ) : null}
               </div>
 

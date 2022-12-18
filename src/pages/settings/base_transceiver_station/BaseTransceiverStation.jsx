@@ -26,6 +26,7 @@ function BaseTransceiverStation() {
     'No',
     'POP',
     'Nama',
+    'Deskripsi',
     'Penanggung Jawab',
     'No Penanggung Jawab',
     'Lokasi',
@@ -314,6 +315,7 @@ function BaseTransceiverStation() {
                   )}
                 </td>
                 <td>{item.nama_bts}</td>
+                <td>{item.deskripsi}</td>
                 <td>{item.nama_pic}</td>
                 <td>{item.nomor_pic}</td>
                 <td>{item.lokasi}</td>
