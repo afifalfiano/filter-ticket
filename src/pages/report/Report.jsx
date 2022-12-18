@@ -153,12 +153,12 @@ function Report() {
       const regex = new RegExp(search, 'ig');
       const searchResult = dataRow.data.filter((item) => {
         if (+item.pop.id_pop === +pop) {
-          if (item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
+          if (item.nomor_laporan.match(regex) || item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
             return item;
           }
         }
         if (pop === 'all') {
-          if (item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
+          if (item.nomor_laporan.match(regex) || item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
             return item;
           }
         }
