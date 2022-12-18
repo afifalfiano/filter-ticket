@@ -273,7 +273,7 @@ function HistoryDashboard() {
                     {item.balasan.length > 0
                       ? `${item.balasan[
                         item.balasan.length - 1
-                      ].balasan.slice(0, 20)}...`
+                      ].balasan.slice(0, 100)}...`
                       : 'Belum ada tindakan'}
                   </td>
                   <td className="text-left">
