@@ -15,6 +15,7 @@ const SignUpSchema = Yup.object().shape({
   password_confirmation: Yup.string()
     .required('Wajib diisi.')
     .oneOf([Yup.ref('password'), null], 'Password tidak cocok'),
+  agreement: Yup.boolean().optional()
 });
 
 const SignInSchema = Yup.object().shape({

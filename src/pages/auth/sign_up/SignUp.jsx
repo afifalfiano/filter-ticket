@@ -24,6 +24,7 @@ function SignUp() {
     email: '',
     password: '',
     password_confirmation: '',
+    agreement: false,
   };
 
   const getAllPOP = async () => {
@@ -251,11 +252,28 @@ function SignUp() {
                 ) : null}
               </div>
 
+              <div className="form-contro">
+                <label htmlFor="agreement" className="label flex justify-start items-start">
+                <Field
+                  type="checkbox"
+                  id="agreement"
+                  name="agreement"
+                />
+                <span className="label-text">Saya setuju untuk membuat akun.</span>
+                </label>
+                {errors.agreement && touched.agreement ? (
+                  <div className="label text-red-500 pb-0 text-xs">
+                    {errors.agreement}
+                    {' '}
+                  </div>
+                ) : null}
+              </div>
+
               <div className="form-control mt-5">
                 <button
                   type="submit"
                   className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md btn-block"
-                  disabled={!isValid}
+                  disabled={!isValid || values.agreement === false}
                 >
                   Daftar
                 </button>
