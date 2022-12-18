@@ -431,7 +431,7 @@ const Dashboard = () => {
                 <td className="text-left">
                   <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
                 </td>
-                <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 20) + '...' : 'Belum ada tindakan')}</td>
+                <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) + '...' : 'Belum ada tindakan')}</td>
                 <td className="text-left">
                   <p>
                     Dibuat:
