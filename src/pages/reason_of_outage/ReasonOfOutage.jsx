@@ -39,6 +39,12 @@ function ReasonOfOutage() {
   const allData = [].concat(dataKeluhan, dataGangguan);
   const [search, setSearch] = useState('');
   const [detail, setDetail] = useState(null);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    currentFilterPage: 100,
+    pageNumbers: [1],
+    filterPage: [5, 10, 25, 50, 100]
+  });
 
   const openModal = (modal) => {
     let newState;
@@ -116,10 +122,29 @@ function ReasonOfOutage() {
 
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = allData.filter((item) => item.problem.match(regex));
+      const searchResult = allData.filter((item) => {
+        if (item.hasOwnProperty('id_rfo_keluhan') && statusData === 'sendiri') {
+          if (item.problem.match(regex)) {
+            return item;
+          }
+        } 
+        if (item.hasOwnProperty('id_rfo_gangguan') && statusData === 'masal') {
+          if (item.problem.match(regex)) {
+            return item;
+          }
+        }
+      });
       setRows(searchResult);
     } else {
-      setRows(allData);
+      const searchResult = allData.filter((item) => {
+        if (item.hasOwnProperty('id_rfo_keluhan') && statusData === 'sendiri') {
+            return item;
+        }
+        if (item.hasOwnProperty('id_rfo_gangguan') && statusData === 'masal') {
+            return item;
+        }
+      });
+      setRows(searchResult);
     }
   }
 
@@ -345,7 +370,7 @@ function ReasonOfOutage() {
       </div>
       )}
 
-      {!isLoading && <Pagination />}
+      {!isLoading && <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} />}
       {/* end table */}
     </div>
   );
