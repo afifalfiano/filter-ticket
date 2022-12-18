@@ -41,6 +41,7 @@ const ReplySchema = Yup.object().shape({
 });
 
 const ComplainFormSchema = Yup.object().shape({
+  kategori_pelanggan: Yup.string().required('Wajib diisi'),
   id_pelanggan: Yup.string().required('Wajib diisi.'),
   nama_pelanggan: Yup.string().required('Wajib diisi.'),
   pop_id: Yup.string().required('Wajib diisi.'),

@@ -21,6 +21,16 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
   const { data: user } = useSelector(selectCurrentUser);
   const popData = useSelector(selectAllPOP);
   const [filesLocal, setFilesLocal] = useState([]);
+  const [kategoriPelanggan,] = useState([
+    {
+      label: 'REGISTERED',
+      value: 'REGISTERED'
+    },
+    {
+      label: 'UNREGISTERED',
+      value: 'UNREGISTERED',
+    }
+  ]);
   const dispatch = useDispatch();
   const dataSumber = useSelector(selectAllSumberKeluhan);
   const [lampiranFile] = useLampiranFileMutation();
@@ -99,6 +109,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
         const request = await testSentimentData(payload);
         if (request.hasOwnProperty('sentiment')) {
           const body = {
+            kategori_pelanggan: payload.kategori_pelanggan,
             id_pelanggan: payload.id_pelanggan,
             nama_pelanggan: payload.nama_pelanggan,
             nama_pelapor: payload.nama_pelapor,
@@ -185,6 +196,16 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
     setFilesLocal($event);
   }
 
+  const handleCustomer = ($event, setFieldValue) => {
+    console.log($event, 'ev');
+    setFieldValue('kategori_pelanggan', $event.target.value);
+    if ($event.target.value === 'UNREGISTERED') {
+      setFieldValue('id_pelanggan', 'UNREGISTERED')
+    } else {
+      setFieldValue('id_pelanggan', '')
+    }
+  }
+
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
@@ -218,6 +239,29 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
           }) => (
             <Form>
               <div className="flex flex-row gap-3">
+              <div className="form-control flex-1">
+                  <label htmlFor="id_pelanggan" className="label">
+                    <span className="label-text"> Kategori Pelanggan</span>
+                  </label>
+                  <Field
+                    component="select"
+                    id="kategori_pelanggan"
+                    name="kategori_pelanggan"
+                    value={values.kategori_pelanggan}
+                    onBlur={handleBlur}
+                    disabled={detail !== null ? true : null}
+                    onChange={(val) => handleCustomer(val, setFieldValue)}
+                    className="select w-full max-w-full input-bordered"
+                  >
+                    <option value="" label="Pilih Kategori Pelanggan">Pilih Kategori Pelanggan</option>
+                    {kategoriPelanggan.map((item) => (
+                      <option value={item.value} label={item.label}>{item.label}</option>
+                    ))}
+                  </Field>
+                  {errors.kategori_pelanggan && touched.kategori_pelanggan ? (
+                    <div className="label label-text text-red-500">{errors.kategori_pelanggan}</div>
+                  ) : null}
+                </div>
                 <div className="form-control flex-1">
                   <label htmlFor="id_pelanggan" className="label">
                     <span className="label-text"> ID Pelanggan</span>
