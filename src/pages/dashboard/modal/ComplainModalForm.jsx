@@ -38,6 +38,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
   const [storeAllNotification] = useStoreAllNotificationMutation()
 
   const initialValues = {
+    kategori_pelanggan: detail?.kategori_pelanggan || '',
     id_pelanggan: detail?.id_pelanggan || '',
     nama_pelanggan: detail?.nama_pelanggan || '',
     nama_pelapor: detail?.nama_pelapor || '',
@@ -238,8 +239,30 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             setFieldValue,
           }) => (
             <Form>
-              <div className="flex flex-row gap-3">
-              <div className="form-control flex-1">
+                            <div className="flex flex-row gap-3">
+                <div className="form-control flex-1">
+                  <label htmlFor="pop_id" className="label">
+                    <span className="label-text"> POP (Lokasi)</span>
+                  </label>
+                  <Field
+                    component="select"
+                    id="pop_id"
+                    name="pop_id"
+                    value={values.pop_id}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    className="select w-full max-w-full input-bordered"
+                  >
+                    <option value="" label="Pilih POP">Pilih POP</option>
+                    {popData.data.map((item) => (
+                      <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+                    ))}
+                  </Field>
+                  {errors.pop_id && touched.pop_id ? (
+                    <div className="label label-text text-red-500">{errors.pop_id}</div>
+                  ) : null}
+                </div>
+                <div className="form-control flex-1">
                   <label htmlFor="id_pelanggan" className="label">
                     <span className="label-text"> Kategori Pelanggan</span>
                   </label>
@@ -262,6 +285,9 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     <div className="label label-text text-red-500">{errors.kategori_pelanggan}</div>
                   ) : null}
                 </div>
+              </div>
+
+              <div className="flex flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="id_pelanggan" className="label">
                     <span className="label-text"> ID Pelanggan</span>
@@ -274,7 +300,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     onBlur={handleBlur}
                     onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
-                    disabled={detail !== null ? true : null}
+                    disabled={(detail !== null ? true : null) || values.id_pelanggan === 'UNREGISTERED'}
                   />
                   {errors.id_pelanggan && touched.id_pelanggan ? (
                     <div className="label label-text text-red-500">{errors.id_pelanggan}</div>
@@ -298,31 +324,6 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                   />
                   {errors.nama_pelanggan && touched.nama_pelanggan ? (
                     <div className="label label-text text-red-500">{errors.nama_pelanggan}</div>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="flex flex-row gap-3">
-                <div className="form-control flex-grow-1 w-1/2">
-                  <label htmlFor="pop_id" className="label">
-                    <span className="label-text"> POP (Lokasi)</span>
-                  </label>
-                  <Field
-                    component="select"
-                    id="pop_id"
-                    name="pop_id"
-                    value={values.pop_id}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    className="select w-full max-w-full input-bordered"
-                  >
-                    <option value="" label="Pilih POP">Pilih POP</option>
-                    {popData.data.map((item) => (
-                      <option value={item.id_pop} label={item.pop}>{item.pop}</option>
-                    ))}
-                  </Field>
-                  {errors.pop_id && touched.pop_id ? (
-                    <div className="label label-text text-red-500">{errors.pop_id}</div>
                   ) : null}
                 </div>
               </div>
