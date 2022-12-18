@@ -14,10 +14,13 @@ import { ReplySchema } from '../../../utils/schema_validation_form';
 import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import { ContentState, convertFromRaw, EditorState } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 
 function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   const location = useLocation();
   const [detailComplain, setDetailComplain] = useState(null);
+  const [resetTextEditor, setResetTextEditor] = useState(false);
   const [filesLocal, setFilesLocal] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -139,6 +142,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       const add = await addReply({ ...body });
       if (add.data.status === 'success' || add.data.status === 'Success') {
         resetForm()
+        setResetTextEditor(true);
         handleResponse(add);
         if (filesLocal.length > 0) {
           const formData = new FormData();
@@ -154,10 +158,13 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
           const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
           if (dataPost?.status === 'Success' || dataPost?.status === 'success') {
             getComplainById();
+            setResetTextEditor(false);
           } else {
             catchError(dataPost);
+            setResetTextEditor(false);
           }
         } else {
+          setResetTextEditor(false);
           catchError(dataNotification);
         }
       } else {
@@ -321,7 +328,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
               enableReinitialize
               validationSchema={ReplySchema}
               initialValues={{ balasan: '' }}
-              onSubmit={(values, { resetForm }) => {
+              onSubmit={(values, { resetForm}) => {
                 onSubmitData(values, resetForm);
               }}
             >
@@ -353,6 +360,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                     <TextEditor
                     setFieldValue={(val) => setFieldValue('balasan', val)}
                     value={values.balasan}
+                    resetData={resetTextEditor}
                     />
                     {errors.balasan && touched.balasan ? (
                       <div className="label label-text text-red-500">{errors.balasan}</div>

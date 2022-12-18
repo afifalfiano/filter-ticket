@@ -198,7 +198,6 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
   }
 
   const handleCustomer = ($event, setFieldValue) => {
-    console.log($event, 'ev');
     setFieldValue('kategori_pelanggan', $event.target.value);
     if ($event.target.value === 'UNREGISTERED') {
       setFieldValue('id_pelanggan', 'UNREGISTERED')
@@ -432,6 +431,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                 <TextEditor
                   setFieldValue={(val) => setFieldValue('keluhan', val)}
                   value={values.keluhan}
+                  disabled={detail !== null ? true : false}
                 />
                 {errors.keluhan && touched.keluhan ? (
                   <div className="label label-text text-red-500">{errors.keluhan}</div>
