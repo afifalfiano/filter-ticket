@@ -9,6 +9,7 @@ import { selectDetailComplain, setComplainById } from '../../../store/features/c
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
+import TextEditor from '../../../components/common/forms/TextEditor';
 import { ReplySchema } from '../../../utils/schema_validation_form';
 import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
@@ -280,11 +281,12 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                 </p>
               </div>
               <div className="form-control">
-                <textarea
+                {/* <textarea
                   className={`textarea textarea-bordered resize-none ${item?.balasan.length > 1500 ? 'h-96' : 'h-28'}`}
                   disabled
                   value={item?.balasan}
-                />
+                /> */}
+                  <div dangerouslySetInnerHTML={{__html: item?.balasan}} className={`textarea resize-none bg-gray-100 ${item?.balasan.length > 1500 ? 'h-96' : 'h-28'}`}/>
               </div>
               <div className="py-2">
                 {item?.lampiranbalasan?.map((file) => {
@@ -328,6 +330,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                 errors,
                 touched,
                 isValid,
+                setFieldValue,
                 handleChange,
                 handleBlur,
               }) => (
@@ -337,7 +340,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                       <span className="label-text"> Balasan</span>
                     </label>
 
-                    <Field
+                    {/* <Field
                       id="balasan"
                       name="balasan"
                       component="textarea"
@@ -346,6 +349,10 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                       onChange={handleChange}
                       value={values.balasan}
                       className="textarea textarea-bordered h-28"
+                    /> */}
+                    <TextEditor
+                    setFieldValue={(val) => setFieldValue('balasan', val)}
+                    value={values.balasan}
                     />
                     {errors.balasan && touched.balasan ? (
                       <div className="label label-text text-red-500">{errors.balasan}</div>
