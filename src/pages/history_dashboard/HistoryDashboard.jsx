@@ -268,7 +268,9 @@ function HistoryDashboard() {
                     {' '}
                     {item.nomor_pelapor}
                   </td>
-                  <td className="text-left">{item.keluhan}</td>
+                  <td className="text-left">
+                  <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
+                  </td>
                   <td className="text-left">
                     {item.balasan.length > 0
                       ? `${item.balasan[
