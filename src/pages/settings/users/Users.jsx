@@ -24,7 +24,7 @@ function Users() {
 
   const [pagination, setPagination] = useState({
     currentPage: 1,
-    currentFilterPage: 5,
+    currentFilterPage: 10,
     pageNumbers: [1],
     filterPage: [5, 10, 25, 50, 100]
   });
