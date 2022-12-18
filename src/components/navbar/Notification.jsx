@@ -21,8 +21,8 @@ function Notification() {
 
 
   useEffect(() => {
-    const pusher = new Pusher(process.env?.REACT_APP_PUSHER_APP_KEY, {
-      cluster: process.env?.REACT_APP_PUSHER_APP_CLUSTER,
+    const pusher = new Pusher('2ed546b20ddc434a9b6a', {
+      cluster: 'ap1',
       encrypted: true,
     });
     Pusher.logToConsole = true;
@@ -33,7 +33,7 @@ function Notification() {
     });
 
     const beamsClient = new PusherPushNotifications.Client({
-    instanceId: process.env?.REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
+    instanceId: 'a81f4de8-8096-4cc9-a1d0-5c92138936f1',
     });
 
     beamsClient.start()
