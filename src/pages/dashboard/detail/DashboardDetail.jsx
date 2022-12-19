@@ -254,7 +254,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
               disabled
               value={detailComplain?.keluhan}
             /> */}
-            <div dangerouslySetInnerHTML={{__html: detailComplain?.keluhan}} className={`textarea resize-none bg-gray-100 ${detailComplain?.keluhan.length > 1500 ? 'h-96' : 'h-28'}`}/>
+            <div dangerouslySetInnerHTML={{__html: detailComplain?.keluhan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
           </div>
           <div className="py-2">
             {detailComplain?.lampiranbalasan?.map((file) => {
@@ -293,7 +293,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                   disabled
                   value={item?.balasan}
                 /> */}
-                  <div dangerouslySetInnerHTML={{__html: item?.balasan}} className={`textarea resize-none bg-gray-100 ${item?.balasan.length > 1500 ? 'h-96' : 'h-28'}`}/>
+                  <div dangerouslySetInnerHTML={{__html: item?.balasan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
               </div>
               <div className="py-2">
                 {item?.lampiranbalasan?.map((file) => {
