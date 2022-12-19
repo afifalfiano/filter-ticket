@@ -78,10 +78,13 @@ function ForgetPassword() {
     }
   };
   return (
-    <div className="flex h-screen min-h-screen w-screen min-w-screen items-start mt-20 justify-center">
+    <div className="flex h-screen min-h-screen w-screen min-w-screen items-start mt-10 justify-center">
       <div className="text-center">
-        <h1 className="font-semibold text-lg">Lupa Password</h1>
-        <div className="my-5 flex justify-center">
+        <h1 className="font-semibold text-2xl">Lupa Password</h1>
+        <div className="w-full justify-center p-10">
+        <img src="/forget_password.svg" alt="https://storyset.com/people" className="w-auto items-center flex justify-center " />
+        </div>
+        <div className="my-1 flex justify-center">
           {!showOTP && (
             <input
               type="email"
@@ -90,7 +93,7 @@ function ForgetPassword() {
               onChange={handleInput}
               placeholder="Masukan email"
               value={email}
-              className="input input-md input-bordered p-2.5"
+              className="input input-md input-bordered p-2.5 w-60"
             />
           )}
           {showOTP && (
@@ -130,12 +133,12 @@ function ForgetPassword() {
           )}
         </div>
         <div className="flex justify-center gap-5 mt-10 items-center mx-2">
-          <Link className="btn btn-md btn-block" to="/sign_in">
+          <Link className="btn btn-md w-52" to="/sign_in">
             Kembali
           </Link>
           <button
             type="submit"
-            className="btn btn-md btn-block btn-success text-white"
+            className="btn btn-md w-52 btn-success text-white"
             onClick={onSubmitData}
             disabled={showOTP ? otp === '' || password === '' : email === ''}
           >

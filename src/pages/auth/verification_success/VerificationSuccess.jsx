@@ -29,9 +29,9 @@ function VerificationSuccess() {
   }, []);
 
   return (
-    <div className="flex h-screen min-h-screen w-screen min-w-screen items-start mt-20 justify-center">
+    <div className="flex h-screen min-h-screen w-screen min-w-screen items-start mt-10 justify-center">
       <div className="text-center">
-        <h1 className="font-semibold text-lg">Verifikasi Email Berhasil</h1>
+        <h1 className="font-semibold text-2xl">Verifikasi Email Berhasil</h1>
         <div className="my-5 flex justify-center">
           <img src="/confirm_email.svg" alt="https://storyset.com/device" className="w-72 items-center flex justify-center" />
           {/* <div className="bg-red-100 w-52 h-52 items-center flex justify-center">
