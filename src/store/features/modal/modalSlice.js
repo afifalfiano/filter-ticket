@@ -74,7 +74,7 @@ const modalSlice = createSlice({
       state.data = data;
     },
     clearModal: (state) => {
-      state.data = null;
+      state.data = initState;
     },
   },
 });

@@ -48,6 +48,7 @@ function BaseTransceiverStation() {
   const dataRow = useSelector(selectAllBTS);
   const stateModal = useSelector(selectModalState);
   const openModal = (modal) => {
+    console.log(modal, 'mdl');
     let newState;
     if (modal === 'add bts') {
       newState = { ...stateModal, bts: { ...stateModal.bts, showAddModalBts: true } };
