@@ -33,11 +33,12 @@ function VerificationSuccess() {
       <div className="text-center">
         <h1 className="font-semibold text-lg">Verifikasi Email Berhasil</h1>
         <div className="my-5 flex justify-center">
-          <div className="bg-red-100 w-52 h-52 items-center flex justify-center">
+          <img src="/confirm_email.svg" alt="https://storyset.com/device" className="w-72 items-center flex justify-center" />
+          {/* <div className="bg-red-100 w-52 h-52 items-center flex justify-center">
             image
-          </div>
+          </div> */}
         </div>
-        <p className="label w-56">
+        <p className="label w-72">
           Verifikasi email telah berhasil dilakukan silahkan login ke aplikasi.
         </p>
         <div className="form-control mt-5 items-center mx-2">
