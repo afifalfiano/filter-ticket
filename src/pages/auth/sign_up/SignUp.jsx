@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Formik, Field, Form } from 'formik';
@@ -98,13 +99,11 @@ function SignUp() {
   };
 
   return (
-    <div className="grid grid-flow-col gap-3 h-screen min-h-screen">
-      <div className="col-span-6 bg-gray-200 ">
-        <p className="flex justify-center align-middle items-center  min-h-screen">
-          Image
-        </p>
+    <div className="flex gap-3 h-screen min-h-screen">
+      <div className="col-span-6 bg-gray-200 w-8/12">
+        <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
       </div>
-      <div className="col-span-1 h-full bg-white">
+      <div className="w-4/12 h-screen bg-white">
         <Formik
           enableReinitialize
           initialValues={initialValues}
@@ -123,7 +122,7 @@ function SignUp() {
             handleChange,
           }) => (
             <Form className="flex-row px-16">
-              <div className="pt-3">
+              <div className="mt-10">
                 <h4 className="text-2xl text-center font-semibold">
                   Silahkan Mendaftar
                 </h4>
