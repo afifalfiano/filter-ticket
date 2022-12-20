@@ -145,25 +145,6 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                 ) : null}
               </div>
 
-              <div className="form-control">
-                <label htmlFor="deskripsi" className="label">
-                  <span className="label-text"> Deskripsi BTS:</span>
-                </label>
-                <Field
-                  id="deskripsi"
-                  name="deskripsi"
-                  placeholder="Deskripsi BTS"
-                  value={values.deskripsi}
-                  disabled={titleAction === 'read'}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  className="input input-md input-bordered  max-w-full"
-                />
-                {errors.deskripsi && touched.deskripsi ? (
-                  <div className="label label-text text-red-500">{errors.deskripsi}</div>
-                ) : null}
-              </div>
-
               <div className="flex flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="nama_pic" className="label">
@@ -268,6 +249,25 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                 />
                 {errors.kordinat && touched.kordinat ? (
                   <div className="label label-text text-red-500">{errors.kordinat}</div>
+                ) : null}
+              </div>
+              <div className="form-control">
+                <label htmlFor="deskripsi" className="label">
+                  <span className="label-text"> Deskripsi BTS:</span>
+                </label>
+                <Field
+                  id="deskripsi"
+                  component="textarea"
+                  name="deskripsi"
+                  placeholder="Deskripsi BTS"
+                  value={values.deskripsi}
+                  disabled={titleAction === 'read'}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  className="input input-md input-bordered  max-w-full h-28"
+                />
+                {errors.deskripsi && touched.deskripsi ? (
+                  <div className="label label-text text-red-500">{errors.deskripsi}</div>
                 ) : null}
               </div>
               <hr className="my-2 mt-10" />

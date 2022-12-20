@@ -37,7 +37,7 @@ function SignIn() {
   return (
     <div className="flex gap-3 h-screen min-h-screen">
       <div className="bg-gray-200 w-8/12">
-        <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
+        <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
           {/* <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="w-full h-full"/> */}
       </div>
       <div className="w-4/12 h-screen bg-white">
