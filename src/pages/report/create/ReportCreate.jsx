@@ -75,7 +75,7 @@ function ReportCreate() {
           dataLocal = [...dataLocal, ...data.user.noc];
         }
         setAllUserLocal(dataLocal);
-        setCheckedState(new Array(dataLocal.length).fill(true))
+        setCheckedState(new Array(dataLocal.length).fill(false))
       } else {
         catchError(data);
       }
