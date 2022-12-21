@@ -231,8 +231,8 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       {/* section reply */}
       <div className="flex w-full flex-col py-5">
         {/* keluhan awal */}
-        <div className='flex justify-center items-center'>
-          <div className='w-1/12 flex items-center justify-center'>
+        <div className='flex justify-center items-center gap-5'>
+          <div className='w-1/12 flex items-center justify-center ml-2'>
           <div className="avatar">
               <div className="w-16 rounded-full items-center">
                 <img src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
@@ -282,8 +282,8 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
         {
           detailComplain?.balasan.length > 0 && detailComplain?.balasan.map((item) => (
             <div>
-              <div className='flex justify-center items-center'>
-              <div className='w-1/12 flex items-center justify-center'>
+              <div className='flex justify-center items-center gap-5'>
+              <div className='w-1/12 flex items-center justify-center ml-2'>
               <div className="avatar">
                   <div className="w-16 rounded-full items-center">
                     <img src={item?.user?.avatar} alt={item?.user?.name}/>
