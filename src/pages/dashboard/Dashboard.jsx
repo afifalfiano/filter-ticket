@@ -428,8 +428,8 @@ const Dashboard = () => {
                 <td className="text-left">
                   <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
                 </td>
-                <td className="text-left">
-                  <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} />
+                <td className={`text-left ${item?.balasan.length === 0 ? '!bg-yellow-300' : ''}`}>
+                  <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} className={`text-left ${item?.balasan.length === 0 ? '!text-red-600' : ''}`}/>
                 </td>
                 {/* <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) + '...' : 'Belum ada tindakan')}</td> */}
                 <td className="text-left">
