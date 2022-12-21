@@ -231,7 +231,16 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       {/* section reply */}
       <div className="flex w-full flex-col py-5">
         {/* keluhan awal */}
-        <div>
+        <div className='flex justify-center items-center'>
+          <div className='w-1/12 flex items-center justify-center'>
+          <div className="avatar">
+              <div className="w-16 rounded-full items-center">
+                <img src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
+                {/* <img src="https://placeimg.com/192/192/people" /> */}
+              </div>
+            </div>
+          </div>
+          <div className="w-11/12">
           <p className="justify-start w-full font-semibold">Keluhan Awal</p>
           <div className="flex justify-between py-2">
             <p>Dibuat oleh: {detailComplain?.user?.name} ({detailComplain?.user?.role?.role}) </p>
@@ -267,11 +276,22 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
               }
             })}
           </div>
+          </div>
         </div>
 
         {
           detailComplain?.balasan.length > 0 && detailComplain?.balasan.map((item) => (
             <div>
+              <div className='flex justify-center items-center'>
+              <div className='w-1/12 flex items-center justify-center'>
+              <div className="avatar">
+                  <div className="w-16 rounded-full items-center">
+                    <img src={item?.user?.avatar} alt={item?.user?.name}/>
+                    {/* <img src="https://placeimg.com/192/192/people" /> */}
+                  </div>
+                </div>
+              </div>
+              <div className="w-11/12">
               <div className="flex justify-between py-2">
                 <p>Balasan pesan: {item?.user?.name} ({item?.user?.role?.role}) </p>
                 <p>
@@ -305,6 +325,8 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                     )
                   }
                 })}
+              </div>
+              </div>
               </div>
             </div>
           ))
