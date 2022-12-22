@@ -429,7 +429,7 @@ const Dashboard = () => {
                   <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
                 </td>
                 <td >
-                  <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} className={`${item?.balasan.length === 0 ? 'text-center badge bg-red-500 border-0 text-white' : ''}`}/>
+                  <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} className={`${item?.balasan.length === 0 ? 'text-center font-semibold badge bg-red-500 border-0 text-white' : ''}`}/>
                 </td>
                 {/* <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) + '...' : 'Belum ada tindakan')}</td> */}
                 <td className="text-left">
