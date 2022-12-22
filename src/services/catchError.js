@@ -36,7 +36,6 @@ const catchError = (body, title) => {
         message = 'Kesalahan Pada Sistem';
         break;
     }
-    console.log(title, 'cek title')
     if (title !== 'read-all' && title !== undefined) {
       toast.error(message, propertyToast);
     }
