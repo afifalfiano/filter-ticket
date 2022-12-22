@@ -13,7 +13,7 @@ const propertyToast = {
 };
 
 
-const catchError = (body) => {
+const catchError = (body, title) => {
     console.log(body, 'error');
     let message = 'Kesalahan Pada Sistem';
     switch (body.status) {
@@ -36,7 +36,10 @@ const catchError = (body) => {
         message = 'Kesalahan Pada Sistem';
         break;
     }
-    toast.error(message, propertyToast);
+    console.log(title, 'cek title')
+    if (title !== 'read-all' && title !== undefined) {
+      toast.error(message, propertyToast);
+    }
 }
 
 export default catchError;

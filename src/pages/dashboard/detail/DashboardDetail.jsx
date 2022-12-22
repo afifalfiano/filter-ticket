@@ -11,7 +11,7 @@ import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import TextEditor from '../../../components/common/forms/TextEditor';
 import { ReplySchema } from '../../../utils/schema_validation_form';
-import { usePostNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
+import { usePostNotificationMutation, useReadAllNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
 import { ContentState, convertFromRaw, EditorState } from 'draft-js';
@@ -91,7 +91,23 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   const historyUrl = location.pathname.includes('history');
   const [postNotification] = usePostNotificationMutation();
 
+  const [readAllNotification] = useReadAllNotificationMutation()
+
+  const doReadAllNotification = async () => {
+    try {
+      const data = await readAllNotification().unwrap();
+      return data;
+      // getAllNotification();
+    } catch (error) {
+      catchError(error, 'read-all');
+      throw new Error("Unsuccess read all notification");
+    }
+  }
+
   useEffect(() => {
+    if (window.location.href.includes('/dashboard/detail/')) {
+      doReadAllNotification();
+    }
     getComplainById();
     if (idComplain === undefined) {
       const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
