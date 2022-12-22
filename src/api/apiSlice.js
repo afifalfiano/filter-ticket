@@ -30,7 +30,7 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   try {
     const result = await baseQuery(args, api, extraOptions);
-    console.log(result, 'ts');
+    // console.log(result, 'ts');
     if (result?.error) {
       const data = {
         status : result?.error.status || result?.error?.originalStatus,

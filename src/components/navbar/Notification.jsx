@@ -28,7 +28,6 @@ function Notification() {
     Pusher.logToConsole = true;
     const channel = pusher.subscribe('my-channel');
     channel.bind('KeluhanEvent', (data) => {
-      console.log(data, 'broadcast');
       playAudio();
     });
 

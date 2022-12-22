@@ -296,6 +296,28 @@ const Dashboard = () => {
     };
   }, []);
 
+
+  const doCreateNotificationProgress = (data) => {
+    if (data.notifikasi.length > 0) {
+      let i = 0;
+      data.notifikasi.forEach(item => {
+        item.notifikasi_read.forEach(read => {
+          if (!read.is_read)  {
+            i++;
+          }
+        })
+      })
+
+      if ( i > 0) {
+        return (
+          <span className="badge bg-blue-700 border-none text-white">
+          + {i}
+          </span>
+        )
+      }
+    }
+  }
+
   const handleStatus = (event) => {
     setStatusData(event.target.value);
     const dataChanged = dataRow.data.filter((item) => {
@@ -429,7 +451,10 @@ const Dashboard = () => {
                   <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
                 </td>
                 <td >
+                  <div className="flex gap-2">
                   <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} className={`${item?.balasan.length === 0 ? 'text-center font-semibold badge bg-red-500 border-0 text-white' : ''}`}/>
+                  <div>{doCreateNotificationProgress(item)}</div>
+                  </div>
                 </td>
                 {/* <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) + '...' : 'Belum ada tindakan')}</td> */}
                 <td className="text-left">

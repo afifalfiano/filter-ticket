@@ -38,7 +38,6 @@ function App() {
   const [render, setRender] = useState(true);
 
   const getConditionRender = (event) => {
-    console.log(event, 'loggg');
     setRender(event);
   };
 
