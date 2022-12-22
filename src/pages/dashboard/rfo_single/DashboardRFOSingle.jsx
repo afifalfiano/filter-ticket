@@ -288,7 +288,7 @@ function DashboardRFOSingle() {
                         id="mulai_gangguan"
                         name="mulai_gangguan"
                         placeholder=""
-                        value={new Date(detailComplain?.created_at).toLocaleDateString('id-ID')}
+                        value={new Date(detailComplain?.created_at).toLocaleString('id-ID')}
                         type="text"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -311,8 +311,8 @@ function DashboardRFOSingle() {
                         name="selesai_gangguan"
                         placeholder=""
                         value={detailComplain?.balasan.length > 0
-                          ? new Date(detailComplain?.balasan[detailComplain.balasan.length - 1].created_at).toLocaleDateString('id-ID')
-                          : new Date(detailComplain?.created_at).toLocaleDateString('id-ID')}
+                          ? new Date(detailComplain?.balasan[detailComplain.balasan.length - 1].created_at).toLocaleString('id-ID')
+                          : new Date(detailComplain?.created_at).toLocaleString('id-ID')}
                         type="text"
                         onBlur={handleBlur}
                         onChange={handleChange}

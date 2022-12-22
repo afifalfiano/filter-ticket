@@ -245,7 +245,7 @@ function RFODetailSingle() {
                         placeholder=""
                         value={new Date(
                           detailRFO?.keluhan?.created_at
-                        ).toLocaleDateString('id-ID')}
+                        ).toLocaleString('id-ID')}
                         type="text"
                         onBlur={handleBlur}
                         onChange={handleChange}
@@ -277,10 +277,10 @@ function RFODetailSingle() {
                               detailRFO?.keluhan?.balasan[
                                 detailRFO?.balasan?.length - 1
                               ]?.created_at
-                            ).toLocaleDateString('id-ID')
+                            ).toLocaleString('id-ID')
                             : new Date(
                               detailRFO?.keluhan?.created_at
-                            ).toLocaleDateString('id-ID')
+                            ).toLocaleString('id-ID')
                         }
                         type="text"
                         onBlur={handleBlur}

@@ -234,7 +234,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
         <div className='flex justify-center items-center gap-5'>
           <div className='w-1/12 flex items-center justify-center ml-2'>
           <div className="avatar">
-              <div className="w-16 rounded-full items-center">
+              <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                 <img src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
                 {/* <img src="https://placeimg.com/192/192/people" /> */}
               </div>
@@ -285,7 +285,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
               <div className='flex justify-center items-center gap-5'>
               <div className='w-1/12 flex items-center justify-center ml-2'>
               <div className="avatar">
-                  <div className="w-16 rounded-full items-center">
+                  <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                     <img src={item?.user?.avatar} alt={item?.user?.name}/>
                     {/* <img src="https://placeimg.com/192/192/people" /> */}
                   </div>
