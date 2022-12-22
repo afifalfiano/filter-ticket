@@ -90,7 +90,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                     size={24}
                     className="link link-primary"
                     onClick={() => {
-                      openModal()
+                      openModal('preview')
                     }}
                   />
                 </div>
