@@ -302,8 +302,10 @@ const Dashboard = () => {
       let i = 0;
       data.notifikasi.forEach(item => {
         item.notifikasi_read.forEach(read => {
-          if (!read.is_read)  {
-            i++;
+          if (+user.id_user === +read.user_id) {
+            if (!read.is_read)  {
+              i++;
+            }
           }
         })
       })
