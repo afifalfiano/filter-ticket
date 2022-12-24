@@ -275,7 +275,7 @@ function RFODetailSingle() {
                           detailRFO?.keluhan?.balasan.length > 0
                             ? new Date(
                               detailRFO?.keluhan?.balasan[
-                                detailRFO?.balasan?.length - 1
+                                detailRFO?.keluhan?.balasan?.length - 1
                               ]?.created_at
                             ).toLocaleString('id-ID')
                             : new Date(
