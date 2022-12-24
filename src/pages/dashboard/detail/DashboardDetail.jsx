@@ -1,3 +1,4 @@
+/* eslint-disable no-const-assign */
 /* eslint-disable no-undef */
 import { useState, useEffect } from 'react';
 import { HiDocumentText } from 'react-icons/hi';
@@ -11,7 +12,7 @@ import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import TextEditor from '../../../components/common/forms/TextEditor';
 import { ReplySchema } from '../../../utils/schema_validation_form';
-import { usePostNotificationMutation, useReadAllNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
+import { usePostNotificationMutation, useReadAllNotificationComplainMutation, useReadAllNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
 import { ContentState, convertFromRaw, EditorState } from 'draft-js';
@@ -34,6 +35,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   const dispatch = useDispatch();
   const [lampiranFileBalasan] = useLampiranFileBalasanMutation();
   const [storeAllNotification] = useStoreAllNotificationMutation();
+  let [countRequest, setCountRequest] = useState(0);
 
   const detailState = useSelector(selectDetailComplain);
 
@@ -82,6 +84,12 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       if (showPaginate) {
         handlePagination(1, data.data);
       }
+      if (countRequest === 0) {
+        if (window.location.href.includes('/dashboard/detail/')) {
+          doReadAllNotification(data.data);
+        }
+      }
+      setCountRequest(countRequest++);
     } catch (error) {
       catchError(error)
     }
@@ -91,12 +99,14 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   const historyUrl = location.pathname.includes('history');
   const [postNotification] = usePostNotificationMutation();
 
-  const [readAllNotification] = useReadAllNotificationMutation()
+  const [readAllNotificationComplain] = useReadAllNotificationComplainMutation()
 
-  const doReadAllNotification = async () => {
+  const doReadAllNotification = async (data) => {
+    const body = {
+      keluhan_id: data.id_keluhan
+    };
     try {
-      const data = await readAllNotification().unwrap();
-      return data;
+      await readAllNotificationComplain({body}).unwrap();
       // getAllNotification();
     } catch (error) {
       catchError(error, 'read-all');
@@ -105,11 +115,8 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   }
 
   useEffect(() => {
-    if (window.location.href.includes('/dashboard/detail/')) {
-      doReadAllNotification();
-    }
-    getComplainById();
-    if (idComplain === undefined) {
+      getComplainById();
+      if (idComplain === undefined) {
       const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
       dispatch(updateBreadcrumb(data))
 

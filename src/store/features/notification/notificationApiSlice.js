@@ -29,6 +29,13 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    readAllNotificationComplain: builder.mutation({
+      query: ({ body }) => ({
+        url: `/read-all-notifikasi-keluhan`,
+        method: 'POST',
+        body,
+      }),
+    }),
     readAllNotification: builder.mutation({
       query: () => ({
         url: `/read-all-notifikasi`,
@@ -38,4 +45,4 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetNotificationMutation, usePostNotificationMutation, useReadNotificationMutation, useStoreAllNotificationMutation, useReadAllNotificationMutation } = notificationApiSlice;
+export const { useGetNotificationMutation, usePostNotificationMutation, useReadNotificationMutation, useStoreAllNotificationMutation, useReadAllNotificationComplainMutation, useReadAllNotificationMutation } = notificationApiSlice;

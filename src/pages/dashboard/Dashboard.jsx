@@ -149,6 +149,9 @@ const Dashboard = () => {
           setShowLoading(false);
         }, 1500);
       } else {
+        setTimeout(() => {
+          setShowLoading(false);
+        }, 1500);
         catchError(data);
       }
     } catch (error) {
