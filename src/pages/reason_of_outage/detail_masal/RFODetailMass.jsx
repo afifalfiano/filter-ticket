@@ -235,37 +235,28 @@ function RFODetailMass() {
         <div className="w-full overflow-auto mt-6" style={{ height: '35rem' }}>
           {isSuccess && detailRFOMasal?.keluhan.map((item) => (
             <div className="border-2 border-gray-100 rounded-md mt-3 p-3">
-              <table className="border-none items-center w-full" id={item.id_keluhan}>
-                <tbody>
-                  <tr className="text-left">
-                    <td>ID Pelanggan</td>
-                    <td>:</td>
-                    <td>
-                      {item.id_pelanggan}
-                    </td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Nama Pelanggan</td>
-                    <td>:</td>
-                    <td>{item.nama_pelanggan}</td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Kontak</td>
-                    <td>:</td>
-                    <td>{item.nama_pelapor} - {item.nomor_pelapor}</td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Sumber Keluhan</td>
-                    <td>:</td>
-                    <td>{item.sumber.sumber} - {item.detail_sumber} </td>
-                  </tr>
-                  <tr className="text-left">
-                    <td>Keluhan</td>
-                    <td>:</td>
-                    <td>{item.keluhan}</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="items-center w-full flex">
+                <div className="w-4/12">
+                  <p>Pelanggan</p>
+                  <p>Kontak</p>
+                  <p>Sumber Keluhan</p>
+                  <p>Keluhan</p>
+                </div>
+                <div className="w-1/12">
+                  <p className="p-0">:</p>
+                  <p className="p-0">:</p>
+                  <p className="p-0">:</p>
+                  <p className="p-0">:</p>
+                </div>
+                <div className="w-7/12">
+                  <p>{item.id_pelanggan} - {item.nama_pelanggan}</p>
+                  <p>{item.nama_pelapor} - {item.nomor_pelapor}</p>
+                  <p>{item.sumber.sumber} - {item.detail_sumber}</p>
+                  <p>
+                    <div dangerouslySetInnerHTML={{__html: item?.keluhan}} className="!inline"></div>
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
           {isSuccess && detailRFOMasal?.keluhan.length === 0 && (
