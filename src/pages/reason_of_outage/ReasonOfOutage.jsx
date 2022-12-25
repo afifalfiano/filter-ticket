@@ -124,7 +124,7 @@ function ReasonOfOutage() {
       const regex = new RegExp(search, 'ig');
       const searchResult = allData.filter((item) => {
         if (item.hasOwnProperty('id_rfo_keluhan') && statusData === 'sendiri') {
-          if (item.problem.match(regex)) {
+          if (item.problem.match(regex) || item?.keluhan?.nama_pelanggan.match(regex) || item?.keluhan?.id_pelanggan.match(regex)) {
             return item;
           }
         } 
