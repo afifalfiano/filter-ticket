@@ -184,10 +184,10 @@ function ReasonOfOutage() {
           >
             <option disabled>Pilih Status</option>
             <option value="sendiri" label="Sendiri">
-              Sendiri
+              RFO Keluhan (Sendiri)
             </option>
             <option value="masal" label="Masal">
-              Masal
+              RFO Gangguan (Masal)
             </option>
           </select>
         </div>
