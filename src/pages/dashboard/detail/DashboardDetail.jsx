@@ -220,6 +220,11 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                 <td>:</td>
                 <td>{detailComplain?.nama_pelapor} - {detailComplain?.nomor_pelapor}</td>
               </tr>
+              <tr className="text-left">
+                <td>Sumber Keluhan</td>
+                <td>:</td>
+                <td>{detailComplain?.sumber?.sumber}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -244,6 +249,11 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                 <td>Status Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.status}</td>
+              </tr>
+              <tr className="text-left">
+                <td>Detail Sumber Keluhan</td>
+                <td>:</td>
+                <td>{detailComplain?.detail_sumber}</td>
               </tr>
             </tbody>
           </table>

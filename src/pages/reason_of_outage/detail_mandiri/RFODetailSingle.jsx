@@ -110,6 +110,11 @@ function RFODetailSingle() {
                 <td>:</td>
                 <td>{detailRFO?.keluhan?.nama_pelapor} - {detailRFO?.keluhan?.nomor_pelapor}</td>
               </tr>
+              <tr className="text-left">
+                <td>Sumber Keluhan</td>
+                <td>:</td>
+                <td>{detailRFO?.keluhan?.sumber?.sumber}</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -134,6 +139,11 @@ function RFODetailSingle() {
                 <td>Status Keluhan</td>
                 <td>:</td>
                 <td>{detailRFO?.keluhan?.status}</td>
+              </tr>
+              <tr className="text-left">
+                <td>Detail Sumber Keluhan</td>
+                <td>:</td>
+                <td>{detailRFO?.keluhan?.detail_sumber}</td>
               </tr>
             </tbody>
           </table>
