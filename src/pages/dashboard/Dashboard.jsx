@@ -22,7 +22,6 @@ import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlic
 import { useAllSumberKeluhanMutation } from '../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import ReopenModal from '../history_dashboard/ReopenModal';
-import Pagination from '../../components/common/table/Pagination';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import Modal from '../../components/modal/Modal';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
@@ -55,12 +54,6 @@ const Dashboard = () => {
   const [dataPOP, setdataPOP] = useState([]);
   const [pop, setPOPLocal] = useState('all');
   const dataRow = useSelector(selectAllComplain);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    currentFilterPage: 10,
-    pageNumbers: [1],
-    filterPage: [5, 10, 25, 50, 100]
-  });
 
   const openModal = (modal) => {
     let newState;
@@ -79,43 +72,6 @@ const Dashboard = () => {
     window.scrollTo(0, 0);
   }
 
-  const handlePagination = (targetPage = 1, data) => {
-    setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    const indexOfLastPost = targetPage * pagination.currentFilterPage;
-    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
-    let currentPosts;
-    let filterPage;
-    if (data === undefined) {
-      currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
-      filterPage = currentPosts.filter((item) => item.status === statusData);
-    } else {
-      currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
-      filterPage = currentPosts.filter((item) => item.status === statusData);
-    }
-    setRows(filterPage);
-  }
-
-  const doGetPageNumber = (dataFix) => {
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
-      pageNumbers.push(i);
-    }
-    setPagination({ ...pagination, pageNumbers });
-  }
-
-  const handleFilterPagination = (selectFilter) => {
-    const indexOfLastPost = pagination.currentPage * selectFilter;
-    const indexOfFirstPost = indexOfLastPost - selectFilter;
-    const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
-    const filterPage = currentPosts.filter((item) => item.status === statusData); 
-    setRows(filterPage);
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
-      pageNumbers.push(i);
-    }
-    setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-  }
-
   const getAllComplain = async () => {
     setShowLoading(true);
     try {
@@ -131,8 +87,6 @@ const Dashboard = () => {
           dataFix = dataFilter
           dispatch(setComplain({ data: dataFix }));
           setRows(dataFix);
-          handlePagination(1, dataFix);
-          doGetPageNumber(dataFix);
         } else {
           const dataFilter = data.data.filter((item) => {
             if (item.status === statusData) {
@@ -141,8 +95,6 @@ const Dashboard = () => {
           });
           dispatch(setComplain({ ...data }));
           setRows(dataFilter);
-          handlePagination(1, data.data);
-          doGetPageNumber(data.data);
         }
 
         setTimeout(() => {
@@ -155,6 +107,9 @@ const Dashboard = () => {
         catchError(data);
       }
     } catch (error) {
+      setTimeout(() => {
+        setShowLoading(false);
+      }, 1500);
       catchError(error);
     }
   };
@@ -178,12 +133,6 @@ const Dashboard = () => {
         }
       });
       setRows(searchResult);
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     } else {
       setRows(dataRow.data.filter((item) => {
         if (item.status === statusData && +item.pop.id_pop === +pop) {
@@ -194,12 +143,6 @@ const Dashboard = () => {
           return item;
         }
       }));
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     }
   }
 
@@ -212,20 +155,8 @@ const Dashboard = () => {
     })
     if (event.target.value === 'all') {
       setRows(dataRow.data.filter((item) => item.status === statusData));
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     } else {
       setRows(dataChanged);
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     }
   };
 
@@ -334,12 +265,6 @@ const Dashboard = () => {
       }
     })
     setRows(dataChanged);
-    setPagination({
-      currentPage: 1,
-      currentFilterPage: 100,
-      pageNumbers: [1],
-      filterPage: [5, 10, 25, 50, 100]
-    });
   };
 
   const getInfo = ($event) => {
@@ -603,7 +528,6 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-      <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} onClick={(i) => handlePagination(i.target.id, undefined)} handlePerPage={(x) => handleFilterPagination(x.target.value)} />
       {showLoading && (
       <div className="fixed bottom-5 right-5 w-52 min-w-min bg-slate-500 rounded-md shadow-md drop-shadow-md">
         <div className="flex flex-row justify-between items-center p-4">
