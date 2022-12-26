@@ -6,7 +6,7 @@ function Breadcrumb() {
   const navigasi = useSelector(selectBreadcrumb);
 
   return (
-    <div className="pt-6 px-6 text-md breadcrumbs">
+    <div className="px-6 text-md breadcrumbs pt-24">
       <ul>
         <li>
           <Link to="/dashboard">

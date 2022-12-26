@@ -30,7 +30,7 @@ function RequireAuth() {
       <>
         <Navbar />
         <Toaster />
-        <Container>
+        <Container className="pt-10">
           <Outlet />
         </Container>
       </>

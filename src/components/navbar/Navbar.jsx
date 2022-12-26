@@ -14,7 +14,7 @@ const  Navbar = () => {
 
   return (
     <>
-    <div className="navbar bg-neutral text-neutral-content ">
+    <div className="navbar bg-neutral text-neutral-content fixed z-50">
       <Menu/>
       <div className="flex-none">
         <Notification />
