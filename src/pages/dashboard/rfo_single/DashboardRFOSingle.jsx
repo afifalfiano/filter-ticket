@@ -366,7 +366,7 @@ function DashboardRFOSingle() {
                     >
                       Kembali
                     </button>
-                    <button disabled={!isValid} type="submit" className="btn btn-md btn-success">
+                    <button disabled={!isValid} type="submit" className="btn btn-md btn-success text-white">
                       Simpan
                     </button>
                   </div>
