@@ -405,7 +405,7 @@ function DashboardRFOSingle() {
             Riwayat Follow Up Keluhan
           </h1>
 
-          <DashboardDetail rfoSingle showPaginate={false} />
+          <DashboardDetail rfoSingle />
         </div>
       </div>
     </>

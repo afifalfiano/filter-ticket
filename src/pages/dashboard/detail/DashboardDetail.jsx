@@ -1,10 +1,9 @@
-/* eslint-disable no-const-assign */
 /* eslint-disable no-undef */
 import { useState, useEffect } from 'react';
 import { HiDocumentText } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import { useAddReplyMutation, useComplainByIdMutation, useLampiranFileBalasanMutation } from '../../../store/features/complain/complainApiSlice';
 import { selectDetailComplain, setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
@@ -12,13 +11,11 @@ import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import UploadFile from '../../../components/common/forms/UploadFile';
 import TextEditor from '../../../components/common/forms/TextEditor';
 import { ReplySchema } from '../../../utils/schema_validation_form';
-import { usePostNotificationMutation, useReadAllNotificationComplainMutation, useReadAllNotificationMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
+import { usePostNotificationMutation, useReadAllNotificationComplainMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import { ContentState, convertFromRaw, EditorState } from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
 
-function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
+function DashboardDetail({ rfoSingle, idComplain}) {
   const location = useLocation();
   const [detailComplain, setDetailComplain] = useState(null);
   const [resetTextEditor, setResetTextEditor] = useState(false);
@@ -27,47 +24,15 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
   const navigate = useNavigate();
   const [complainById] = useComplainByIdMutation();
   const [addReply] = useAddReplyMutation();
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    currentFilterPage: 10,
-    pageNumbers: [1],
-  });
+
   const dispatch = useDispatch();
   const [lampiranFileBalasan] = useLampiranFileBalasanMutation();
   const [storeAllNotification] = useStoreAllNotificationMutation();
   let [countRequest, setCountRequest] = useState(0);
 
-  const detailState = useSelector(selectDetailComplain);
-
   const navigasi = useSelector(selectBreadcrumb);
   const onHandleFileUpload = ($event) => {
     setFilesLocal($event);
-  }
-
-  const handlePagination = (targetPage = 1, data = undefined) => {
-    const indexOfLastPost = targetPage * pagination.currentFilterPage;
-    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
-    let reply;
-    let newState;
-    if (data === undefined) {
-      reply = detailState.balasan.slice(indexOfFirstPost, indexOfLastPost);
-      newState = { ...detailState, balasan: reply }
-    } else {
-      reply = data.balasan.slice(indexOfFirstPost, indexOfLastPost);
-      newState = { ...data, balasan: reply }
-    }
-    const pageNumbers = [];
-    let dataSource = [];
-    if (data === undefined) {
-      dataSource = detailState.balasan;
-    } else {
-      dataSource = data.balasan;
-    }
-    for (let i = 1; i <= Math.ceil(dataSource.length / pagination.currentFilterPage); i++) {
-      pageNumbers.push(i);
-    }
-    setPagination({ ...pagination, currentPage: +targetPage, pageNumbers })
-    setDetailComplain(newState);
   }
 
   const getComplainById = async () => {
@@ -81,9 +46,6 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
       const data = await complainById(idConditional).unwrap();
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
-      if (showPaginate) {
-        handlePagination(1, data.data);
-      }
       if (countRequest === 0) {
         if (window.location.href.includes('/dashboard/detail/')) {
           doReadAllNotification(data.data);
@@ -114,11 +76,16 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
     }
   }
 
+
   useEffect(() => {
       getComplainById();
       if (idComplain === undefined) {
       const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
       dispatch(updateBreadcrumb(data))
+        
+      setTimeout(() => {
+        window.scrollTo(0,document.body.scrollHeight);
+      }, 500);
 
       const intervalId = setInterval(() => {
         getComplainById();
@@ -291,11 +258,6 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
             </p>
           </div>
           <div className="form-control">
-            {/* <textarea
-              className={`textarea textarea-bordered resize-none ${detailComplain?.keluhan.length > 1500 ? 'h-96' : 'h-28'}`}
-              disabled
-              value={detailComplain?.keluhan}
-            /> */}
             <div dangerouslySetInnerHTML={{__html: detailComplain?.keluhan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
           </div>
           <div className="py-2">
@@ -341,11 +303,6 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                 </p>
               </div>
               <div className="form-control">
-                {/* <textarea
-                  className={`textarea textarea-bordered resize-none ${item?.balasan.length > 1500 ? 'h-96' : 'h-28'}`}
-                  disabled
-                  value={item?.balasan}
-                /> */}
                   <div dangerouslySetInnerHTML={{__html: item?.balasan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
               </div>
               <div className="py-2">
@@ -365,18 +322,7 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
           ))
         }
 
-        {showPaginate && (
-        <div className="flex justify-center">
-          <div className="btn-group">
-            {pagination.pageNumbers?.map((item) => (
-              <button className={`btn btn-outline ${+pagination.currentPage === item && 'btn-active'}`} onClick={(e) => handlePagination(e.target.id, undefined)} id={item}>{item}</button>
-            ))}
-          </div>
-        </div>
-        )}
-
         <hr className="my-3" />
-
         {!historyUrl && !rfoSingle && detailComplain?.status === 'open'
           ? (
             <Formik
@@ -396,22 +342,11 @@ function DashboardDetail({ rfoSingle, idComplain, showPaginate = true }) {
                 handleChange,
                 handleBlur,
               }) => (
-                <Form>
+                <Form id='answer'>
                   <div className="form-control">
                     <label htmlFor="balasan" className="label">
                       <span className="label-text"> Balasan</span>
                     </label>
-
-                    {/* <Field
-                      id="balasan"
-                      name="balasan"
-                      component="textarea"
-                      placeholder="Balasan"
-                      onBlur={handleBlur}
-                      onChange={handleChange}
-                      value={values.balasan}
-                      className="textarea textarea-bordered h-28"
-                    /> */}
                     <TextEditor
                     setFieldValue={(val) => setFieldValue('balasan', val)}
                     value={values.balasan}
