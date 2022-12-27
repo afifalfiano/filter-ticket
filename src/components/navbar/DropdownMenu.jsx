@@ -16,6 +16,7 @@ import { clearShift } from '../../store/features/shift/shiftSlice';
 import { clearSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import { clearTeam } from '../../store/features/team/teamSlice';
 import { clearUsers } from '../../store/features/users/usersSlice';
+import * as PusherPushNotifications from '@pusher/push-notifications-web';
 
 const DropdownMenu = () => {
 
@@ -66,6 +67,15 @@ const DropdownMenu = () => {
           action(clearTeam());
           action(clearUsers());
         });
+
+        const beamsClient = new PusherPushNotifications.Client({
+          instanceId: 'a81f4de8-8096-4cc9-a1d0-5c92138936f1',
+          });
+        
+          beamsClient.stop()
+          .then(() => console.log('Beams SDK has been stopped'))
+          .catch(e => console.error('Could not stop Beams SDK', e));
+                  
         localStorage.clear();
         navigate('/sign_in', {replace: true});
       } else {
