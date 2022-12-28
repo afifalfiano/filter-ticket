@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 
-const propertyToast = {
+export const propertyToast = {
   style: {
     padding: '16px',
     backgroundColor: '#ff492d',

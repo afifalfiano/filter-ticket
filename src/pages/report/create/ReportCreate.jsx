@@ -14,6 +14,8 @@ import { formatBytes } from "../../../utils/helper";
 import { setPOP } from "../../../store/features/pop/popSlice";
 import catchError from "../../../services/catchError";
 import handleResponse from "../../../services/handleResponse";
+import toast from 'react-hot-toast';
+import propertyToast from '../../../services/catchError';
 
 function ReportCreate() {
   const [allUserLocal, setAllUserLocal] = useState([]);
@@ -114,8 +116,9 @@ function ReportCreate() {
     const doc = new jsPDF('p', 'px', 'a4');
     doc.setFontSize(12);
     const content = document.getElementById('preview-report');
-    const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
-    doc.html(content, {
+    if (content) {
+      const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
+      doc.html(content, {
       async callback(doc) {
         doc.setProperties({ title: printFileName });
         window.open(doc.output('bloburl'), '_blank');
@@ -127,6 +130,16 @@ function ReportCreate() {
       autoPaging: true,
       image: { type: 'png', quality: 1 },
     });
+    } else {
+      const data = {
+        data: {
+          message: 'Konten tidak terlihat. Silahkan klik tombol mata',
+          status: 404,
+        },
+        status: 404
+      };
+      catchError(data);
+    }
   };
 
   const [file, setFile] = useState([]);
