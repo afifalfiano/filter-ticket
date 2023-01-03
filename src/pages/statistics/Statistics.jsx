@@ -35,8 +35,8 @@ function Statistics() {
   const dispatch = useDispatch();
   const [dataGraph, setDataGraph] = useState(dataInit);
   const today = new Date();
-  const format = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-  const formatStart = `${today.getFullYear()}-${today.getMonth()}-${today.getDate() - 7}`;
+  const format = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  const formatStart = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate() - 7}`;
   const [parameter, setParameter] = useState({ mulai: formatStart, selesai: format });
   const [dataFilter, setDataFilter] = useState(dataInitFilter);
   const [getStatistik] = useGetStatistikMutation();
