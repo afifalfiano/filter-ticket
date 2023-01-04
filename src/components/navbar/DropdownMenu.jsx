@@ -75,6 +75,14 @@ const DropdownMenu = () => {
           beamsClient.stop()
           .then(() => console.log('Beams SDK has been stopped'))
           .catch(e => console.error('Could not stop Beams SDK', e));
+
+          beamsClient.clearDeviceInterests()
+          .then(() => console.log('Device interests have been cleared'))
+          .catch(e => console.error('Could not clear device interests', e));
+          
+          beamsClient.clearAllState()
+          .then(() => console.log('Beams state has been cleared'))
+          .catch(e => console.error('Could not clear Beams state', e));
                   
         localStorage.clear();
         navigate('/sign_in', {replace: true});
