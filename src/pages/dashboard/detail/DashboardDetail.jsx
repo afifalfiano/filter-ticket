@@ -261,8 +261,8 @@ function DashboardDetail({ rfoSingle, idComplain}) {
             <div dangerouslySetInnerHTML={{__html: detailComplain?.keluhan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
           </div>
           <div className="py-2">
-            {detailComplain?.lampiranbalasan?.map((file) => {
-              if (+file.balasan_id === +item.id_balasan) {
+            {detailComplain?.lampirankeluhan?.map((file) => {
+              if (+file.keluhan_id === detailComplain?.id_keluhan) {
                 return (
                   <a className="link inline" href={file.path} target="_blank" rel="noreferrer">
                     <HiDocumentText size={24} color="blue" className="inline mr-2" /> Lampiran File
