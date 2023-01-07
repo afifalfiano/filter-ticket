@@ -60,7 +60,7 @@ function FormUpdateProfile({ handleForm, profile }) {
         enableReinitialize
         validationSchema={ProfileSchema}
         initialValues={{
-          name: user?.username, email: user?.email, pop_id: user?.pop_id, role_id: user?.role_id, old_password: '', password: '', password_confirmation: ''
+          name: profile?.name, email: profile?.email, pop_id: user?.pop_id, role_id: user?.role_id, old_password: '', password: '', password_confirmation: ''
         }}
         onSubmit={(values) => {
           // onSubmitData(values);
