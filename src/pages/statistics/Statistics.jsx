@@ -35,9 +35,9 @@ function Statistics() {
   const dispatch = useDispatch();
   const [dataGraph, setDataGraph] = useState(dataInit);
   const today = new Date();
-  const format = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-  const formatStart = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate() - 7}`;
-  const [parameter, setParameter] = useState({ mulai: formatStart, selesai: format });
+  const formatStart = `${today.getFullYear()}-${today.getMonth().toString().length === 1 ? `0${today.getMonth() + 1}` : today.getMonth() + 1}-${today.getDate().toString().length === 1 ? `0${today.getDate()}` : today.getDate()}`;
+  const formatEnd = `${today.getFullYear()}-${today.getMonth().toString().length === 1 ? `0${today.getMonth() + 1}` : today.getMonth() + 1}-${today.getDate().toString().length === 1 ? `0${today.getDate()}` : today.getDate()}`;
+  const [parameter, setParameter] = useState({ mulai: formatStart, selesai: formatEnd });
   const [dataFilter, setDataFilter] = useState(dataInitFilter);
   const [getStatistik] = useGetStatistikMutation();
   const [getStatistikFilter] = useGetStatistikFilterMutation();
@@ -129,7 +129,7 @@ function Statistics() {
                 <span className="label-text"> Selesai</span>
               </label>
 
-              <input type="date" name="" id="tanggal_selesai" defaultValue={format} onChange={handleFilter} className="input w-full max-w-full input-bordered" />
+              <input type="date" name="" id="tanggal_selesai" defaultValue={formatEnd} onChange={handleFilter} className="input w-full max-w-full input-bordered" />
             </div>
           </div>
           <ResponsiveContainer width="100%" height={300}>
