@@ -59,15 +59,16 @@ function RFODetailSingle() {
 
   const onSubmitData = async (payload) => {
     const start = new Date(detailRFO?.keluhan.created_at);
-    const end = detailRFO.data?.keluhan?.balasan?.length > 0
-    ? detailRFO.data?.keluhan?.balasan[detailRFO.data?.keluhan?.balasan?.length - 1].created_at
-    : detailRFO.data?.keluhan?.created_at
+    const endTime = detailRFO?.keluhan?.balasan?.length > 0
+    ? detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at
+    : detailRFO?.keluhan?.created_at;
+    const end = new Date(endTime);
     const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
     const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
     const body = {
       nomor_tiket: payload.nomor_tiket,
-      mulai_gangguan: formatStart,
-      selesai_gangguan: formatEnd,
+      mulai_keluhan: formatStart,
+      selesai_keluhan: formatEnd,
       problem: payload.problem,
       action: payload.action,
       status: 'closed',
@@ -345,7 +346,7 @@ function RFODetailSingle() {
                   <button
                     disabled={!isValid}
                     type="submit"
-                    className="btn btn-md btn-success"
+                    className="btn btn-md btn-success text-white"
                   >
                     Simpan
                   </button>
@@ -367,7 +368,7 @@ function RFODetailSingle() {
           </h1>
 
           {isSuccess && (
-            <DashboardDetail rfoSingle idComplain={detailRFO?.keluhan_id} />
+            <DashboardDetail rfoSingle idComplain={detailRFO?.keluhan?.id_keluhan} />
           )}
         </div>
       </div>
