@@ -314,7 +314,7 @@ const Dashboard = () => {
             className="select w-full max-w-full input-bordered"
             onChange={handlePOP}
           >
-            <option value="all" label="Semua">All</option>
+            <option value="all" label="Semua" defaultValue={'all'}>All</option>
             {dataPOP?.map((item, index) => (
               <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
             ))}

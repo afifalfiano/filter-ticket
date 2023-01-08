@@ -263,7 +263,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
 
                   >
-                    <option value="" label="Pilih Status" selected>Pilih Status</option>
+                    <option value="" label="Pilih Status" defaultValue={""}>Pilih Status</option>
                     <option value="open" label="Open">Open</option>
                     <option value="closed" label="Closed">Closed</option>
                   </Field>

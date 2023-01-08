@@ -25,7 +25,7 @@ function Notification() {
       cluster: 'ap1',
       encrypted: true,
     });
-    Pusher.logToConsole = true;
+    Pusher.logToConsole = false;
     const channel = pusher.subscribe('my-channel');
     channel.bind('KeluhanEvent', (data) => {
       playAudio();
@@ -42,7 +42,7 @@ function Notification() {
     )
     .then(() => beamsClient.addDeviceInterest("update"))
     .then(() => beamsClient.getDeviceInterests())
-    .then((interests) => console.log(interests, 'interest'))
+    .then((interests) => (console.log(interests, 'interset')))
   }, []);
 
   return (

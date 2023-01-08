@@ -14,7 +14,6 @@ const propertyToast = {
 
 
 const handleResponse = (body) => {
-    console.log(body, 'handle');
     let message = 'Berhasil';
     if (body.hasOwnProperty('data')) {
         message = body?.data?.message || 'Berhasil';

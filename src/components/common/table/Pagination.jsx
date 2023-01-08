@@ -51,7 +51,7 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 10, cu
             <div className="form-control">
               <select className="select input-bordered" onChange={handlePerPage} defaultValue={currentFilterPage}>
                 {perPage?.map((item, index) => (
-                  <option key={index} value={item} label={item} selected={currentFilterPage === item && true}>item</option>
+                  <option key={index} value={item} label={item} defaultValue={currentFilterPage === item && true}>item</option>
                 ))}
               </select>
             </div>

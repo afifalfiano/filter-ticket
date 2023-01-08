@@ -220,7 +220,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                     className="select w-full max-w-full input-bordered"
 
                   >
-                    <option value="" label="Pilih POP" selected>Pilih POP</option>
+                    <option value="" label="Pilih POP" defaultValue={""}>Pilih POP</option>
                     {dataPOP.data.map((item, index) => (
                       <option key={index} id={item.id_pop} value={item.id_pop} label={item.pop}>
                         {item.pop}
