@@ -30,8 +30,8 @@ export const btsApiSlice = apiSlice.injectEndpoints({
     }),
     deleteBts: builder.mutation({
       query: (id) => ({
-        url: `/bts/${id}`,
-        method: 'DELETE',
+        url: `/delete-bts/${id}`,
+        method: 'GET',
       }),
     }),
   }),

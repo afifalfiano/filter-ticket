@@ -39,8 +39,8 @@ export const teamApiSlice = apiSlice.injectEndpoints({
     }),
     deleteTeam: builder.mutation({
       query: (id) => ({
-        url: `/role/${id}`,
-        method: 'DELETE',
+        url: `/delete-role/${id}`,
+        method: 'GET',
       }),
     }),
   }),

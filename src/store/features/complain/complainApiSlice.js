@@ -19,8 +19,8 @@ export const complainApiSlice = apiSlice.injectEndpoints({
     }),
     deleteComplain: builder.mutation({
       query: (id) => ({
-        url: `/keluhan/${id}`,
-        method: 'DELETE',
+        url: `/delete-keluhan/${id}`,
+        method: 'GET',
       }),
     }),
     addComplain: builder.mutation({

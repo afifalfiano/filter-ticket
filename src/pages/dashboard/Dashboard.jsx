@@ -101,12 +101,14 @@ const Dashboard = () => {
           setShowLoading(false);
         }, 1500);
       } else {
+        setRows([]);
         setTimeout(() => {
           setShowLoading(false);
         }, 1500);
         catchError(data, false);
       }
     } catch (error) {
+      setRows([]);
       setTimeout(() => {
         setShowLoading(false);
       }, 1500);

@@ -33,8 +33,8 @@ export const popApiSlice = apiSlice.injectEndpoints({
     }),
     deletePOP: builder.mutation({
       query: (id) => ({
-        url: `/pop/${id}`,
-        method: 'DELETE',
+        url: `/delete-pop/${id}`,
+        method: 'GET',
       }),
     }),
   }),

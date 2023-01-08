@@ -27,8 +27,8 @@ export const shiftApiSlice = apiSlice.injectEndpoints({
     }),
     deleteShift: builder.mutation({
       query: (id) => ({
-        url: `/shift/${id}`,
-        method: 'DELETE',
+        url: `/delete-shift/${id}`,
+        method: 'GET',
       }),
     }),
   }),

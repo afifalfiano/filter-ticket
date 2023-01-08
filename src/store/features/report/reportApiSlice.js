@@ -45,8 +45,8 @@ export const reportApiSlice = apiSlice.injectEndpoints({
     }),
     deleteLaporan: builder.mutation({
       query: (id) => ({
-        url: `/laporan/${id}`,
-        method: 'DELETE',
+        url: `/delete-laporan/${id}`,
+        method: 'GET',
       }),
     }),
   }),

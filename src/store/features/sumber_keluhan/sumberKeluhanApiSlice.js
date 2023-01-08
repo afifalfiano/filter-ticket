@@ -33,8 +33,8 @@ export const sumberKeluhanApiSlice = apiSlice.injectEndpoints({
     }),
     deleteSumberKeluhan: builder.mutation({
       query: (id) => ({
-        url: `/sumber-keluhan/${id}`,
-        method: 'DELETE',
+        url: `/delete-sumber-keluhan/${id}`,
+        method: 'GET',
       }),
     }),
   }),

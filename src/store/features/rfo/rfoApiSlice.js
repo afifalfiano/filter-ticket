@@ -13,8 +13,8 @@ export const rfoApiSlice = apiSlice.injectEndpoints({
     }),
     deleteRFOKeluhan: builder.mutation({
       query: (id) => ({
-        url: `/rfo-keluhan/${id}`,
-        method: 'DELETE',
+        url: `/delete-rfo-keluhan/${id}`,
+        method: 'GET',
       }),
     }),
     rfoById: builder.mutation({
@@ -65,8 +65,8 @@ export const rfoApiSlice = apiSlice.injectEndpoints({
     }),
     deleteRFOGangguan: builder.mutation({
       query: (id) => ({
-        url: `/rfo-gangguan/${id}`,
-        method: 'DELETE',
+        url: `/delete-rfo-gangguan/${id}`,
+        method: 'GET',
       }),
     }),
     updateKeluhanRFOGangguan: builder.mutation({
