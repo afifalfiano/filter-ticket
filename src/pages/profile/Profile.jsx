@@ -44,7 +44,7 @@ function Profile() {
       const data = await allPOP().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
-        const index = pop.data.find((item) => item.id_pop === user.pop_id);
+        const index = pop?.data?.find((item) => item.id_pop === user.pop_id);
         setCurrentPop(index);
       } else {
         catchError(data);
@@ -59,7 +59,7 @@ function Profile() {
       const data = await allTeam().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setTeam({ ...data }));
-        const index = role.data.find((item) => +item.id_role === +user?.role_id);
+        const index = role?.data?.find((item) => +item.id_role === +user?.role_id);
         setCurrentRole(index);
       } else {
         catchError(data);

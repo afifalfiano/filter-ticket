@@ -149,7 +149,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                           onChange={handleChange}
                           className="select w-full max-w-full input-bordered"
                         >
-                          {roleData.data.map((item, index) => (
+                          {roleData?.data?.map((item, index) => (
                             <option
                               key={index}
                               id={item.id_role}
@@ -177,7 +177,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                           onChange={handleChange}
                           className="select w-full max-w-full input-bordered"
                         >
-                          {popData.data.map((item, index) => (
+                          {popData?.data?.map((item, index) => (
                             <option key={index} value={item.id_pop} label={item.pop}>
                               {item.pop}
                             </option>
