@@ -43,7 +43,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
         catchError(data);
       }
     }
-    if (result?.error?.data?.message?.match(/Please login first/ig)) {
+    if (result?.error?.data?.message?.match(/Please login first/ig) || result?.error?.data?.message?.match(/Please activate account/ig)) {
       api.dispatch((action) => {
         action(setLogOut());
         action(clearBTS());
