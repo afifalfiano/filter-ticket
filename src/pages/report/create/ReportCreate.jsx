@@ -157,9 +157,13 @@ function ReportCreate() {
         setKeluhanLaporanLocal(data.data);
         setShowPreview(true);
       } else {
+        setKeluhanLaporanLocal(null);
+        setShowPreview(false);
         catchError(data);
       }
     } catch (error) {
+      setKeluhanLaporanLocal(null);
+      setShowPreview(false);
       catchError(error);
     }
   }
