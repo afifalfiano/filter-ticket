@@ -84,10 +84,10 @@ function Statistics() {
         ]
         setDataFilter(dataFix);
       } else {
-        catchError(data);
+        catchError(data, 'hidden');
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, 'hidden');
     }
   }
 

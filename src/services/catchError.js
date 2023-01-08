@@ -36,7 +36,7 @@ const catchError = (body, title = '') => {
         message = 'Kesalahan Pada Sistem';
         break;
     }
-    if (title !== 'read-all') {
+    if (title !== 'hidden') {
       toast.error(message, propertyToast);
     }
 }

@@ -71,7 +71,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
       await readAllNotificationComplain({body}).unwrap();
       // getAllNotification();
     } catch (error) {
-      catchError(error, 'read-all');
+      catchError(error, 'hidden');
       throw new Error("Unsuccess read all notification");
     }
   }
