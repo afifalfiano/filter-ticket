@@ -19,7 +19,7 @@ function Menu() {
       </Link>
       <Link
         className={`btn btn-ghost normal-case text-sm ${
-          window.location.pathname === '/dashboard' && 'btn-active'
+          (window.location.pathname === '/dashboard' || window.location.pathname.includes('/dashboard/detail') ||  window.location.pathname.includes('/dashboard/rfo_single')) && 'btn-active'
         }`}
         to="/dashboard"
         activeclassname="btn-active"
@@ -28,7 +28,7 @@ function Menu() {
       </Link>
       <Link
         className={`btn btn-ghost normal-case text-sm ${
-          window.location.pathname === '/reason_of_outage' && 'btn-active'
+          (window.location.pathname === '/reason_of_outage' || window.location.pathname.includes('/reason_of_outage/detail_single') || window.location.pathname.includes('/reason_of_outage/detail_masal')) && 'btn-active'
         }`}
         to="/reason_of_outage"
         activeclassname="btn-active"
@@ -37,7 +37,7 @@ function Menu() {
       </Link>
       <Link
         className={`btn btn-ghost normal-case text-sm ${
-          window.location.pathname === '/report' && 'btn-active'
+          (window.location.pathname === '/report' || window.location.pathname.includes('/report/create')) && 'btn-active'
         }`}
         to="/report"
         activeclassname="btn-active"
@@ -46,7 +46,7 @@ function Menu() {
       </Link>
       <Link
         className={`btn btn-ghost normal-case text-sm ${
-          window.location.pathname === '/history_dashboard' && 'btn-active'
+          (window.location.pathname === '/history_dashboard' || window.location.pathname.includes('/history_dashboard/detail') || window.location.pathname.includes('/history_dashboard/rfo_single') || window.location.pathname.includes('/history_dashboard/rfo_masal')) && 'btn-active'
         }`}
         to="/history_dashboard"
         activeclassname="btn-active"

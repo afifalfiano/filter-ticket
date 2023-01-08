@@ -342,7 +342,7 @@ function HistoryDashboard() {
                             onClick={() => {
                               setDetail(item);
                               navigate(
-                                `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
+                                `/history_dashboard/rfo_masal/${item.rfo_gangguan_id}`
                               );
                             }}
                           />

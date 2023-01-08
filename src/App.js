@@ -93,6 +93,10 @@ function App() {
             path="history_dashboard/rfo_single/:id"
             element={<DashboardRFOSingle />}
           />
+          <Route
+            path="history_dashboard/rfo_masal/:id"
+            element={<RFODetailMass />}
+          />
           <Route path="profile" element={<Profile />} />
           <Route
             path="base_transceiver_station"

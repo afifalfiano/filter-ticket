@@ -91,12 +91,12 @@ function Profile() {
       ) : (
         <div className="flex items-start justify-center">
           <div className="text-center">
-            <div className="avatar placeholder">
-              <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
-                <span className="text-3xl">
+            <div className="avatar">
+                <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
+                  <span className="text-3xl">
                   <img src={profile?.avatar} alt={profile?.name} />
-                </span>
-              </div>
+                  </span>
+                </div>
             </div>
             <h1 className="font-semibold text-xl mt-5">{profile?.name}</h1>
             <div className="my-5 flex justify-center">
