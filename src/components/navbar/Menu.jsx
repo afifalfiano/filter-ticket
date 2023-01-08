@@ -98,7 +98,7 @@ function Menu() {
           >
             <li>
               <Link
-                className="btn btn-ghost normal-case text-sm justify-start"
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/base_transceiver_station' &&'btn-active')}`}
                 to="/base_transceiver_station"
                 activeclassname="btn-active"
               >
@@ -107,7 +107,7 @@ function Menu() {
             </li>
             <li>
               <Link
-                className="btn btn-ghost normal-case text-sm justify-start"
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/users' &&'btn-active')}`}
                 to="/users"
                 activeclassname="btn-active"
               >
@@ -116,7 +116,7 @@ function Menu() {
             </li>
             <li>
               <Link
-                className="btn btn-ghost normal-case text-sm justify-start"
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/pop' &&'btn-active')}`}
                 to="/pop"
                 activeclassname="btn-active"
               >
@@ -125,7 +125,7 @@ function Menu() {
             </li>
             <li>
               <Link
-                className="btn btn-ghost normal-case text-sm justify-start"
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/source_complain' &&'btn-active')}`}
                 to="/source_complain"
                 activeclassname="btn-active"
               >
@@ -134,7 +134,7 @@ function Menu() {
             </li>
             <li>
               <Link
-                className="btn btn-ghost normal-case text-sm justify-start"
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/role' &&'btn-active')}`}
                 to="/role"
                 activeclassname="btn-active"
               >
@@ -143,7 +143,7 @@ function Menu() {
             </li>
             <li>
               <Link
-                className="btn btn-ghost normal-case text-sm justify-start"
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/shift' &&'btn-active')}`}
                 to="/shift"
                 activeclassname="btn-active"
               >
