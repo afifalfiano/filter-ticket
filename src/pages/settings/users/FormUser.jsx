@@ -42,7 +42,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
       const data = await allPOP().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setPOP({ ...data }));
-        const index = pop.data.find((item) => item.id_pop === user.pop_id);
+        const index = pop?.data?.find((item) => item.id_pop === user.pop_id);
         setCurrentPop(index);
       } else {
         catchError(data);
@@ -57,7 +57,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
       const data = await allTeam().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setTeam({ ...data }));
-        const index = role.data.find((item) => +item.id_role === +user?.role_id);
+        const index = role?.data?.find((item) => +item.id_role === +user?.role_id);
         setCurrentRole(index);
       } else {
         catchError(data);
@@ -187,7 +187,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {role?.data.map((item) => (
+                  {role?.data?.map((item) => (
                     <option
                       id={item.id_role}
                       value={item.id_role}
@@ -213,7 +213,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {pop?.data.map((item) => (
+                  {pop?.data?.map((item) => (
                     <option value={item.id_pop} label={item.pop}>
                       {item.pop}
                     </option>

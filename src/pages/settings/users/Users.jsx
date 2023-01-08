@@ -77,6 +77,7 @@ function Users() {
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setUsers({ ...data }));
         setRows(data.data);
+        console.log(data.data, 'rows');
         handlePagination(1, data.data);
         doGetPageNumber(data.data);
       } else {
