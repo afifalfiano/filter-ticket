@@ -25,7 +25,6 @@ function DeleteModal({ stateModal, getInfo, detail, title, message = 'Apakah and
   const [activateUser] = useActivateUserMutation();
   const [deactivateUser] = useDeactivateUserMutation();
 
-  console.log(detail,'cek')
   const dispatch = useDispatch();
   const onBtnClose = () => {
     dispatch(setModal(initState));
