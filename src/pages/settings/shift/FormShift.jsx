@@ -116,7 +116,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
             <Form>
               <div className="form-control">
                 <label htmlFor="shift" className="label">
-                  <span className="label-text"> Nama shift:</span>
+                  <span className="label-text"> Shift:</span>
                 </label>
                 <Field
                   id="shift"

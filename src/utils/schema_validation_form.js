@@ -97,7 +97,7 @@ const FormRoleSchema = Yup.object().shape({
 });
 
 const FormShiftSchema = Yup.object().shape({
-  shift: Yup.string().required('Wajib diisi.'),
+  shift: Yup.number().required('Wajib diisi.'),
   mulai: Yup.string().required('Wajib diisi.'),
   selesai: Yup.string().required('Wajib diisi.'),
 });
