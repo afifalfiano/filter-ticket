@@ -14,7 +14,6 @@ export const propertyToast = {
 
 
 const catchError = (body, show = true) => {
-    console.log(body, 'error');
     let message = 'Kesalahan Pada Sistem';
     switch (body.status) {
       case 401:
@@ -37,7 +36,6 @@ const catchError = (body, show = true) => {
         break;
     }
     if (show) {
-      console.log('true');
       toast.error(message, propertyToast);
     }
 }

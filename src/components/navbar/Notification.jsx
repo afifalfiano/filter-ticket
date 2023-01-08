@@ -9,6 +9,7 @@ import {
   selectTotalCountNotification,
 } from '../../store/features/notification/notificationSlice';
 import NotificationSound from "../../notification-sound.mp3";
+import catchError from '../../services/catchError';
 
 function Notification() {
   const getNotif = useSelector(selectAllNotification)
@@ -25,7 +26,7 @@ function Notification() {
       cluster: 'ap1',
       encrypted: true,
     });
-    Pusher.logToConsole = true;
+    Pusher.logToConsole = false;
     const channel = pusher.subscribe('my-channel');
     channel.bind('KeluhanEvent', (data) => {
       playAudio();
@@ -37,12 +38,10 @@ function Notification() {
 
     beamsClient.start()
     .then((beamsClient) => beamsClient.getDeviceId())
-    .then((deviceId) =>
-      console.log("Successfully registered with Beams. Device ID:", deviceId)
-    )
+    .then((deviceId) => deviceId)
     .then(() => beamsClient.addDeviceInterest("update"))
     .then(() => beamsClient.getDeviceInterests())
-    .then((interests) => console.log(interests, 'interest'))
+    .then((interests) => interests).catch(err => catchError(err));
   }, []);
 
   return (
