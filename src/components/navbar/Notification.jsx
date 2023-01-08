@@ -16,7 +16,7 @@ function Notification() {
   const audioPlayer = useRef(null);
 
   const playAudio = () => {
-    audioPlayer.current.play();
+    audioPlayer?.current?.play();
   }
 
 
