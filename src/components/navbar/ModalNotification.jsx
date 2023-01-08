@@ -3,8 +3,22 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import catchError from "../../services/catchError";
+import { useGetProfileMutation, useLogoutMutation } from "../../store/features/auth/authApiSlice";
+import { setLogOut } from "../../store/features/auth/authSlice";
+import { clearBTS } from "../../store/features/bts/btsSlice";
+import { clearComplain } from "../../store/features/complain/complainSlice";
+import { clearComplainHistory } from "../../store/features/complain_history/complainHistorySlice";
+import { clearModal } from "../../store/features/modal/modalSlice";
 import { useGetNotificationMutation, useReadAllNotificationMutation, useReadNotificationMutation } from "../../store/features/notification/notificationApiSlice";
-import { selectTotalCountNotification, setTotalCount } from "../../store/features/notification/notificationSlice";
+import { clearNotification, selectTotalCountNotification, setTotalCount } from "../../store/features/notification/notificationSlice";
+import { clearPOP } from "../../store/features/pop/popSlice";
+import { clearReport } from "../../store/features/report/reportSlice";
+import { clearRFO } from "../../store/features/rfo/rfoSlice";
+import { clearShift } from "../../store/features/shift/shiftSlice";
+import { clearSumberKeluhan } from "../../store/features/sumber_keluhan/sumberKeluhanSlice";
+import { clearTeam } from "../../store/features/team/teamSlice";
+import { clearUsers } from "../../store/features/users/usersSlice";
+import * as PusherPushNotifications from '@pusher/push-notifications-web';
 
 const ModalNotification = ({totalCount, data}) => {
 
@@ -12,9 +26,70 @@ const ModalNotification = ({totalCount, data}) => {
   const [getNotification ] = useGetNotificationMutation();
   const [readNotification ] = useReadNotificationMutation();
   const [readAllNotification] = useReadAllNotificationMutation();
+  const [getProfile] = useGetProfileMutation();
   const dispatch = useDispatch();
   const totalCountState = useSelector(selectTotalCountNotification);
   
+  const [logout] = useLogoutMutation();
+
+  const onLogout = async (e) => {
+    try {
+      const userLogout = await logout().unwrap();
+      if (userLogout?.status === 'success' || userLogout?.status === 'Success') {
+        dispatch((action) => {
+          action(setLogOut());
+          action(clearBTS());
+          action(clearComplain());
+          action(clearComplainHistory());
+          action(clearModal());
+          action(clearNotification());
+          action(clearPOP());
+          action(clearReport());
+          action(clearRFO());
+          action(clearShift());
+          action(clearSumberKeluhan());
+          action(clearTeam());
+          action(clearUsers());
+        });
+
+        const beamsClient = new PusherPushNotifications.Client({
+          instanceId: 'a81f4de8-8096-4cc9-a1d0-5c92138936f1',
+          });
+        
+          beamsClient.stop()
+          .then(() => console.log('Beams SDK has been stopped'))
+          .catch(e => console.error('Could not stop Beams SDK', e));
+
+          beamsClient.clearAllState()
+          .then(() => console.log('Beams state has been cleared'))
+          .catch(e => console.error('Could not clear Beams state', e));
+                  
+        localStorage.clear();
+        navigate('/sign_in', {replace: true});
+      } else {
+        catchError(userLogout);
+      }
+
+    } catch (error) {
+      catchError(error);
+    }
+  }
+
+  const getCurrentProfile = async () => {
+    try {
+      const data = await getProfile().unwrap();
+      console.log(data, 'data');
+      if (data.status === 'Success') {
+        if(!data.data.aktif) {
+          onLogout();
+        }
+      } else {
+       catchError(data); 
+      }
+    } catch (error) {
+      catchError(data);
+    }
+  }
   const getAllNotification = async () => {
     try {
       const data = await getNotification().unwrap();
@@ -61,6 +136,7 @@ const ModalNotification = ({totalCount, data}) => {
     getAllNotification();
     const intervalId = setInterval(() => {
       getAllNotification();
+      getCurrentProfile();
     }, 5000);
     return () => {
       clearInterval(intervalId);

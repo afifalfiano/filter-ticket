@@ -87,7 +87,6 @@ function DeleteModal({ stateModal, getInfo, detail, title, message = 'Apakah and
           <HiQuestionMarkCircle size={50} color="#FF2E00" />
 
           <p className="py-4">{message} {title}?</p>
-          {title === 'Nonaktifkan user' && <p className='text-red-600'>User akan ternonaktifkan setelah logout</p>}
         </div>
 
         <hr className="my-2 mt-5" />
