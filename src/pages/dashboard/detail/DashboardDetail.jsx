@@ -234,7 +234,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
         <div className='flex justify-center items-center gap-5'>
           <div className='w-1/12 flex items-center justify-center ml-2'>
           <div className="avatar">
-              <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+          <div className={`w-16 rounded-full ring ${detailComplain?.user?.aktif ? 'ring-green-400' : 'ring-red-400'} ring-offset-base-100 ring-offset-2`}>
                 <img src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
                 {/* <img src="https://placeimg.com/192/192/people" /> */}
               </div>
@@ -243,7 +243,11 @@ function DashboardDetail({ rfoSingle, idComplain}) {
           <div className="w-11/12">
           <p className="justify-start w-full font-semibold">Keluhan Awal</p>
           <div className="flex justify-between py-2">
-            <p>Dibuat oleh: {detailComplain?.user?.name} ({detailComplain?.user?.role?.role}) </p>
+            <p>
+              Dibuat oleh: 
+              {detailComplain?.user?.aktif && <span className='pl-1 font-semibold'>{detailComplain?.user?.name} ({detailComplain?.user?.role?.role})</span>} 
+            {!detailComplain?.user?.aktif && <span className="pl-1 text-red-600 font-semibold">{detailComplain?.user?.name} ({detailComplain?.user?.role?.role})</span>} 
+            </p>
             <p>
               {new Date(detailComplain?.created_at).toLocaleString('id-ID', {
                 weekday: 'long',
@@ -280,7 +284,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
               <div className='flex justify-center items-center gap-5'>
               <div className='w-1/12 flex items-center justify-center ml-2'>
               <div className="avatar">
-                  <div className="w-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+              <div className={`w-16 rounded-full ring ${item?.user?.aktif ? 'ring-green-400' : 'ring-red-600'} ring-offset-base-100 ring-offset-2`}>
                     <img src={item?.user?.avatar} alt={item?.user?.name}/>
                     {/* <img src="https://placeimg.com/192/192/people" /> */}
                   </div>
@@ -288,7 +292,10 @@ function DashboardDetail({ rfoSingle, idComplain}) {
               </div>
               <div className="w-11/12">
               <div className="flex justify-between py-2">
-                <p>Balasan pesan: {item?.user?.name} ({item?.user?.role?.role}) </p>
+                <p>Balasan pesan: 
+                  {item?.user?.aktif && <span className='pl-1 font-semibold'>{item?.user?.name} ({item?.user?.role?.role})</span>} 
+                  {!item?.user?.aktif && <span className="pl-1 text-red-600 font-semibold">{item?.user?.name} ({item?.user?.role?.role})</span>} 
+                </p>
                 <p>
                   {new Date(item?.created_at).toLocaleString('id-ID', {
                     weekday: 'long',
