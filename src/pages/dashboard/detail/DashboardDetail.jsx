@@ -261,10 +261,10 @@ function DashboardDetail({ rfoSingle, idComplain}) {
             <div dangerouslySetInnerHTML={{__html: detailComplain?.keluhan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
           </div>
           <div className="py-2">
-            {detailComplain?.lampirankeluhan?.map((file) => {
+            {detailComplain?.lampirankeluhan?.map((file, index) => {
               if (+file.keluhan_id === detailComplain?.id_keluhan) {
                 return (
-                  <a className="link inline" href={file.path} target="_blank" rel="noreferrer">
+                  <a key={index} className="link inline" href={file.path} target="_blank" rel="noreferrer">
                     <HiDocumentText size={24} color="blue" className="inline mr-2" /> Lampiran File
                   </a>
                 )
@@ -275,8 +275,8 @@ function DashboardDetail({ rfoSingle, idComplain}) {
         </div>
 
         {
-          detailComplain?.balasan.length > 0 && detailComplain?.balasan.map((item) => (
-            <div>
+          detailComplain?.balasan.length > 0 && detailComplain?.balasan.map((item, index) => (
+            <div key={index}>
               <div className='flex justify-center items-center gap-5'>
               <div className='w-1/12 flex items-center justify-center ml-2'>
               <div className="avatar">
@@ -306,10 +306,10 @@ function DashboardDetail({ rfoSingle, idComplain}) {
                   <div dangerouslySetInnerHTML={{__html: item?.balasan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
               </div>
               <div className="py-2">
-                {item?.lampiranbalasan?.map((file) => {
+                {item?.lampiranbalasan?.map((file, index) => {
                   if (+file.balasan_id === +item.id_balasan) {
                     return (
-                      <a className="link inline" href={file.path} target="_blank" rel="noreferrer">
+                      <a key={index} className="link inline" href={file.path} target="_blank" rel="noreferrer">
                         <HiDocumentText size={24} color="blue" className="inline mr-2" /> Lampiran File
                       </a>
                     )

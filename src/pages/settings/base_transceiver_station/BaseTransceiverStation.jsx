@@ -262,8 +262,8 @@ function BaseTransceiverStation() {
             onChange={handlePOP}
           >
             <option value="all" label="Semua">All</option>
-            {dataPOP?.map((item) => (
-              <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+            {dataPOP?.map((item, index) => (
+              <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
             ))}
           </select>
         </div>
@@ -285,14 +285,14 @@ function BaseTransceiverStation() {
         <table className="table table-zebra w-full">
           <thead>
             <tr>
-              {columns.map((item) => (
-                <th className="text-center">{item}</th>
+              {columns.map((item, index) => (
+                <th key={index} className="text-center">{item}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             { rows.map((item, index) => (
-              <tr className="text-center" id={item.id}>
+              <tr className="text-center" id={item.id} key={index}>
                 <td id={item.id}>{index + 1}</td>
                 <td>
                   { item?.pop?.pop === 'Yogyakarta' ? (

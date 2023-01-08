@@ -13,8 +13,8 @@ function Breadcrumb() {
             <HiHome />
           </Link>
         </li>
-        {navigasi.data.map((item) => (
-          <li>
+        {navigasi.data.map((item, index) => (
+          <li key={index}>
             <Link to={item.path}>{item.title}</Link>
           </li>
         ))}

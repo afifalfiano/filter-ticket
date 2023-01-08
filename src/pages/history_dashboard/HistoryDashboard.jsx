@@ -189,8 +189,8 @@ function HistoryDashboard() {
             onChange={handlePOP}
           >
             <option value="all" label="Semua">All</option>
-            {dataPOP?.map((item) => (
-              <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+            {dataPOP?.map((item, index) => (
+              <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
             ))}
           </select>
         </div>
@@ -227,14 +227,14 @@ function HistoryDashboard() {
           <table className="table table-zebra w-full">
             <thead>
               <tr>
-                {columns.map((item) => (
-                  <th className="text-center">{item}</th>
+                {columns.map((item, index) => (
+                  <th key={index} className="text-center">{item}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {rows.map((item, index) => (
-                <tr className="text-center">
+                <tr key={index} className="text-center">
                   <th>{index + 1}</th>
                   <td className="text-left">
                     {

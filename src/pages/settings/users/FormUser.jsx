@@ -187,8 +187,9 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {role?.data?.map((item) => (
+                  {role?.data?.map((item, index) => (
                     <option
+                      key={index}
                       id={item.id_role}
                       value={item.id_role}
                       label={item.role}
@@ -213,8 +214,8 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {pop?.data?.map((item) => (
-                    <option value={item.id_pop} label={item.pop}>
+                  {pop?.data?.map((item, index) => (
+                    <option value={item.id_pop} label={item.pop} key={index}>
                       {item.pop}
                     </option>
                   ))}

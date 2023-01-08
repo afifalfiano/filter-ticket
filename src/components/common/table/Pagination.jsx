@@ -18,16 +18,16 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 10, cu
           </label>
           <div className="form-control">
             <select className="select input-bordered" onChange={handlePerPage}>
-              {perPage?.map((item) => (
-                <option value={item} label={item}>item</option>
+              {perPage?.map((item, index) => (
+                <option key={index} value={item} label={item}>item</option>
               ))}
             </select>
           </div>
         </div>
         <div className="">
           <div className="btn-group">
-            {countPage?.map((item) => (
-              <button className={`btn btn-outline ${currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
+            {countPage?.map((item, index) => (
+              <button key={index} className={`btn btn-outline ${currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
             ))}
           </div>
         </div>
@@ -50,16 +50,16 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 10, cu
             </label>
             <div className="form-control">
               <select className="select input-bordered" onChange={handlePerPage} defaultValue={currentFilterPage}>
-                {perPage?.map((item) => (
-                  <option value={item} label={item} selected={currentFilterPage === item && true}>item</option>
+                {perPage?.map((item, index) => (
+                  <option key={index} value={item} label={item} selected={currentFilterPage === item && true}>item</option>
                 ))}
               </select>
             </div>
           </div>
           <div className="">
             <div className="btn-group">
-              {countPage?.map((item) => (
-                <button className={`btn btn-outline ${+currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
+              {countPage?.map((item, index) => (
+                <button key={index} className={`btn btn-outline ${+currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
               ))}
             </div>
           </div>

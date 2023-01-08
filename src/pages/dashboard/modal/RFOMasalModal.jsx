@@ -155,8 +155,8 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="">Pilih RFO Gangguan</option>
-                    {dataRFOMasal?.map((item) => (
-                      <option value={item.id_rfo_gangguan} label={item.problem}>{item.problem}</option>
+                    {dataRFOMasal?.map((item, index) => (
+                      <option key={index} value={item.id_rfo_gangguan} label={item.problem}>{item.problem}</option>
                     ))}
                   </Field>
                   {errors.rfo_gangguan && touched.rfo_gangguan ? (

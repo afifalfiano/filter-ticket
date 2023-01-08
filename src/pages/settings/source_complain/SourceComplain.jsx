@@ -186,14 +186,14 @@ function SourceComplain() {
           <table className="table table-zebra w-full">
             <thead>
               <tr>
-                {columns.map((item) => (
-                  <th className="text-center">{item}</th>
+                {columns.map((item, index) => (
+                  <th key={index} className="text-center">{item}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {rows.map((item, index) => (
-                <tr className="text-center" key={item.id}>
+                <tr className="text-center" key={index}>
                   <td>{index + 1}</td>
                   <td>{item.sumber}</td>
                   <td>

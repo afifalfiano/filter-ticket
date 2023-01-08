@@ -5,14 +5,14 @@ function Table({ columns, rows }) {
     <table className="table table-zebra w-full">
       <thead>
         <tr>
-          {columns.map((item) => (
-            <th className="text-center">{item}</th>
+          {columns.map((item, index) => (
+            <th className="text-center" key={index}>{item}</th>
           ))}
         </tr>
       </thead>
       <tbody>
         {rows.map((item, index) => (
-          <tr>
+          <tr key={index}>
             <td>{index + 1}</td>
           </tr>
         ))}

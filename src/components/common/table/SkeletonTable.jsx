@@ -31,8 +31,8 @@ function SkeletonTable({
       <table className="table table-zebra w-full my-5 py-5 px-5">
         <thead>
           <tr>
-            {defaultSkeleton(countColumns).map(() => (
-              <th className="text-center">
+            {defaultSkeleton(countColumns).map((item, index) => (
+              <th className="text-center" key={index}>
                 <Skeleton />
               </th>
             ))}
@@ -40,10 +40,10 @@ function SkeletonTable({
         </thead>
 
         <tbody>
-          {defaultSkeleton(countRows).map(() => (
-            <tr>
-              {defaultSkeleton(countColumns).map(() => (
-                <td>
+          {defaultSkeleton(countRows).map((item, index) => (
+            <tr key={index}>
+              {defaultSkeleton(countColumns).map((item, i) => (
+                <td key={i}>
                   <Skeleton />
                 </td>
               ))}

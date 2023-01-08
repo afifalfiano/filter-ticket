@@ -253,8 +253,8 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih POP">Pilih POP</option>
-                    {popData.data.map((item) => (
-                      <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+                    {popData.data.map((item, index) => (
+                      <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
                     ))}
                   </Field>
                   {errors.pop_id && touched.pop_id ? (
@@ -276,8 +276,8 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih Kategori Pelanggan">Pilih Kategori Pelanggan</option>
-                    {kategoriPelanggan.map((item) => (
-                      <option value={item.value} label={item.label}>{item.label}</option>
+                    {kategoriPelanggan.map((item, index) => (
+                      <option key={index} value={item.value} label={item.label}>{item.label}</option>
                     ))}
                   </Field>
                   {errors.kategori_pelanggan && touched.kategori_pelanggan ? (
@@ -342,8 +342,8 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih Sumber">Pilih Sumber</option>
-                    {dataSumber.data.map((item) => (
-                      <option value={item.id_sumber} label={item.sumber}>{item.sumber}</option>
+                    {dataSumber.data.map((item, index) => (
+                      <option key={index} value={item.id_sumber} label={item.sumber}>{item.sumber}</option>
                     ))}
                   </Field>
                   {errors.sumber && touched.sumber ? (

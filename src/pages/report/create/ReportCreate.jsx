@@ -286,8 +286,8 @@ function ReportCreate() {
             id="pop"
           >
             <option value="" label="Pilih POP">Pilih POP</option>
-            {allPOPLocal?.map((item) => (
-              <option value={item.id_pop} label={item.pop}>{item.pop}</option>
+            {allPOPLocal?.map((item, index) => (
+              <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
             ))}
           </select>
         </div>
@@ -302,8 +302,8 @@ function ReportCreate() {
             id="shift"
           >
             <option value="" label="Pilih Shift">Pilih Shift</option>
-            {allShiftLocal?.map((item) => (
-              <option value={item.id_shift} label={`${item.shift} (${item.mulai}) - (${item.selesai})`}>{`${item.shift} (${item.mulai}) - (${item.selesai})`}</option>
+            {allShiftLocal?.map((item, index) => (
+              <option key={index} value={item.id_shift} label={`${item.shift} (${item.mulai}) - (${item.selesai})`}>{`${item.shift} (${item.mulai}) - (${item.selesai})`}</option>
             ))}
           </select>
         </div>
@@ -391,10 +391,10 @@ function ReportCreate() {
                 </div>
                 <div>
                   <p>{new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                  <div className="">{allShiftLocal?.map((item) => {
+                  <div className="">{allShiftLocal?.map((item, index) => {
                     if (item.id_shift === +bodyKeluhan.shift) {
                       return (
-                        <span>{`${item.shift} (${item.mulai})-(${item.selesai})`}</span>
+                        <span key={index}>{`${item.shift} (${item.mulai})-(${item.selesai})`}</span>
                       );
                     }
                   })}
@@ -418,7 +418,7 @@ function ReportCreate() {
 
           <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
             {keluhanLaporanLocal?.keluhan_open.map((item, index) => (
-              <div className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
+              <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
                 <div className="flex gap-5 w-full">
                   <div className="flex-1">
                     <p>Nomor</p>
@@ -447,7 +447,7 @@ function ReportCreate() {
 
           <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
             {keluhanLaporanLocal?.keluhan_close.map((item, index) => (
-              <div className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
+              <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
                 <div className="flex gap-5 w-full">
                   <div className="flex-1">
                     <p>Nomor</p>
@@ -476,7 +476,7 @@ function ReportCreate() {
 
           <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
             {keluhanLaporanLocal?.rfo_gangguan.map((item, index) => (
-              <div className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
+              <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
                 <div className="flex gap-5 w-full">
                   <div className="flex-1">
                     <p>Nomor</p>

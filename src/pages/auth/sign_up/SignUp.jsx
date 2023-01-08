@@ -178,8 +178,8 @@ function SignUp() {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {optionTeam.map((item) => (
-                    <option value={item.value} label={item.label}>{item.label}</option>
+                  {optionTeam.map((item ,index) => (
+                    <option key={index} value={item.value} label={item.label}>{item.label}</option>
                   ))}
                 </Field>
                 {errors?.role_id && touched?.role_id ? (
@@ -201,8 +201,8 @@ function SignUp() {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {optionPOP.map((item) => (
-                    <option value={item.value} label={item.label}>{item.label}</option>
+                  {optionPOP.map((item, index) => (
+                    <option key={index} value={item.value} label={item.label}>{item.label}</option>
                   ))}
                 </Field>
                 {errors.pop_id && touched.pop_id ? (
