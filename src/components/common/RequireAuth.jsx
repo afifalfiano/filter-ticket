@@ -9,6 +9,7 @@ import {
 import Container from './Container';
 import Navbar from '../navbar/Navbar';
 import { decryptLocalStorage } from '../../utils/helper';
+import { Suspense } from 'react';
 
 function RequireAuth() {
   const dispatch = useDispatch();
@@ -25,13 +26,17 @@ function RequireAuth() {
     }
   }, []);
 
+  const renderLoader = () => <p>Loading...</p>;
+
   return (
     user && (
       <>
         <Navbar />
         <Toaster />
         <Container>
-          <Outlet />
+          <Suspense fallback={renderLoader()}>
+            <Outlet />
+          </Suspense>
         </Container>
       </>
     )

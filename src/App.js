@@ -1,38 +1,45 @@
 /* eslint-disable import/order */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
+import React, { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
+
+// auth
 import SignIn from './pages/auth/sign_in/SignIn';
 import SignUp from './pages/auth/sign_up/SignUp';
-import Dashboard from './pages/dashboard/Dashboard';
-import ReasonOfOutage from './pages/reason_of_outage/ReasonOfOutage';
-import Report from './pages/report/Report';
-import HistoryDashboard from './pages/history_dashboard/HistoryDashboard';
-import Profile from './pages/profile/Profile';
-import BaseTransceiverStation from './pages/settings/base_transceiver_station/BaseTransceiverStation';
 import VerificationEmail from './pages/auth/verification_email/VerificationEmail';
 import VerificationSuccess from './pages/auth/verification_success/VerificationSuccess';
-import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
-import RFODetailMass from './pages/reason_of_outage/detail_masal/RFODetailMass';
-import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSingle';
-import DashboardRFOSingle from './pages/dashboard/rfo_single/DashboardRFOSingle';
-import Statistics from './pages/statistics/Statistics';
+import ForgetPassword from './pages/auth/forget_password/ForgetPassword';
 import Layout from './components/common/Layout';
 import RequireAuth from './components/common/RequireAuth';
+import NotFound from './pages/not_found/NotFound';
+
+
 import 'react-loading-skeleton/dist/skeleton.css';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import NotFound from './pages/not_found/NotFound';
-import Users from './pages/settings/users/Users';
-import Pop from './pages/settings/pop/Pop';
-import SourceComplain from './pages/settings/source_complain/SourceComplain';
-import Role from './pages/settings/role/Role';
-import ReportCreate from './pages/report/create/ReportCreate';
-import ReportDetail from './pages/report/detail/ReportDetail';
-import Shift from './pages/settings/shift/Shift';
-import ForgetPassword from './pages/auth/forget_password/ForgetPassword';
 import { useState } from 'react';
+// end auth
+
+const Dashboard = lazy(() => import ('./pages/dashboard/Dashboard'));
+const ReasonOfOutage = lazy(() => import('./pages/reason_of_outage/ReasonOfOutage'));
+const Report = lazy(() => import('./pages/report/Report'));
+const Profile = lazy(() => import('./pages/profile/Profile'));
+const BaseTransceiverStation = lazy(() => import('./pages/settings/base_transceiver_station/BaseTransceiverStation'));
+const HistoryDashboard = lazy(() => import('./pages/history_dashboard/HistoryDashboard'));
+const DashboardDetail = lazy(() => import('./pages/dashboard/detail/DashboardDetail'));
+const RFODetailMass = lazy(() => import('./pages/reason_of_outage/detail_masal/RFODetailMass'));
+const RFODetailSingle = lazy(() => import('./pages/reason_of_outage/detail_mandiri/RFODetailSingle'));
+const DashboardRFOSingle = lazy(() => import('./pages/dashboard/rfo_single/DashboardRFOSingle'));
+const Statistics = lazy(() => import('./pages/statistics/Statistics'));
+const Users = lazy(() => import('./pages/settings/users/Users'));
+const Pop = lazy(() => import('./pages/settings/pop/Pop'));
+const SourceComplain = lazy(() => import('./pages/settings/source_complain/SourceComplain'));
+const Role = lazy(() => import('./pages/settings/role/Role'));
+const ReportCreate = lazy(() => import('./pages/report/create/ReportCreate'));
+const ReportDetail = lazy(() => import('./pages/report/detail/ReportDetail'));
+const Shift = lazy(() => import('./pages/settings/shift/Shift'));
 
 function App() {
   const [render, setRender] = useState(true);

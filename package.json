@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@loadable/component": "^5.15.2",
     "@pusher/push-notifications-web": "^1.1.0",
     "@reduxjs/toolkit": "^1.8.5",
     "@tailwindcss/typography": "^0.5.7",
