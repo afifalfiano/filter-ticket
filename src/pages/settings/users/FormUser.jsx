@@ -238,7 +238,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                   disabled={!isValid}
                   type="submit"
                   htmlFor="my-modal-3"
-                  className="btn btn-md btn-success"
+                  className="btn btn-md btn-success text-white"
                 >
                   Simpan
                 </button>
