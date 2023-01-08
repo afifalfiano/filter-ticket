@@ -211,9 +211,11 @@ function Report() {
           doGetPageNumber(data.data);
         }
       } else {
+        setRows([]);
         catchError(data);
       }
     } catch (error) {
+      setRows([]);
       catchError(error);
     }
   }

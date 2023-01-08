@@ -89,9 +89,11 @@ function Users() {
         handlePagination(1, data.data);
         doGetPageNumber(data.data);
       } else {
+        setRows([]);
         catchError(data);
       }
     } catch (err) {
+      setRows([]);
       catchError(err);
     }
   };

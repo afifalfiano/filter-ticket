@@ -98,9 +98,11 @@ function ReasonOfOutage() {
         dispatch(setRFO({ ...data }));
         setRows(data.data);
       } else {
+        setRows([]);
         catchError(data);
       }
     } catch (err) {
+      setRows([]);
       catchError(err);
     }
   };

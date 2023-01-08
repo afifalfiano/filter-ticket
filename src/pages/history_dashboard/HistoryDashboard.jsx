@@ -82,9 +82,11 @@ function HistoryDashboard() {
           setCountPage(countPaginate);
         }
       } else {
+        setRows([]);
         catchError(data);
       }
     } catch (err) {
+      setRows([]);
       catchError(err);
     }
   };
