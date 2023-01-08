@@ -78,7 +78,6 @@ const ModalNotification = ({totalCount, data}) => {
   const getCurrentProfile = async () => {
     try {
       const data = await getProfile().unwrap();
-      console.log(data, 'data');
       if (data.status === 'Success') {
         if(!data.data.aktif) {
           onLogout();
