@@ -31,6 +31,18 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: { ...body },
       }),
     }),
+    activateUser: builder.mutation({
+      query: ({ id }) => ({
+        url: `/user/reactivate-user/${id}`,
+        method: 'GEt',
+      }),
+    }),
+    deactivateUser: builder.mutation({
+      query: ({ id }) => ({
+        url: `/user/deactivate-user/${id}`,
+        method: 'GET',
+      }),
+    }),
     deleteUsers: builder.mutation({
       query: (id) => ({
         url: `/user/${id}`,
@@ -46,4 +58,6 @@ export const {
   useAddUsersMutation,
   useUpdateUsersMutation,
   useDeleteUsersMutation,
+  useActivateUserMutation,
+  useDeactivateUserMutation
 } = usersApiSlice;

@@ -33,7 +33,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
   const onBtnClose = () => {
     const newState = {
       ...stateModal,
-      user: { ...stateModal.user, showUpdateModalUser: false },
+      user: { ...stateModal.user, showUpdateModalUser: false, showActivateModalUser: false, showDeactivateModalUser: false },
     };
     dispatch(setModal(newState));
   };

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HiSearch, HiPencil } from 'react-icons/hi';
+import { HiSearch, HiPencil, HiCheckCircle, HiOutlineBan } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import SkeletonTable from '../../../components/common/table/SkeletonTable';
@@ -10,10 +10,11 @@ import FormUser from './FormUser';
 import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
+import DeleteModal from '../../../components/common/DeleteModal';
 
 function Users() {
   const dispatch = useDispatch();
-  const columns = ['No', 'Nama', 'Email', 'Role Id', 'Pop Id', 'Aksi'];
+  const columns = ['No', 'Nama', 'Email', 'Role Id', 'Pop Id', 'Status', 'Aksi'];
 
   const [rows, setRows] = useState([]);
   const [allUsers, { isLoading }] = useAllUsersMutation();
@@ -64,8 +65,16 @@ function Users() {
 
   const stateModal = useSelector(selectModalState);
 
-  const openModal = () => {
-    const newState = { ...stateModal, user: { ...stateModal.user, showUpdateModalUser: true } };
+  const openModal = (title) => {
+
+    let newState;
+    if (title === 'update') {
+      newState = { ...stateModal, user: { ...stateModal.user, showUpdateModalUser: true } };
+    } else if (title === 'aktifkan') {
+      newState = { ...stateModal, user: { ...stateModal.user, showActivateModalUser: true } };
+    } else if (title === 'nonaktifkan') {
+      newState = { ...stateModal, user: { ...stateModal.user, showDeactivateModalUser: true } };
+    }
 
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
@@ -154,6 +163,8 @@ function Users() {
 
       <Modal>
         {stateModal?.user?.showUpdateModalUser && <FormUser stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.user?.showActivateModalUser && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="Aktifkan user" message='Apakah anda yakin akan mengaktifkan' titleModal="" titleAction="Aktifkan"/> }
+        {stateModal?.user?.showDeactivateModalUser && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="Nonaktifkan user" message='Apakah anda yakin akan menonaktifkan' titleModal="" titleAction="Nonaktifkan" /> }
       </Modal>
       {isLoading && (
         <SkeletonTable countRows={8} countColumns={10} totalFilter={1} />
@@ -176,8 +187,17 @@ function Users() {
                   <td>{index + 1}</td>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
-                  <td>{item?.role_id}</td>
-                  <td>{item.pop_id}</td>
+                  <td>{item?.role?.role}</td>
+                  <td>{item?.pop?.pop}</td>
+                  <td>{item.aktif ? (
+                    <span className="badge badge-success text-white">
+                      Aktif
+                    </span>
+                  ): (
+                    <span className="badge badge-error text-white">
+                      Tidak aktif
+                    </span>
+                  )}</td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
                       <div className="tooltip" data-tip="Edit">
@@ -188,10 +208,37 @@ function Users() {
                           onClick={() => {
                             setDetail(item);
                             setTitle('update');
-                            openModal();
+                            openModal('update');
                           }}
                         />
                       </div>
+                    {item.aktif && (
+                      <div className="tooltip" data-tip="Non aktifkan">
+                        <HiOutlineBan
+                          className="cursor-pointer"
+                          size={20}
+                          color="#F87272"
+                          onClick={() => {
+                            setDetail(item);
+                            setTitle('nonaktifkan');
+                            openModal('nonaktifkan');
+                          }}
+                        />
+                    </div>)}
+                    {!item.aktif && (
+                      <div className="tooltip" data-tip="Aktifkan">
+                        <HiCheckCircle
+                          className="cursor-pointer"
+                          size={20}
+                          color="#36D399"
+                          onClick={() => {
+                            setDetail(item);
+                            setTitle('aktifkan');
+                            openModal('aktifkan');
+                          }}
+                        />
+                    </div>
+                    )}
                     </div>
                   </td>
                 </tr>

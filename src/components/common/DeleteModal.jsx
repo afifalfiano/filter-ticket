@@ -8,11 +8,12 @@ import { useDeleteSumberKeluhanMutation } from '../../store/features/sumber_kelu
 import { useDeleteRFOGangguanMutation } from '../../store/features/rfo/rfoApiSlice';
 import { useDeleteLaporanMutation } from '../../store/features/report/reportApiSlice';
 import { useDeleteShiftMutation } from '../../store/features/shift/shiftApiSlice';
+import { useActivateUserMutation, useDeactivateUserMutation } from '../../store/features/users/usersApiSlice';
 import { initState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
 import handleResponse from '../../services/handleResponse';
 
-function DeleteModal({ stateModal, getInfo, detail, title }) {
+function DeleteModal({ stateModal, getInfo, detail, title, message = 'Apakah anda yakin akan menghapus data', titleModal = 'Hapus Data', titleAction = 'Hapus' }) {
   const [deleteBts] = useDeleteBtsMutation();
   const [deleteComplain] = useDeleteComplainMutation();
   const [deletePOP] = useDeletePOPMutation();
@@ -21,7 +22,10 @@ function DeleteModal({ stateModal, getInfo, detail, title }) {
   const [deleteRFOGangguan] = useDeleteRFOGangguanMutation();
   const [deleteLaporan] = useDeleteLaporanMutation();
   const [deleteShift] = useDeleteShiftMutation();
+  const [activateUser] = useActivateUserMutation();
+  const [deactivateUser] = useDeactivateUserMutation();
 
+  console.log(detail,'cek')
   const dispatch = useDispatch();
   const onBtnClose = () => {
     dispatch(setModal(initState));
@@ -46,6 +50,10 @@ function DeleteModal({ stateModal, getInfo, detail, title }) {
         deleteData = await deleteLaporan(detail.id_laporan);
       } else if (title === 'Shift') {
         deleteData = await deleteShift(detail.id_shift);
+      } else if (title === 'Aktifkan user') {
+        deleteData = await activateUser({id: detail.id_user});
+      } else if (title === 'Nonaktifkan user') {
+        deleteData = await deactivateUser({id: detail.id_user});
       }
       if (deleteData?.data?.status === 'success' || deleteData?.data?.status === 'Success') {
         handleResponse(deleteData);
@@ -72,13 +80,13 @@ function DeleteModal({ stateModal, getInfo, detail, title }) {
         >
           ✕
         </button>
-        <h3 className="text-lg font-bold">Hapus Data {title}</h3>
+        <h3 className="text-lg font-bold">{titleModal} {title}</h3>
         <hr className="my-2" />
 
         <div className="flex flex-col justify-center align-middle items-center">
           <HiQuestionMarkCircle size={50} color="#FF2E00" />
 
-          <p className="py-4">Apakah anda yakin akan menghapus data {title}?</p>
+          <p className="py-4">{message} {title}?</p>
         </div>
 
         <hr className="my-2 mt-5" />
@@ -92,7 +100,7 @@ function DeleteModal({ stateModal, getInfo, detail, title }) {
             htmlFor="my-modal-delete"
             className="btn btn-md btn-error text-white"
           >
-            Hapus
+            {titleAction}
           </button>
         </div>
       </div>

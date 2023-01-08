@@ -32,6 +32,8 @@ export const initState = {
   },
   user: {
     showUpdateModalUser: false,
+    showActivateModalUser: false,
+    showDeactivateModalUser: false,
   },
   pop: {
     showAddModalPop: false,
