@@ -5,6 +5,7 @@ import Menu from './Menu';
 import Notification from './Notification';
 import Breadcrumb from '../breadcrumb/Breadcrumb';
 import { selectBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
+import InfoUser from './InfoUser';
 /* eslint-disable */
 const  Navbar = () => {
 
@@ -18,6 +19,7 @@ const  Navbar = () => {
       <Menu/>
       <div className="flex-none">
         <Notification />
+        <InfoUser />
         <DropdownMenu />
       </div>
     </div>
