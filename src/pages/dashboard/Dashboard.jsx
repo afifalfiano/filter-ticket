@@ -104,13 +104,13 @@ const Dashboard = () => {
         setTimeout(() => {
           setShowLoading(false);
         }, 1500);
-        catchError(data, 'hidden');
+        catchError(data, false);
       }
     } catch (error) {
       setTimeout(() => {
         setShowLoading(false);
       }, 1500);
-      catchError(error, 'hidden');
+      catchError(error, false);
     }
   };
 

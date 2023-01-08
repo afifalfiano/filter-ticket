@@ -13,7 +13,7 @@ export const propertyToast = {
 };
 
 
-const catchError = (body, title = '') => {
+const catchError = (body, show = true) => {
     console.log(body, 'error');
     let message = 'Kesalahan Pada Sistem';
     switch (body.status) {
@@ -36,7 +36,8 @@ const catchError = (body, title = '') => {
         message = 'Kesalahan Pada Sistem';
         break;
     }
-    if (title !== 'hidden') {
+    if (show) {
+      console.log('true');
       toast.error(message, propertyToast);
     }
 }

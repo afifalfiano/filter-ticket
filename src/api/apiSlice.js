@@ -30,15 +30,18 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   try {
     const result = await baseQuery(args, api, extraOptions);
-    // console.log(result, 'ts');
     if (result?.error) {
       const data = {
         status : result?.error.status || result?.error?.originalStatus,
         data: {
-          message: result?.error?.data?.message || result?.error?.status
+          message: result?.error?.data?.message || result?.error?.status.toString()
         }
       }
-      catchError(data);
+      if (data?.data?.message?.includes('Keluhan') || data?.data?.message?.includes('Statistic')) {
+        catchError(data, false);
+      } else {
+        catchError(data);
+      }
     }
     if (result?.error?.data?.message?.match(/Please login first/ig)) {
       api.dispatch((action) => {
