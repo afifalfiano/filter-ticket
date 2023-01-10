@@ -112,10 +112,10 @@ function Report() {
         dispatch(setPOP({ data: dataFix }));
         setdataPOP(dataFix);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -212,11 +212,11 @@ function Report() {
         }
       } else {
         setRows([]);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
       setRows([]);
-      catchError(error);
+      catchError(error, true);
     }
   }
 

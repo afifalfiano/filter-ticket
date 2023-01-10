@@ -40,11 +40,11 @@ function SignUp() {
         setOptionPOP(mapPOP);
       } else {
         setOptionPOP([{ label: 'Pilih POP', value: '' }]);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
       setOptionPOP([{ label: 'Pilih POP', value: '' }]);
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -60,11 +60,11 @@ function SignUp() {
         setOptionTeam(mapTeam);
       } else {
         setOptionTeam([{ label: 'Pilih Team', value: '' }]);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
       setOptionTeam([{ label: 'Pilih Team', value: '' }]);
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -94,7 +94,7 @@ function SignUp() {
         catchError(registerRes);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

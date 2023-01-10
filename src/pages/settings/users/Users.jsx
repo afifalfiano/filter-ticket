@@ -90,11 +90,11 @@ function Users() {
         doGetPageNumber(data.data);
       } else {
         setRows([]);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (err) {
       setRows([]);
-      catchError(err);
+      catchError(err, true);
     }
   };
 

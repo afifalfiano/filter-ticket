@@ -67,11 +67,11 @@ const ModalNotification = ({totalCount, data}) => {
         localStorage.clear();
         navigate('/sign_in', {replace: true});
       } else {
-        catchError(userLogout);
+        catchError(userLogout, true);
       }
 
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -83,10 +83,10 @@ const ModalNotification = ({totalCount, data}) => {
           onLogout();
         }
       } else {
-       catchError(data); 
+       catchError(data, true); 
       }
     } catch (error) {
-      catchError(data);
+      catchError(data, true);
     }
   }
   const getAllNotification = async () => {
@@ -104,10 +104,10 @@ const ModalNotification = ({totalCount, data}) => {
           dispatch(setTotalCount(total));
         }, 1000);
       } else {
-      catchError(data);
+      catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -116,7 +116,7 @@ const ModalNotification = ({totalCount, data}) => {
       const data = await readNotification({body: {id_notifikasiread: id } }).unwrap();
       getAllNotification();
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -127,7 +127,7 @@ const ModalNotification = ({totalCount, data}) => {
       const data = await readAllNotification().unwrap();
       getAllNotification();
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -157,7 +157,7 @@ const ModalNotification = ({totalCount, data}) => {
             message: 'Data keluhan tidak ada.'
           }
         };
-        catchError(response);
+        catchError(response, true);
       }
     } else {
       if (id_keluhan !== null) {
@@ -171,7 +171,7 @@ const ModalNotification = ({totalCount, data}) => {
             message: 'Data keluhan tidak ada.'
           }
         };
-        catchError(response);
+        catchError(response, true);
       }
     }
     

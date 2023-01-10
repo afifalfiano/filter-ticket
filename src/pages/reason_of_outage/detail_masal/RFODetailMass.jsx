@@ -20,10 +20,10 @@ function RFODetailMass() {
         dispatch(setRFOGangguanById(data));
         setDetailRFOMasal(data.data);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

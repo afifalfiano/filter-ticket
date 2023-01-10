@@ -53,11 +53,11 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
         localStorage.clear();
         navigate('/sign_in', {replace: true});
       } else {
-        catchError(userLogout);
+        catchError(userLogout, true);
       }
 
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
 
   }
@@ -90,10 +90,10 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
             onSubmitLogout();
         }, 1000)
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

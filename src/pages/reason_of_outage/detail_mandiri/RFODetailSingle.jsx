@@ -27,10 +27,10 @@ function RFODetailSingle() {
         dispatch(setRFOById(data));
         setDetailRFO(data.data);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -82,10 +82,10 @@ function RFODetailSingle() {
       if (update?.status === 'success' || update?.status === 'Success') {
         handleResponse(update);
       } else {
-        catchError(update);
+        catchError(update, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

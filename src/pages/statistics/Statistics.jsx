@@ -48,10 +48,10 @@ function Statistics() {
       if (data.status === 'success' || data.status === 'Success') {
         setDataGraph(data);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 

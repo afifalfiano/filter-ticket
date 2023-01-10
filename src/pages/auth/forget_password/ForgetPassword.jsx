@@ -37,13 +37,13 @@ function ForgetPassword() {
         setPassword('');
         setShowOTP(true);
       } else {
-        catchError(data);
+        catchError(data, true);
         setShowOTP(false);
         setOTP('');
         setPassword('');
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
       setShowOTP(false);
       setOTP('');
       setPassword('');
@@ -61,11 +61,11 @@ function ForgetPassword() {
           navigate('/sign_in');
         }, 2000);
       } else {
-        catchError(data);
+        catchError(data, true);
         setShowOTP(false);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
       setShowOTP(false);
     }
   };

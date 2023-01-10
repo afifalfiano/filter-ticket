@@ -41,7 +41,7 @@ function Notification() {
     .then((deviceId) => deviceId)
     .then(() => beamsClient.addDeviceInterest("update"))
     .then(() => beamsClient.getDeviceInterests())
-    .then((interests) => interests).catch(err => catchError(err));
+    .then((interests) => interests).catch(err => catchError(err, true));
   }, []);
 
   return (

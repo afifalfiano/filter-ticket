@@ -45,10 +45,10 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
         const index = pop?.data?.find((item) => item.id_pop === user.pop_id);
         setCurrentPop(index);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -60,10 +60,10 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
         const index = role?.data?.find((item) => +item.id_role === +user?.role_id);
         setCurrentRole(index);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -91,10 +91,10 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
           onBtnClose();
         }, 2000);
       } else {
-        catchError(update);
+        catchError(update, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

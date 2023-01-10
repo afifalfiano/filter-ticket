@@ -32,10 +32,10 @@ function Profile() {
       if (data.status === 'success' || data.status === 'Success') {
         setProfile(data.data);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -47,10 +47,10 @@ function Profile() {
         const index = pop?.data?.find((item) => item.id_pop === user.pop_id);
         setCurrentPop(index);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -62,10 +62,10 @@ function Profile() {
         const index = role?.data?.find((item) => +item.id_role === +user?.role_id);
         setCurrentRole(index);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

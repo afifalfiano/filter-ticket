@@ -40,7 +40,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
       if (data?.data?.message?.includes('Keluhan') || data?.data?.message?.includes('Statistic')) {
         catchError(data, false);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     }
     if (result?.error?.data?.message?.match(/Please login first/ig) || result?.error?.data?.message?.match(/Please activate account/ig)) {
@@ -64,7 +64,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     }
     return result;
   } catch (error) {
-    catchError(error);
+    catchError(error, true);
   }
 };
 

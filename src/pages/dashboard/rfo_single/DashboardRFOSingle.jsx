@@ -61,10 +61,10 @@ function DashboardRFOSingle() {
           lampiran: rfoKeluhan?.lammpiran,
         }
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -74,7 +74,7 @@ function DashboardRFOSingle() {
       dispatch(setComplainById({ ...data }));
       setDetailComplain(data.data);
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -132,14 +132,14 @@ function DashboardRFOSingle() {
                   navigate('/dashboard', { replace: true })
                 }, 1000)
               } else {
-                catchError(closed);
+                catchError(closed, true);
               }
           }
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

@@ -84,10 +84,10 @@ function ReasonOfOutage() {
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setRFOMasal({ ...data }));
       } else {
-        catchError(data);  
+        catchError(data, true);  
       }
     } catch (err) {
-      catchError(err);
+      catchError(err, true);
     }
   };
 
@@ -99,11 +99,11 @@ function ReasonOfOutage() {
         setRows(data.data);
       } else {
         setRows([]);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (err) {
       setRows([]);
-      catchError(err);
+      catchError(err, true);
     }
   };
 

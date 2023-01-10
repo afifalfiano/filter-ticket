@@ -53,7 +53,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
       }
       setCountRequest(countRequest++);
     } catch (error) {
-      catchError(error)
+      catchError(error, true)
     }
   };
 
@@ -106,7 +106,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
       const data = await postNotification({ body }).unwrap();
       return data;
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -118,7 +118,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
       const data = await storeAllNotification({ body }).unwrap();
       return data;
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -150,18 +150,18 @@ function DashboardDetail({ rfoSingle, idComplain}) {
             getComplainById();
             setResetTextEditor(false);
           } else {
-            catchError(dataPost);
+            catchError(dataPost, true);
             setResetTextEditor(false);
           }
         } else {
           setResetTextEditor(false);
-          catchError(dataNotification);
+          catchError(dataNotification, true);
         }
       } else {
-        catchError(add);
+        catchError(add, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 

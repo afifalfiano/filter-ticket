@@ -172,10 +172,10 @@ const Dashboard = () => {
       if (data.status === 'success' || data.status === 'Success') {
         dispatch(setSumberKeluhan({ ...data }));
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -197,10 +197,10 @@ const Dashboard = () => {
         dispatch(setPOP({ data: dataFix }));
         setdataPOP(dataFix);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

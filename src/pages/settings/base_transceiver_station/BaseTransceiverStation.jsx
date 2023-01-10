@@ -178,10 +178,10 @@ function BaseTransceiverStation() {
         dispatch(setPOP({ ...data }));
         setdataPOP(data.data)
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -195,11 +195,11 @@ function BaseTransceiverStation() {
         doGetPageNumber(data.data);
       } else {
         setRows([]);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (err) {
       setRows([]);
-      catchError(err);
+      catchError(err, true);
     }
   };
 

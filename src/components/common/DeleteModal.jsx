@@ -61,10 +61,10 @@ function DeleteModal({ stateModal, getInfo, detail, title, message = 'Apakah and
           getInfo({ status: 'success' });
         }, 2000);
       } else {
-        catchError(deleteData);
+        catchError(deleteData, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

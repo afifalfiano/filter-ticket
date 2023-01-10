@@ -27,10 +27,10 @@ function SignIn() {
         resetForm();
         navigate('/dashboard', { replace: true });
       } else {
-        catchError(userData);
+        catchError(userData, true);
       }
     } catch (err) {
-      catchError(err);
+      catchError(err, true);
     }
   };
 

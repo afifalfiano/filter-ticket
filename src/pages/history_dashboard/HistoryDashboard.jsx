@@ -83,11 +83,11 @@ function HistoryDashboard() {
         }
       } else {
         setRows([]);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (err) {
       setRows([]);
-      catchError(err);
+      catchError(err, true);
     }
   };
 
@@ -113,10 +113,10 @@ function HistoryDashboard() {
         dispatch(setPOP({ data: dataFix }));
         setdataPOP(dataFix);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

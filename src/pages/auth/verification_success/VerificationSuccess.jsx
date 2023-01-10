@@ -17,10 +17,10 @@ function VerificationSuccess() {
       if (data.status === 'Success' || data.status === 'success') {
         handleResponse(data);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

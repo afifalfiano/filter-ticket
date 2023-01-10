@@ -40,7 +40,7 @@ function FormSumberKeluhan({ stateModal, getInfo, detail, titleAction }) {
         doUpdate(body);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -54,7 +54,7 @@ function FormSumberKeluhan({ stateModal, getInfo, detail, titleAction }) {
         getInfo({ status: 'success' });
       }, 2000);
     } else {
-      catchError(add);
+      catchError(add, true);
     }
   }
 
@@ -70,7 +70,7 @@ function FormSumberKeluhan({ stateModal, getInfo, detail, titleAction }) {
         onBtnClose();
       }, 2000);
     } else {
-      catchError(update);
+      catchError(update, true);
     }
   }
 

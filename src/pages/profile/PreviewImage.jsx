@@ -36,10 +36,10 @@ function PreviewImage({ stateModal, getInfo }) {
           dispatch(notifChangeProfile(null));
         }, 2000);
       } else {
-        catchError(update);
+        catchError(update, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

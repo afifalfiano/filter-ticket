@@ -30,10 +30,10 @@ function ReopenModal({ stateModal, getInfo, detail }) {
               getInfo({ status: 'success' });
             }, 2000);
           } else {
-            catchError(deleteKeluhan);
+            catchError(deleteKeluhan, true);
           }
         } else {
-          catchError(reopenComplain);
+          catchError(reopenComplain, true);
         }
       } else {
         const reopenComplain = await complainHistoryReopen(detail.id_keluhan);
@@ -45,11 +45,11 @@ function ReopenModal({ stateModal, getInfo, detail }) {
             getInfo({ status: 'success' });
           }, 2000);
         } else {
-          catchError(reopenComplain);
+          catchError(reopenComplain, true);
         }
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 

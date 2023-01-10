@@ -34,10 +34,10 @@ const DropdownMenu = () => {
       if (data.status === 'success' || data.status === 'Success') {
         setProfile(data.data);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -83,11 +83,11 @@ const DropdownMenu = () => {
         localStorage.clear();
         navigate('/sign_in', {replace: true});
       } else {
-        catchError(userLogout);
+        catchError(userLogout, true);
       }
 
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
 
   }

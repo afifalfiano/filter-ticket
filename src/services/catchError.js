@@ -13,7 +13,8 @@ export const propertyToast = {
 };
 
 
-const catchError = (body, show = true) => {
+const catchError = (body, show = false) => {
+    console.log(body, show);
     let message = 'Kesalahan Pada Sistem';
     switch (body.status) {
       case 401:

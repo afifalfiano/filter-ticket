@@ -14,10 +14,10 @@ const InfoUser = () => {
         if (data.status === 'success' || data.status === 'Success') {
           setProfile(data.data);
         } else {
-          catchError(data);
+          catchError(data, true);
         }
       } catch (error) {
-        catchError(error);
+        catchError(error, true);
       }
     };
 

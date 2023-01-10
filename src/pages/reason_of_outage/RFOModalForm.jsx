@@ -64,7 +64,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
         doUpdate(body);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -78,7 +78,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
         getInfo({ status: 'success' });
       }, 2000);
     } else {
-      catchError(add);
+      catchError(add, true);
     }
   }
 
@@ -94,7 +94,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
         onBtnClose();
       }, 2000);
     } else {
-      catchError(update);
+      catchError(update, true);
     }
   }
 

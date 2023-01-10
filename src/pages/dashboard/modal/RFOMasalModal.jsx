@@ -31,10 +31,10 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
         dispatch(setRFOMasal({ ...data.data }))
         setDataRFOMasal([...data.data.data]);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
   useEffect(() => {
@@ -58,13 +58,13 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
             getInfo({ status: 'success' });
           }, 1000)
         } else {
-          catchError(closed);
+          catchError(closed, true);
         }
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
   return (

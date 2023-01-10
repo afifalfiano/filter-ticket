@@ -58,10 +58,10 @@ function ReportCreate() {
         dispatch(setPOP({ data: dataFix }));
         setAllPOPLocal(dataFix);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -79,10 +79,10 @@ function ReportCreate() {
         setAllUserLocal(dataLocal);
         setCheckedState(new Array(dataLocal.length).fill(false))
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -92,10 +92,10 @@ function ReportCreate() {
       if (data.status === 'success' || data.status === 'Success') {
         setAllShiftLocal(data.data);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -138,7 +138,7 @@ function ReportCreate() {
         },
         status: 404
       };
-      catchError(data);
+      catchError(data, true);
     }
   };
 
@@ -159,12 +159,12 @@ function ReportCreate() {
       } else {
         setKeluhanLaporanLocal(null);
         setShowPreview(false);
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
       setKeluhanLaporanLocal(null);
       setShowPreview(false);
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -244,10 +244,10 @@ function ReportCreate() {
           navigate('/report', { replace: true });
         }, 2000);
       } else {
-        catchError(data);
+        catchError(data, true);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 

@@ -68,7 +68,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
       const data = await storeAllNotification({ body }).unwrap();
       return data;
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -82,7 +82,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
       const data = await postNotification({ body }).unwrap();
       return data;
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   }
 
@@ -130,7 +130,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
         doUpdateComplain(payload);
       }
     } catch (error) {
-      catchError(error);
+      catchError(error, true);
     }
   };
 
@@ -157,13 +157,13 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                   getInfo({ status: 'success' });
                 }, 2000);
               } else {
-                catchError(dataPost);
+                catchError(dataPost, true);
               }
             } else {
-              catchError(dataNotification);
+              catchError(dataNotification, true);
             }
           } else {
-            catchError(add);
+            catchError(add, true);
           }
   }
 
@@ -189,7 +189,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
         onBtnClose();
       }, 2000);
     } else {
-      catchError(update);
+      catchError(update, true);
     }
   }
 
