@@ -35,12 +35,11 @@ function SignIn() {
   };
 
   return (
-    <div className="flex gap-3 h-screen min-h-screen">
-      <div className="bg-gray-200 w-8/12">
+    <div className="flex gap-0 lg:flex lg:gap-3 h-screen min-h-screen ">
+      <div className="bg-gray-200 hidden lg:w-8/12 lg:flex">
         <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
-          {/* <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="w-full h-full"/> */}
       </div>
-      <div className="w-4/12 h-screen bg-white">
+      <div className="h-screen bg-white w-full lg:w-4/12 relative">
         <Formik
           enableReinitialize
           validationSchema={SignInSchema}
@@ -57,8 +56,8 @@ function SignIn() {
             handleBlur,
             handleChange
           }) => (
-            <Form className="flex-row pt-10 pb-10 pl-16 pr-16 min-h-screen">
-              <div className="pt-20">
+            <Form className="flex-row py-6 px-6 md:pt-10 md:pb-10 md:pl-16 md:pr-16 min-h-screen">
+              <div className="pt-10 lg:pt-20">
                 <h4 className="text-2xl text-center font-semibold">
                   Selamat Datang!
                 </h4>
@@ -114,7 +113,7 @@ function SignIn() {
               <div className="form-control mt-5">
                 <button
                   type="submit"
-                  className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md btn-block"
+                  className="btn btn-md btn-block"
                   disabled={!isValid}
                 >
                   Masuk
@@ -128,7 +127,7 @@ function SignIn() {
                 </span>
               </div>
 
-              <div className="label justify-center align-bottom pt-36">
+              <div className="label justify-center align-bottom absolute bottom-10 right-0 left-0">
                 Copyright@
                 {new Date().getFullYear()}
               </div>
