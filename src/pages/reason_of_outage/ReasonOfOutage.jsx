@@ -2,101 +2,53 @@ import { useEffect, useState } from 'react';
 import {
   HiSearch,
   HiPencil,
-  HiTrash,
   HiEye,
 } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import DeleteModal from '../../components/common/DeleteModal';
 import Pagination from '../../components/common/table/Pagination';
-import SkeletonTable from '../../components/common/table/SkeletonTable';
-import Modal from '../../components/modal/Modal';
 import catchError from '../../services/catchError';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
-import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import {
   useAllRFOMutation,
-  useAllRFOMasalMutation,
 } from '../../store/features/rfo/rfoApiSlice';
 import {
   selectAllRFO,
-  selectAllRFOMasal,
   setRFO,
-  setRFOMasal,
 } from '../../store/features/rfo/rfoSlice';
-import RFOModalForm from './RFOModalForm';
+import SkeletonTable from '../../components/common/table/SkeletonTable';
+
 
 function ReasonOfOutage() {
   const [statusData, setStatusData] = useState('sendiri');
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
-  const [allRFO] = useAllRFOMutation();
-  const [allRFOMasal, {isLoading}] = useAllRFOMasalMutation();
-  const dataKeluhan = useSelector(selectAllRFO);
-  const stateModal = useSelector(selectModalState);
-  const dataGangguan = useSelector(selectAllRFOMasal);
-  const allData = [].concat(dataKeluhan, dataGangguan);
+  const [allRFO, {isLoading}] = useAllRFOMutation();
+  const allData = useSelector(selectAllRFO);
   const [search, setSearch] = useState('');
-  const [detail, setDetail] = useState(null);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    currentFilterPage: 100,
-    pageNumbers: [1],
-    filterPage: [5, 10, 25, 50, 100]
-  });
 
-  const openModal = (modal) => {
-    let newState;
-    if (modal === 'add rfo gangguan') {
-      newState = { ...stateModal, rfo: { ...stateModal.rfo, showAddModalRFOTrouble: true } };
-    } else if (modal === 'update rfo gangguan') {
-      newState = { ...stateModal, rfo: { ...stateModal.rfo, showUpdateModalRFOTrouble: true } };
-    } else if (modal === 'delete rfo gangguan') {
-      newState = { ...stateModal, rfo: { ...stateModal.rfo, showDeleteModalRFOTrouble: true } };
-    }
-    dispatch(setModal(newState));
-    window.scrollTo(0, 0);
-  }
-  const handleStatus = (event) => {
-    setStatusData(event.target.value);
-    const dataChanged = allData.filter((item) => {
-      if (event.target.value === 'sendiri') {
-        if (item.hasOwnProperty('id_rfo_keluhan')) {
-          return item;
-        }
-      } else if (event.target.value === 'masal') {
-        if (item.hasOwnProperty('id_rfo_gangguan')) {
-          return item;
-        }
-      }
-    });
-    if (event.target.value === 'all') {
-      setRows(allData);
-    } else {
-      setRows(dataChanged);
-    }
-  };
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState([5]);
+  const [countPage, setCountPage] = useState([1]);
 
-  const getAllRFOMasal = async () => {
+  const getAllRFO = async (page = 1) => {
+    const param = `?page=${page}`;
     try {
-      const data = await allRFOMasal().unwrap();
+      const data = await allRFO(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        dispatch(setRFOMasal({ ...data }));
-      } else {
-        catchError(data, true);  
-      }
-    } catch (err) {
-      catchError(err, true);
-    }
-  };
-
-  const getAllRFO = async () => {
-    try {
-      const data = await allRFO().unwrap();
-      if (data.status === 'success' || data.status === 'Success') {
-        dispatch(setRFO({ ...data }));
-        setRows(data.data);
+        const result = data.data.data;
+        dispatch(setRFO({ data: result }));
+        setRows(result);
+        setCurrentPage(data.data.current_page);
+        setPerPage([data.data.per_page]);
+        
+        const countPaginate = [];
+        for (let i = 0; i < data.data.last_page; i++) {
+          countPaginate.push(i + 1);
+        }
+        setCountPage(countPaginate);
       } else {
         setRows([]);
         catchError(data, true);
@@ -110,12 +62,11 @@ function ReasonOfOutage() {
   useEffect(() => {
     dispatch(
       updateBreadcrumb([
-        { path: '/reason_of_outage', title: 'Reason For Outage' },
+        { path: '/reason_of_outage', title: 'Reason For Outage Keluhan' },
       ])
     );
     setStatusData('sendiri');
     getAllRFO();
-    getAllRFOMasal();
   }, []);
 
   const onHandleSearch = (event) => {
@@ -125,26 +76,14 @@ function ReasonOfOutage() {
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
       const searchResult = allData.filter((item) => {
-        if (item.hasOwnProperty('id_rfo_keluhan') && statusData === 'sendiri') {
           if (item.problem.match(regex) || item?.keluhan?.nama_pelanggan.match(regex) || item?.keluhan?.id_pelanggan.match(regex)) {
             return item;
           }
-        } 
-        if (item.hasOwnProperty('id_rfo_gangguan') && statusData === 'masal') {
-          if (item.problem.match(regex)) {
-            return item;
-          }
-        }
       });
       setRows(searchResult);
     } else {
       const searchResult = allData.filter((item) => {
-        if (item.hasOwnProperty('id_rfo_keluhan') && statusData === 'sendiri') {
-            return item;
-        }
-        if (item.hasOwnProperty('id_rfo_gangguan') && statusData === 'masal') {
-            return item;
-        }
+        return item;
       });
       setRows(searchResult);
     }
@@ -152,7 +91,7 @@ function ReasonOfOutage() {
 
   const columns = [
     'No',
-    statusData === 'sendiri' ? 'Pelanggan' : 'Topik',
+    'Pelanggan',
     'Waktu Gangguan',
     'Durasi',
     'Masalah',
@@ -160,15 +99,6 @@ function ReasonOfOutage() {
     'Status RFO',
     'Aksi',
   ];
-
-  const getInfo = ($event) => {
-    if ($event.status === 'success') {
-      setDetail(null);
-      getAllRFOMasal();
-      getAllRFO();
-      setStatusData('sendiri');
-    }
-  };
 
   return (
     <div>
@@ -181,15 +111,12 @@ function ReasonOfOutage() {
 
           <select
             className="select w-full max-w-full input-bordered"
-            onChange={handleStatus}
+            disabled
             defaultValue={statusData}
           >
             <option disabled>Pilih Status</option>
-            <option value="sendiri" label="Sendiri">
-              RFO Keluhan (Sendiri)
-            </option>
-            <option value="masal" label="Masal">
-              RFO Gangguan (Masal)
+            <option value="sendiri" label="RFO Keluhan">
+              RFO Keluhan
             </option>
           </select>
         </div>
@@ -207,43 +134,15 @@ function ReasonOfOutage() {
                 type="text"
                 id="voice-search"
                 className="input input-md input-bordered pl-10 p-2.5 "
-                placeholder="Cari data rfo..."
+                placeholder="Cari data RFO Keluhan..."
                 value={search}
                 onChange={onHandleSearch}
               />
             </div>
           </div>
         </div>
-        <div className="form-control">
-          { statusData === 'masal' && (
-          <>
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text" style={{ visibility: 'hidden' }}> -</span>
-            </label>
-            <div className="mb-5">
-              <button
-                type="button"
-                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-auto"
-                htmlFor="my-modal-3"
-                onClick={() => {
-                  setDetail(null);
-                  openModal('add rfo gangguan')
-                }}
-              >
-                Tambah
-              </button>
-            </div>
-          </>
-          )}
-        </div>
       </div>
       )}
-
-      <Modal>
-        {stateModal?.rfo?.showAddModalRFOTrouble && <RFOModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
-        {stateModal?.rfo?.showUpdateModalRFOTrouble && <RFOModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
-        {stateModal?.rfo?.showDeleteModalRFOTrouble && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="RFO Gangguan" />}
-      </Modal>
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
@@ -263,13 +162,9 @@ function ReasonOfOutage() {
               <tr className="text-center" key={index}>
                 <th>{index + 1}</th>
                 <td>
-                  { item.hasOwnProperty('id_rfo_keluhan') && (<>{item?.keluhan?.id_pelanggan} - {item?.keluhan?.nama_pelanggan}</>)}
-                  { item.hasOwnProperty('id_rfo_gangguan') && (<p>Gangguan Masal</p>)}
+                 {item?.keluhan?.id_pelanggan} - {item?.keluhan?.nama_pelanggan}
                 </td>
                 <td className="text-left">
-                  { item.hasOwnProperty('id_rfo_keluhan') && (
-
-                  <>
                     <p>
                       Dibuat:
                       {new Date(item?.mulai_keluhan).toLocaleString()}
@@ -278,38 +173,14 @@ function ReasonOfOutage() {
                       Diubah:
                       {new Date(item?.selesai_keluhan).toLocaleString()}
                     </p>
-                  </>
-                  )}
-                  { item.hasOwnProperty('id_rfo_gangguan') && (
-                  <>
-                    <p>
-                      Dibuat:
-                      {new Date(item?.mulai_gangguan).toLocaleString()}
-                    </p>
-                    <p>
-                      Diubah:
-                      {new Date(item?.selesai_gangguan).toLocaleString()}
-                    </p>
-                  </>
-                  )}
                 </td>
                 <td>{item?.durasi || 0}</td>
                 <td>{item?.problem}</td>
                 <td>{item?.deskripsi || '-'}</td>
                 <td>
-                  {statusData === 'sendiri' ? (
                     <span className="badge badge-info text-white">
                       closed
                     </span>
-                  ) : item?.status === 'open' ? (
-                    <span className="badge badge-accent text-white">
-                      {item?.status}
-                    </span>
-                  ) : (
-                    <span className="badge badge-info text-white">
-                      {item?.status}
-                    </span>
-                  )}
                 </td>
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
@@ -319,15 +190,9 @@ function ReasonOfOutage() {
                         size={20}
                         color="#D98200"
                         onClick={() => {
-                          if (item.hasOwnProperty('id_rfo_keluhan')) {
                             navigate(
                               `/reason_of_outage/detail_single/${item.id_rfo_keluhan}?edit=true`
                             );
-                          }
-                          if (item.hasOwnProperty('id_rfo_gangguan')) {
-                            setDetail(item);
-                            openModal('update rfo gangguan')
-                          }
                         }}
                       />
                     </div>
@@ -337,32 +202,12 @@ function ReasonOfOutage() {
                         color="#0D68F1"
                         className="cursor-pointer"
                         onClick={() => {
-                          if (item.hasOwnProperty('id_rfo_keluhan')) {
                             navigate(
                               `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
                             );
-                          }
-                          if (item.hasOwnProperty('id_rfo_gangguan')) {
-                            navigate(
-                              `/reason_of_outage/detail_masal/${item.id_rfo_gangguan}`
-                            );
-                          }
                         }}
                       />
                     </div>
-                    {item.hasOwnProperty('id_rfo_gangguan') && (
-                      <div className="tooltip" data-tip="Hapus">
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            openModal('delete rfo gangguan');
-                          }}
-                        />
-                      </div>
-                    )}
                   </div>
                 </td>
               </tr>
@@ -372,7 +217,7 @@ function ReasonOfOutage() {
       </div>
       )}
 
-      {!isLoading && <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} />}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllRFO(i.target.id)} serverMode />)}
       {/* end table */}
     </div>
   );

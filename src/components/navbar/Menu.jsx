@@ -26,7 +26,7 @@ function Menu() {
       >
         Dasbor
       </Link>
-      <Link
+      {/* <Link
         className={`btn btn-ghost normal-case text-sm ${
           (window.location.pathname === '/reason_of_outage' || window.location.pathname.includes('/reason_of_outage/detail_single') || window.location.pathname.includes('/reason_of_outage/detail_masal')) && 'btn-active'
         }`}
@@ -34,13 +34,12 @@ function Menu() {
         activeclassname="btn-active"
       >
         Reason For Outage
-      </Link>
-        {/* <div className="dropdown">
+      </Link> */}
+        <div className="dropdown">
           <label
             tabIndex={0}
             className={`btn m-1 capitalize ${
               (window.location.pathname === '/reason_of_outage' && 'btn-active') ||
-              (window.location.pathname.includes('/reason_of_outage_keluhan') && 'btn-active') || 
               (window.location.pathname.includes('/reason_of_outage_gangguan') && 'btn-active') || 
               (window.location.pathname.includes('/reason_of_outage/detail_single') && 'btn-active') || 
               (window.location.pathname.includes('/reason_of_outage/detail_masal') && 'btn-active')
@@ -55,8 +54,8 @@ function Menu() {
           >
             <li>
               <Link
-                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/reason_of_outage/detail_single' &&'btn-active')}`}
-                to="/reason_of_outage_keluhan"
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/reason_of_outage' &&'btn-active') || (window.location.pathname === '/reason_of_outage/detail_single' &&'btn-active')}`}
+                to="/reason_of_outage"
                 activeclassname="btn-active"
               >
                 RFO Keluhan
@@ -64,7 +63,7 @@ function Menu() {
             </li>
             <li>
               <Link
-                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/reason_of_outage/detail_masal' &&'btn-active')}`}
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/reason_of_outage_gangguan' &&'btn-active') || (window.location.pathname === '/reason_of_outage/detail_masal' &&'btn-active')}`}
                 to="/reason_of_outage_gangguan"
                 activeclassname="btn-active"
               >
@@ -72,7 +71,7 @@ function Menu() {
               </Link>
             </li>
           </ul>
-        </div> */}
+        </div>
       <Link
         className={`btn btn-ghost normal-case text-sm ${
           (window.location.pathname === '/report' || window.location.pathname.includes('/report/create')) && 'btn-active'

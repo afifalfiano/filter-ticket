@@ -81,6 +81,10 @@ function RFODetailSingle() {
       const update = await updateRFOKeluhan({ id, body }).unwrap();
       if (update?.status === 'success' || update?.status === 'Success') {
         handleResponse(update);
+        setTimeout(() => {
+          navigate('/reason_of_outage', { replace: true })
+          dispatch(setRFOById({data: {}}));
+        }, 1000)
       } else {
         catchError(update, true);
       }
@@ -335,6 +339,7 @@ function RFODetailSingle() {
                     type="button"
                     className="btn btn-md mr-5"
                     onClick={() => {
+                      dispatch(setRFOById({data: {}}));
                       navigate('/reason_of_outage');
                     }}
                   >

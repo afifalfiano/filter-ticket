@@ -6,8 +6,8 @@ import { apiSlice } from '../../../api/apiSlice';
 export const rfoApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allRFO: builder.mutation({
-      query: () => ({
-        url: '/rfo-keluhan',
+      query: (param) => ({
+        url: `/rfo-keluhan${param}`,
         method: 'GET',
       }),
     }),
