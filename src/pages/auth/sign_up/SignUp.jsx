@@ -99,11 +99,11 @@ function SignUp() {
   };
 
   return (
-    <div className="flex gap-3 h-screen min-h-screen">
-      <div className="col-span-6 bg-gray-200 w-8/12">
+    <div className="flex gap-0 lg:flex lg:gap-3 h-screen min-h-screen ">
+      <div className="bg-gray-200 hidden lg:w-8/12 lg:flex">
         <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
       </div>
-      <div className="w-4/12 h-screen bg-white">
+      <div className="h-screen bg-white w-full lg:w-4/12 relative">
         <Formik
           enableReinitialize
           initialValues={initialValues}
@@ -121,8 +121,8 @@ function SignUp() {
             handleBlur,
             handleChange,
           }) => (
-            <Form className="flex-row px-16">
-              <div className="mt-10">
+            <Form className="flex-row py-6 px-6 lg:py-3 lg:px-3 xl:py-10 xl:px-16 min-h-screen">
+              <div className="pt-0">
                 <h4 className="text-2xl text-center font-semibold">
                   Silahkan Mendaftar
                 </h4>
@@ -251,14 +251,14 @@ function SignUp() {
                 ) : null}
               </div>
 
-              <div className="form-contro">
-                <label htmlFor="agreement" className="label flex justify-start items-start">
+              <div className="form-control">
+                <label htmlFor="agreement" className="label flex justify-start items-center align-middle gap-2">
                 <Field
                   type="checkbox"
                   id="agreement"
                   name="agreement"
                 />
-                <span className="label-text">Saya setuju untuk membuat akun.</span>
+                <span className="label-text w-full">Saya setuju untuk membuat akun.</span>
                 </label>
                 {errors.agreement && touched.agreement ? (
                   <div className="label text-red-500 pb-0 text-xs">
@@ -271,7 +271,7 @@ function SignUp() {
               <div className="form-control mt-5">
                 <button
                   type="submit"
-                  className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md btn-block"
+                  className="btn btn-md btn-block"
                   disabled={!isValid || values.agreement === false}
                 >
                   Daftar
