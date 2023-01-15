@@ -29,7 +29,7 @@ const Navbar = () => {
         <Menu user={user} />
         <div className="flex-none">
           <Notification />
-          <InfoUser />
+          <InfoUser mobile={false} />
           <DropdownMenu />
         </div>
       </div>

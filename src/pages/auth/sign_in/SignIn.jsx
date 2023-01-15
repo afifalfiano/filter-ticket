@@ -37,7 +37,10 @@ function SignIn() {
   return (
     <div className="flex gap-0 lg:flex lg:gap-3 h-screen min-h-screen ">
       <div className="bg-gray-200 hidden lg:w-8/12 lg:flex">
-        <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
+      <picture>
+      <source srcset="/wrapper.webp" />
+      <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
+      </picture>
       </div>
       <div className="h-screen bg-white w-full lg:w-4/12 relative">
         <Formik
