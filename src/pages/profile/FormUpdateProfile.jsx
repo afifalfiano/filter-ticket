@@ -240,13 +240,13 @@ function FormUpdateProfile({ handleForm, profile }) {
                   <button
                     type="button"
                     onClick={onBtnBack}
-                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md bg-black text-white w-24 border-none"
+                    className="btn btn-md sm:btn-md md:btn-md lg:btn-md bg-black text-white w-24 border-none"
                   >
                     Kembali
                   </button>
                   <button
                     type="submit"
-                    className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-24 bg-success border-none"
+                    className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-24 bg-success border-none"
                     disabled={!isValid}
                   >
                     Simpan

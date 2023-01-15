@@ -280,7 +280,7 @@ const Dashboard = () => {
       {statusData === 'open' && (
       <div>
         <button
-          className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
+          className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-28"
           htmlFor="my-modal-complain"
           onClick={() => {
             setDetail(null);
@@ -292,7 +292,7 @@ const Dashboard = () => {
       </div>
       )}
 
-      <div className="flex gap-5 mt-5">
+      <div className="gap-5 mt-5 hidden md:flex">
         <div className="form-control">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Status Keluhan</span>

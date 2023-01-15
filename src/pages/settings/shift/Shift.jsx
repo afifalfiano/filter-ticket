@@ -133,7 +133,7 @@ function Shift() {
     <div>
       <div>
         <button
-          className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
+          className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-28"
           onClick={() => {
             setDetail(null);
             setTitle('create');

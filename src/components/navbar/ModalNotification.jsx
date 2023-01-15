@@ -181,9 +181,9 @@ const ModalNotification = ({totalCount, data}) => {
     <>
       <div
         tabIndex={0}
-        className="mt-3 card card-compact dropdown-content w-96 bg-neutral shadow"
+        className="mt-4 card card-compact dropdown-content w-56 md:w-72 lg:w-96 bg-neutral shadow"
       >
-        <div className="card-body" style={{height: '700px'}}>
+        <div className="card-body h-96">
           <span className="font-bold text-lg">Pemberitahuan ({totalCountState})</span>
           <span className="font-semibold text-md font-white cursor-pointer" onClick={() => doReadAllNotification()}>Baca semua</span>
           <div className="flex flex-col-reverse gap-3 overflow-y-auto">

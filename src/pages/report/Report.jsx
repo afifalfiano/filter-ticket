@@ -171,7 +171,7 @@ function Report() {
     <div>
       <div>
         <label
-          className="btn btn-xs sm:btn-sm md:btn-md lg:btn-md w-28"
+          className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-28"
           htmlFor="my-modal-3"
           onClick={() => {
             navigate(`/report/create`);

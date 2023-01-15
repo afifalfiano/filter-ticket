@@ -1,13 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { decryptLocalStorage } from '../../utils/helper';
 
-function Menu() {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    const data = decryptLocalStorage('user_encrypt');
-    setUser(data);
-  }, []);
+function Menu({user}) {
   return (
     <div className="flex-1">
       <Link
@@ -26,15 +20,6 @@ function Menu() {
       >
         Dasbor
       </Link>
-      {/* <Link
-        className={`btn btn-ghost normal-case text-sm ${
-          (window.location.pathname === '/reason_of_outage' || window.location.pathname.includes('/reason_of_outage/detail_single') || window.location.pathname.includes('/reason_of_outage/detail_masal')) && 'btn-active'
-        }`}
-        to="/reason_of_outage"
-        activeclassname="btn-active"
-      >
-        Reason For Outage
-      </Link> */}
         <div className="dropdown">
           <label
             tabIndex={0}

@@ -4,7 +4,7 @@ import catchError from "../../services/catchError";
 import { useGetProfileMutation } from "../../store/features/auth/authApiSlice";
 
 
-const InfoUser = () => {
+const InfoUser = ({mobile}) => {
     const [profile, setProfile] = useState(null);
     const [getProfile] = useGetProfileMutation();
     
@@ -25,10 +25,21 @@ const InfoUser = () => {
         doGetProfile();
     }, [])
     return (
-        <div className='flex flex-col pl-2 pr-2'>
-            <p className='font-semibold'>{profile?.name}</p>
-            <p className="text-xs">{profile?.role?.role}</p>
-        </div>
+      <>
+      {mobile && (
+                  <div className={`flex pl-4  pt-2 text-gray-400 flex-row align-center gap-3 items-center`}>
+                  <p className='font-semibold'>{profile?.name}</p>
+                  <p className="text-xs">({profile?.role?.role})</p>
+                </div>
+      )}
+
+      {!mobile && (
+                  <div className={`flex pl-2 pr-2 flex-col text-gray-400`}>
+                  <p className='font-semibold'>{profile?.name}</p>
+                  <p className="text-xs">({profile?.role?.role})</p>
+                </div>
+      )}
+      </>
     )
 }
 
