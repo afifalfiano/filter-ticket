@@ -232,7 +232,7 @@ function ReportCreate() {
     body.append('pop_id', bodyKeluhan.pop_id);
     body.append('noc', userNOC);
     body.append('helpdesk', userHelpdesk);
-    body.append('data_laporan', document.getElementById('preview-report').innerHTML);
+    body.append('data_laporan', '');
     body.append('user_id', user.id_user);
     body.append('lampiran_laporan', file);
 

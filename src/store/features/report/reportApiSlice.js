@@ -6,8 +6,8 @@ import { apiSlice } from '../../../api/apiSlice';
 export const reportApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allReport: builder.mutation({
-      query: () => ({
-        url: '/laporan',
+      query: (param) => ({
+        url: `/laporan${param}`,
         method: 'GET',
       }),
     }),
