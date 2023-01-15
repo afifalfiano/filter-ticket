@@ -102,8 +102,8 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
           ✕
         </button>
         <h3 className="text-lg font-bold">
-          {detail === null && titleAction === 'create' ? 'Tambah BTS' : titleAction === 'update' && 'Ubah BTS'}
-          {titleAction === 'read' && 'Detail BTS'}
+          {detail === null && titleAction === 'create' ? 'Tambah Base Transceiver Station' : titleAction === 'update' && 'Ubah Base Transceiver Station'}
+          {titleAction === 'read' && 'Detail Base Transceiver Station'}
         </h3>
         <hr className="my-2" />
         <Formik
@@ -207,7 +207,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                 </div>
                 <div className="form-control flex-1">
                   <label htmlFor="location" className="label">
-                    <span className="label-text"> POP (Lokasi)</span>
+                    <span className="label-text"> POP (Area Operasional)</span>
                   </label>
                   <Field
                     component="select"
@@ -253,13 +253,13 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
               </div>
               <div className="form-control">
                 <label htmlFor="deskripsi" className="label">
-                  <span className="label-text"> Deskripsi BTS:</span>
+                  <span className="label-text"> Deskripsi Base Transceiver Station:</span>
                 </label>
                 <Field
                   id="deskripsi"
                   component="textarea"
                   name="deskripsi"
-                  placeholder="Deskripsi BTS"
+                  placeholder="Deskripsi Base Transceiver Station"
                   value={values.deskripsi}
                   disabled={titleAction === 'read'}
                   onBlur={handleBlur}

@@ -241,7 +241,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                             <div className="flex flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="pop_id" className="label">
-                    <span className="label-text"> POP (Lokasi)</span>
+                    <span className="label-text"> POP (Area Operasional)</span>
                   </label>
                   <Field
                     component="select"

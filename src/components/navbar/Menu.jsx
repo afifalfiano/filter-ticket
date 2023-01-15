@@ -35,6 +35,44 @@ function Menu() {
       >
         Reason For Outage
       </Link>
+        {/* <div className="dropdown">
+          <label
+            tabIndex={0}
+            className={`btn m-1 capitalize ${
+              (window.location.pathname === '/reason_of_outage' && 'btn-active') ||
+              (window.location.pathname.includes('/reason_of_outage_keluhan') && 'btn-active') || 
+              (window.location.pathname.includes('/reason_of_outage_gangguan') && 'btn-active') || 
+              (window.location.pathname.includes('/reason_of_outage/detail_single') && 'btn-active') || 
+              (window.location.pathname.includes('/reason_of_outage/detail_masal') && 'btn-active')
+            }
+            `}
+          >
+              Reason For Outage
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu p-2 shadow bg-neutral rounded-box w-52 "
+          >
+            <li>
+              <Link
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/reason_of_outage/detail_single' &&'btn-active')}`}
+                to="/reason_of_outage_keluhan"
+                activeclassname="btn-active"
+              >
+                RFO Keluhan
+              </Link>
+            </li>
+            <li>
+              <Link
+                className={`btn btn-ghost normal-case text-sm justify-start ${(window.location.pathname === '/reason_of_outage/detail_masal' &&'btn-active')}`}
+                to="/reason_of_outage_gangguan"
+                activeclassname="btn-active"
+              >
+                RFO Gangguan
+              </Link>
+            </li>
+          </ul>
+        </div> */}
       <Link
         className={`btn btn-ghost normal-case text-sm ${
           (window.location.pathname === '/report' || window.location.pathname.includes('/report/create')) && 'btn-active'
@@ -70,7 +108,7 @@ function Menu() {
         to="/base_transceiver_station"
         activeclassname="btn-active"
       >
-        BTS
+        Base Transceiver Station
       </Link>)
       }
       {/* if admin */}
@@ -102,7 +140,7 @@ function Menu() {
                 to="/base_transceiver_station"
                 activeclassname="btn-active"
               >
-                BTS
+                Base Transceiver Station
               </Link>
             </li>
             <li>
@@ -120,7 +158,7 @@ function Menu() {
                 to="/pop"
                 activeclassname="btn-active"
               >
-                POP
+                POP (Area Operasional)
               </Link>
             </li>
             <li>

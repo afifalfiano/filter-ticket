@@ -202,7 +202,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
 
               <div className="form-control">
                 <label htmlFor="location" className="label">
-                  <span className="label-text"> POP(Lokasi):</span>
+                  <span className="label-text"> POP (Area Operasional):</span>
                 </label>
 
                 <Field

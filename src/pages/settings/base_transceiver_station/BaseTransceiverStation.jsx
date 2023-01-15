@@ -204,7 +204,7 @@ function BaseTransceiverStation() {
   };
 
   useEffect(() => {
-    dispatch(updateBreadcrumb([{ path: '/base_transceiver_station', title: 'BTS' }]))
+    dispatch(updateBreadcrumb([{ path: '/base_transceiver_station', title: 'Base Transceiver Station' }]))
     getAllPOP()
     getAllBTS();
   }, []);

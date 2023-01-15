@@ -36,6 +36,7 @@ const catchError = (body, show = false) => {
         message = 'Kesalahan Pada Sistem';
         break;
     }
+    console.log(body, 'cek')
     if (show) {
       toast.error(message, propertyToast);
     }

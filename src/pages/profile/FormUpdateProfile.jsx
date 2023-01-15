@@ -164,7 +164,7 @@ function FormUpdateProfile({ handleForm, profile }) {
 
                       <div className="form-control">
                         <label htmlFor="location" className="label">
-                          <span className="label-text"> POP(Lokasi):</span>
+                          <span className="label-text"> POP (Area Operasional):</span>
                         </label>
 
                         <Field
