@@ -140,8 +140,8 @@ function ReasonForOutageTrouble() {
             disabled
           >
             <option disabled>Pilih Status</option>
-            <option value="masal" label="Masal">
-              RFO Gangguan (Masal)
+            <option value="masal" label="RFO Gangguan">
+              RFO Gangguan
             </option>
           </select>
         </div>
