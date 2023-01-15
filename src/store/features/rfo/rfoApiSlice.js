@@ -44,8 +44,8 @@ export const rfoApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     allRFOMasal: builder.mutation({
-      query: () => ({
-        url: '/rfo-gangguan',
+      query: (param) => ({
+        url: `/rfo-gangguan${param}`,
         method: 'GET',
       }),
     }),
