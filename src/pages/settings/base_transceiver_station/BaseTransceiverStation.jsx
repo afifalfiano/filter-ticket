@@ -60,12 +60,6 @@ function BaseTransceiverStation() {
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
   }
-  // const [pagination, setPagination] = useState({
-  //   currentPage: 1,
-  //   currentFilterPage: 10,
-  //   pageNumbers: [1],
-  //   filterPage: [5, 10, 25, 50, 100]
-  // });
 
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage, setPerPage] = useState([5]);
