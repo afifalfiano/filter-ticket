@@ -22,7 +22,7 @@ function RequireAuth() {
       dispatch(setCredentials(local));
     } else {
       navigate('/sign_in', { replace: true });
-      window.location.reload();
+      // window.location.reload();
     }
   }, []);
 

@@ -79,7 +79,7 @@ function DashboardRFOSingle() {
   };
 
   useEffect(() => {
-    const data = [...navigasi.data, { path: `/dashboard/rfo_single/${id}?id_rfo=${idRfoKeluhan}`, title: 'Dasbor Reason Of Outage Single' }]
+    const data = [...navigasi.data, { path: `/dashboard/rfo_single/${id}?id_rfo=${idRfoKeluhan}`, title: 'Dasbor Reason For Outage Keluhan' }]
     dispatch(updateBreadcrumb(data))
     getComplainById();
     if (idRfoKeluhan !== 'null') {
@@ -205,7 +205,7 @@ function DashboardRFOSingle() {
       </div>
       <div className="flex w-full gap-5 mt-5">
         <div className="flex-1 w-full mt-5">
-          <h1 className="text-center font-semibold">Reason Of Outage Single</h1>
+          <h1 className="text-center font-semibold">Reason For Outage Keluhan</h1>
 
           <Formik
             enableReinitialize

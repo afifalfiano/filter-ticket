@@ -13,7 +13,7 @@ export const teamApiSlice = apiSlice.injectEndpoints({
     }),
     allTeamPublic: builder.mutation({
       query: () => ({
-        url: '/role-public',
+        url: '/role',
         method: 'GET',
       }),
     }),

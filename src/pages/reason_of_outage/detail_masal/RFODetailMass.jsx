@@ -41,7 +41,7 @@ function RFODetailMass() {
   const navigasi = useSelector(selectBreadcrumb);
 
   useEffect(() => {
-    const data = [...navigasi.data, { path: `/reason_of_outage/detail_masal/${id}`, title: 'Detail Reason Of Outage' }]
+    const data = [...navigasi.data, { path: `/reason_of_outage/detail_masal/${id}`, title: 'Detail Reason For Outage' }]
     dispatch(updateBreadcrumb(data))
     getRFOMasalKeluhanById();
   }, []);
@@ -50,7 +50,7 @@ function RFODetailMass() {
   return (
     <div className="flex w-full gap-5">
       <div className="flex-1 w-full">
-        <h1 className="text-center font-semibold">Reason Of Outage Masal</h1>
+        <h1 className="text-center font-semibold">Reason For Outage Gangguan</h1>
 
         <Formik
           enableReinitialize

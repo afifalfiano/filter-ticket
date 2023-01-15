@@ -110,7 +110,7 @@ function ReasonOfOutage() {
   useEffect(() => {
     dispatch(
       updateBreadcrumb([
-        { path: '/reason_of_outage', title: 'Reason Of Outage' },
+        { path: '/reason_of_outage', title: 'Reason For Outage' },
       ])
     );
     setStatusData('sendiri');

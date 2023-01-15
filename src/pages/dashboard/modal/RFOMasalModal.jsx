@@ -76,7 +76,7 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
         >
           ✕
         </button>
-        <h3 className="text-lg font-bold">Reason of Outage Masal</h3>
+        <h3 className="text-lg font-bold">Reason For Outage Gangguan</h3>
         <hr className="my-2" />
 
         <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md mt-5">

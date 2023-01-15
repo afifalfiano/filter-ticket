@@ -107,7 +107,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
         >
           ✕
         </button>
-        <h3 className="text-lg font-bold">{detail === null ? ('Tambah Reason Of Outage Masal') : ('Ubah Reason Of Outage Masal')}</h3>
+        <h3 className="text-lg font-bold">{detail === null ? ('Tambah Reason For Outage Gangguan') : ('Ubah Reason For Outage Gangguan')}</h3>
         <hr className="my-2" />
 
         <Formik

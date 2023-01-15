@@ -33,7 +33,7 @@ function Menu() {
         to="/reason_of_outage"
         activeclassname="btn-active"
       >
-        Reason of Outage
+        Reason For Outage
       </Link>
       <Link
         className={`btn btn-ghost normal-case text-sm ${
