@@ -60,45 +60,16 @@ function BaseTransceiverStation() {
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
   }
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    currentFilterPage: 10,
-    pageNumbers: [1],
-    filterPage: [5, 10, 25, 50, 100]
-  });
+  // const [pagination, setPagination] = useState({
+  //   currentPage: 1,
+  //   currentFilterPage: 10,
+  //   pageNumbers: [1],
+  //   filterPage: [5, 10, 25, 50, 100]
+  // });
 
-  const handlePagination = (targetPage = 1, data) => {
-    setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    const indexOfLastPost = targetPage * pagination.currentFilterPage;
-    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
-    let currentPosts;
-    if (data === undefined) {
-      currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
-    } else {
-      currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
-    }
-    setRows(currentPosts);
-  }
-
-  const doGetPageNumber = (dataFix) => {
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
-      pageNumbers.push(i);
-    }
-    setPagination({ ...pagination, pageNumbers });
-  }
-
-  const handleFilterPagination = (selectFilter) => {
-    const indexOfLastPost = pagination.currentPage * selectFilter;
-    const indexOfFirstPost = indexOfLastPost - selectFilter;
-    const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
-    setRows(currentPosts);
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
-      pageNumbers.push(i);
-    }
-    setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-  }
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState([5]);
+  const [countPage, setCountPage] = useState([1]);
 
   const onHandleSearch = (event) => {
     event.preventDefault();
@@ -119,12 +90,6 @@ function BaseTransceiverStation() {
         }
       });
       setRows(searchResult);
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     } else {
       setRows(dataRow.data.filter((item) => {
         if (+item.pop.id_pop === +pop) {
@@ -134,12 +99,6 @@ function BaseTransceiverStation() {
           return item;
         }
       }));
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     }
   }
 
@@ -152,20 +111,8 @@ function BaseTransceiverStation() {
     })
     if (event.target.value === 'all') {
       setRows(dataRow.data)
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     } else {
       setRows(dataChanged);
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     }
   };
 
@@ -185,14 +132,22 @@ function BaseTransceiverStation() {
     }
   };
 
-  const getAllBTS = async () => {
+  const getAllBTS = async (page = 1) => {
+    const param = `?page=${page}`;
     try {
-      const data = await allBts().unwrap();
+      const data = await allBts(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        dispatch(setBTS({ ...data }));
-        setRows(data.data);
-        handlePagination(1, data.data);
-        doGetPageNumber(data.data);
+        const result = data.data.data;
+        dispatch(setBTS({ data: result }));
+        setRows(result);
+        setCurrentPage(data.data.current_page);
+        setPerPage([data.data.per_page]);
+        
+        const countPaginate = [];
+        for (let i = 0; i < data.data.last_page; i++) {
+          countPaginate.push(i + 1);
+        }
+        setCountPage(countPaginate);
       } else {
         setRows([]);
         catchError(data, true);
@@ -381,7 +336,7 @@ function BaseTransceiverStation() {
         </table>
       </div>
       )}
-      {!isLoading && <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} onClick={(i) => handlePagination(i.target.id, undefined)} handlePerPage={(x) => handleFilterPagination(x.target.value)} />}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllBTS(i.target.id)} serverMode />)}
       {/* end table */}
     </div>
   );

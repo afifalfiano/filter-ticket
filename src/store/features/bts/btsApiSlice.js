@@ -3,8 +3,8 @@ import { apiSlice } from '../../../api/apiSlice';
 export const btsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allBts: builder.mutation({
-      query: () => ({
-        url: '/bts',
+      query: (param) => ({
+        url: `/bts/${param}`,
         method: 'GET',
       }),
     }),
