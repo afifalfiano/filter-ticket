@@ -6,8 +6,8 @@ import { apiSlice } from '../../../api/apiSlice';
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allUsers: builder.mutation({
-      query: () => ({
-        url: '/user',
+      query: (param) => ({
+        url: `/user/${param}`,
         method: 'GET',
       }),
     }),

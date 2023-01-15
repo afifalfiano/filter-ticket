@@ -23,45 +23,10 @@ function Users() {
   const [title, setTitle] = useState('update');
   const dataRow = useSelector(selectAllUsers);
 
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    currentFilterPage: 10,
-    pageNumbers: [1],
-    filterPage: [5, 10, 25, 50, 100]
-  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState([5]);
+  const [countPage, setCountPage] = useState([1]);
 
-  const handlePagination = (targetPage = 1, data) => {
-    setPagination({ ...pagination, currentPage: targetPage, currentFilterPage: pagination.currentFilterPage })
-    const indexOfLastPost = targetPage * pagination.currentFilterPage;
-    const indexOfFirstPost = indexOfLastPost - pagination.currentFilterPage;
-    let currentPosts;
-    if (data === undefined) {
-      currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
-    } else {
-      currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
-    }
-    setRows(currentPosts);
-  }
-
-  const doGetPageNumber = (dataFix) => {
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(dataFix.length / pagination.currentFilterPage); i++) {
-      pageNumbers.push(i);
-    }
-    setPagination({ ...pagination, pageNumbers });
-  }
-
-  const handleFilterPagination = (selectFilter) => {
-    const indexOfLastPost = pagination.currentPage * selectFilter;
-    const indexOfFirstPost = indexOfLastPost - selectFilter;
-    const currentPosts = dataRow?.data.slice(indexOfFirstPost, indexOfLastPost);
-    setRows(currentPosts);
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(dataRow.data.length / selectFilter); i++) {
-      pageNumbers.push(i);
-    }
-    setPagination({ ...pagination, pageNumbers, currentFilterPage: selectFilter });
-  }
 
   const stateModal = useSelector(selectModalState);
 
@@ -80,14 +45,22 @@ function Users() {
     window.scrollTo(0, 0);
   }
 
-  const getAllUsers = async () => {
+  const getAllUsers = async (page = 1) => {
+    const param = `?page=${page}`;
     try {
-      const data = await allUsers().unwrap();
+      const data = await allUsers(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        dispatch(setUsers({ ...data }));
-        setRows(data.data);
-        handlePagination(1, data.data);
-        doGetPageNumber(data.data);
+        const result = data.data.data;
+        dispatch(setUsers({ data: result }));
+        setRows(result);
+        setCurrentPage(data.data.current_page);
+        setPerPage([data.data.per_page]);
+        
+        const countPaginate = [];
+        for (let i = 0; i < data.data.last_page; i++) {
+          countPaginate.push(i + 1);
+        }
+        setCountPage(countPaginate);
       } else {
         setRows([]);
         catchError(data, true);
@@ -104,20 +77,9 @@ function Users() {
       const regex = new RegExp(search, 'ig');
       const searchResult = dataRow.data.filter((item) => item.name.match(regex) || item.email.match(regex));
       setRows(searchResult);
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
     } else {
       setRows(dataRow.data);
-      setPagination({
-        currentPage: 1,
-        currentFilterPage: 100,
-        pageNumbers: [1],
-        filterPage: [5, 10, 25, 50, 100]
-      });
+
     }
   };
 
@@ -249,7 +211,7 @@ function Users() {
           </table>
         </div>
       )}
-      {!isLoading && <Pagination serverMode={false} currentFilterPage={pagination.currentFilterPage} perPage={pagination.filterPage} currentPage={pagination.currentPage} countPage={pagination.pageNumbers} onClick={(i) => handlePagination(i.target.id, undefined)} handlePerPage={(x) => handleFilterPagination(x.target.value)} />}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllUsers(i.target.id)} serverMode />)}
       {/* end table */}
     </div>
   );
