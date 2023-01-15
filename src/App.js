@@ -40,6 +40,7 @@ const Role = lazy(() => import('./pages/settings/role/Role'));
 const ReportCreate = lazy(() => import('./pages/report/create/ReportCreate'));
 const ReportDetail = lazy(() => import('./pages/report/detail/ReportDetail'));
 const Shift = lazy(() => import('./pages/settings/shift/Shift'));
+const ReasonForOutageTrouble = lazy(() => import('./pages/reason_for_outage_trouble/ReasonForOutageTrouble'));
 
 function App() {
   const [render, setRender] = useState(true);
@@ -80,6 +81,7 @@ function App() {
             element={<DashboardRFOSingle />}
           />
           <Route path="reason_of_outage" element={<ReasonOfOutage />} />
+          <Route path="reason_of_outage_gangguan" element={<ReasonForOutageTrouble />} />
           <Route
             path="reason_of_outage/detail_masal/:id"
             element={<RFODetailMass />}
