@@ -128,7 +128,7 @@ const Navbar = () => {
                 )}
 
               <li tabIndex={0}>
-                <a className={`btn capitalize font-normal justify-between ${(window.location.pathname === '/reason_of_outage' && 'btn-active') ||
+                <a className={`btn capitalize font-normal justify-between ${
                   (window.location.pathname === '/base_transceiver_station' &&
                     'btn-active') ||
                   (window.location.pathname === '/users' && 'btn-active') ||
@@ -201,7 +201,13 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="flex justify-between w-full">
-            <div className="btn btn-ghost normal-case text-xl">CCO</div>
+            <Link
+              className="btn btn-ghost normal-case text-sm"
+              to="/dashboard"
+              activeclassname="btn-active"
+            >
+              CCO
+            </Link>
             <div className="flex">
             <Notification />
             <DropdownMenu />
