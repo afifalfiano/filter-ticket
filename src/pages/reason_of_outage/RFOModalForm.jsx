@@ -181,7 +181,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   component="textarea"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  className="textarea textarea-bordered h-10"
+                  className="textarea textarea-bordered h-24"
                 />
                 {errors.deskripsi && touched.deskripsi ? (
                   <div className="label label-text text-red-500">{errors.deskripsi}</div>
@@ -278,12 +278,12 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                 <button
                   htmlFor="my-modal-3"
                   type="button"
-                  className="btn btn-md mr-5"
+                  className="btn btn-md mr-5  w-32"
                   onClick={onBtnClose}
                 >
                   Batal
                 </button>
-                <button type="submit" htmlFor="my-modal-3" className="btn btn-md btn-success text-white" disabled={!isValid}>
+                <button type="submit" htmlFor="my-modal-3" className=" w-32 btn btn-md btn-success text-white" disabled={!isValid}>
                   Simpan
                 </button>
               </div>

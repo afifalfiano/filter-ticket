@@ -90,14 +90,13 @@ function DeleteModal({ stateModal, getInfo, detail, title, message = 'Apakah and
 
         <hr className="my-2 mt-5" />
         <div className="modal-action justify-center">
-          <button className="btn btn-md" onClick={onBtnClose}>
+          <button className="btn btn-md w-32" onClick={onBtnClose}>
             Batal
           </button>
           <button
             onClick={onSubmit}
             type="submit"
-            htmlFor="my-modal-delete"
-            className="btn btn-md btn-error text-white"
+            className="btn btn-md btn-error w-32 text-white"
           >
             {titleAction}
           </button>

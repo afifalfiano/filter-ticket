@@ -312,7 +312,7 @@ function ReportCreate() {
           <label htmlFor="location" className="label font-semibold" style={{visibility: 'hidden'}}>
             <span className="label-text">Generate</span>
           </label>
-          <button type="button" onClick={onRequestLaporan} className="btn btn-md btn-success text-white">
+          <button type="button" onClick={onRequestLaporan} className="btn btn-md btn-success  w-32 text-white">
             Generate Data
           </button>
         </div>
@@ -320,7 +320,7 @@ function ReportCreate() {
           <label htmlFor="location" className="label font-semibold" style={{visibility: 'hidden'}}>
             <span className="label-text">Unduh</span>
           </label>
-          <button type="button" onClick={handleGeneratePdf} className="btn btn-md btn-primary" disabled={keluhanLaporanLocal === null}>
+          <button type="button" onClick={handleGeneratePdf} className="btn btn-md  w-32 btn-primary" disabled={keluhanLaporanLocal === null}>
             Unduh Laporan
           </button>
         </div>
@@ -535,12 +535,12 @@ function ReportCreate() {
             onClick={() => {
               navigate('/report');
             }}
-            className="btn btn-md text-white border-none"
+            className=" btn-block md:w-32 btn btn-md text-white border-none"
           >Kembali
           </button>
           <label
             htmlFor="dropzone-file"
-            className="btn btn-md bg-slate-500 text-white cursor-pointer border-none "
+            className="btn  btn-block md:w-32 btn-md bg-slate-500 text-white cursor-pointer border-none "
           > Unggah Laporan
             <input
               id="dropzone-file"
@@ -549,7 +549,7 @@ function ReportCreate() {
               onChange={onHandleFileUpload}
             />
           </label>
-          <button type="button" onClick={handleSubmitReport} className="btn btn-md bg-blue-600 text-white border-none" disabled={file.length === 0}>
+          <button type="button" onClick={handleSubmitReport} className=" btn-block md:w-32 btn btn-md bg-blue-600 text-white border-none" disabled={file.length === 0}>
             Simpan Laporan
           </button>
         </div>

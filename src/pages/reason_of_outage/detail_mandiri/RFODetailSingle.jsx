@@ -337,7 +337,7 @@ function RFODetailSingle() {
                 <div className="modal-action justify-center mt-10">
                   <button
                     type="button"
-                    className="btn btn-md mr-5"
+                    className="btn btn-md mr-5  w-32"
                     onClick={() => {
                       dispatch(setRFOById({data: {}}));
                       navigate('/reason_of_outage');
@@ -351,7 +351,7 @@ function RFODetailSingle() {
                   <button
                     disabled={!isValid}
                     type="submit"
-                    className="btn btn-md btn-success text-white"
+                    className="btn btn-md btn-success text-white  w-32"
                   >
                     Simpan
                   </button>

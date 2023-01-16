@@ -169,13 +169,13 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
 
               <hr className="my-2 mt-5" />
               <div className="modal-action justify-center">
-                <button type="button" className="btn btn-md" onClick={onBtnClose}>
+                <button type="button" className="btn btn-md  w-32" onClick={onBtnClose}>
                   Batal
                 </button>
                 <button
                   type="submit"
                   htmlFor="my-modal-rfo-masal"
-                  className="btn btn-md btn-success text-white"
+                  className="btn btn-md btn-success text-white w-32"
                   disabled={!isValid}
                 >
                   Simpan

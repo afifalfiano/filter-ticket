@@ -359,14 +359,14 @@ function DashboardRFOSingle() {
                   <div className="modal-action justify-center mt-10">
                     <button
                       type="button"
-                      className="btn btn-md mr-5"
+                      className="btn btn-md mr-5  w-32"
                       onClick={() => {
                         navigate('/dashboard');
                       }}
                     >
                       Kembali
                     </button>
-                    <button disabled={!isValid} type="submit" className="btn btn-md btn-success text-white">
+                    <button disabled={!isValid} type="submit" className="btn btn-md btn-success  w-32 text-white">
                       Simpan
                     </button>
                   </div>
@@ -375,7 +375,7 @@ function DashboardRFOSingle() {
 
                     <button
                       type="button"
-                      className="btn btn-md mr-5"
+                      className="btn btn-md mr-5  w-32"
                       onClick={() => {
                         if (history && detailComplain?.status === 'closed') {
                           navigate('/history_dashboard');

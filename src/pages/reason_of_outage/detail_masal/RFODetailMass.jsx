@@ -212,7 +212,7 @@ function RFODetailMass() {
               <div className="modal-action justify-center mt-10">
                 <button
                   type="button"
-                  className="btn btn-md mr-5"
+                  className="btn btn-md mr-5  w-32"
                   onClick={() => {
                     navigate(-1);
                   }}

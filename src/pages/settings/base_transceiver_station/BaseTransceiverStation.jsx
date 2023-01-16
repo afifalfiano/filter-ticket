@@ -169,7 +169,7 @@ function BaseTransceiverStation() {
       {user?.role_id === 0 && (
       <div>
         <button
-          className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-28"
+          className="btn btn-md sm:btn-md md:btn-md lg:btn-md  w-32"
           onClick={() => {
             setDetail(null);
             setTitle('create');

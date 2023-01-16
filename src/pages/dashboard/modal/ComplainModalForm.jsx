@@ -450,7 +450,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                 <button
                   type="button"
                   htmlFor="my-modal-complain"
-                  className="btn btn-md"
+                  className="btn btn-md w-32"
                   onClick={onBtnClose}
                 >
                   Batal
@@ -459,7 +459,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                   type="submit"
                   disabled={!isValid}
                   htmlFor="my-modal-complain"
-                  className="btn btn-md btn-success text-white"
+                  className="btn btn-md btn-success text-white w-32"
                 >
                   Simpan
                 </button>

@@ -369,14 +369,14 @@ function DashboardDetail({ rfoSingle, idComplain}) {
                   <div className="text-center items-center justify-center mt-10">
                     <button
                       type="button"
-                      className="btn btn-md mr-5"
+                      className="btn btn-md mr-5  w-32"
                       onClick={() => {
                         navigate('/dashboard');
                       }}
                     >
                       Kembali
                     </button>
-                    <button type="submit" className="btn btn-md btn-success text-white" disabled={!isValid}>
+                    <button type="submit" className="  w-32 btn btn-md btn-success text-white" disabled={!isValid}>
                       Simpan
                     </button>
                   </div>

@@ -79,10 +79,10 @@ function ReopenModal({ stateModal, getInfo, detail }) {
 
         <hr className="my-2 mt-5" />
         <div className="modal-action justify-center">
-          <button htmlFor="my-modal-revert" className="btn btn-md" onClick={onBtnClose}>
+          <button htmlFor="my-modal-revert" className="btn btn-md  w-32" onClick={onBtnClose}>
             Batal
           </button>
-          <button htmlFor="my-modal-revert" onClick={onSubmit} className="btn btn-md btn-error text-white">
+          <button htmlFor="my-modal-revert" onClick={onSubmit} className="btn btn-md  w-32 btn-error text-white">
             Kembalikan
           </button>
         </div>

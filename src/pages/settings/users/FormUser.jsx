@@ -228,7 +228,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                 <button
                   type="button"
                   htmlFor="my-modal-3"
-                  className="btn btn-md"
+                  className="btn btn-md  w-32"
                   onClick={() => {
                     onHandleReset(resetForm);
                   }}
@@ -239,7 +239,7 @@ function FormUser({ stateModal, getInfo, detail, titleAction }) {
                   disabled={!isValid}
                   type="submit"
                   htmlFor="my-modal-3"
-                  className="btn btn-md btn-success text-white"
+                  className="btn btn-md   w-32 btn-success text-white"
                 >
                   Simpan
                 </button>

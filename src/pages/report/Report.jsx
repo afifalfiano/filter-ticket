@@ -170,15 +170,15 @@ function Report() {
   return (
     <div>
       <div>
-        <label
-          className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-28"
-          htmlFor="my-modal-3"
+        <button
+          type="button"
+          className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-32"
           onClick={() => {
             navigate(`/report/create`);
           }}
         >
           Tambah
-        </label>
+        </button>
       </div>
 
       <Modal>

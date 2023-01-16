@@ -131,7 +131,7 @@ function ReasonForOutageTrouble() {
         <div className="mb-5">
           <button
             type="button"
-            className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-auto"
+            className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-auto  w-32"
             htmlFor="my-modal-3"
             onClick={() => {
               setDetail(null);
