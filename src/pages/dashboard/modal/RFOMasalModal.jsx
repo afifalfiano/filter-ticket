@@ -24,12 +24,14 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
     };
     dispatch(setModal(newState));
   };
-  const doGetAllRFOMasal = async () => {
+  const doGetAllRFOMasal = async (page = 1) => {
+    const param = `?page=${page}`;
     try {
-      const data = await allRFOMasal();
-      if (data.data.status === 'success' || data.data.status === 'Success') {
-        dispatch(setRFOMasal({ ...data.data }))
-        setDataRFOMasal([...data.data.data]);
+      const data = await allRFOMasal(param).unwrap();
+      if (data.status === 'success' || data.status === 'Success') {
+        const result = data.data.data;
+        dispatch(setRFOMasal({ data: result }))
+        setDataRFOMasal([...result]);
       } else {
         catchError(data, true);
       }
