@@ -35,7 +35,7 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 10, cu
       )}
       {!serverMode && (
         <>
-          <div className="flex flex-row gap-1">
+        <div className="flex flex-row gap-1 justify-between md:justify-start">
             <label htmlFor="page" className="label font-semibold">
               <span className="label-text">
                 {' '}
@@ -56,7 +56,7 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 10, cu
               </select>
             </div>
           </div>
-          <div className="">
+          <div className="mt-3 md:mt-0 justify-start">
             <div className="btn-group">
               {countPage?.map((item, index) => (
                 <button key={index} className={`btn btn-outline ${+currentPage === item && 'btn-active'}`} onClick={onClick} id={item}>{item}</button>
