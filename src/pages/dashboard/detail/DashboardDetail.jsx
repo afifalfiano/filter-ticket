@@ -168,27 +168,27 @@ function DashboardDetail({ rfoSingle, idComplain}) {
   return (
     <div>
       {!rfoSingle && (
-      <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md">
+      <div className="w-full py-5 px-5 flex-col gap-3 md:flex-row md:gap-0 flex w-min-full bg-blue-200 rounded-md">
         <div className="flex-1 w-full">
           <table className="border-none items-center w-full">
             <tbody>
               <tr className="text-left">
-                <td>Referensi Keluhan</td>
+                <td className="w-36 md:w-auto">Referensi Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.nomor_keluhan}</td>
               </tr>
               <tr className="text-left">
-                <td>Pelanggan</td>
+                <td className="w-36 md:w-auto">Pelanggan</td>
                 <td>:</td>
                 <td>{detailComplain?.id_pelanggan} - {detailComplain?.nama_pelanggan}</td>
               </tr>
               <tr className="text-left">
-                <td>Kontak</td>
+                <td className="w-36 md:w-auto">Kontak</td>
                 <td>:</td>
                 <td>{detailComplain?.nama_pelapor} - {detailComplain?.nomor_pelapor}</td>
               </tr>
               <tr className="text-left">
-                <td>Sumber Keluhan</td>
+                <td className="w-36 md:w-auto">Sumber Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.sumber?.sumber}</td>
               </tr>
@@ -199,12 +199,12 @@ function DashboardDetail({ rfoSingle, idComplain}) {
           <table className="border-none items-center w-full">
             <tbody>
               <tr className="text-left">
-                <td>Waktu Dibuat</td>
+                <td className="w-36 md:w-auto">Waktu Dibuat</td>
                 <td>:</td>
                 <td>{new Date(detailComplain?.created_at).toLocaleString('id-ID')}</td>
               </tr>
               <tr className="text-left">
-                <td>Waktu Diubah</td>
+                <td className="w-36 md:w-auto">Waktu Diubah</td>
                 <td>:</td>
                 <td>
                   {detailComplain?.balasan.length > 0
@@ -213,12 +213,12 @@ function DashboardDetail({ rfoSingle, idComplain}) {
                 </td>
               </tr>
               <tr className="text-left">
-                <td>Status Keluhan</td>
+                <td className="w-36 md:w-auto">Status Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.status}</td>
               </tr>
               <tr className="text-left">
-                <td>Detail Sumber Keluhan</td>
+                <td className="w-36 md:w-auto">Detail Sumber Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.detail_sumber}</td>
               </tr>
@@ -231,8 +231,8 @@ function DashboardDetail({ rfoSingle, idComplain}) {
       {/* section reply */}
       <div className="flex w-full flex-col py-5">
         {/* keluhan awal */}
-        <div className='flex justify-center items-center gap-5'>
-          <div className='w-1/12 flex items-center justify-center ml-2'>
+        <div className='flex justify-center items-center mt-3 gap-0 md:gap-5'>
+          <div className='w-1/12 hidden md:flex items-center justify-center ml-2'>
           <div className="avatar">
           <div className={`w-16 rounded-full ring ${detailComplain?.user?.aktif ? 'ring-green-400' : 'ring-red-400'} ring-offset-base-100 ring-offset-2`}>
                 <img src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
@@ -240,9 +240,9 @@ function DashboardDetail({ rfoSingle, idComplain}) {
               </div>
             </div>
           </div>
-          <div className="w-11/12">
+          <div className="w-12/12 md:w-11/12 w-full">
           <p className="justify-start w-full font-semibold">Keluhan Awal</p>
-          <div className="flex justify-between py-2">
+          <div className="flex flex-col md:flex-row md:justify-between py-2">
             <p>
               Dibuat oleh: 
               {detailComplain?.user?.aktif && <span className='pl-1 font-semibold'>{detailComplain?.user?.name} ({detailComplain?.user?.role?.role})</span>} 
@@ -277,12 +277,13 @@ function DashboardDetail({ rfoSingle, idComplain}) {
           </div>
           </div>
         </div>
+        <hr />
 
         {
           detailComplain?.balasan.length > 0 && detailComplain?.balasan.map((item, index) => (
-            <div key={index}>
-              <div className='flex justify-center items-center gap-5'>
-              <div className='w-1/12 flex items-center justify-center ml-2'>
+            <div key={index} className="my-5">
+              <div className='flex justify-center items-center gap-0 md:gap-5'>
+              <div className='w-1/12 hidden md:flex  items-center justify-center ml-2'>
               <div className="avatar">
               <div className={`w-16 rounded-full ring ${item?.user?.aktif ? 'ring-green-400' : 'ring-red-600'} ring-offset-base-100 ring-offset-2`}>
                     <img src={item?.user?.avatar} alt={item?.user?.name}/>
@@ -290,8 +291,8 @@ function DashboardDetail({ rfoSingle, idComplain}) {
                   </div>
                 </div>
               </div>
-              <div className="w-11/12">
-              <div className="flex justify-between py-2">
+              <div className="w-12/12 md:w-11/12 w-full">
+              <div className="flex flex-col md:flex-row md:justify-between py-2">
                 <p>Balasan pesan: 
                   {item?.user?.aktif && <span className='pl-1 font-semibold'>{item?.user?.name} ({item?.user?.role?.role})</span>} 
                   {!item?.user?.aktif && <span className="pl-1 text-red-600 font-semibold">{item?.user?.name} ({item?.user?.role?.role})</span>} 
@@ -325,11 +326,11 @@ function DashboardDetail({ rfoSingle, idComplain}) {
               </div>
               </div>
               </div>
+              <hr />
             </div>
           ))
         }
 
-        <hr className="my-3" />
         {!historyUrl && !rfoSingle && detailComplain?.status === 'open'
           ? (
             <Formik
