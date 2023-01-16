@@ -99,7 +99,7 @@ function Menu({user}) {
       {user?.role_id === 0 && (
         <div className="dropdown">
           <label
-            tabIndex={0}
+            tabIndex={1}
             className={`btn m-1 capitalize ${
               (window.location.pathname === '/base_transceiver_station' &&
                 'btn-active') ||
@@ -115,7 +115,7 @@ function Menu({user}) {
             Pengaturan
           </label>
           <ul
-            tabIndex={0}
+            tabIndex={1}
             className="dropdown-content menu p-2 shadow bg-neutral rounded-box w-52 "
           >
             <li>
