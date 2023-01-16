@@ -145,27 +145,27 @@ function DashboardRFOSingle() {
 
   return (
     <>
-      <div className="w-full py-5 px-5 flex w-min-full bg-blue-200 rounded-md">
+      <div className="w-full py-5 px-5 flex-col gap-3 lg:flex-row md:gap-0 flex w-min-full bg-blue-200 rounded-md">
         <div className="flex-1 w-full">
           <table className="border-none items-center w-full">
             <tbody>
               <tr className="text-left">
-                <td>Referensi Keluhan</td>
+                <td className="w-36 md:w-52 lg:w-auto">Referensi Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.nomor_keluhan}</td>
               </tr>
               <tr className="text-left">
-                <td>Pelanggan</td>
+                <td className="w-36 md:w-52 lg:w-auto">Pelanggan</td>
                 <td>:</td>
                 <td>{detailComplain?.id_pelanggan} - {detailComplain?.nama_pelanggan}</td>
               </tr>
               <tr className="text-left">
-                <td>Kontak</td>
+                <td className="w-36 md:w-52 lg:w-auto">Kontak</td>
                 <td>:</td>
                 <td>{detailComplain?.nama_pelapor} - {detailComplain?.nomor_pelapor}</td>
               </tr>
               <tr className="text-left">
-                <td>Sumber Keluhan</td>
+                <td className="w-36 md:w-52 lg:w-auto">Sumber Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.sumber?.sumber}</td>
               </tr>
@@ -176,12 +176,12 @@ function DashboardRFOSingle() {
           <table className="border-none items-center w-full">
             <tbody>
               <tr className="text-left">
-                <td>Waktu Dibuat</td>
+                <td className="w-36 md:w-52 lg:w-auto">Waktu Dibuat</td>
                 <td>:</td>
                 <td>{new Date(detailComplain?.created_at).toLocaleString('id-ID')}</td>
               </tr>
               <tr className="text-left">
-                <td>Waktu Diubah</td>
+                <td className="w-36 md:w-52 lg:w-auto">Waktu Diubah</td>
                 <td>:</td>
                 <td>
                   {detailComplain?.balasan.length > 0
@@ -190,12 +190,12 @@ function DashboardRFOSingle() {
                 </td>
               </tr>
               <tr className="text-left">
-                <td>Status Keluhan</td>
+                <td className="w-36 md:w-52 lg:w-auto">Status Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.status}</td>
               </tr>
               <tr className="text-left">
-                <td>Detail Sumber Keluhan</td>
+                <td className="w-36 md:w-52 lg:w-auto">Detail Sumber Keluhan</td>
                 <td>:</td>
                 <td>{detailComplain?.detail_sumber}</td>
               </tr>
@@ -203,7 +203,7 @@ function DashboardRFOSingle() {
           </table>
         </div>
       </div>
-      <div className="flex w-full gap-5 mt-5">
+      <div className="flex w-full gap-5 mt-5 flex-col-reverse md:flex-row">
         <div className="flex-1 w-full mt-5">
           <h1 className="text-center font-semibold">Reason For Outage Keluhan</h1>
 
@@ -288,7 +288,7 @@ function DashboardRFOSingle() {
                     ) : null}
                   </div>
 
-                  <div className="flex gap-5">
+                  <div className="flex flex-col md:flex-row gap-5">
                     <div className="form-control flex-1">
                       <label htmlFor="mulai_gangguan" className="label">
                         <span className="label-text"> Waktu Mulai Keluhan</span>
