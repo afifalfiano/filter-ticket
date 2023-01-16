@@ -114,9 +114,9 @@ function Statistics() {
   return (
     <div>
       <div className="flex justify-center">
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <p className="label font-semibold justify-center">Filter Berdasarkan Tanggal</p>
-          <div className="flex gap-5 justify-center mb-5">
+          <div className="flex flex-col md:flex-row gap-5 justify-center mb-5">
             <div className="form-control">
               <label htmlFor="tanggal" className="label font-semibold">
                 <span className="label-text"> Mulai</span>
@@ -156,7 +156,7 @@ function Statistics() {
       </div>
       <hr className="mt-5" />
       <div className="flex justify-between flex-wrap">
-        <div className="card p-5 w-1/2 h-auto">
+        <div className="card p-0 pb-5 md:p-5 w-full md:w-1/2 h-auto ">
           <p className="label font-semibold justify-center">Grafik Semua</p>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
@@ -184,7 +184,7 @@ function Statistics() {
           </ResponsiveContainer>
         </div>
 
-        <div className="card p-5 w-1/2 h-auto">
+        <div className="card p-0 pb-5 md:p-5 w-full md:w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Hari Ini</p>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
@@ -212,7 +212,7 @@ function Statistics() {
           </ResponsiveContainer>
         </div>
 
-        <div className="card p-5 w-1/2 h-auto">
+        <div className="card p-0 pb-5 md:p-5 w-full md:w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Kemarin</p>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
@@ -240,7 +240,7 @@ function Statistics() {
           </ResponsiveContainer>
         </div>
 
-        <div className="card p-5 w-1/2 h-auto">
+        <div className="card p-0 pb-5 md:p-5 w-full md:w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Seminggu Lalu</p>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart
@@ -268,7 +268,7 @@ function Statistics() {
           </ResponsiveContainer>
         </div>
 
-        <div className="card p-5 w-1/2 h-auto">
+        <div className="card p-0 pb-5 md:p-5 w-full md:w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Bulan Ini</p>
           <ResponsiveContainer width="100%" height={300}>
           <BarChart
@@ -292,7 +292,7 @@ function Statistics() {
           </ResponsiveContainer>
         </div>
 
-        <div className="card p-5 w-1/2 h-auto">
+        <div className="card p-0 pb-5 md:p-5 w-full md:w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Tahun</p>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart
