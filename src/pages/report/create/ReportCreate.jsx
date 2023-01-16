@@ -267,15 +267,15 @@ function ReportCreate() {
   };
   return (
     <div>
-      <div className="flex gap-5 mt-5">
-        <div className="form-control w-1/4">
+      <div className="flex gap-5 flex-col lg:flex-row mt-5">
+        <div className="form-control w-full lg:w-1/4">
           <label htmlFor="tanggal" className="label font-semibold">
             <span className="label-text"> Tanggal</span>
           </label>
 
           <input type="date" name="" id="tanggal" onChange={handleFilter} className="input w-full max-w-full input-bordered" />
         </div>
-        <div className="form-control w-1/4">
+        <div className="form-control w-full lg:w-1/4">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> POP</span>
           </label>
@@ -291,7 +291,7 @@ function ReportCreate() {
             ))}
           </select>
         </div>
-        <div className="form-control w-1/4">
+        <div className="form-control w-full lg:w-1/4">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Shift</span>
           </label>
@@ -307,7 +307,7 @@ function ReportCreate() {
             ))}
           </select>
         </div>
-        <div className="w-1/4 flex gap-5">
+        <div className="w-full lg:w-1/4 flex justify-between lg:flex-row gap-5">
         <div className="justify-end">
           <label htmlFor="location" className="label font-semibold" style={{visibility: 'hidden'}}>
             <span className="label-text">Generate</span>
@@ -529,7 +529,7 @@ function ReportCreate() {
         File Upload: {file.name} - {formatBytes(file.size)}
       </div>
       <div className="mt-5">
-        <div className="flex justify-center gap-5">
+        <div className="flex flex-col-reverse md:flex-row justify-center gap-5">
           <button
             type="button"
             onClick={() => {
