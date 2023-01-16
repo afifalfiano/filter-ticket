@@ -292,8 +292,8 @@ const Dashboard = () => {
       </div>
       )}
 
-      <div className="gap-5 mt-5 hidden md:flex">
-        <div className="form-control">
+      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+        <div className="form-control w-full md:w-72">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Status Keluhan</span>
           </label>
@@ -307,7 +307,7 @@ const Dashboard = () => {
           </select>
         </div>
 
-        <div className="form-control w-40">
+        <div className="form-control w-full md:w-72">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> POP</span>
           </label>
@@ -323,7 +323,7 @@ const Dashboard = () => {
           </select>
         </div>
 
-        <div className="form-control">
+        <div className="form-control w-full">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Cari</span>
           </label>
@@ -335,7 +335,7 @@ const Dashboard = () => {
               <input
                 type="text"
                 id="voice-search"
-                className="input input-md input-bordered pl-10 p-2.5 "
+                className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
                 placeholder="Cari data keluhan..."
                 value={search}
                 onChange={onHandleSearch}
