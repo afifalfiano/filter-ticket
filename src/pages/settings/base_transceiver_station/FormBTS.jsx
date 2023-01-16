@@ -93,7 +93,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
-      <div className="modal-box  h-fit max-h-fit max-w-xl">
+      <div className="modal-box lg:h-fit h-auto max-h-fit max-w-xl">
         <button
           htmlFor="my-modal-3"
           className="btn btn-sm btn-circle absolute right-2 top-2"
@@ -145,7 +145,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                 ) : null}
               </div>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="nama_pic" className="label">
                     <span className="label-text"> Nama PIC</span>
@@ -186,7 +186,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                 </div>
               </div>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="lokasi" className="label">
                     <span className="label-text"> Alamat Lengkap</span>

@@ -84,7 +84,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
 
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
-      <div className="modal-box h-fit max-h-fit max-w-lg">
+      <div className="modal-box h-fit max-h-fit  max-w-lg">
         <button
           className="btn btn-sm btn-circle absolute right-2 top-2"
           onClick={onBtnClose}
