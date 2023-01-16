@@ -293,7 +293,7 @@ const Dashboard = () => {
       )}
 
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <div className="form-control w-full md:w-72">
+        <div className="form-control w-full md:w-52">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> Status Keluhan</span>
           </label>
@@ -307,7 +307,7 @@ const Dashboard = () => {
           </select>
         </div>
 
-        <div className="form-control w-full md:w-72">
+        <div className="form-control w-full md:w-52">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> POP</span>
           </label>

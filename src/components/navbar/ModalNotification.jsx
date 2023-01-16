@@ -181,7 +181,7 @@ const ModalNotification = ({totalCount, data}) => {
     <>
       <div
         tabIndex={0}
-        className="mt-4 card card-compact dropdown-content w-56 md:w-72 lg:w-96 bg-neutral shadow"
+        className="mt-4 card card-compact dropdown-content w-56 md:w-52 lg:w-96 bg-neutral shadow"
       >
         <div className="card-body h-96">
           <span className="font-bold text-lg">Pemberitahuan ({totalCountState})</span>

@@ -104,7 +104,7 @@ function ReasonOfOutage() {
     <div>
       {!isLoading && (
         <div className="flex gap-5 flex-col md:flex md:flex-row">
-          <div className="form-control w-full md:w-72">
+          <div className="form-control w-full md:w-52">
             <label htmlFor="location" className="label font-semibold">
               <span className="label-text"> Jenis RFO</span>
             </label>

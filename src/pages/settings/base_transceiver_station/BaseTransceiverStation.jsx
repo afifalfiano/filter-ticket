@@ -182,28 +182,8 @@ function BaseTransceiverStation() {
       )}
 
       {!isLoading && (
-      <div className="flex gap-5 mt-5">
-        <div className="form-control">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Cari</span>
-          </label>
-          <div className="flex items-center">
-            <div className="relative w-full">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <HiSearch />
-              </div>
-              <input
-                type="text"
-                id="voice-search"
-                className="input input-md input-bordered pl-10 p-2.5 "
-                placeholder="Cari data BTS..."
-                value={search}
-                onChange={onHandleSearch}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="form-control">
+      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+        <div className="form-control w-full md:w-52">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> POP</span>
           </label>
@@ -217,6 +197,26 @@ function BaseTransceiverStation() {
               <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
             ))}
           </select>
+        </div>
+        <div className="form-control">
+          <label htmlFor="location" className="label font-semibold">
+            <span className="label-text"> Cari</span>
+          </label>
+          <div className="flex items-center">
+            <div className="relative w-full">
+              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                <HiSearch />
+              </div>
+              <input
+                type="text"
+                id="voice-search"
+                className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
+                placeholder="Cari data BTS..."
+                value={search}
+                onChange={onHandleSearch}
+              />
+            </div>
+          </div>
         </div>
       </div>
       )}
