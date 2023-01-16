@@ -180,8 +180,8 @@ function HistoryDashboard() {
       </Modal>
 
       {!isLoading && (
-      <div className="flex gap-5 mt-5">
-        <div className="form-control">
+      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+        <div className="form-control w-full md:w-72">
           <label htmlFor="location" className="label font-semibold">
             <span className="label-text"> POP</span>
           </label>
@@ -209,7 +209,7 @@ function HistoryDashboard() {
               <input
                 type="text"
                 id="voice-search"
-                className="input input-md input-bordered pl-10 p-2.5 "
+                className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
                 placeholder="Cari riwayat data keluhan..."
                 value={search}
                 onChange={onHandleSearch}
