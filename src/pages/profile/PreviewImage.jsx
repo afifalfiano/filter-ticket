@@ -76,7 +76,7 @@ function PreviewImage({ stateModal, getInfo }) {
             />
           </label>
           <div className="border rounded-md mt-5 p-5">
-            {avatar && <img src={avatar} alt="avatar" className="image-full max-w-md" />}
+            {avatar && <img width={'100%'} height={'100%'} src={avatar} alt="avatar" className="image-full max-w-md" />}
             {!avatar && <p>Belum ada gambar</p>}
           </div>
         </div>

@@ -1,10 +1,11 @@
 /* eslint-disable import/order */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unused-vars */
-import React, { lazy } from 'react';
+import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Toaster } from 'react-hot-toast';
+import loadable from '@loadable/component'
 
 // auth
 import SignIn from './pages/auth/sign_in/SignIn';
@@ -22,25 +23,25 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useState } from 'react';
 // end auth
 
-const Dashboard = lazy(() => import ('./pages/dashboard/Dashboard'));
-const ReasonOfOutage = lazy(() => import('./pages/reason_of_outage/ReasonOfOutage'));
-const Report = lazy(() => import('./pages/report/Report'));
-const Profile = lazy(() => import('./pages/profile/Profile'));
-const BaseTransceiverStation = lazy(() => import('./pages/settings/base_transceiver_station/BaseTransceiverStation'));
-const HistoryDashboard = lazy(() => import('./pages/history_dashboard/HistoryDashboard'));
-const DashboardDetail = lazy(() => import('./pages/dashboard/detail/DashboardDetail'));
-const RFODetailMass = lazy(() => import('./pages/reason_of_outage/detail_masal/RFODetailMass'));
-const RFODetailSingle = lazy(() => import('./pages/reason_of_outage/detail_mandiri/RFODetailSingle'));
-const DashboardRFOSingle = lazy(() => import('./pages/dashboard/rfo_single/DashboardRFOSingle'));
-const Statistics = lazy(() => import('./pages/statistics/Statistics'));
-const Users = lazy(() => import('./pages/settings/users/Users'));
-const Pop = lazy(() => import('./pages/settings/pop/Pop'));
-const SourceComplain = lazy(() => import('./pages/settings/source_complain/SourceComplain'));
-const Role = lazy(() => import('./pages/settings/role/Role'));
-const ReportCreate = lazy(() => import('./pages/report/create/ReportCreate'));
-const ReportDetail = lazy(() => import('./pages/report/detail/ReportDetail'));
-const Shift = lazy(() => import('./pages/settings/shift/Shift'));
-const ReasonForOutageTrouble = lazy(() => import('./pages/reason_for_outage_trouble/ReasonForOutageTrouble'));
+const Dashboard = loadable(() => import ('./pages/dashboard/Dashboard'));
+const ReasonOfOutage = loadable(() => import('./pages/reason_of_outage/ReasonOfOutage'));
+const Report = loadable(() => import('./pages/report/Report'));
+const Profile = loadable(() => import('./pages/profile/Profile'));
+const BaseTransceiverStation = loadable(() => import('./pages/settings/base_transceiver_station/BaseTransceiverStation'));
+const HistoryDashboard = loadable(() => import('./pages/history_dashboard/HistoryDashboard'));
+const DashboardDetail = loadable(() => import('./pages/dashboard/detail/DashboardDetail'));
+const RFODetailMass = loadable(() => import('./pages/reason_of_outage/detail_masal/RFODetailMass'));
+const RFODetailSingle = loadable(() => import('./pages/reason_of_outage/detail_mandiri/RFODetailSingle'));
+const DashboardRFOSingle = loadable(() => import('./pages/dashboard/rfo_single/DashboardRFOSingle'));
+const Statistics = loadable(() => import('./pages/statistics/Statistics'));
+const Users = loadable(() => import('./pages/settings/users/Users'));
+const Pop = loadable(() => import('./pages/settings/pop/Pop'));
+const SourceComplain = loadable(() => import('./pages/settings/source_complain/SourceComplain'));
+const Role = loadable(() => import('./pages/settings/role/Role'));
+const ReportCreate = loadable(() => import('./pages/report/create/ReportCreate'));
+const ReportDetail = loadable(() => import('./pages/report/detail/ReportDetail'));
+const Shift = loadable(() => import('./pages/settings/shift/Shift'));
+const ReasonForOutageTrouble = loadable(() => import('./pages/reason_for_outage_trouble/ReasonForOutageTrouble'));
 
 function App() {
   const [render, setRender] = useState(true);

@@ -81,7 +81,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                   <div className="avatar">
                     <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
                       <span className="text-3xl">
-                      <img src={profile?.avatar} alt={profile?.name} />
+                      <img width={'100%'} height={'100%'} src={profile?.avatar} alt={profile?.name} />
                       </span>
                     </div>
                 </div>

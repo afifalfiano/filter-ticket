@@ -33,7 +33,7 @@ function VerificationSuccess() {
       <div className="text-center">
         <h1 className="font-semibold text-2xl">Verifikasi Email Berhasil</h1>
         <div className="my-5 flex justify-center">
-          <img src="/confirm_email.svg" alt="https://storyset.com/device" className="w-72 items-center flex justify-center" />
+          <img src="/confirm_email.svg" width={'100%'} height={'100%'} alt="https://storyset.com/device" className="w-72 items-center flex justify-center" />
           {/* <div className="bg-red-100 w-52 h-52 items-center flex justify-center">
             image
           </div> */}

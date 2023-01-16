@@ -103,7 +103,7 @@ function SignUp() {
       <div className="bg-gray-200 hidden lg:w-8/12 lg:flex">
       <picture>
       <source srcSet="/wrapper.webp" />
-      <img src="/wrapper.jpg" alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
+      <img src="/wrapper.jpg" width={'100%'} height={'100%'} alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
       </picture>      
       </div>
       <div className="h-screen bg-white w-full lg:w-4/12 relative">

@@ -235,7 +235,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
           <div className='w-1/12 hidden lg:flex items-center justify-center ml-2'>
           <div className="avatar">
           <div className={`w-16 rounded-full ring ${detailComplain?.user?.aktif ? 'ring-green-400' : 'ring-red-400'} ring-offset-base-100 ring-offset-2`}>
-                <img src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
+                <img width={'100%'} height={'100%'} src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
                 {/* <img src="https://placeimg.com/192/192/people" /> */}
               </div>
             </div>
@@ -286,7 +286,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
               <div className='w-1/12 hidden lg:flex  items-center justify-center ml-2'>
               <div className="avatar">
               <div className={`w-16 rounded-full ring ${item?.user?.aktif ? 'ring-green-400' : 'ring-red-600'} ring-offset-base-100 ring-offset-2`}>
-                    <img src={item?.user?.avatar} alt={item?.user?.name}/>
+                    <img width={'100%'} height={'100%'} src={item?.user?.avatar} alt={item?.user?.name}/>
                     {/* <img src="https://placeimg.com/192/192/people" /> */}
                   </div>
                 </div>
