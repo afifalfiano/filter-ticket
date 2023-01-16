@@ -98,7 +98,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(test),
-    }); 
+    });
     const resultSentimen = await sentimen.json()
     return resultSentimen;
   }
@@ -136,35 +136,35 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
 
   const doCreate = async (body, resetForm) => {
     const add = await addComplain({ ...body });
-          if (add.data.status === 'success' || add.data.status === 'Success') {
-            handleResponse(add);
+    if (add.data.status === 'success' || add.data.status === 'Success') {
+      handleResponse(add);
 
-            if (filesLocal.length > 0) {
-              const formData = new FormData();
-              formData.append('keluhan_id', add?.data?.id_keluhan?.id_keluhan);
-              for (let index = 0; index < filesLocal.length; index++) {
-                formData.append(`path[${index}]`, filesLocal[index])
-              }
-              await lampiranFile({ body: formData }).unwrap();
-            }
-            const dataNotification = await doPostNotification(add?.data?.id_keluhan);
-            if (dataNotification?.status === 'Success' || dataNotification?.status === 'success') {
-              const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
-              if (dataPost?.status === 'Success' || dataPost?.status === 'success') {
-                setTimeout(() => {
-                  resetForm();
-                  onBtnClose();
-                  getInfo({ status: 'success' });
-                }, 2000);
-              } else {
-                catchError(dataPost, true);
-              }
-            } else {
-              catchError(dataNotification, true);
-            }
-          } else {
-            catchError(add, true);
-          }
+      if (filesLocal.length > 0) {
+        const formData = new FormData();
+        formData.append('keluhan_id', add?.data?.id_keluhan?.id_keluhan);
+        for (let index = 0; index < filesLocal.length; index++) {
+          formData.append(`path[${index}]`, filesLocal[index])
+        }
+        await lampiranFile({ body: formData }).unwrap();
+      }
+      const dataNotification = await doPostNotification(add?.data?.id_keluhan);
+      if (dataNotification?.status === 'Success' || dataNotification?.status === 'success') {
+        const dataPost = await doStoreAllNotiification(dataNotification?.notifikasi?.id_notifikasi);
+        if (dataPost?.status === 'Success' || dataPost?.status === 'success') {
+          setTimeout(() => {
+            resetForm();
+            onBtnClose();
+            getInfo({ status: 'success' });
+          }, 2000);
+        } else {
+          catchError(dataPost, true);
+        }
+      } else {
+        catchError(dataNotification, true);
+      }
+    } else {
+      catchError(add, true);
+    }
   }
 
   const doUpdateComplain = async (payload) => {
@@ -238,7 +238,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             setFieldValue,
           }) => (
             <Form>
-                            <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="pop_id" className="label">
                     <span className="label-text"> POP (Area Operasional)</span>
@@ -286,7 +286,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                 </div>
               </div>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row  gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="id_pelanggan" className="label">
                     <span className="label-text"> ID Pelanggan</span>
@@ -327,7 +327,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                 </div>
               </div>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row  gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="sumber" className="label">
                     <span className="label-text"> Sumber Keluhan</span>
@@ -371,7 +371,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                 </div>
               </div>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row  gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="nama_pelapor" className="label">
                     <span className="label-text"> Nama Kontak</span>
