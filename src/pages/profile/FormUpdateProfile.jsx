@@ -95,7 +95,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                   />
                 </div>
                 <h1 className="font-semibold text-xl mt-5">Ubah Informasi</h1>
-                <div className="my-5 flex justify-center gap-7">
+                <div className="my-5 flex flex-col lg:flex-row justify-center gap-7">
                   <div className="border-gray-200 rounded-md border-2 w-80 h-auto items-center flex-1 flex-row justify-center">
                     <div className="px-5 py-5">
                       <div className="form-control">
