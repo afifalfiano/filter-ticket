@@ -48,7 +48,7 @@ function RFODetailMass() {
 
   const navigate = useNavigate();
   return (
-    <div className="flex w-full gap-5">
+    <div className="flex w-full flex-col-reverse lg:flex-row gap-5">
       <div className="flex-1 w-full">
         <h1 className="text-center font-semibold">Reason For Outage Gangguan</h1>
 
@@ -135,7 +135,7 @@ function RFODetailMass() {
                   ) : null}
                 </div>
 
-                <div className="flex gap-5">
+                <div className="flex flex-col lg:flex-row gap-5">
                   <div className="form-control flex-1">
                     <label htmlFor="mulai_gangguan" className="label">
                       <span className="label-text"> Waktu Mulai Keluhan</span>

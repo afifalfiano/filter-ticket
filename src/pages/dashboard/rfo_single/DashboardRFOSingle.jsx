@@ -203,7 +203,7 @@ function DashboardRFOSingle() {
           </table>
         </div>
       </div>
-      <div className="flex w-full gap-5 mt-5 flex-col-reverse md:flex-row">
+      <div className="flex w-full gap-5 mt-5 flex-col-reverse lg:flex-row">
         <div className="flex-1 w-full mt-5">
           <h1 className="text-center font-semibold">Reason For Outage Keluhan</h1>
 
@@ -288,7 +288,7 @@ function DashboardRFOSingle() {
                     ) : null}
                   </div>
 
-                  <div className="flex flex-col md:flex-row gap-5">
+                  <div className="flex flex-col lg:flex-row gap-5">
                     <div className="form-control flex-1">
                       <label htmlFor="mulai_gangguan" className="label">
                         <span className="label-text"> Waktu Mulai Keluhan</span>

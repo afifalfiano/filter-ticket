@@ -188,7 +188,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                 ) : null}
               </div>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="mulai_gangguan" className="label">
                     <span className="label-text"> Waktu Mulai Gangguan</span>
@@ -231,7 +231,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                 </div>
               </div>
 
-              <div className="flex flex-row gap-3">
+              <div className="flex flex-col md:flex-row gap-3">
                 <div className="form-control flex-1">
                   <label htmlFor="nomor_tiket" className="label">
                     <span className="label-text"> Tiket Pelaporan (Opsional)</span>
