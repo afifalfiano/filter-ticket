@@ -6,10 +6,13 @@ import { Toaster } from 'react-hot-toast';
 import {
   setCredentials,
 } from '../../store/features/auth/authSlice';
-import Container from './Container';
-import Navbar from '../navbar/Navbar';
 import { decryptLocalStorage } from '../../utils/helper';
 import { Suspense } from 'react';
+import loadable from '@loadable/component';
+
+
+const Navbar = loadable(() => import('../navbar/Navbar'));
+const Container = loadable(() => import('./Container'));
 
 function RequireAuth() {
   const dispatch = useDispatch();
