@@ -1,16 +1,7 @@
 import { useState, useEffect } from 'react';
-import {
-  HiSearch,
-  HiPencil,
-  HiTrash,
-  HiEye,
-  HiOutlineClipboardCheck,
-  HiOutlineClipboardList,
-} from 'react-icons/hi';
 import loadable from '@loadable/component'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ClipLoader from "react-spinners/ClipLoader";
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
 import { selectAllComplain, setComplain } from '../../store/features/complain/complainSlice';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
@@ -21,26 +12,13 @@ import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKelu
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
-import Button from '../../components/Button/Button';
-import Search from '../../components/Search/Search';
-import SelectPOP from '../../components/Select/SelectPOP';
-import SelectStatusComplain from '../../components/Select/SelectStatusComplain';
-import LoaderGetData from '../../components/Loader/Loader';
-import LabelStatusPOP from '../../components/Label/LabelStatusPOP';
-import DoUpdate from '../../components/common/table/ActionTable/DoUpdate';
-import DoDelete from '../../components/common/table/ActionTable/DoDelete';
-import DoDetail from '../../components/common/table/ActionTable/DoDetail';
-import DoShowRFOTrouble from '../../components/common/table/ActionTable/DoShowRFOTrouble';
-import DoShowRFOComplain from '../../components/common/table/ActionTable/DoShowRFOComplain';
-import DoRollbackStatus from '../../components/common/table/ActionTable/DoRollbackStatus';
-import LabelStatus from '../../components/Label/LabelStatus';
 
-const { FaUndoAlt } = loadable(() => import('react-icons/fa'));
+import {DoShowRFOTrouble, DoDelete, DoUpdate, LabelStatus, LoaderGetData, Search, Button, Modal, SelectStatusComplain, SelectPOP ,LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime}  from '../../components/index';
+
 const DeleteModal = loadable(() => import('../../components/common/DeleteModal'));
 const ComplainModalForm = loadable(() => import('./modal/ComplainModalForm'));
 const RFOMasalModal = loadable(() => import('./modal/RFOMasalModal'));
 const ReopenModal = loadable(() => import('../history_dashboard/ReopenModal'));
-const Modal = loadable(() => import('../../components/modal/Modal'));
 
 const initColumns = [
   'No',
@@ -375,16 +353,7 @@ const Dashboard = () => {
                   </div>
                 </td>
                 <td className="text-left">
-                  <p>
-                    Dibuat:
-                    {new Date(item?.created_at).toLocaleString('id-ID')}
-                  </p>
-                  <p>
-                    Diubah:
-                    {item?.balasan.length > 0
-                      ? new Date(item?.balasan[item.balasan.length - 1].created_at).toLocaleString('id-ID')
-                      : new Date(item?.created_at).toLocaleString('id-ID')}
-                  </p>
+                  <ProgressTime item={item} />
                 </td>
                 <td>
                   <LabelStatus status={item?.status} />

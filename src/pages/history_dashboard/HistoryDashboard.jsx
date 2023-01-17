@@ -1,11 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import {
-  HiSearch,
-  HiEye,
-  HiOutlineClipboardCheck,
-  HiOutlineClipboardList
-} from 'react-icons/hi';
-import { FaUndoAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAllComplainHistoryMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
@@ -13,13 +6,11 @@ import { selectAllComplainHistory, setComplainHistory } from '../../store/featur
 import ReopenModal from './ReopenModal';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
-import Pagination from '../../components/common/table/Pagination';
-import SkeletonTable from '../../components/common/table/SkeletonTable';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
-import Modal from '../../components/modal/Modal';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import catchError from '../../services/catchError';
+import {DoShowRFOTrouble, Search, SelectPOP, Modal, Pagination, SkeletonTable ,LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime} from '../../components/index';
 
 function HistoryDashboard() {
   const initColumns = [
@@ -173,6 +164,28 @@ function HistoryDashboard() {
     }
   };
 
+  const rollbackStatus = (item) => {
+    setDetail(item);
+    openModal();
+  }
+
+  const detailData = (item) => {
+    navigate(`/history_dashboard/detail/${item.id_keluhan}`);
+  }
+
+  const RFOKeluhan = (item) => {
+    navigate(
+      `/history_dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`
+    );
+  }
+
+  const RFOMasalDetail = (item) => {
+    setDetail(item);
+    navigate(
+      `/history_dashboard/rfo_masal/${item.rfo_gangguan_id}`
+    );
+  }
+
   return (
     <div>
       <Modal>
@@ -182,41 +195,9 @@ function HistoryDashboard() {
       {!isLoading && (
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
         <div className="form-control w-full md:w-52">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> POP</span>
-          </label>
-
-          <select
-            className="select w-full max-w-full input-bordered"
-            onChange={handlePOP}
-          >
-            <option value="all" label="Semua" defaultValue={'all'}>All</option>
-            {dataPOP?.map((item, index) => (
-              <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
-            ))}
-          </select>
+          <SelectPOP dataPOP={dataPOP} handlePOP={() => handlePOP()} />
         </div>
-
-        <div className="form-control">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Cari</span>
-          </label>
-          <div className="flex items-center">
-            <div className="relative w-full">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <HiSearch />
-              </div>
-              <input
-                type="text"
-                id="voice-search"
-                className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                placeholder="Cari riwayat data keluhan..."
-                value={search}
-                onChange={onHandleSearch}
-              />
-            </div>
-          </div>
-        </div>
+        <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data riwayat keluhan...'} />
       </div>
       )}
 
@@ -239,25 +220,7 @@ function HistoryDashboard() {
                 <tr key={index} className="text-center">
                   <th>{index + 1}</th>
                   <td className="text-left">
-                    {
-                            item.pop.pop === 'Yogyakarta' ? (
-                              <span className="badge badge-success text-white">
-                                {item.pop.pop}
-                              </span>
-                            ) : item.pop.pop === 'Solo' ? (
-                              <span className="badge badge-warning text-white">
-                                {item.pop.pop}
-                              </span>
-                            ) : item.pop.pop === 'Purwokerto' ? (
-                              <span className="badge badge-info text-white">
-                                {item.pop.pop}
-                              </span>
-                            ) : (
-                              <span className="badge text-white">
-                                {item.pop.pop}
-                              </span>
-                            )
-                          }
+                  <LabelStatusPOP status={item?.pop?.pop} />
                   </td>
                   <td className="text-left">{(item?.id_pelanggan)} - {(item?.nama_pelanggan)}</td>
                   <td className="text-left">{item?.nama_pelapor} - {item?.nomor_pelapor}</td>
@@ -267,30 +230,8 @@ function HistoryDashboard() {
                   <td >
                   <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} className={`${item?.balasan.length === 0 ? 'text-center font-semibold badge bg-red-500 border-0 text-white' : ''}`}/>
                   </td>
-                  {/* <td className="text-left">
-                    {item.balasan.length > 0
-                      ? `${item.balasan[
-                        item.balasan.length - 1
-                      ].balasan.slice(0, 100)}...`
-                      : 'Belum ada tindakan'}
-                  </td> */}
                   <td className="text-left">
-                    <p>
-                      Dibuat:
-                      {new Date(item.created_at).toLocaleString('id-ID')}
-                    </p>
-                    <p>
-                      Diubah:
-                      {item.balasan.length > 0
-                        ? new Date(
-                          item.balasan[
-                            item.balasan.length - 1
-                          ].created_at
-                        ).toLocaleString('id-ID')
-                        : new Date(item.created_at).toLocaleString(
-                          'id-ID'
-                        )}
-                    </p>
+                    <ProgressTime item={item} />
                   </td>
                   <td>
                     <span className="badge badge-info text-white">
@@ -300,56 +241,10 @@ function HistoryDashboard() {
                   {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <div className="tooltip" data-tip="Kembalikan Status Open">
-                        <FaUndoAlt
-                          size={20}
-                          color="#D98200"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            openModal();
-                          }}
-                        />
-                      </div>
-                      <div className="tooltip" data-tip="Detail">
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(`/history_dashboard/detail/${item.id_keluhan}`);
-                          }}
-                        />
-                      </div>
-                      {item.rfo_keluhan_id !== null && (
-                        <div className="tooltip" data-tip="RFO Keluhan">
-                          <HiOutlineClipboardCheck
-                            size={20}
-                            color="#065F46"
-                            className="cursor-pointer"
-                            onClick={() => {
-                              navigate(
-                                `/history_dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`
-                              );
-                            }}
-                          />
-                        </div>
-                      )}
-                      {item.rfo_gangguan_id !== null && (
-                        <div className="tooltip" data-tip="RFO Gangguan">
-                          <HiOutlineClipboardList
-                            size={20}
-                            color="#0007A3"
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setDetail(item);
-                              navigate(
-                                `/history_dashboard/rfo_masal/${item.rfo_gangguan_id}`
-                              );
-                            }}
-                          />
-                        </div>
-                      )}
+                      <DoRollbackStatus onClick={() => rollbackStatus(item)} />
+                      <DoDetail onClick={() => detailData(item)} />
+                      {item.rfo_keluhan_id !== null && <DoShowRFOComplain onClick={() => RFOKeluhan(item)} />}
+                      {item.rfo_gangguan_id !== null && <DoShowRFOTrouble onClick={() => RFOMasalDetail(item)} />}
                     </div>
                   </td>
                 </tr>

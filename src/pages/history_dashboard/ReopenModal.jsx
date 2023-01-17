@@ -8,6 +8,7 @@ import { useDeleteRFOKeluhanMutation } from '../../store/features/rfo/rfoApiSlic
 import { initState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
 import handleResponse from '../../services/handleResponse';
+import {Button} from '../../components/index';
 
 function ReopenModal({ stateModal, getInfo, detail }) {
   const [complainHistoryReopen] = useComplainHistoryReopenMutation()
@@ -79,12 +80,8 @@ function ReopenModal({ stateModal, getInfo, detail }) {
 
         <hr className="my-2 mt-5" />
         <div className="modal-action justify-center">
-          <button htmlFor="my-modal-revert" className="btn btn-md  w-32" onClick={onBtnClose}>
-            Batal
-          </button>
-          <button htmlFor="my-modal-revert" onClick={onSubmit} className="btn btn-md  w-32 btn-error text-white">
-            Kembalikan
-          </button>
+          <Button type="button" onClick={() => onBtnClose()}>Batal</Button>
+          <Button className="btn-success" onClick={() => onSubmit()}>Rollback</Button>
         </div>
       </div>
     </div>

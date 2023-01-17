@@ -9,7 +9,7 @@ function SelectStatusComplain({ ...props }) {
 
             <select
                 className="select w-full max-w-full input-bordered"
-                onChange={props.handlePOP}
+                onChange={props.handleStatus}
                 defaultValue={'open'}
             >
                 <option value="open" label="Open Case">Open Case</option>
