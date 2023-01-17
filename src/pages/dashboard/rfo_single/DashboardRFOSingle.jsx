@@ -12,6 +12,8 @@ import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { RFOSingleSchema } from '../../../utils/schema_validation_form';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import SectionInformation from '../../../components/DetailProgress/SectionInformation';
+import Button from '../../../components/Button/Button';
 
 function DashboardRFOSingle() {
   const navigate = useNavigate();
@@ -145,64 +147,7 @@ function DashboardRFOSingle() {
 
   return (
     <>
-      <div className="w-full py-5 px-5 flex-col gap-3 lg:flex-row md:gap-0 flex w-min-full bg-blue-200 rounded-md">
-        <div className="flex-1 w-full">
-          <table className="border-none items-center w-full">
-            <tbody>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Referensi Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.nomor_keluhan}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Pelanggan</td>
-                <td>:</td>
-                <td>{detailComplain?.id_pelanggan} - {detailComplain?.nama_pelanggan}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Kontak</td>
-                <td>:</td>
-                <td>{detailComplain?.nama_pelapor} - {detailComplain?.nomor_pelapor}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Sumber Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.sumber?.sumber}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="flex-1 w-full">
-          <table className="border-none items-center w-full">
-            <tbody>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Waktu Dibuat</td>
-                <td>:</td>
-                <td>{new Date(detailComplain?.created_at).toLocaleString('id-ID')}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Waktu Diubah</td>
-                <td>:</td>
-                <td>
-                  {detailComplain?.balasan.length > 0
-                    ? new Date(detailComplain?.balasan[detailComplain.balasan.length - 1].created_at).toLocaleString('id-ID')
-                    : new Date(detailComplain?.created_at).toLocaleString('id-ID')}
-                </td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Status Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.status}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Detail Sumber Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.detail_sumber}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <SectionInformation detailComplain={detailComplain} />
       <div className="flex w-full gap-5 mt-5 flex-col-reverse lg:flex-row">
         <div className="flex-1 w-full mt-5">
           <h1 className="text-center font-semibold">Reason For Outage Keluhan</h1>
@@ -357,35 +302,14 @@ function DashboardRFOSingle() {
                 </div>
                 {(!history && detailComplain?.status === 'open') || idRfoKeluhan === 'null' ? (
                   <div className="modal-action justify-center mt-10">
-                    <button
-                      type="button"
-                      className="btn btn-md mr-5  w-32"
-                      onClick={() => {
-                        navigate('/dashboard');
-                      }}
-                    >
-                      Kembali
-                    </button>
-                    <button disabled={!isValid} type="submit" className="btn btn-md btn-success  w-32 text-white">
-                      Simpan
-                    </button>
+                    <Button type="button" onClick={() => navigate('/dashboard')}>Kembali</Button>
+                    <Button disabled={!isValid} type="submit" className="btn-success">Simpan</Button>
                   </div>
                 ) : (
                   <div className="modal-action justify-center mt-10">
-
-                    <button
-                      type="button"
-                      className="btn btn-md mr-5  w-32"
-                      onClick={() => {
-                        if (history && detailComplain?.status === 'closed') {
-                          navigate('/history_dashboard');
-                        } else {
-                          navigate('/dashboard');
-                        }
-                      }}
-                    >
+                    <Button type="button" className="mr-5" onClick={() => history && detailComplain?.status === 'closed' ? navigate('/history_dashboard'):navigate('/dashboard')}>
                       Kembali
-                    </button>
+                    </Button>
                   </div>
                 )}
 
