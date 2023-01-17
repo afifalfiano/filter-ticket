@@ -14,6 +14,7 @@ import { usePostNotificationMutation, useStoreAllNotificationMutation } from '..
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
 import TextEditor from '../../../components/common/forms/TextEditor';
+import Button from '../../../components/Button/Button';
 
 function ComplainModalForm({ stateModal, getInfo, detail }) {
   const [addComplain] = useAddComplainMutation();
@@ -415,19 +416,6 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                 <label htmlFor="keluhan" className="label">
                   <span className="label-text"> Keluhan Awal:</span>
                 </label>
-
-                {/* <Field
-                  id="keluhan"
-                  name="keluhan"
-                  component="textarea"
-                  placeholder="Keluhan"
-                  value={values.keluhan}
-                  disabled={detail !== null}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  className="input input-md input-bordered  max-w-full h-28"
-                /> */}
-                <div></div>
                 <TextEditor
                   setFieldValue={(val) => setFieldValue('keluhan', val)}
                   value={values.keluhan}
@@ -447,22 +435,8 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
 
               <hr className="my-2 mt-5" />
               <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-complain"
-                  className="btn btn-md w-32"
-                  onClick={onBtnClose}
-                >
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  disabled={!isValid}
-                  htmlFor="my-modal-complain"
-                  className="btn btn-md btn-success text-white w-32"
-                >
-                  Simpan
-                </button>
+                <Button type="button" onClick={() => onBtnClose()}>Batal</Button>
+                <Button type="submit" disabled={!isValid} className="btn-success">Simpan</Button>
               </div>
             </Form>
           )}

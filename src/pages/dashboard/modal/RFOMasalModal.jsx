@@ -9,6 +9,7 @@ import { useComplainClosedMutation } from '../../../store/features/complain/comp
 import { setModal } from '../../../store/features/modal/modalSlice';
 import handleResponse from '../../../services/handleResponse';
 import catchError from '../../../services/catchError';
+import Button from '../../../components/Button/Button';
 
 function RFOMasalModal({ stateModal, getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()
@@ -169,17 +170,8 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
 
               <hr className="my-2 mt-5" />
               <div className="modal-action justify-center">
-                <button type="button" className="btn btn-md  w-32" onClick={onBtnClose}>
-                  Batal
-                </button>
-                <button
-                  type="submit"
-                  htmlFor="my-modal-rfo-masal"
-                  className="btn btn-md btn-success text-white w-32"
-                  disabled={!isValid}
-                >
-                  Simpan
-                </button>
+                <Button type="button" onClick={() => onBtnClose()}>Batal</Button>
+                <Button type="submit" disabled={!isValid} className="btn-success">Simpan</Button>
               </div>
             </Form>
           )}
