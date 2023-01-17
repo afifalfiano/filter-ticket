@@ -23,6 +23,9 @@ import { selectModalState, setModal } from '../../store/features/modal/modalSlic
 import catchError from '../../services/catchError';
 import Button from '../../components/Button/Button';
 import Search from '../../components/Search/Search';
+import SelectPOP from '../../components/Select/SelectPOP';
+import SelectStatusComplain from '../../components/Select/SelectStatusComplain';
+import LoaderGetData from '../../components/Loader/Loader';
 
 const { FaUndoAlt } = loadable(() => import('react-icons/fa'));
 const DeleteModal = loadable(() => import('../../components/common/DeleteModal'));
@@ -287,41 +290,15 @@ const Dashboard = () => {
 
   return (
     <div>
-      {statusData === 'open' && (
-      <div>
-        <Button onClick={addData}>Tambah</Button>
-      </div>
-      )}
+      {statusData === 'open' && <Button onClick={addData}>Tambah</Button>}
 
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
         <div className="form-control w-full md:w-52">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Status Keluhan</span>
-          </label>
-
-          <select
-            className="select w-full max-w-full input-bordered"
-            onChange={handleStatus}
-          >
-            <option value="open" label="Open Case">Open Case</option>
-            <option value="closed" label="Closed Case">Closed Case</option>
-          </select>
+        <SelectStatusComplain handleStatus={handleStatus} />
         </div>
 
         <div className="form-control w-full md:w-52">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> POP</span>
-          </label>
-
-          <select
-            className="select w-full max-w-full input-bordered"
-            onChange={handlePOP}
-          >
-            <option value="all" label="Semua" defaultValue={'all'}>All</option>
-            {dataPOP?.map((item, index) => (
-              <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
-            ))}
-          </select>
+          <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
         </div>
 
         <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data keluhan...'} />
@@ -512,19 +489,7 @@ const Dashboard = () => {
           </tbody>
         </table>
       </div>
-      {showLoading && (
-      <div className="fixed bottom-5 right-5 w-52 min-w-min bg-slate-500 rounded-md shadow-md drop-shadow-md">
-        <div className="flex flex-row justify-between items-center p-4">
-          <ClipLoader
-            color="#1ffff0"
-            size={40}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />
-          <p className="font-semibold text-white">Data Diperbarui</p>
-        </div>
-      </div>
-      )}
+      {showLoading && <LoaderGetData />}
       <Modal>
         {stateModal?.dashboard?.showAddModalComplain && <ComplainModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
         {stateModal?.dashboard?.showRFOTroubleModal && <RFOMasalModal stateModal={stateModal} detail={detail} getInfo={getInfo} />}
