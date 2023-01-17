@@ -26,7 +26,14 @@ import Search from '../../components/Search/Search';
 import SelectPOP from '../../components/Select/SelectPOP';
 import SelectStatusComplain from '../../components/Select/SelectStatusComplain';
 import LoaderGetData from '../../components/Loader/Loader';
-import LabelStatusPOP from '../../components/LabelStatusPOP/LabelStatusPOP';
+import LabelStatusPOP from '../../components/Label/LabelStatusPOP';
+import DoUpdate from '../../components/common/table/ActionTable/DoUpdate';
+import DoDelete from '../../components/common/table/ActionTable/DoDelete';
+import DoDetail from '../../components/common/table/ActionTable/DoDetail';
+import DoShowRFOTrouble from '../../components/common/table/ActionTable/DoShowRFOTrouble';
+import DoShowRFOComplain from '../../components/common/table/ActionTable/DoShowRFOComplain';
+import DoRollbackStatus from '../../components/common/table/ActionTable/DoRollbackStatus';
+import LabelStatus from '../../components/Label/LabelStatus';
 
 const { FaUndoAlt } = loadable(() => import('react-icons/fa'));
 const DeleteModal = loadable(() => import('../../components/common/DeleteModal'));
@@ -367,7 +374,6 @@ const Dashboard = () => {
                     <div>{user && doCreateNotificationProgress(item)}</div>
                   </div>
                 </td>
-                {/* <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) + '...' : 'Belum ada tindakan')}</td> */}
                 <td className="text-left">
                   <p>
                     Dibuat:
@@ -381,100 +387,25 @@ const Dashboard = () => {
                   </p>
                 </td>
                 <td>
-                  {item?.status === 'open' ? (
-                    <span className="badge badge-accent text-white">
-                      {item?.status}
-                    </span>
-                  ) : (
-                    <span className="badge badge-info text-white">
-                      {item?.status}
-                    </span>
-                  )}
+                  <LabelStatus status={item?.status} />
                 </td>
                 {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
                     {statusData === 'open' ? (
                       <>
-                        <div className="tooltip" data-tip="Edit">
-                          <HiPencil
-                            className="cursor-pointer"
-                            size={20}
-                            color="#D98200"
-                            onClick={() => editData(item)}
-                          />
-                        </div>
-                        <div className="tooltip" data-tip="Hapus">
-                          <HiTrash
-                            size={20}
-                            color="#FF2E00"
-                            className="cursor-pointer"
-                            onClick={() => deleteData(item)}
-                          />
-                        </div>
-                        <div className="tooltip" data-tip="Detail">
-                          <HiEye
-                            size={20}
-                            color="#0D68F1"
-                            className="cursor-pointer"
-                            onClick={() => detailData(item)}
-                          />
-                        </div>
-                        <div className="tooltip" data-tip="RFO Keluhan">
-                          <HiOutlineClipboardCheck
-                            size={20}
-                            color="#065F46"
-                            className="cursor-pointer"
-                            onClick={() => RFOKeluhan(item)}
-                          />
-                        </div>
-                        <div className="tooltip" data-tip="RFO Gangguan">
-                          <HiOutlineClipboardList
-                            size={20}
-                            color="#0007A3"
-                            className="cursor-pointer"
-                            onClick={() => RFOMasal(item)}
-                          />
-                        </div>
+                        <DoUpdate onClick={() => editData(item)} />
+                        <DoDelete onClick={() => deleteData(item)} />
+                        <DoDetail onClick={() => detailData(item)} />
+                        <DoShowRFOComplain onClick={() => RFOKeluhan(item)} />
+                        <DoShowRFOTrouble onClick={() => RFOMasal(item)} />
                       </>
                     ) : (
                       <>
-                        <div className="tooltip" data-tip="Kembalikan Status Open">
-                          <FaUndoAlt
-                            size={20}
-                            color="#D98200"
-                            className="cursor-pointer"
-                            onClick={() => rollbackStatus(item)}
-                          />
-                        </div>
-                        <div className="tooltip" data-tip="Detail">
-                          <HiEye
-                            size={20}
-                            color="#0D68F1"
-                            className="cursor-pointer"
-                            onClick={() => detailData(item)}
-                          />
-                        </div>
-                        {item.rfo_keluhan_id !== null && (
-                          <div className="tooltip" data-tip="RFO Keluhan">
-                            <HiOutlineClipboardCheck
-                              size={20}
-                              color="#065F46"
-                              className="cursor-pointer"
-                              onClick={() => RFOKeluhan(item)}
-                            />
-                          </div>
-                        )}
-                        {item.rfo_gangguan_id !== null && (
-                          <div className="tooltip" data-tip="RFO Gangguan">
-                            <HiOutlineClipboardList
-                              size={20}
-                              color="#0007A3"
-                              className="cursor-pointer"
-                              onClick={() => RFOMasalDetail(item)}
-                            />
-                          </div>
-                        )}
+                        <DoRollbackStatus onClick={() => rollbackStatus(item)} />
+                        <DoDetail onClick={() => detailData(item)} />
+                        {item.rfo_keluhan_id !== null && <DoShowRFOComplain onClick={() => RFOKeluhan(item)} />}
+                        {item.rfo_gangguan_id !== null && <DoShowRFOTrouble onClick={() => RFOMasalDetail(item)} />}
                       </>
                     )}
                   </div>
