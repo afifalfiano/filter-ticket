@@ -21,6 +21,7 @@ import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKelu
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
+import Button from '../../components/Button/Button';
 
 const { FaUndoAlt } = loadable(() => import('react-icons/fa'));
 const DeleteModal = loadable(() => import('../../components/common/DeleteModal'));
@@ -277,20 +278,17 @@ const Dashboard = () => {
     }
   };
 
+
+  const addData = () => {
+    setDetail(null);
+    openModal('add complain');
+  }
+
   return (
     <div>
       {statusData === 'open' && (
       <div>
-        <button
-          className="btn btn-md sm:btn-md md:btn-md lg:btn-md  w-32"
-          htmlFor="my-modal-complain"
-          onClick={() => {
-            setDetail(null);
-            openModal('add complain');
-          }}
-        >
-          Tambah
-        </button>
+        <Button onClick={addData}>Tambah</Button>
       </div>
       )}
 
