@@ -22,6 +22,7 @@ import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
 import Button from '../../components/Button/Button';
+import Search from '../../components/Search/Search';
 
 const { FaUndoAlt } = loadable(() => import('react-icons/fa'));
 const DeleteModal = loadable(() => import('../../components/common/DeleteModal'));
@@ -323,26 +324,7 @@ const Dashboard = () => {
           </select>
         </div>
 
-        <div className="form-control w-full">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Cari</span>
-          </label>
-          <div className="flex items-center">
-            <div className="relative w-full">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <HiSearch />
-              </div>
-              <input
-                type="text"
-                id="voice-search"
-                className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                placeholder="Cari data keluhan..."
-                value={search}
-                onChange={onHandleSearch}
-              />
-            </div>
-          </div>
-        </div>
+        <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data keluhan...'} />
       </div>
 
       <div className="overflow-x-auto mt-8">
