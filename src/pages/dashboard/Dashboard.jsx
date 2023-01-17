@@ -26,6 +26,7 @@ import Search from '../../components/Search/Search';
 import SelectPOP from '../../components/Select/SelectPOP';
 import SelectStatusComplain from '../../components/Select/SelectStatusComplain';
 import LoaderGetData from '../../components/Loader/Loader';
+import LabelStatusPOP from '../../components/LabelStatusPOP/LabelStatusPOP';
 
 const { FaUndoAlt } = loadable(() => import('react-icons/fa'));
 const DeleteModal = loadable(() => import('../../components/common/DeleteModal'));
@@ -53,7 +54,7 @@ const Dashboard = () => {
   const [showLoading, setShowLoading] = useState(true);
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
-  const [allComplain ] = useAllComplainMutation();
+  const [allComplain] = useAllComplainMutation();
   const dispatch = useDispatch();
   const { data: user } = useSelector(selectCurrentUser);
   const stateModal = useSelector(selectModalState);
@@ -246,17 +247,17 @@ const Dashboard = () => {
       data.notifikasi.forEach(item => {
         item.notifikasi_read.forEach(read => {
           if (+user.id_user === +read.user_id) {
-            if (!read.is_read)  {
+            if (!read.is_read) {
               i++;
             }
           }
         })
       })
 
-      if ( i > 0) {
+      if (i > 0) {
         return (
           <span className="badge bg-blue-700 border-none text-white">
-          + {i}
+            + {i}
           </span>
         )
       }
@@ -288,13 +289,48 @@ const Dashboard = () => {
     openModal('add complain');
   }
 
+  const editData = (item) => {
+    setDetail(item);
+    openModal('update complain');
+  }
+
+  const deleteData = (item) => {
+    setDetail(item);
+    openModal('delete complain');
+  }
+
+  const detailData = (item) => {
+    navigate(`/dashboard/detail/${item.id_keluhan}`);
+  }
+
+  const RFOKeluhan = (item) => {
+    navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
+  }
+
+  const RFOMasal = (item) => {
+    setDetail(item);
+    openModal('modal rfo masal');
+  }
+
+  const RFOMasalDetail = (item) => {
+    setDetail(item);
+    navigate(
+      `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
+    );
+  }
+
+  const rollbackStatus = (item) => {
+    setDetail(item);
+    openModal('revert complain');
+  }
+
   return (
     <div>
       {statusData === 'open' && <Button onClick={addData}>Tambah</Button>}
 
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
         <div className="form-control w-full md:w-52">
-        <SelectStatusComplain handleStatus={handleStatus} />
+          <SelectStatusComplain handleStatus={handleStatus} />
         </div>
 
         <div className="form-control w-full md:w-52">
@@ -318,33 +354,17 @@ const Dashboard = () => {
               <tr key={index} className="text-center">
                 <th className="bg-opacity-100">{index + 1}</th>
                 <td className="text-left">
-                  { item?.pop?.pop === 'Yogyakarta' ? (
-                    <span className="badge badge-success text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  ) : item?.pop?.pop === 'Solo' ? (
-                    <span className="badge badge-warning text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  ) : item?.pop?.pop === 'Purwokerto' ? (
-                    <span className="badge badge-info text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  ) : (
-                    <span className="badge text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  )}
+                  <LabelStatusPOP status={item?.pop?.pop} />
                 </td>
                 <td className="text-left">{(item?.id_pelanggan)} - {(item?.nama_pelanggan)}</td>
                 <td className="text-left">{item?.nama_pelapor} - {item?.nomor_pelapor}</td>
                 <td className="text-left">
-                  <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
+                  <div dangerouslySetInnerHTML={{ __html: item?.keluhan }} />
                 </td>
                 <td >
                   <div className="flex gap-2">
-                  <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} className={`${item?.balasan.length === 0 ? 'text-center font-semibold badge bg-red-500 border-0 text-white' : ''}`}/>
-                  <div>{user && doCreateNotificationProgress(item)}</div>
+                    <div dangerouslySetInnerHTML={{ __html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan' }} className={`${item?.balasan.length === 0 ? 'text-center font-semibold badge bg-red-500 border-0 text-white' : ''}`} />
+                    <div>{user && doCreateNotificationProgress(item)}</div>
                   </div>
                 </td>
                 {/* <td className="text-left">{(item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) + '...' : 'Belum ada tindakan')}</td> */}
@@ -374,17 +394,14 @@ const Dashboard = () => {
                 {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
-                    { statusData === 'open' ? (
+                    {statusData === 'open' ? (
                       <>
                         <div className="tooltip" data-tip="Edit">
                           <HiPencil
                             className="cursor-pointer"
                             size={20}
                             color="#D98200"
-                            onClick={() => {
-                              setDetail(item);
-                              openModal('update complain');
-                            }}
+                            onClick={() => editData(item)}
                           />
                         </div>
                         <div className="tooltip" data-tip="Hapus">
@@ -392,10 +409,7 @@ const Dashboard = () => {
                             size={20}
                             color="#FF2E00"
                             className="cursor-pointer"
-                            onClick={() => {
-                              setDetail(item);
-                              openModal('delete complain');
-                            }}
+                            onClick={() => deleteData(item)}
                           />
                         </div>
                         <div className="tooltip" data-tip="Detail">
@@ -403,9 +417,7 @@ const Dashboard = () => {
                             size={20}
                             color="#0D68F1"
                             className="cursor-pointer"
-                            onClick={() => {
-                              navigate(`/dashboard/detail/${item.id_keluhan}`);
-                            }}
+                            onClick={() => detailData(item)}
                           />
                         </div>
                         <div className="tooltip" data-tip="RFO Keluhan">
@@ -413,9 +425,7 @@ const Dashboard = () => {
                             size={20}
                             color="#065F46"
                             className="cursor-pointer"
-                            onClick={() => {
-                              navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
-                            }}
+                            onClick={() => RFOKeluhan(item)}
                           />
                         </div>
                         <div className="tooltip" data-tip="RFO Gangguan">
@@ -423,10 +433,7 @@ const Dashboard = () => {
                             size={20}
                             color="#0007A3"
                             className="cursor-pointer"
-                            onClick={() => {
-                              setDetail(item);
-                              openModal('modal rfo masal');
-                            }}
+                            onClick={() => RFOMasal(item)}
                           />
                         </div>
                       </>
@@ -437,10 +444,7 @@ const Dashboard = () => {
                             size={20}
                             color="#D98200"
                             className="cursor-pointer"
-                            onClick={() => {
-                              setDetail(item);
-                              openModal('revert complain');
-                            }}
+                            onClick={() => rollbackStatus(item)}
                           />
                         </div>
                         <div className="tooltip" data-tip="Detail">
@@ -448,9 +452,7 @@ const Dashboard = () => {
                             size={20}
                             color="#0D68F1"
                             className="cursor-pointer"
-                            onClick={() => {
-                              navigate(`/dashboard/detail/${item.id_keluhan}`);
-                            }}
+                            onClick={() => detailData(item)}
                           />
                         </div>
                         {item.rfo_keluhan_id !== null && (
@@ -459,9 +461,7 @@ const Dashboard = () => {
                               size={20}
                               color="#065F46"
                               className="cursor-pointer"
-                              onClick={() => {
-                                navigate(`/dashboard/rfo_single/${item.id_keluhan}?id_rfo=${item.rfo_keluhan_id}`);
-                              }}
+                              onClick={() => RFOKeluhan(item)}
                             />
                           </div>
                         )}
@@ -471,12 +471,7 @@ const Dashboard = () => {
                               size={20}
                               color="#0007A3"
                               className="cursor-pointer"
-                              onClick={() => {
-                                setDetail(item);
-                                navigate(
-                                  `/reason_of_outage/detail_masal/${item.rfo_gangguan_id}`
-                                );
-                              }}
+                              onClick={() => RFOMasalDetail(item)}
                             />
                           </div>
                         )}
