@@ -7,6 +7,9 @@ import { setCredentials } from '../../../store/features/auth/authSlice';
 import { SignInSchema } from '../../../utils/schema_validation_form';
 import { encryptLocalStorage } from '../../../utils/helper';
 import catchError from '../../../services/catchError';
+import Button from '../../../components/Button/Button';
+import Wrapper from '../../../components/auth/Wrapper';
+import Required from '../../../components/common/forms/Required';
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -36,12 +39,7 @@ function SignIn() {
 
   return (
     <div className="flex gap-0 lg:flex lg:gap-3 h-screen min-h-screen ">
-      <div className="bg-gray-200 hidden lg:w-8/12 lg:flex">
-      <picture>
-      <source srcSet="/wrapper.webp" />
-      <img src="/wrapper.jpg" width={'100%'} height={'100%'} alt="https://www.pexels.com/photo/gray-wooden-computer-cubicles-inside-room-267507/" className="object-cover flex justify-center align-middle items-center min-h-screen image-full bg-cover bg-no-repeat" />
-      </picture>
-      </div>
+      <Wrapper />
       <div className="h-screen bg-white w-full lg:w-4/12 relative">
         <Formik
           enableReinitialize
@@ -84,9 +82,7 @@ function SignIn() {
                   value={values.email}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.email && touched.email ? (
-                  <div className="label label-text text-red-500">{errors.email}</div>
-                ) : null}
+                {errors.email && touched.email && <Required errors={errors.email}  />}
               </div>
 
               <div className="form-control pt-4 ">
@@ -104,9 +100,7 @@ function SignIn() {
                   value={values.password}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.password && touched.password ? (
-                  <div className="label label-text text-red-500">{errors.password}</div>
-                ) : null}
+                {errors.password && touched.password && <Required errors={errors.password}  />}
               </div>
 
               <div className="label justify-end pt-4 font-semibold link-primary">
@@ -114,13 +108,7 @@ function SignIn() {
               </div>
 
               <div className="form-control mt-5">
-                <button
-                  type="submit"
-                  className="btn btn-md btn-block"
-                  disabled={!isValid}
-                >
-                  Masuk
-                </button>
+                <Button type="submit" style={{width: '100%'}} disabled={!isValid}>Masuk</Button>
               </div>
 
               <div className="label justify-center pt-4">
