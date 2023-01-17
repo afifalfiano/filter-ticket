@@ -14,8 +14,12 @@ import { ReplySchema } from '../../../utils/schema_validation_form';
 import { usePostNotificationMutation, useReadAllNotificationComplainMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import SectionInformation from '../../../components/DetailProgress/SectionInformation';
+import FirstComplain from '../../../components/DetailProgress/FirstComplain';
+import Progress from '../../../components/DetailProgress/Progress';
+import Button from '../../../components/Button/Button';
 
-function DashboardDetail({ rfoSingle, idComplain}) {
+function DashboardDetail({ rfoSingle, idComplain }) {
   const location = useLocation();
   const [detailComplain, setDetailComplain] = useState(null);
   const [resetTextEditor, setResetTextEditor] = useState(false);
@@ -68,7 +72,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
       keluhan_id: data.id_keluhan
     };
     try {
-      await readAllNotificationComplain({body}).unwrap();
+      await readAllNotificationComplain({ body }).unwrap();
       // getAllNotification();
     } catch (error) {
       catchError(error, false);
@@ -78,13 +82,13 @@ function DashboardDetail({ rfoSingle, idComplain}) {
 
 
   useEffect(() => {
-      getComplainById();
-      if (idComplain === undefined) {
+    getComplainById();
+    if (idComplain === undefined) {
       const data = [...navigasi.data, { path: `/dashboard/detail/${id}`, title: 'Detail Dasbor' }]
       dispatch(updateBreadcrumb(data))
-        
+
       setTimeout(() => {
-        window.scrollTo(0,document.body.scrollHeight);
+        window.scrollTo(0, document.body.scrollHeight);
       }, 500);
 
       const intervalId = setInterval(() => {
@@ -167,167 +171,15 @@ function DashboardDetail({ rfoSingle, idComplain}) {
 
   return (
     <div>
-      {!rfoSingle && (
-      <div className="w-full py-5 px-5 flex-col gap-3 lg:flex-row md:gap-0 flex w-min-full bg-blue-200 rounded-md">
-        <div className="flex-1 w-full">
-          <table className="border-none items-center w-full">
-            <tbody>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Referensi Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.nomor_keluhan}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Pelanggan</td>
-                <td>:</td>
-                <td>{detailComplain?.id_pelanggan} - {detailComplain?.nama_pelanggan}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Kontak</td>
-                <td>:</td>
-                <td>{detailComplain?.nama_pelapor} - {detailComplain?.nomor_pelapor}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Sumber Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.sumber?.sumber}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="flex-1 w-full">
-          <table className="border-none items-center w-full">
-            <tbody>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Waktu Dibuat</td>
-                <td>:</td>
-                <td>{new Date(detailComplain?.created_at).toLocaleString('id-ID')}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Waktu Diubah</td>
-                <td>:</td>
-                <td>
-                  {detailComplain?.balasan.length > 0
-                    ? new Date(detailComplain?.balasan[detailComplain.balasan.length - 1].created_at).toLocaleString('id-ID')
-                    : new Date(detailComplain?.created_at).toLocaleString('id-ID')}
-                </td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Status Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.status}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Detail Sumber Keluhan</td>
-                <td>:</td>
-                <td>{detailComplain?.detail_sumber}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      )}
+      {!rfoSingle && <SectionInformation detailComplain={detailComplain} />}
 
-      {/* section reply */}
       <div className="flex w-full flex-col py-5">
-        {/* keluhan awal */}
-        <div className='flex justify-center items-center mt-3 gap-0 md:gap-5'>
-          <div className='w-1/12 hidden lg:flex items-center justify-center ml-2'>
-          <div className="avatar">
-          <div className={`w-16 rounded-full ring ${detailComplain?.user?.aktif ? 'ring-green-400' : 'ring-red-400'} ring-offset-base-100 ring-offset-2`}>
-                <img width={'100%'} height={'100%'} src={detailComplain?.user?.avatar} alt={detailComplain?.user?.name}/>
-                {/* <img src="https://placeimg.com/192/192/people" /> */}
-              </div>
-            </div>
-          </div>
-          <div className="w-12/12 lg:w-11/12 w-full">
-          <p className="justify-start w-full font-semibold">Keluhan Awal</p>
-          <div className="flex flex-col lg:flex-row lg:justify-between py-2">
-            <p>
-              Dibuat oleh: 
-              {detailComplain?.user?.aktif && <span className='pl-1 font-semibold'>{detailComplain?.user?.name} ({detailComplain?.user?.role?.role})</span>} 
-            {!detailComplain?.user?.aktif && <span className="pl-1 text-red-600 font-semibold">{detailComplain?.user?.name} ({detailComplain?.user?.role?.role})</span>} 
-            </p>
-            <p>
-              {new Date(detailComplain?.created_at).toLocaleString('id-ID', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour12: false,
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-              })}
-            </p>
-          </div>
-          <div className="form-control">
-            <div dangerouslySetInnerHTML={{__html: detailComplain?.keluhan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
-          </div>
-          <div className="py-2">
-            {detailComplain?.lampirankeluhan?.map((file, index) => {
-              if (+file.keluhan_id === detailComplain?.id_keluhan) {
-                return (
-                  <a key={index} className="link inline" href={file.path} target="_blank" rel="noreferrer">
-                    <HiDocumentText size={24} color="blue" className="inline mr-2" /> Lampiran File
-                  </a>
-                )
-              }
-            })}
-          </div>
-          </div>
-        </div>
+        <FirstComplain detailComplain={detailComplain} />
         <hr />
 
         {
           detailComplain?.balasan.length > 0 && detailComplain?.balasan.map((item, index) => (
-            <div key={index} className="my-5">
-              <div className='flex justify-center items-center gap-0 md:gap-5'>
-              <div className='w-1/12 hidden lg:flex  items-center justify-center ml-2'>
-              <div className="avatar">
-              <div className={`w-16 rounded-full ring ${item?.user?.aktif ? 'ring-green-400' : 'ring-red-600'} ring-offset-base-100 ring-offset-2`}>
-                    <img width={'100%'} height={'100%'} src={item?.user?.avatar} alt={item?.user?.name}/>
-                    {/* <img src="https://placeimg.com/192/192/people" /> */}
-                  </div>
-                </div>
-              </div>
-              <div className="w-12/12 lg:w-11/12 w-full">
-              <div className="flex flex-col lg:flex-row lg:justify-between py-2">
-                <p>Balasan pesan: 
-                  {item?.user?.aktif && <span className='pl-1 font-semibold'>{item?.user?.name} ({item?.user?.role?.role})</span>} 
-                  {!item?.user?.aktif && <span className="pl-1 text-red-600 font-semibold">{item?.user?.name} ({item?.user?.role?.role})</span>} 
-                </p>
-                <p>
-                  {new Date(item?.created_at).toLocaleString('id-ID', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour12: false,
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                  })}
-                </p>
-              </div>
-              <div className="form-control">
-                  <div dangerouslySetInnerHTML={{__html: item?.balasan}} className={`textarea resize-none bg-gray-100 h-auto`}/>
-              </div>
-              <div className="py-2">
-                {item?.lampiranbalasan?.map((file, index) => {
-                  if (+file.balasan_id === +item.id_balasan) {
-                    return (
-                      <a key={index} className="link inline" href={file.path} target="_blank" rel="noreferrer">
-                        <HiDocumentText size={24} color="blue" className="inline mr-2" /> Lampiran File
-                      </a>
-                    )
-                  }
-                })}
-              </div>
-              </div>
-              </div>
-              <hr />
-            </div>
+            <Progress item={item} key={index} />
           ))
         }
 
@@ -337,7 +189,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
               enableReinitialize
               validationSchema={ReplySchema}
               initialValues={{ balasan: '' }}
-              onSubmit={(values, { resetForm}) => {
+              onSubmit={(values, { resetForm }) => {
                 onSubmitData(values, resetForm);
               }}
             >
@@ -346,9 +198,7 @@ function DashboardDetail({ rfoSingle, idComplain}) {
                 errors,
                 touched,
                 isValid,
-                setFieldValue,
-                handleChange,
-                handleBlur,
+                setFieldValue
               }) => (
                 <Form id='answer'>
                   <div className="form-control">
@@ -356,9 +206,9 @@ function DashboardDetail({ rfoSingle, idComplain}) {
                       <span className="label-text"> Balasan</span>
                     </label>
                     <TextEditor
-                    setFieldValue={(val) => setFieldValue('balasan', val)}
-                    value={values.balasan}
-                    resetData={resetTextEditor}
+                      setFieldValue={(val) => setFieldValue('balasan', val)}
+                      value={values.balasan}
+                      resetData={resetTextEditor}
                     />
                     {errors.balasan && touched.balasan ? (
                       <div className="label label-text text-red-500">{errors.balasan}</div>
@@ -367,37 +217,15 @@ function DashboardDetail({ rfoSingle, idComplain}) {
 
                   <UploadFile getFile={onHandleFileUpload} />
                   <div className="text-center items-center justify-center mt-10">
-                    <button
-                      type="button"
-                      className="btn btn-md mr-5  w-32"
-                      onClick={() => {
-                        navigate('/dashboard');
-                      }}
-                    >
-                      Kembali
-                    </button>
-                    <button type="submit" className="  w-32 btn btn-md btn-success text-white" disabled={!isValid}>
-                      Simpan
-                    </button>
+                    <Button className={`mr-5`} onClick={() => navigate('/dashboard')}>Kembali</Button>
+                    <Button type={"submit"} disabled={!isValid} className={`btn-success`}>Simpan</Button>
                   </div>
                 </Form>
               )}
             </Formik>
           ) : !rfoSingle && (
             <div className="text-center items-center justify-center mt-10">
-              <button
-                type="button"
-                className="btn btn-md mr-5"
-                onClick={() => {
-                  if (historyUrl) {
-                    navigate('/history_dashboard');
-                  } else {
-                    navigate('/dashboard');
-                  }
-                }}
-              >
-                Kembali
-              </button>
+              <Button className={`mr-5`} onClick={() => historyUrl ? navigate('/history_dashboard') : navigate('/dashboard')}>Kembali</Button>
             </div>
           )}
       </div>
