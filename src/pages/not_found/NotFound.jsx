@@ -2,6 +2,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { Button } from '../../components';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 
 function NotFound() {
@@ -30,13 +31,7 @@ function NotFound() {
           </div>
         </div>
         <div className="form-control mt-5 items-center mx-2">
-          <button
-            type="button"
-            className="btn btn-md mt-2"
-            onClick={handleBtnBack}
-          >
-            Kembali
-          </button>
+          <Button type="button" className="mt-2" onClick={() => handleBtnBack()} >Kembali</Button>
         </div>
       </div>
     </div>

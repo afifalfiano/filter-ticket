@@ -7,6 +7,7 @@ import {
 } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Button, CategoryRFO, DoDelete, DoDetail, DoShowRFOTrouble, DoUpdate, LabelStatus, Search } from '../../components';
 import DeleteModal from '../../components/common/DeleteModal';
 import Pagination from '../../components/common/table/Pagination';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
@@ -23,6 +24,19 @@ import {
   setRFOMasal,
 } from '../../store/features/rfo/rfoSlice';
 import RFOModalForm from '../reason_of_outage/RFOModalForm';
+
+
+const columns = [
+  'No',
+  'Topik',
+  'Waktu Gangguan',
+  'Durasi',
+  'Masalah',
+  'Keterangan',
+  'Status RFO',
+  'Aksi',
+];
+
 
 function ReasonForOutageTrouble() {
   const navigate = useNavigate();
@@ -107,17 +121,6 @@ function ReasonForOutageTrouble() {
     }
   }
 
-  const columns = [
-    'No',
-    'Topik',
-    'Waktu Gangguan',
-    'Durasi',
-    'Masalah',
-    'Keterangan',
-    'Status RFO',
-    'Aksi',
-  ];
-
   const getInfo = ($event) => {
     if ($event.status === 'success') {
       setDetail(null);
@@ -125,62 +128,41 @@ function ReasonForOutageTrouble() {
     }
   };
 
+  const addData = () => {
+    setDetail(null);
+    openModal('add rfo gangguan')
+  }
+
+  const updaeData = (item) => {
+    setDetail(item);
+    openModal('update rfo gangguan')
+  }
+  
+  const detailData = (item) => {
+    navigate(
+      `/reason_of_outage/detail_masal/${item.id_rfo_gangguan}`
+    );
+  }
+
+  const deleteData = (item) => {
+    setDetail(item);
+    openModal('delete rfo gangguan');
+  }
+
   return (
     <div>
       <div>
         <div className="mb-5">
-          <button
-            type="button"
-            className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-auto  w-32"
-            htmlFor="my-modal-3"
-            onClick={() => {
-              setDetail(null);
-              openModal('add rfo gangguan')
-            }}
-          >
-            Tambah
-          </button>
+          <Button type="button" onClick={() => addData()}>Tambah</Button>
         </div>
       </div>
       {!isLoading && (
         <div className="flex gap-5 flex-col md:flex md:flex-row">
-          <div className="form-control">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Jenis RFO</span>
-            </label>
-
-            <select
-              className="select w-full max-w-full input-bordered"
-              defaultValue={'masal'}
-              disabled
-            >
-              <option disabled>Pilih Status</option>
-              <option value="masal" label="RFO Gangguan">
-                RFO Gangguan
-              </option>
-            </select>
+          <div className="form-control w-full md:w-52">
+            <CategoryRFO defaultValue={'masal'} data={<option value="masal" label="RFO Gangguan">RFO Gangguan</option>} />
           </div>
 
-          <div className="form-control">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Cari</span>
-            </label>
-            <div className="flex items-center">
-              <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <HiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="voice-search"
-                  className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                  placeholder="Cari data RFO Gangguan..."
-                  value={search}
-                  onChange={onHandleSearch}
-                />
-              </div>
-            </div>
-          </div>
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data RFO gangguan...'} />
         </div>
       )}
 
@@ -224,54 +206,13 @@ function ReasonForOutageTrouble() {
                   <td>{item?.problem}</td>
                   <td>{item?.deskripsi || '-'}</td>
                   <td>
-                    {item?.status === 'open' ? (
-                      <span className="badge badge-accent text-white">
-                        {item?.status}
-                      </span>
-                    ) : (
-                      <span className="badge badge-info text-white">
-                        {item?.status}
-                      </span>
-                    )}
+                    <LabelStatus status={item?.status} />
                   </td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <div className="tooltip" data-tip="Edit">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            setDetail(item);
-                            openModal('update rfo gangguan')
-                          }}
-                        />
-                      </div>
-                      <div className="tooltip" data-tip="Detail">
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(
-                              `/reason_of_outage/detail_masal/${item.id_rfo_gangguan}`
-                            );
-                          }}
-                        />
-                      </div>
-                      {item.hasOwnProperty('id_rfo_gangguan') && (
-                        <div className="tooltip" data-tip="Hapus">
-                          <HiTrash
-                            size={20}
-                            color="#FF2E00"
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setDetail(item);
-                              openModal('delete rfo gangguan');
-                            }}
-                          />
-                        </div>
-                      )}
+                      <DoUpdate onClick={() => updaeData(item)} />
+                      <DoDetail onClick={() => detailData(item)} />
+                      <DoDelete onClick={() => deleteData(item)} />
                     </div>
                   </td>
                 </tr>

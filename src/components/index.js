@@ -17,6 +17,7 @@ export {default as Navbar} from './navbar/Navbar';
 export {default as Notification} from './navbar/Notification';
 export {default as Search} from './Search/Search';
 export {default as SelectPOP} from './Select/SelectPOP';
+export {default as CategoryRFO} from './Select/CategoryRFO';
 export {default as SelectStatusComplain} from './Select/SelectStatusComplain';
 export {default as Container} from './common/Container';
 export {default as DeleteModal} from './common/DeleteModal';
