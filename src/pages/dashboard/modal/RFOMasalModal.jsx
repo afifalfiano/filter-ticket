@@ -10,6 +10,7 @@ import { setModal } from '../../../store/features/modal/modalSlice';
 import handleResponse from '../../../services/handleResponse';
 import catchError from '../../../services/catchError';
 import Button from '../../../components/Button/Button';
+import { ButtonIconExit } from '../../../components';
 
 function RFOMasalModal({ stateModal, getInfo, detail }) {
   const [allRFOMasal] = useAllRFOMasalMutation()
@@ -73,12 +74,7 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 pt-10 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
-        <button
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+<ButtonIconExit onClick={onBtnClose} />
         <h3 className="text-lg font-bold">Reason For Outage Gangguan</h3>
         <hr className="my-2" />
 

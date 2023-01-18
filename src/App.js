@@ -30,7 +30,7 @@ const Profile = loadable(() => import('./pages/profile/Profile'));
 const BaseTransceiverStation = loadable(() => import('./pages/settings/base_transceiver_station/BaseTransceiverStation'));
 const HistoryDashboard = loadable(() => import('./pages/history_dashboard/HistoryDashboard'));
 const DashboardDetail = loadable(() => import('./pages/dashboard/detail/DashboardDetail'));
-const RFODetailMass = loadable(() => import('./pages/reason_of_outage/detail_masal/RFODetailMass'));
+const RFODetailMass = loadable(() => import('./pages/reason_for_outage_trouble/detail_masal/RFODetailMass'));
 const RFODetailSingle = loadable(() => import('./pages/reason_of_outage/detail_mandiri/RFODetailSingle'));
 const DashboardRFOSingle = loadable(() => import('./pages/dashboard/rfo_single/DashboardRFOSingle'));
 const Statistics = loadable(() => import('./pages/statistics/Statistics'));

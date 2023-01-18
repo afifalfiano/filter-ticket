@@ -121,7 +121,7 @@ function ForgetPassword() {
                 />
               </div>
               <div className="flex gap-3">
-                <p>Belum menerima kode OTP?</p>{' '}
+                <p>Belum menerima kode OTP?</p>
                 <span
                   className="link link-hover text-primary inline"
                   onClick={requestAPIOTP}

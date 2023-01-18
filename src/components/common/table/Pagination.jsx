@@ -6,13 +6,13 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 10, cu
         <div className="flex flex-row gap-1 justify-between md:justify-start">
           <label htmlFor="page" className="label font-semibold">
             <span className="label-text">
-              {' '}
+              
               Halaman
-              {' '}
+              
               {currentPage}
-              {' '}
+              
               dari
-              {' '}
+              
               {countPage.length}
             </span>
           </label>
@@ -38,13 +38,13 @@ function Pagination({ perPage = [5, 10, 25, 50, 100], currentFilterPage = 10, cu
         <div className="flex flex-row gap-1 justify-between md:justify-start">
             <label htmlFor="page" className="label font-semibold">
               <span className="label-text">
-                {' '}
+                
                 Halaman
-                {' '}
+                
                 {currentPage}
-                {' '}
+                
                 dari
-                {' '}
+                
                 {countPage.length}
               </span>
             </label>

@@ -10,6 +10,7 @@ import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/brea
 import { RFOSingleSchema } from '../../../utils/schema_validation_form';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import { Button, Required, SectionInformation } from '../../../components';
 
 function RFODetailSingle() {
   const { id } = useParams();
@@ -60,8 +61,8 @@ function RFODetailSingle() {
   const onSubmitData = async (payload) => {
     const start = new Date(detailRFO?.keluhan.created_at);
     const endTime = detailRFO?.keluhan?.balasan?.length > 0
-    ? detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at
-    : detailRFO?.keluhan?.created_at;
+      ? detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at
+      : detailRFO?.keluhan?.created_at;
     const end = new Date(endTime);
     const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
     const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
@@ -83,7 +84,7 @@ function RFODetailSingle() {
         handleResponse(update);
         setTimeout(() => {
           navigate('/reason_of_outage', { replace: true })
-          dispatch(setRFOById({data: {}}));
+          dispatch(setRFOById({ data: {} }));
         }, 1000)
       } else {
         catchError(update, true);
@@ -94,66 +95,15 @@ function RFODetailSingle() {
   };
 
   const navigate = useNavigate();
+
+  const btnBack = () => {
+    dispatch(setRFOById({ data: {} }));
+    navigate('/reason_of_outage');
+  }
+
   return (
     <>
-      <div className="w-full py-5 px-5 flex-col gap-3 lg:flex-row md:gap-0 flex w-min-full bg-blue-200 rounded-md">
-        <div className="flex-1 w-full">
-          <table className="border-none items-center w-full">
-            <tbody>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Referensi Keluhan</td>
-                <td>:</td>
-                <td>{detailRFO?.keluhan?.nomor_keluhan}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Pelanggan</td>
-                <td>:</td>
-                <td>{detailRFO?.keluhan?.id_pelanggan} - {detailRFO?.keluhan?.nama_pelanggan}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Kontak</td>
-                <td>:</td>
-                <td>{detailRFO?.keluhan?.nama_pelapor} - {detailRFO?.keluhan?.nomor_pelapor}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Sumber Keluhan</td>
-                <td>:</td>
-                <td>{detailRFO?.keluhan?.sumber?.sumber}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="flex-1 w-full">
-          <table className="border-none items-center w-full">
-            <tbody>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Waktu Dibuat</td>
-                <td>:</td>
-                <td>{new Date(detailRFO?.keluhan?.created_at).toLocaleString('id-ID')}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Waktu Diubah</td>
-                <td>:</td>
-                <td>
-                  {detailRFO?.keluhan?.balasan?.length > 0
-                    ? new Date(detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at).toLocaleString('id-ID')
-                    : new Date(detailRFO?.keluhan?.created_at).toLocaleString('id-ID')}
-                </td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Status Keluhan</td>
-                <td>:</td>
-                <td>{detailRFO?.keluhan?.status}</td>
-              </tr>
-              <tr className="text-left">
-                <td className="w-36 md:w-52 lg:w-auto">Detail Sumber Keluhan</td>
-                <td>:</td>
-                <td>{detailRFO?.keluhan?.detail_sumber}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <SectionInformation detailComplain={detailRFO?.keluhan} />
       <div className="flex w-full gap-5 mt-5 flex-col-reverse lg:flex-row">
         <div className="flex-1 w-full mt-5">
           <h1 className="text-center font-semibold">Reason For Outage Keluhan</h1>
@@ -170,12 +120,9 @@ function RFODetailSingle() {
               values,
               errors,
               touched,
-              isSubmitting,
               isValid,
-              setFieldValue,
               handleChange,
               handleBlur,
-              resetForm,
             }) => (
               <Form>
                 <div className="flex flex-col gap-3">
@@ -195,11 +142,7 @@ function RFODetailSingle() {
                       disabled={!isEditData}
                       className="textarea textarea-bordered h-24"
                     />
-                    {errors.problem && touched.problem ? (
-                      <div className="label label-text text-red-500">
-                        {errors.problem}
-                      </div>
-                    ) : null}
+                    {errors.problem && touched.problem && <Required errors={errors.problem}  />}
                   </div>
 
                   <div className="form-control">
@@ -218,11 +161,7 @@ function RFODetailSingle() {
                       disabled={!isEditData}
                       className="textarea textarea-bordered h-24"
                     />
-                    {errors.action && touched.action ? (
-                      <div className="label label-text text-red-500">
-                        {errors.action}
-                      </div>
-                    ) : null}
+                    {errors.action && touched.action && <Required errors={errors.action}  />}
                   </div>
 
                   <div className="form-control">
@@ -241,11 +180,7 @@ function RFODetailSingle() {
                       onChange={handleChange}
                       className="textarea textarea-bordered h-24"
                     />
-                    {errors.deskripsi && touched.deskripsi ? (
-                      <div className="label label-text text-red-500">
-                        {errors.deskripsi}
-                      </div>
-                    ) : null}
+                    {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi}  />}
                   </div>
 
                   <div className="flex flex-col lg:flex-row gap-5">
@@ -267,17 +202,13 @@ function RFODetailSingle() {
                         disabled
                         className="input input-md input-bordered  max-w-full"
                       />
-                      {errors.mulai_gangguan && touched.mulai_gangguan ? (
-                        <div className="label label-text text-red-500">
-                          {errors.mulai_gangguan}
-                        </div>
-                      ) : null}
+                      {errors.mulai_gangguan && touched.mulai_gangguan && <Required errors={errors.mulai_gangguan}  />}
                     </div>
 
                     <div className="form-control flex-1">
                       <label htmlFor="selesai_gangguan" className="label">
                         <span className="label-text">
-                          {' '}
+
                           Waktu Selesai Keluhan
                         </span>
                       </label>
@@ -303,11 +234,7 @@ function RFODetailSingle() {
                         disabled
                         className="input input-md input-bordered  max-w-full"
                       />
-                      {errors.selesai_gangguan && touched.selesai_gangguan ? (
-                        <div className="label label-text text-red-500">
-                          {errors.selesai_gangguan}
-                        </div>
-                      ) : null}
+                      {errors.selesai_gangguan && touched.selesai_gangguan && <Required errors={errors.selesai_gangguan}  />}
                     </div>
                   </div>
                 </div>
@@ -315,7 +242,6 @@ function RFODetailSingle() {
                   <div className="form-control flex-1">
                     <label htmlFor="nomor_tiket" className="label">
                       <span className="label-text">
-                        {' '}
                         Tiket Pelaporan (Opsional)
                       </span>
                     </label>
@@ -335,27 +261,8 @@ function RFODetailSingle() {
                 </div>
 
                 <div className="modal-action justify-center mt-10">
-                  <button
-                    type="button"
-                    className="btn btn-md mr-5  w-32"
-                    onClick={() => {
-                      dispatch(setRFOById({data: {}}));
-                      navigate('/reason_of_outage');
-                    }}
-                  >
-                    Kembali
-                  </button>
-
-                  { isEditData
-                  && (
-                  <button
-                    disabled={!isValid}
-                    type="submit"
-                    className="btn btn-md btn-success text-white  w-32"
-                  >
-                    Simpan
-                  </button>
-                  )}
+                  <Button type="button" className="mr-5" onClick={() => btnBack()} >Kembali</Button>
+                  {isEditData && <Button disabled={!isValid} type="submit" className="btn-success">Simpan</Button>}
                 </div>
               </Form>
             )}

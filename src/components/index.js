@@ -1,7 +1,9 @@
 export {default as Button} from './Button/Button';
+export {default as ButtonIconExit} from './Button/ButtonIconExit';
 export {default as Wrapper} from './auth/Wrapper';
 export {default as Breadcrumb} from './breadcrumb/Breadcrumb';
 export {default as FirstComplain} from './DetailProgress/FirstComplain';
+export {default as ComplainEffect} from './DetailProgress/ComplainEffect';
 export {default as Progress} from './DetailProgress/Progress';
 export {default as SectionInformation} from './DetailProgress/SectionInformation';
 export {default as LabelStatus} from './Label/LabelStatus';

@@ -12,6 +12,7 @@ import { useActivateUserMutation, useDeactivateUserMutation } from '../../store/
 import { initState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
 import handleResponse from '../../services/handleResponse';
+import ButtonIconExit from '../Button/ButtonIconExit';
 
 function DeleteModal({ stateModal, getInfo, detail, title, message = 'Apakah anda yakin akan menghapus data', titleModal = 'Hapus Data', titleAction = 'Hapus' }) {
   const [deleteBts] = useDeleteBtsMutation();
@@ -73,12 +74,7 @@ function DeleteModal({ stateModal, getInfo, detail, title, message = 'Apakah and
       <div
         className={`modal-box h-fit max-h-fit modal-box-custom`}
       >
-        <button
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+<ButtonIconExit onClick={onBtnClose} />
         <h3 className="text-lg font-bold">{titleModal} {title}</h3>
         <hr className="my-2" />
 

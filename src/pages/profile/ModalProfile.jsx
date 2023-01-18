@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { setLogOut } from '../../store/features/auth/authSlice';
 import { clearPOP } from '../../store/features/pop/popSlice';
 import { clearTeam } from '../../store/features/team/teamSlice';
+import { ButtonIconExit } from '../../components';
 
 function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
 
@@ -102,12 +103,7 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
       <div
         className={`modal-box h-fit max-h-fit modal-box-custom`}
       >
-        <button
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+<ButtonIconExit onClick={onBtnClose} />
         <h3 className="text-lg font-bold">Ganti Password</h3>
         <hr className="my-2" />
 

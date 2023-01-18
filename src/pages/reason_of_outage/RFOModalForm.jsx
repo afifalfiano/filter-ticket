@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Field, Form } from 'formik';
-import toast from 'react-hot-toast';
 import {
   useAddRFOGangguanMutation, useUpdateRFOGangguanMutation,
 } from '../../store/features/rfo/rfoApiSlice';
@@ -10,6 +9,7 @@ import { setModal } from '../../store/features/modal/modalSlice';
 import { RFOSingleSchema } from '../../utils/schema_validation_form';
 import catchError from '../../services/catchError';
 import handleResponse from '../../services/handleResponse';
+import { Button, ButtonIconExit, Required } from '../../components';
 
 function RFOModalForm({ stateModal, getInfo, detail }) {
   const initialValues = {
@@ -101,12 +101,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
-        <button
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+        <ButtonIconExit  onClick={onBtnClose} />
         <h3 className="text-lg font-bold">{detail === null ? ('Tambah Reason For Outage Gangguan') : ('Ubah Reason For Outage Gangguan')}</h3>
         <hr className="my-2" />
 
@@ -125,7 +120,6 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
             isValid,
             handleChange,
             handleBlur,
-            resetForm,
           }) => (
             <Form>
               <div className="form-control">
@@ -143,9 +137,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   onChange={handleChange}
                   className="textarea textarea-bordered h-10"
                 />
-                {errors.problem && touched.problem ? (
-                  <div className="label label-text text-red-500">{errors.problem}</div>
-                ) : null}
+                {errors.problem && touched.problem && <Required errors={errors.problem}  />}
               </div>
 
               <div className="form-control">
@@ -163,9 +155,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   onChange={handleChange}
                   className="textarea textarea-bordered h-10"
                 />
-                {errors.action && touched.action ? (
-                  <div className="label label-text text-red-500">{errors.action}</div>
-                ) : null}
+                {errors.action && touched.action && <Required errors={errors.action}  />}
               </div>
 
               <div className="form-control">
@@ -183,9 +173,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   onChange={handleChange}
                   className="textarea textarea-bordered h-24"
                 />
-                {errors.deskripsi && touched.deskripsi ? (
-                  <div className="label label-text text-red-500">{errors.deskripsi}</div>
-                ) : null}
+                {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi}  />}
               </div>
 
               <div className="flex flex-col md:flex-row gap-3">
@@ -204,9 +192,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                   />
-                  {errors.mulai_gangguan && touched.mulai_gangguan ? (
-                    <div className="label label-text text-red-500">{errors.mulai_gangguan}</div>
-                  ) : null}
+                  {errors.mulai_gangguan && touched.mulai_gangguan && <Required errors={errors.mulai_gangguan}  />}
 
                 </div>
 
@@ -225,9 +211,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                   />
-                  {errors.selesai_gangguan && touched.selesai_gangguan ? (
-                    <div className="label label-text text-red-500">{errors.selesai_gangguan}</div>
-                  ) : null}
+                  {errors.selesai_gangguan && touched.selesai_gangguan && <Required errors={errors.selesai_gangguan}  />}
                 </div>
               </div>
 
@@ -267,25 +251,14 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     <option value="open" label="Open">Open</option>
                     <option value="closed" label="Closed">Closed</option>
                   </Field>
-                  {errors.status && touched.status ? (
-                    <div className="label label-text text-red-500">{errors.pop_id}</div>
-                  ) : null}
+                  {errors.status && touched.status && <Required errors={errors.status}  />}
                 </div>
               </div>
 
               <hr className="my-2 mt-5" />
               <div className="modal-action justify-center">
-                <button
-                  htmlFor="my-modal-3"
-                  type="button"
-                  className="btn btn-md mr-5  w-32"
-                  onClick={onBtnClose}
-                >
-                  Batal
-                </button>
-                <button type="submit" htmlFor="my-modal-3" className=" w-32 btn btn-md btn-success text-white" disabled={!isValid}>
-                  Simpan
-                </button>
+                <Button type="button" className="mr-5" onClick={() => onBtnClose()} >Batal</Button>
+                <Button type="submit" disabled={!isValid} className="btn-success">Simpan</Button>
               </div>
             </Form>
           )}

@@ -66,7 +66,7 @@ function PreviewImage({ stateModal, getInfo }) {
             htmlFor="dropzone-file"
             className="btn btn-md bg-slate-500 text-white cursor-pointer border-none mt-5"
           >
-            {' '}
+            
             Unggah Foto Baru
             <input
               id="dropzone-file"

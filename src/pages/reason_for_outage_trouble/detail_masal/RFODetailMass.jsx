@@ -7,6 +7,7 @@ import { setRFOGangguanById } from '../../../store/features/rfo/rfoSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { RFOMasalSchema } from '../../../utils/schema_validation_form';
 import catchError from '../../../services/catchError';
+import { Button, ComplainEffect, Required } from '../../../components';
 
 function RFODetailMass() {
   const { id } = useParams();
@@ -82,11 +83,7 @@ function RFODetailMass() {
                     disabled
                     className="textarea textarea-bordered h-24"
                   />
-                  {errors.problem && touched.problem ? (
-                    <div className="label label-text text-red-500">
-                      {errors.problem}
-                    </div>
-                  ) : null}
+                  {errors.problem && touched.problem && <Required errors={errors.problem}  />}
                 </div>
 
                 <div className="form-control">
@@ -105,11 +102,7 @@ function RFODetailMass() {
                     disabled
                     className="textarea textarea-bordered h-24"
                   />
-                  {errors.action && touched.action ? (
-                    <div className="label label-text text-red-500">
-                      {errors.action}
-                    </div>
-                  ) : null}
+                  {errors.action && touched.action && <Required errors={errors.action}  />}
                 </div>
 
                 <div className="form-control">
@@ -128,11 +121,7 @@ function RFODetailMass() {
                     onChange={handleChange}
                     className="textarea textarea-bordered h-24"
                   />
-                  {errors.deskripsi && touched.deskripsi ? (
-                    <div className="label label-text text-red-500">
-                      {errors.deskripsi}
-                    </div>
-                  ) : null}
+                  {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi}  />}
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-5">
@@ -152,17 +141,13 @@ function RFODetailMass() {
                       disabled
                       className="input input-md input-bordered  max-w-full"
                     />
-                    {errors.mulai_gangguan && touched.mulai_gangguan ? (
-                      <div className="label label-text text-red-500">
-                        {errors.mulai_gangguan}
-                      </div>
-                    ) : null}
+                    {errors.mulai_gangguan && touched.mulai_gangguan && <Required errors={errors.mulai_gangguan}  />}
                   </div>
 
                   <div className="form-control flex-1">
                     <label htmlFor="selesai_gangguan" className="label">
                       <span className="label-text">
-                        {' '}
+                        
                         Waktu Selesai Keluhan
                       </span>
                     </label>
@@ -178,11 +163,7 @@ function RFODetailMass() {
                       disabled
                       className="input input-md input-bordered  max-w-full"
                     />
-                    {errors.selesai_gangguan && touched.selesai_gangguan ? (
-                      <div className="label label-text text-red-500">
-                        {errors.selesai_gangguan}
-                      </div>
-                    ) : null}
+                    {errors.selesai_gangguan && touched.selesai_gangguan && <Required errors={errors.selesai_gangguan}  />}
                   </div>
                 </div>
               </div>
@@ -190,7 +171,7 @@ function RFODetailMass() {
                 <div className="form-control flex-1">
                   <label htmlFor="nomor_tiket" className="label">
                     <span className="label-text">
-                      {' '}
+                      
                       Tiket Pelaporan (Opsional)
                     </span>
                   </label>
@@ -210,15 +191,7 @@ function RFODetailMass() {
               </div>
 
               <div className="modal-action justify-center mt-10">
-                <button
-                  type="button"
-                  className="btn btn-md mr-5  w-32"
-                  onClick={() => {
-                    navigate(-1);
-                  }}
-                >
-                  Kembali
-                </button>
+                <Button type="button" className="mr-5" onClick={() => navigate(-1)} >Kembali</Button>
               </div>
             </Form>
           )}
@@ -234,64 +207,11 @@ function RFODetailMass() {
 
         <div className="w-full overflow-auto mt-6" style={{ height: '35rem' }}>
           {isSuccess && detailRFOMasal?.keluhan.map((item, index) => (
-            <div key={index} className="border-2 border-gray-100 rounded-md mt-3 p-3">
-              <div className="items-center w-full flex">
-                <div className="w-4/12">
-                  <p>Pelanggan</p>
-                  <p>Kontak</p>
-                  <p>Sumber Keluhan</p>
-                  <p>Keluhan</p>
-                </div>
-                <div className="w-1/12">
-                  <p className="p-0">:</p>
-                  <p className="p-0">:</p>
-                  <p className="p-0">:</p>
-                  <p className="p-0">:</p>
-                </div>
-                <div className="w-7/12">
-                  <p>{item.id_pelanggan} - {item.nama_pelanggan}</p>
-                  <p>{item.nama_pelapor} - {item.nomor_pelapor}</p>
-                  <p>{item.sumber.sumber} - {item.detail_sumber}</p>
-                  <p>
-                    <div dangerouslySetInnerHTML={{__html: item?.keluhan}} className="!inline"></div>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <ComplainEffect key={index} item={item} />
           ))}
           {isSuccess && detailRFOMasal?.keluhan.length === 0 && (
-          <div className="border-2 border-gray-100 rounded-md mt-3 p-3">
-            <table className="border-none items-center w-full">
-              <tbody>
-                <tr className="text-left">
-                  <td>ID Pelanggan</td>
-                  <td>:</td>
-                  <td>
-                    -
-                  </td>
-                </tr>
-                <tr className="text-left">
-                  <td>Nama Pelanggan</td>
-                  <td>:</td>
-                  <td>-</td>
-                </tr>
-                <tr className="text-left">
-                  <td>Kontak</td>
-                  <td>:</td>
-                  <td>-</td>
-                </tr>
-                <tr className="text-left">
-                  <td>Sumber Keluhan</td>
-                  <td>:</td>
-                  <td>-</td>
-                </tr>
-                <tr className="text-left">
-                  <td>Keluhan</td>
-                  <td>:</td>
-                  <td>-</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="border-2 border-gray-100 rounded-md mt-3 p-3 text-center">
+            <p>Tidak ada keluhan terdampak</p>
           </div>
           )}
         </div>

@@ -56,7 +56,7 @@ function UploadFile({ uploaded = false, getFile }) {
           <div className="mt-2 font-semibold">
             {new Array(file.length).fill(null).map((item, index) => (
               <p key={index}>
-                File Upload {index + 1}: {file[index].name} -{' '}
+                File Upload {index + 1}: {file[index].name} -
                 {formatBytes(file[index].size)}
               </p>
             ))}
