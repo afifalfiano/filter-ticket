@@ -6,6 +6,7 @@ import { FormPOPSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import { ButtonIconExit } from '../../../components';
 
 function FormPOP({ stateModal, getInfo, detail, titleAction }) {
   const [addPOP] = useAddPOPMutation();
@@ -82,13 +83,8 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box mt-5  h-fit max-h-fit  max-w-lg">
-        <button
-          type="button"
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+      <ButtonIconExit onClick={onBtnClose} />
+
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah POP' : titleAction === 'update' && 'Ubah POP'}
           {titleAction === 'read' && 'Detail POP'}

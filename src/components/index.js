@@ -1,5 +1,6 @@
 export {default as Button} from './Button/Button';
 export {default as ButtonIconExit} from './Button/ButtonIconExit';
+export {default as ButtonUpload} from './Button/ButtonUpload';
 export {default as Wrapper} from './auth/Wrapper';
 export {default as Breadcrumb} from './breadcrumb/Breadcrumb';
 export {default as FirstComplain} from './DetailProgress/FirstComplain';
@@ -38,3 +39,4 @@ export {default as DoRollbackStatus} from './common/table/ActionTable/DoRollback
 export {default as DoShowRFOComplain} from './common/table/ActionTable/DoShowRFOComplain';
 export {default as DoShowRFOTrouble} from './common/table/ActionTable/DoShowRFOTrouble';
 export {default as DoUpdate} from './common/table/ActionTable/DoUpdate';
+export {default as DoPrint} from './common/table/ActionTable/DoPrint';

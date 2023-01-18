@@ -14,8 +14,8 @@ import { formatBytes } from "../../../utils/helper";
 import { setPOP } from "../../../store/features/pop/popSlice";
 import catchError from "../../../services/catchError";
 import handleResponse from "../../../services/handleResponse";
-import toast from 'react-hot-toast';
-import propertyToast from '../../../services/catchError';
+import TemplateReport from "./TemplateReport";
+import { Button, ButtonUpload } from "../../../components";
 
 function ReportCreate() {
   const [allUserLocal, setAllUserLocal] = useState([]);
@@ -119,17 +119,17 @@ function ReportCreate() {
     if (content) {
       const printFileName = 'Laporan-' + new Date().toLocaleDateString('id-ID') + '.pdf';
       doc.html(content, {
-      async callback(doc) {
-        doc.setProperties({ title: printFileName });
-        window.open(doc.output('bloburl'), '_blank');
-      },
-      windowWidth: 1500,
-      width: 500,
-      margin: 10,
-      filename: printFileName,
-      autoPaging: true,
-      image: { type: 'png', quality: 1 },
-    });
+        async callback(doc) {
+          doc.setProperties({ title: printFileName });
+          window.open(doc.output('bloburl'), '_blank');
+        },
+        windowWidth: 1500,
+        width: 500,
+        margin: 10,
+        filename: printFileName,
+        autoPaging: true,
+        image: { type: 'png', quality: 1 },
+      });
     } else {
       const data = {
         data: {
@@ -265,6 +265,13 @@ function ReportCreate() {
     const updatedCheckedState = checkedState.map((item, index) => (index === position ? !item : item));
     setCheckedState(updatedCheckedState);
   };
+
+
+  const btnBack = () => {
+    navigate('/report');
+
+  }
+
   return (
     <div>
       <div className="flex gap-5 flex-col lg:flex-row mt-5">
@@ -308,22 +315,22 @@ function ReportCreate() {
           </select>
         </div>
         <div className="w-full lg:w-1/4 flex justify-between lg:flex-row gap-5">
-        <div className="justify-end">
-          <label htmlFor="location" className="label font-semibold" style={{visibility: 'hidden'}}>
-            <span className="label-text">Generate</span>
-          </label>
-          <button type="button" onClick={onRequestLaporan} className="btn btn-md btn-success  w-32 text-white">
-            Generate Data
-          </button>
-        </div>
-        <div className="justify-end">
-          <label htmlFor="location" className="label font-semibold" style={{visibility: 'hidden'}}>
-            <span className="label-text">Unduh</span>
-          </label>
-          <button type="button" onClick={handleGeneratePdf} className="btn btn-md  w-32 btn-primary" disabled={keluhanLaporanLocal === null}>
-            Unduh Laporan
-          </button>
-        </div>
+          <div className="justify-end">
+            <label htmlFor="location" className="label font-semibold" style={{ visibility: 'hidden' }}>
+              <span className="label-text">Generate</span>
+            </label>
+            <button type="button" onClick={onRequestLaporan} className="btn btn-md btn-success  w-32 text-white">
+              Generate Data
+            </button>
+          </div>
+          <div className="justify-end">
+            <label htmlFor="location" className="label font-semibold" style={{ visibility: 'hidden' }}>
+              <span className="label-text">Unduh</span>
+            </label>
+            <button type="button" onClick={handleGeneratePdf} className="btn btn-md  w-32 btn-primary" disabled={keluhanLaporanLocal === null}>
+              Unduh Laporan
+            </button>
+          </div>
         </div>
       </div>
       <div className="mt-5">
@@ -353,175 +360,25 @@ function ReportCreate() {
         <label htmlFor="location" className="label font-semibold">
           <span className="label-text"> Tampilan Laporan</span>
           {showPreview && (
-          <HiEyeOff
-            size={20}
-            color="#0D68F1"
-            className="cursor-pointer"
-            onClick={() => handleShowPreview(showPreview)}
-          />
-          ) }
-          {!showPreview
-          && (
-          <HiEye
-            size={20}
-            color="#0D68F1"
-            className="cursor-pointer"
-            onClick={() => handleShowPreview(showPreview)}
-          />
+            <HiEyeOff
+              size={20}
+              color="#0D68F1"
+              className="cursor-pointer"
+              onClick={() => handleShowPreview(showPreview)}
+            />
           )}
+          {!showPreview
+            && (
+              <HiEye
+                size={20}
+                color="#0D68F1"
+                className="cursor-pointer"
+                onClick={() => handleShowPreview(showPreview)}
+              />
+            )}
         </label>
         {(keluhanLaporanLocal !== null && showPreview) && (
-        <div
-          id="preview-report"
-          className="w-full max-w-screen-xl m-0 p-9"
-          style={{
-            width: '1440px !important',
-            height: '4500px !important' }}
-        >
-          <h1 className="text-center font-bold text-2xl mt-0 pt-0">Daily Complaint Report Helpdesk</h1>
-          <div className="flex justify-between align-middle items-center mt-5">
-            <div className="flex-1">
-              <div className="flex gap-5">
-                <div>
-                  <p>Tanggal</p>
-                  <p>Sesi</p>
-                  <p>POP</p>
-                  <p>Helpdesk</p>
-                  <p>NOC</p>
-                </div>
-                <div>
-                  <p>{new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                  <div className="">{allShiftLocal?.map((item, index) => {
-                    if (item.id_shift === +bodyKeluhan.shift) {
-                      return (
-                        <span key={index}>{`${item.shift} (${item.mulai})-(${item.selesai})`}</span>
-                      );
-                    }
-                  })}
-                  </div>
-                  <p>{allPOPLocal.find((item) => item.id_pop === +bodyKeluhan.pop_id)['pop']}</p>
-                  <p>{getAllHelpdesk()}</p>
-                  <p>{getAllNOC()}</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex-1">
-              <div className="flex flex-col items-end">
-                <img src="/report_logo.png" alt="Repor" width={157} className="image-full mt-4" />
-              </div>
-            </div>
-          </div>
-
-          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
-            <h2>Keluhan Open</h2>
-          </div>
-
-          <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
-            {keluhanLaporanLocal?.keluhan_open.map((item, index) => (
-              <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
-                <div className="flex gap-5 w-full">
-                  <div className="flex-1">
-                    <p>Nomor</p>
-                    <p>Nomor Keluhan</p>
-                    <p>ID Pelanggan</p>
-                    <p>Nama Pelanggan</p>
-                    <p>Sumber Keluhan</p>
-                    <p>Detail Sumber</p>
-                  </div>
-                  <div className="flex-1">
-                    <p>{index + 1}</p>
-                    <p>#{item?.nomor_keluhan}</p>
-                    <p>{item?.id_pelanggan}</p>
-                    <p>{item?.nama_pelanggan}</p>
-                    <p>{item?.sumber?.sumber}</p>
-                    <p>{item?.detail_sumber}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
-            <h2>Keluhan Closed</h2>
-          </div>
-
-          <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
-            {keluhanLaporanLocal?.keluhan_close.map((item, index) => (
-              <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
-                <div className="flex gap-5 w-full">
-                  <div className="flex-1">
-                    <p>Nomor</p>
-                    <p>Nomor Keluhan</p>
-                    <p>ID Pelanggan</p>
-                    <p>Nama Pelanggan</p>
-                    <p>Sumber Keluhan</p>
-                    <p>Detail Sumber</p>
-                  </div>
-                  <div className="flex-1">
-                    <p>{index + 1}</p>
-                    <p>#{item?.nomor_keluhan}</p>
-                    <p>{item?.id_pelanggan}</p>
-                    <p>{item?.nama_pelanggan}</p>
-                    <p>{item?.sumber?.sumber}</p>
-                    <p>{item?.detail_sumber}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
-            <h2>RFO Gangguan</h2>
-          </div>
-
-          <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
-            {keluhanLaporanLocal?.rfo_gangguan.map((item, index) => (
-              <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
-                <div className="flex gap-5 w-full">
-                  <div className="flex-1">
-                    <p>Nomor</p>
-                    <p>Nomor RFO Gangguan</p>
-                    <p>Mulai Gangguan</p>
-                    <p>Selesai Gangguan</p>
-                    <p>Problem</p>
-                    <p>Action</p>
-                    <p>Status</p>
-                  </div>
-                  <div className="flex-1">
-                    <p>{index + 1}</p>
-                    <p>#{item?.nomor_rfo_gangguan}</p>
-                    <p>{item?.mulai_gangguan}</p>
-                    <p>{item?.selesai_gangguan}</p>
-                    <p>{item?.problem}</p>
-                    <p>{item?.action}</p>
-                    <p>{item?.status}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center rounded-xl bg-gray-300 p-2 font-bold mt-5">
-            <h2>Total</h2>
-          </div>
-
-          <div className="flex mt-5 border border-gray-300 rounded-lg flex-wrap">
-            <div className="flex p-2 border border-gray-300 rounded-l-lg rounded-r-lg w-full">
-              <div className="flex gap-5 w-full">
-                <div className="flex-1">
-                  <p>Total Keluhan Open</p>
-                  <p>Total Keluhan Closed</p>
-                  <p>Total RFO Gangguan</p>
-                </div>
-                <div className="flex-1">
-                  <p>{keluhanLaporanLocal?.total_keluhan_open}</p>
-                  <p>{keluhanLaporanLocal?.total_keluhan_closed}</p>
-                  <p>{keluhanLaporanLocal?.total_rfo_gangguan}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          <TemplateReport allShiftLocal={allShiftLocal} keluhanLaporanLocal={keluhanLaporanLocal} allPOPLocal={allPOPLocal} bodyKeluhan={bodyKeluhan} getAllHelpdesk={getAllHelpdesk} getAllNOC={getAllNOC} />
         )}
       </div>
       <hr />
@@ -530,28 +387,9 @@ function ReportCreate() {
       </div>
       <div className="mt-5">
         <div className="flex flex-col-reverse md:flex-row justify-center gap-5">
-          <button
-            type="button"
-            onClick={() => {
-              navigate('/report');
-            }}
-            className=" btn-block md:w-32 btn btn-md text-white border-none"
-          >Kembali
-          </button>
-          <label
-            htmlFor="dropzone-file"
-            className="btn  btn-block md:w-32 btn-md bg-slate-500 text-white cursor-pointer border-none "
-          > Unggah Laporan
-            <input
-              id="dropzone-file"
-              type="file"
-              className="hidden"
-              onChange={onHandleFileUpload}
-            />
-          </label>
-          <button type="button" onClick={handleSubmitReport} className=" btn-block md:w-32 btn btn-md bg-blue-600 text-white border-none" disabled={file.length === 0}>
-            Simpan Laporan
-          </button>
+          <Button type="button" onClick={() => btnBack()} className="border-none" >Kembali</Button>
+          <ButtonUpload onChange={(e) => onHandleFileUpload(e)} />
+          <Button type="button" onClick={() => handleSubmitReport()} className="bg-blue-600 border-none"  >Simpan</Button>
         </div>
       </div>
     </div>

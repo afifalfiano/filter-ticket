@@ -5,6 +5,7 @@ import { notifChangeProfile } from '../../store/features/auth/authSlice';
 import { setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
 import handleResponse from '../../services/handleResponse';
+import { ButtonIconExit } from '../../components';
 
 function PreviewImage({ stateModal, getInfo }) {
   const [avatar, setAvatar] = useState(null);
@@ -52,13 +53,8 @@ function PreviewImage({ stateModal, getInfo }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box mt-3  h-fit max-h-fit  max-w-lg">
-        <button
-          htmlFor="my-modal-3"
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+        <ButtonIconExit onClick={onBtnClose} />
+
         <h3 className="text-lg font-bold">Preview Profile Baru</h3>
         <hr className="my-2" />
         <div className="flex justify-center align-middle items-center  flex-col text-cennter">

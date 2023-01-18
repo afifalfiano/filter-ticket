@@ -10,6 +10,7 @@ import { FormBTSSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import { ButtonIconExit } from '../../../components';
 
 function FormBTS({ stateModal, getInfo, detail, titleAction }) {
   const [addData] = useAddBtsMutation();
@@ -94,13 +95,8 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box lg:h-fit h-auto max-h-fit max-w-xl">
-        <button
-          htmlFor="my-modal-3"
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+      <ButtonIconExit onClick={onBtnClose} />
+
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah Base Transceiver Station' : titleAction === 'update' && 'Ubah Base Transceiver Station'}
           {titleAction === 'read' && 'Detail Base Transceiver Station'}

@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { Button, ButtonIconExit } from "../../../components";
 import { setModal } from "../../../store/features/modal/modalSlice";
 
 function ReportDetail({ stateModal, detailData }) {
@@ -14,13 +15,8 @@ function ReportDetail({ stateModal, detailData }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box h-fit max-h-fit max-w-xl">
-        <button
-          type="button"
-          className="btn btn-sm btn-circle absolute right-2 top-2"
-          onClick={onBtnClose}
-        >
-          ✕
-        </button>
+        <ButtonIconExit onClick={onBtnClose} />
+
         <h3 className="text-lg font-bold">
           Detail Laporan
         </h3>
@@ -66,14 +62,7 @@ function ReportDetail({ stateModal, detailData }) {
         </div>
         <hr className="my-2 mt-10" />
         <div className="modal-action justify-center">
-          <button
-            type="button"
-            htmlFor="my-modal-3"
-            className="btn btn-md"
-            onClick={onBtnClose}
-          >
-            Kembali
-          </button>
+          <Button type="button" onClick={() => onBtnClose()} >Kembali</Button>
         </div>
       </div>
     </div>
