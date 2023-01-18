@@ -1,9 +1,4 @@
 import { useEffect, useState } from 'react';
-import {
-  HiSearch,
-  HiPencil,
-  HiEye,
-} from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '../../components/common/table/Pagination';
@@ -17,7 +12,18 @@ import {
   setRFO,
 } from '../../store/features/rfo/rfoSlice';
 import SkeletonTable from '../../components/common/table/SkeletonTable';
+import { CategoryRFO, DoDetail, DoUpdate, Search } from '../../components';
 
+const columns = [
+  'No',
+  'Pelanggan',
+  'Waktu Gangguan',
+  'Durasi',
+  'Masalah',
+  'Keterangan',
+  'Status RFO',
+  'Aksi',
+];
 
 function ReasonOfOutage() {
   const [statusData, setStatusData] = useState('sendiri');
@@ -89,58 +95,27 @@ function ReasonOfOutage() {
     }
   }
 
-  const columns = [
-    'No',
-    'Pelanggan',
-    'Waktu Gangguan',
-    'Durasi',
-    'Masalah',
-    'Keterangan',
-    'Status RFO',
-    'Aksi',
-  ];
+  const detailData = (item) => {
+    navigate(
+      `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
+    );
+  }
+
+  const updateData = (item) => {
+    navigate(
+      `/reason_of_outage/detail_single/${item.id_rfo_keluhan}?edit=true`
+    );
+  }
 
   return (
     <div>
       {!isLoading && (
         <div className="flex gap-5 flex-col md:flex md:flex-row">
           <div className="form-control w-full md:w-52">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Jenis RFO</span>
-            </label>
-
-            <select
-              className="select w-full max-w-full input-bordered"
-              disabled
-              defaultValue={statusData}
-            >
-              <option disabled>Pilih Status</option>
-              <option value="sendiri" label="RFO Keluhan">
-                RFO Keluhan
-              </option>
-            </select>
+            <CategoryRFO defaultValue={statusData} data={<option value="sendiri" label="RFO Keluhan">RFO Keluhan</option>} />
           </div>
 
-          <div className="form-control">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Cari</span>
-            </label>
-            <div className="flex items-center">
-              <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <HiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="voice-search"
-                  className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                  placeholder="Cari data RFO Keluhan..."
-                  value={search}
-                  onChange={onHandleSearch}
-                />
-              </div>
-            </div>
-          </div>
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data RFO keluhan...'} />
         </div>
       )}
 
@@ -184,30 +159,8 @@ function ReasonOfOutage() {
                   </td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <div className="tooltip" data-tip="Edit">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            navigate(
-                              `/reason_of_outage/detail_single/${item.id_rfo_keluhan}?edit=true`
-                            );
-                          }}
-                        />
-                      </div>
-                      <div className="tooltip" data-tip="Detail">
-                        <HiEye
-                          size={20}
-                          color="#0D68F1"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            navigate(
-                              `/reason_of_outage/detail_single/${item.id_rfo_keluhan}`
-                            );
-                          }}
-                        />
-                      </div>
+                      <DoUpdate onClick={() => updateData(item)} />
+                      <DoDetail onClick={() => detailData(item)} />
                     </div>
                   </td>
                 </tr>
@@ -218,7 +171,6 @@ function ReasonOfOutage() {
       )}
 
       {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllRFO(i.target.id)} serverMode />)}
-      {/* end table */}
     </div>
   );
 }
