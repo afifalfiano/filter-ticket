@@ -6,7 +6,7 @@ import { useCreateShiftMutation, useUpdateShiftMutation } from '../../../store/f
 import { setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import { ButtonIconExit } from '../../../components';
+import { Button, ButtonIconExit, Required } from '../../../components';
 
 function FormShift({ stateModal, getInfo, detail, titleAction }) {
   const [createShift] = useCreateShiftMutation();
@@ -30,7 +30,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
 
   const onSubmitData = async (payload, resetForm) => {
     const body = {
-      shift: payload.shift,
+      shift: +payload.shift,
       mulai: payload.mulai,
       selesai: payload.selesai,
       user_id: user.id_user,
@@ -86,7 +86,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box h-fit max-h-fit  max-w-lg">
-<ButtonIconExit onClick={onBtnClose} />
+        <ButtonIconExit onClick={onBtnClose} />
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah Shift' : titleAction === 'update' && 'Ubah Shift'}
           {titleAction === 'read' && 'Detail Shift'}
@@ -124,9 +124,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.shift && touched.shift ? (
-                  <div className="label label-text text-red-500">{errors.shift}</div>
-                ) : null}
+                {errors.shift && touched.shift && <Required errors={errors.shift} />}
               </div>
 
               <div className="form-control">
@@ -134,9 +132,7 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
                   <span className="label-text"> Mulai:</span>
                 </label>
                 <input type="time" name="mulai" id="mulai" disabled={titleAction === 'read'} value={values.mulai} onChange={handleChange} onBlur={handleBlur} className="input input-md input-bordered  max-w-full" />
-                {errors.mulai && touched.mulai ? (
-                  <div className="label label-text text-red-500">{errors.mulai}</div>
-                ) : null}
+                {errors.mulai && touched.mulai && <Required errors={errors.mulai} />}
               </div>
 
               <div className="form-control">
@@ -144,47 +140,21 @@ function FormShift({ stateModal, getInfo, detail, titleAction }) {
                   <span className="label-text"> Selesai:</span>
                 </label>
                 <input type="time" name="selesai" id="selesai" disabled={titleAction === 'read'} value={values.selesai} onChange={handleChange} onBlur={handleBlur} className="input input-md input-bordered  max-w-full" />
-                {errors.selesai && touched.selesai ? (
-                  <div className="label label-text text-red-500">{errors.selesai}</div>
-                ) : null}
+                {errors.selesai && touched.selesai && <Required errors={errors.selesai} />}
               </div>
 
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (
-              <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md  w-32"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Batal
-                </button>
-                <button
-                  disabled={!isValid}
-                  type="submit"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md btn-success  w-32 text-white"
-                >
-                  Simpan
-                </button>
-              </div>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onHandleReset(resetForm)} >Batal</Button>
+                  <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
+
+                </div>
               )}
               {titleAction === 'read' && (
-              <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Kembali
-                </button>
-              </div>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onHandleReset(resetForm)} >Batal</Button>
+                </div>
               )}
             </Form>
           )}
