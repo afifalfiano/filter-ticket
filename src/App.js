@@ -72,6 +72,7 @@ function App() {
             element={render && <ForgetPassword />}
           />
         </Route>
+        <Route path="*" element={render && <NotFound />} />
         {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route index element={<Dashboard />} />
