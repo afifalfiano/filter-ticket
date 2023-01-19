@@ -40,3 +40,5 @@ export {default as DoShowRFOComplain} from './common/table/ActionTable/DoShowRFO
 export {default as DoShowRFOTrouble} from './common/table/ActionTable/DoShowRFOTrouble';
 export {default as DoUpdate} from './common/table/ActionTable/DoUpdate';
 export {default as DoPrint} from './common/table/ActionTable/DoPrint';
+export {default as DoActivate} from './common/table/ActionTable/DoActivate';
+export {default as DoDeactivate} from './common/table/ActionTable/DoDeactivate';

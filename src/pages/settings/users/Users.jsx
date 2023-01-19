@@ -11,10 +11,12 @@ import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import DeleteModal from '../../../components/common/DeleteModal';
+import { DoActivate, DoDeactivate, DoUpdate, Search } from '../../../components';
 
+
+const columns = ['No', 'Nama', 'Email', 'Role Id', 'Pop Id', 'Status', 'Aksi'];
 function Users() {
   const dispatch = useDispatch();
-  const columns = ['No', 'Nama', 'Email', 'Role Id', 'Pop Id', 'Status', 'Aksi'];
 
   const [rows, setRows] = useState([]);
   const [allUsers, { isLoading }] = useAllUsersMutation();
@@ -98,30 +100,30 @@ function Users() {
     getAllUsers();
   }, []);
 
+  const updateData = (item) => {
+    setDetail(item);
+    setTitle('update');
+    openModal('update');
+  }
+
+  const activateData = (item) => {
+    setDetail(item);
+    setTitle('aktifkan');
+    openModal('aktifkan');
+  }
+
+  const deactivateData = (item) => {
+    setDetail(item);
+    setTitle('nonaktifkan');
+    openModal('nonaktifkan');
+  }
+
   return (
     <div>
       {!isLoading && (
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <div className="form-control">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Cari</span>
-            </label>
-            <div className="flex items-center">
-              <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <HiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="voice-search"
-                  className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                  placeholder="Cari data pengguna..."
-                  value={search}
-                  onChange={onHandleSearch}
-                />
-              </div>
-            </div>
-          </div>
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data pengguna...'} />
+
         </div>
       )}
 
@@ -164,45 +166,9 @@ function Users() {
                   )}</td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <div className="tooltip" data-tip="Edit">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('update');
-                            openModal('update');
-                          }}
-                        />
-                      </div>
-                    {item.aktif && (
-                      <div className="tooltip" data-tip="Non aktifkan">
-                        <HiOutlineBan
-                          className="cursor-pointer"
-                          size={20}
-                          color="#F87272"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('nonaktifkan');
-                            openModal('nonaktifkan');
-                          }}
-                        />
-                    </div>)}
-                    {!item.aktif && (
-                      <div className="tooltip" data-tip="Aktifkan">
-                        <HiCheckCircle
-                          className="cursor-pointer"
-                          size={20}
-                          color="#36D399"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('aktifkan');
-                            openModal('aktifkan');
-                          }}
-                        />
-                    </div>
-                    )}
+                    <DoUpdate onClick={() => updateData(item)} />
+                    {item.aktif && <DoDeactivate onClick={() => deactivateData(item)}  />}
+                    {!item.aktif && <DoActivate onClick={() => activateData(item)} />}
                     </div>
                   </td>
                 </tr>
