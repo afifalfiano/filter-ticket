@@ -10,6 +10,7 @@ import { selectAllPOP, setPOP } from '../../store/features/pop/popSlice';
 import { selectAllTeam, setTeam } from '../../store/features/team/teamSlice';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { useGetProfileMutation } from '../../store/features/auth/authApiSlice';
+import PreviewProfile from './PreviewProfile';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -89,50 +90,7 @@ function Profile() {
       {form ? (
         <FormUpdateProfile handleForm={handleForm} profile={profile} />
       ) : (
-        <div className="flex items-start justify-center">
-          <div className="text-center">
-            <div className="avatar">
-                <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
-                  <span className="text-3xl">
-                  <img width={'100%'} height={'100%'} src={profile?.avatar} alt={profile?.name} />
-                  </span>
-                </div>
-            </div>
-            <h1 className="font-semibold text-xl mt-5">{profile?.name}</h1>
-            <div className="my-5 flex justify-center">
-              <div className="border-gray-200 rounded-md border-2 w-80 h-48 items-center flex-row justify-center">
-                <div className="flex pt-1 px-1 justify-end">
-                  <HiPencilAlt
-                    size={30}
-                    className="link"
-                    onClick={handleUpdateProfile}
-                  />
-                </div>
-                <div className="px-5 py-5">
-                  <table className="border-none items-center w-full font-semibold">
-                    <tbody>
-                      <tr className="text-left">
-                        <td>Email</td>
-                        <td>:</td>
-                        <td>{profile?.email}</td>
-                      </tr>
-                      <tr className="text-left">
-                        <td>Role</td>
-                        <td>:</td>
-                        <td>{profile?.role?.role}</td>
-                      </tr>
-                      <tr className="text-left">
-                        <td>POP</td>
-                        <td>:</td>
-                        <td>{profile?.pop?.pop}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <PreviewProfile profile={profile} handleUpdateProfile={() => handleUpdateProfile()} />
       )}
     </div>
   );

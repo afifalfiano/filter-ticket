@@ -12,6 +12,7 @@ import { selectModalState, setModal } from '../../store/features/modal/modalSlic
 import Modal from '../../components/modal/Modal';
 import ModalProfile from './ModalProfile';
 import { useState } from 'react';
+import { Button, Required } from '../../components';
 
 function FormUpdateProfile({ handleForm, profile }) {
   const { data: user } = useSelector(selectCurrentUser);
@@ -53,8 +54,8 @@ function FormUpdateProfile({ handleForm, profile }) {
   return (
     <div>
       <Modal>
-        {stateModal?.profile?.showPreviewImageModal && <PreviewImage stateModal={stateModal} getInfo={getInfo} /> }
-        {stateModal?.change_password?.showChangePasswordModal && <ModalProfile stateModal={stateModal} getInfo={getInfo} payload={valueForm} /> }
+        {stateModal?.profile?.showPreviewImageModal && <PreviewImage stateModal={stateModal} getInfo={getInfo} />}
+        {stateModal?.change_password?.showChangePasswordModal && <ModalProfile stateModal={stateModal} getInfo={getInfo} payload={valueForm} />}
       </Modal>
       <Formik
         enableReinitialize
@@ -78,12 +79,12 @@ function FormUpdateProfile({ handleForm, profile }) {
           <Form>
             <div className="flex items-start justify-center">
               <div className="text-center">
-                  <div className="avatar">
-                    <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
-                      <span className="text-3xl">
+                <div className="avatar">
+                  <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
+                    <span className="text-3xl">
                       <img width={'100%'} height={'100%'} src={profile?.avatar} alt={profile?.name} />
-                      </span>
-                    </div>
+                    </span>
+                  </div>
                 </div>
                 <div className="flex justify-center">
                   <HiPencil
@@ -203,11 +204,7 @@ function FormUpdateProfile({ handleForm, profile }) {
                           value={values.password}
                           className="input input-md input-bordered  max-w-full"
                         />
-                        {errors.password && touched.password ? (
-                          <div className="label label-text text-red-500">
-                            {errors.password}
-                          </div>
-                        ) : null}
+                        {errors.password && touched.password && <Required errors={errors.password} />}
                       </div>
 
                       <div className="form-control ">
@@ -227,30 +224,14 @@ function FormUpdateProfile({ handleForm, profile }) {
                           className="input input-md input-bordered  max-w-full"
                         />
                         {errors.password_confirmation
-                        && touched.password_confirmation ? (
-                          <div className="label label-text text-red-500">
-                            {errors.password_confirmation}
-                          </div>
-                          ) : null}
+                          && touched.password_confirmation && <Required errors={errors.password_confirmation} />}
                       </div>
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-nowrap gap-5 justify-center">
-                  <button
-                    type="button"
-                    onClick={onBtnBack}
-                    className="btn btn-md sm:btn-md md:btn-md lg:btn-md bg-black text-white w-24 border-none"
-                  >
-                    Kembali
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-md sm:btn-md md:btn-md lg:btn-md w-24 bg-success border-none"
-                    disabled={!isValid}
-                  >
-                    Simpan
-                  </button>
+                  <Button type="button" onClick={() => onBtnBack()}>Kembali</Button>
+                  <Button type="submit" className="btn-success">Simpan</Button>
                 </div>
               </div>
             </div>

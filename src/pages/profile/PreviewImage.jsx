@@ -5,7 +5,7 @@ import { notifChangeProfile } from '../../store/features/auth/authSlice';
 import { setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
 import handleResponse from '../../services/handleResponse';
-import { ButtonIconExit } from '../../components';
+import { Button, ButtonIconExit, ButtonUpload } from '../../components';
 
 function PreviewImage({ stateModal, getInfo }) {
   const [avatar, setAvatar] = useState(null);
@@ -58,19 +58,7 @@ function PreviewImage({ stateModal, getInfo }) {
         <h3 className="text-lg font-bold">Preview Profile Baru</h3>
         <hr className="my-2" />
         <div className="flex justify-center align-middle items-center  flex-col text-cennter">
-          <label
-            htmlFor="dropzone-file"
-            className="btn btn-md bg-slate-500 text-white cursor-pointer border-none mt-5"
-          >
-            
-            Unggah Foto Baru
-            <input
-              id="dropzone-file"
-              type="file"
-              className="hidden"
-              onChange={handleChange}
-            />
-          </label>
+          <ButtonUpload onChange={(e) => handleChange(e)} />
           <div className="border rounded-md mt-5 p-5">
             {avatar && <img width={'100%'} height={'100%'} src={avatar} alt="avatar" className="image-full max-w-md" />}
             {!avatar && <p>Belum ada gambar</p>}
@@ -79,23 +67,8 @@ function PreviewImage({ stateModal, getInfo }) {
         <hr className="my-2 mt-10" />
 
         <div className="modal-action justify-center">
-          <button
-            type="button"
-            htmlFor="my-modal-3"
-            className="btn btn-md"
-            onClick={onHandleReset}
-          >
-            Batal
-          </button>
-          <button
-            disabled={avatar === null}
-            type="submit"
-            htmlFor="my-modal-3"
-            className="btn btn-md btn-success text-white"
-            onClick={onSubmitData}
-          >
-            Simpan
-          </button>
+          <Button type="button" onClick={() => onHandleReset()}>Batal</Button>
+          <Button type="button" className="btn-success" onClick={() => onSubmitData()}>Simpan</Button>
         </div>
       </div>
     </div>

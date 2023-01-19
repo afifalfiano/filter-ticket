@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { setLogOut } from '../../store/features/auth/authSlice';
 import { clearPOP } from '../../store/features/pop/popSlice';
 import { clearTeam } from '../../store/features/team/teamSlice';
-import { ButtonIconExit } from '../../components';
+import { Button, ButtonIconExit } from '../../components';
 
 function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
 
@@ -52,7 +52,7 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
           action(clearUsers());
         });
         localStorage.clear();
-        navigate('/sign_in', {replace: true});
+        navigate('/sign_in', { replace: true });
       } else {
         catchError(userLogout, true);
       }
@@ -88,7 +88,7 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
       if (data.status === 'success' || data.status === 'Success') {
         handleResponse(data);
         setTimeout(() => {
-            onSubmitLogout();
+          onSubmitLogout();
         }, 1000)
       } else {
         catchError(data, true);
@@ -103,7 +103,7 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
       <div
         className={`modal-box h-fit max-h-fit modal-box-custom`}
       >
-<ButtonIconExit onClick={onBtnClose} />
+        <ButtonIconExit onClick={onBtnClose} />
         <h3 className="text-lg font-bold">Ganti Password</h3>
         <hr className="my-2" />
 
@@ -115,16 +115,8 @@ function ModalProfile({ stateModal, getInfo, detail, title, payload }) {
 
         <hr className="my-2 mt-5" />
         <div className="modal-action justify-center">
-          <button className="btn btn-md" onClick={onBtnClose}>
-            Batal
-          </button>
-          <button
-            onClick={() => onSubmitDataChangePassword(payload)}
-            type="submit"
-            className="btn btn-md btn-error text-white"
-          >
-            Ya
-          </button>
+          <Button type="button" onClick={() => onBtnClose()}>Batal</Button>
+          <Button type="button" className="btn-success" onClick={() => onSubmitDataChangePassword(payload)}>Simpan</Button>
         </div>
       </div>
     </div>
