@@ -6,6 +6,7 @@ import {
 } from '../../../store/features/auth/authApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
+import {Button} from '../../../components/index';
 
 function ForgetPassword() {
   const [email, setEmail] = useState('');
@@ -133,17 +134,8 @@ function ForgetPassword() {
           )}
         </div>
         <div className="flex justify-center gap-5 mt-10 items-center mx-2">
-          <Link className="btn btn-md w-52" to="/sign_in">
-            Kembali
-          </Link>
-          <button
-            type="submit"
-            className="btn btn-md w-52 btn-success text-white"
-            onClick={onSubmitData}
-            disabled={showOTP ? otp === '' || password === '' : email === ''}
-          >
-            Kirim {!showOTP ? 'Email' : 'OTP'}
-          </button>
+          <Button type="button" onClick={() => navigate('/sign_in')}>Kembali</Button>
+          <Button type="submit" className="btn-success" onClick={() => onSubmitData()} disabled={showOTP ? otp === '' || password === '' : email === ''}>Kirim {!showOTP ? 'Email' : 'OTP'}</Button>
         </div>
       </div>
     </div>
