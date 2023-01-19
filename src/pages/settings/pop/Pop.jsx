@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HiSearch, HiTrash, HiPencil } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import DeleteModal from '../../../components/common/DeleteModal';
@@ -11,6 +10,7 @@ import FormPOP from './FormPOP';
 import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
+import { Button, DoDelete, DoUpdate, Search } from '../../../components';
 
 function Pop() {
   const dispatch = useDispatch();
@@ -127,49 +127,39 @@ function Pop() {
     getAllPOP();
   }, []);
 
+
+  const addData = () => {
+    setDetail(null);
+    setTitle('create');
+    openModal('add pop');
+  }
+
+  const updateData = (item) => {
+    setDetail(item);
+    setTitle('update');
+    openModal('update pop');
+  }
+
+  const deleteData = (item) => {
+    setDetail(item);
+    openModal('delete pop');
+  }
+
   return (
     <div>
       <div>
-        <button
-          className="btn btn-md sm:btn-md md:btn-md lg:btn-md  w-32"
-          onClick={() => {
-            setDetail(null);
-            setTitle('create');
-            openModal('add pop');
-          }}
-        >
-          Tambah
-        </button>
+        <Button type="button" onClick={() => addData()} >Tambah</Button>
       </div>
 
       {!isLoading && (
-      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <div className="form-control">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Cari</span>
-            </label>
-            <div className="flex items-center">
-              <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <HiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="voice-search"
-                  className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                  placeholder="Cari data POP..."
-                  value={search}
-                  onChange={onHandleSearch}
-                />
-              </div>
-            </div>
-          </div>
+        <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data POP...'} />
         </div>
       )}
 
       <Modal>
         {stateModal?.pop?.showAddModalPop && <FormPOP stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
-        {stateModal?.pop?.showUpdateModalPop && <FormPOP stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.pop?.showUpdateModalPop && <FormPOP stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
         {stateModal?.pop?.showDeleteModalPop && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="POP" />}
       </Modal>
 
@@ -191,33 +181,12 @@ function Pop() {
             <tbody>
               {rows.map((item, index) => (
                 <tr className="text-center" key={index}>
-                  <td id={item.id}>{index + 1}</td>
+                  <td>{index + 1}</td>
                   <td>{item.pop}</td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <div className="tooltip" data-tip="Edit">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('update');
-                            openModal('update pop');
-                          }}
-                        />
-                      </div>
-                      <div className="tooltip" data-tip="Hapus">
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            openModal('delete pop');
-                          }}
-                        />
-                      </div>
+                      <DoUpdate onClick={() => updateData(item)} />
+                      <DoDelete onClick={() => deleteData(item)} />
                     </div>
                   </td>
                 </tr>

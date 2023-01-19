@@ -6,7 +6,7 @@ import { FormPOPSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import { ButtonIconExit } from '../../../components';
+import { Button, ButtonIconExit, Required } from '../../../components';
 
 function FormPOP({ stateModal, getInfo, detail, titleAction }) {
   const [addPOP] = useAddPOPMutation();
@@ -122,46 +122,19 @@ function FormPOP({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.pop && touched.pop ? (
-                  <div className="label label-text text-red-500">{errors.pop}</div>
-                ) : null}
+                {errors.pop && touched.pop && <Required errors={errors.pop}  />}
               </div>
 
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (
               <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md  w-32"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Batal
-                </button>
-                <button
-                  disabled={!isValid}
-                  type="submit"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md btn-success  w-32 text-white"
-                >
-                  Simpan
-                </button>
+                <Button type="button" onClick={() => onHandleReset(resetForm)} >Batal</Button>
+                <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
               </div>
               )}
               {titleAction === 'read' && (
               <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md  w-32"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Kembali
-                </button>
+                <Button type="button" onClick={() => onHandleReset(resetForm)} >Kembali</Button>
               </div>
               )}
             </Form>
