@@ -6,7 +6,7 @@ import { FormRoleSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import { ButtonIconExit } from '../../../components';
+import { Button, ButtonIconExit, Required } from '../../../components';
 
 function FormRole({ stateModal, getInfo, detail, titleAction }) {
   const [addTeam] = useAddTeamMutation();
@@ -63,7 +63,7 @@ function FormRole({ stateModal, getInfo, detail, titleAction }) {
 
   const doCreate = async (body, resetForm) => {
     const add = await addTeam({ ...body });
-    if (add.data.status === 'success' || add.data.status === 'Success') { 
+    if (add.data.status === 'success' || add.data.status === 'Success') {
       handleResponse(add);
       setTimeout(() => {
         resetForm();
@@ -83,7 +83,7 @@ function FormRole({ stateModal, getInfo, detail, titleAction }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box mt-5  h-fit max-h-fit  max-w-lg">
-      <ButtonIconExit onClick={onBtnClose} />
+        <ButtonIconExit onClick={onBtnClose} />
 
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah Role' : titleAction === 'update' && 'Ubah Role'}
@@ -122,47 +122,20 @@ function FormRole({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.role && touched.role ? (
-                  <div className="label label-text text-red-500">{errors.role}</div>
-                ) : null}
+                {errors.role && touched.role && <Required errors={errors.role} />}
               </div>
 
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (
-              <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md  w-32"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Batal
-                </button>
-                <button
-                  disabled={!isValid}
-                  type="submit"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md btn-success  w-32 text-white"
-                >
-                  Simpan
-                </button>
-              </div>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onHandleReset(resetForm)} >Batal</Button>
+                  <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
+                </div>
               )}
               {titleAction === 'read' && (
-              <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Kembali
-                </button>
-              </div>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onHandleReset(resetForm)} >Kembali</Button>
+                </div>
               )}
             </Form>
           )}
