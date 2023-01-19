@@ -6,7 +6,7 @@ import { FormSumberKeluhanSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import { ButtonIconExit } from '../../../components';
+import { Button, ButtonIconExit, Required } from '../../../components';
 
 function FormSumberKeluhan({ stateModal, getInfo, detail, titleAction }) {
   const [addSumberKeluhan] = useAddSumberKeluhanMutation();
@@ -122,46 +122,21 @@ function FormSumberKeluhan({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.sumber && touched.sumber ? (
-                  <div className="label label-text text-red-500">{errors.sumber}</div>
-                ) : null}
+                {errors.sumber && touched.sumber && <Required errors={errors.sumber}  />}
               </div>
 
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (
               <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md  w-32"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Batal
-                </button>
-                <button
-                  disabled={!isValid}
-                  type="submit"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md btn-success text-white  w-32"
-                >
-                  Simpan
-                </button>
+<Button type="button" onClick={() => onHandleReset(resetForm)} >Batal</Button>
+                <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
+
               </div>
               )}
               {titleAction === 'read' && (
               <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md"
-                  onClick={() => {
-                    onHandleReset(resetForm);
-                  }}
-                >
-                  Kembali
-                </button>
+                <Button type="button" onClick={() => onHandleReset(resetForm)} >Kembali</Button>
+
               </div>
               )}
             </Form>

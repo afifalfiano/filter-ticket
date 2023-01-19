@@ -11,10 +11,12 @@ import FormSumberKeluhan from './FormSumberKeluhan';
 import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
+import { Button, DoDelete, DoUpdate, Search } from '../../../components';
+
+const columns = ['No', 'Nama', 'Aksi'];
 
 function SourceComplain() {
   const dispatch = useDispatch();
-  const columns = ['No', 'Nama', 'Aksi'];
 
   const [rows, setRows] = useState([]);
   const [allSumberKeluhan, { isLoading }] = useAllSumberKeluhanMutation();
@@ -132,49 +134,39 @@ function SourceComplain() {
     getAllSumberKeluhan();
   }, []);
 
+  const addData = () => {
+    setDetail(null);
+    setTitle('create');
+    openModal('add source');
+  }
+
+  const updateData = (item) => {
+    setDetail(item);
+    setTitle('update');
+    openModal('update source');
+  }
+
+  const deleteData = (item) => {
+    setDetail(item);
+    openModal('delete source');
+  }
+
   return (
     <div>
       <div>
-        <button
-          className="btn btn-md sm:btn-md md:btn-md lg:btn-md  w-32"
-          onClick={() => {
-            setDetail(null);
-            setTitle('create');
-            openModal('add source');
-          }}
-        >
-          Tambah
-        </button>
+        <Button type="button" onClick={() => addData()} >Tambah</Button>
       </div>
 
       {!isLoading && (
-      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-      <div className="form-control">
-            <label htmlFor="location" className="label font-semibold">
-              <span className="label-text"> Cari</span>
-            </label>
-            <div className="flex items-center">
-              <div className="relative w-full">
-                <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                  <HiSearch />
-                </div>
-                <input
-                  type="text"
-                  id="voice-search"
-                  className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                  placeholder="Cari data sumber keluhan..."
-                  value={search}
-                  onChange={onHandleSearch}
-                />
-              </div>
-            </div>
-          </div>
+        <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data sumber keluhan...'} />
+
         </div>
       )}
 
       <Modal>
         {stateModal?.source_complain?.showAddModalSourceComplain && <FormSumberKeluhan stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
-        {stateModal?.source_complain?.showUpdateModalSourceComplain && <FormSumberKeluhan stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.source_complain?.showUpdateModalSourceComplain && <FormSumberKeluhan stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
         {stateModal?.source_complain?.showDeleteModalSourceComplain && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="Sumber Keluhan" />}
       </Modal>
 
@@ -200,29 +192,8 @@ function SourceComplain() {
                   <td>{item.sumber}</td>
                   <td>
                     <div className="flex flex-row gap-3 justify-center">
-                      <div className="tooltip" data-tip="Edit">
-                        <HiPencil
-                          className="cursor-pointer"
-                          size={20}
-                          color="#D98200"
-                          onClick={() => {
-                            setDetail(item);
-                            setTitle('update');
-                            openModal('update source');
-                          }}
-                        />
-                      </div>
-                      <div className="tooltip" data-tip="Hapus">
-                        <HiTrash
-                          size={20}
-                          color="#FF2E00"
-                          className="cursor-pointer"
-                          onClick={() => {
-                            setDetail(item);
-                            openModal('delete source');
-                          }}
-                        />
-                      </div>
+                      <DoUpdate onClick={() => updateData(item)} />
+                      <DoDelete onClick={() => deleteData(item)} />
                     </div>
                   </td>
                 </tr>

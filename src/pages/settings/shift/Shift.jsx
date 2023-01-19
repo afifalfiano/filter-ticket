@@ -16,9 +16,10 @@ import { selectModalState, setModal } from '../../../store/features/modal/modalS
 import catchError from '../../../services/catchError';
 import { Button, DoDelete, DoUpdate, Search } from '../../../components';
 
+const columns = ['No', 'Shift', 'Mulai', 'Selesai', 'Aksi'];
+
 function Shift() {
   const dispatch = useDispatch();
-  const columns = ['No', 'Shift', 'Mulai', 'Selesai', 'Aksi'];
   const [rows, setRows] = useState([]);
   const [indexShift, { isLoading }] = useIndexShiftMutation();
   const [detail, setDetail] = useState(null);
