@@ -9,10 +9,9 @@ import { selectBreadcrumb, updateBreadcrumb } from '../../store/features/breadcr
 import { ProfileSchema } from '../../utils/schema_validation_form';
 import PreviewImage from './PreviewImage';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
-import Modal from '../../components/modal/Modal';
 import ModalProfile from './ModalProfile';
 import { useState } from 'react';
-import { Button, Required } from '../../components';
+import { Button, Required, Modal } from '../../components';
 
 function FormUpdateProfile({ handleForm, profile }) {
   const { data: user } = useSelector(selectCurrentUser);

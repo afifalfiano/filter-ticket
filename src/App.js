@@ -13,8 +13,8 @@ import SignUp from './pages/auth/sign_up/SignUp';
 import VerificationEmail from './pages/auth/verification_email/VerificationEmail';
 import VerificationSuccess from './pages/auth/verification_success/VerificationSuccess';
 import ForgetPassword from './pages/auth/forget_password/ForgetPassword';
-import Layout from './components/common/Layout';
-import RequireAuth from './components/common/RequireAuth';
+import Layout from './components/Common/Layout';
+import RequireAuth from './components/Common/RequireAuth';
 import NotFound from './pages/not_found/NotFound';
 
 

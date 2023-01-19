@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {
-  HiSearch,
-  HiTrash,
-  HiEye,
-  HiOutlinePrinter
-} from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
-import Pagination from '../../components/common/table/Pagination';
-import DeleteModal from '../../components/common/DeleteModal';
 import { selectAllReport, setReport } from '../../store/features/report/reportSlice';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import ReportDetail from './detail/ReportDetail';
-import Modal from '../../components/modal/Modal';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import { useAllReportMutation } from '../../store/features/report/reportApiSlice';
 import catchError from '../../services/catchError';
-import SkeletonTable from '../../components/common/table/SkeletonTable';
-import { Button, DoDelete, DoDetail, DoPrint, LabelStatusPOP, Search, SelectPOP } from '../../components';
+import { Button, Pagination, DoDelete, DeleteModal, SkeletonTable, Modal, DoDetail, DoPrint, LabelStatusPOP, Search, SelectPOP } from '../../components';
 
 const columns = [
   'No',
@@ -40,7 +30,7 @@ function Report() {
   const [rows, setRows] = useState([]);
   const [detail, setDetail] = useState(null);
   const navigate = useNavigate();
-  const [allReport, {isLoading}] = useAllReportMutation();
+  const [allReport, { isLoading }] = useAllReportMutation();
   const dataRow = useSelector(selectAllReport);
   const [allPOP] = useAllPOPMutation();
   const [search, setSearch] = useState('');
@@ -142,7 +132,7 @@ function Report() {
         setRows(result);
         setCurrentPage(data.data.current_page);
         setPerPage([data.data.per_page]);
-      
+
         const countPaginate = [];
         for (let i = 0; i < data.data.last_page; i++) {
           countPaginate.push(i + 1);
@@ -205,53 +195,53 @@ function Report() {
       </Modal>
 
       {!isLoading && (
-      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <div className="form-control w-full md:w-52">
-        <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
+        <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+          <div className="form-control w-full md:w-52">
+            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
+          </div>
+
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data laporan...'} />
+
         </div>
-
-        <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data laporan...'} />
-
-      </div>
       )}
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
       {!isLoading && (
-      <div className="overflow-x-auto mt-8">
-        <table className="table table-zebra w-full">
-          <thead>
-            <tr>
-              {columns.map((item, index) => (
-                <th key={index} className="text-center">{item}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((item, index) => (
-              <tr className="text-center" key={index}>
-                <th>{index + 1}</th>
-                <th>{item?.nomor_laporan}</th>
-                <td>
-                <LabelStatusPOP status={item?.pop?.pop} />
-
-                </td>
-                <td className="text-left">{new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
-                <td>{item.shift.shift} ({item.shift.mulai} - {item.shift.selesai})</td>
-                <td>{item.noc}</td>
-                <td>{item.helpdesk}</td>
-                <td>
-                  <div className="flex flex-row gap-3 justify-center">
-                    <DoDetail onClick={() => detailData(item)} />
-                    <DoPrint onClick={(e) => printData(e, item)} />
-                    <DoDelete onClick={() => deleteData(item)} />
-                  </div>
-                </td>
+        <div className="overflow-x-auto mt-8">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                {columns.map((item, index) => (
+                  <th key={index} className="text-center">{item}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {rows.map((item, index) => (
+                <tr className="text-center" key={index}>
+                  <th>{index + 1}</th>
+                  <th>{item?.nomor_laporan}</th>
+                  <td>
+                    <LabelStatusPOP status={item?.pop?.pop} />
+
+                  </td>
+                  <td className="text-left">{new Date(item.tanggal).toLocaleDateString('id-ID')}</td>
+                  <td>{item.shift.shift} ({item.shift.mulai} - {item.shift.selesai})</td>
+                  <td>{item.noc}</td>
+                  <td>{item.helpdesk}</td>
+                  <td>
+                    <div className="flex flex-row gap-3 justify-center">
+                      <DoDetail onClick={() => detailData(item)} />
+                      <DoPrint onClick={(e) => printData(e, item)} />
+                      <DoDelete onClick={() => deleteData(item)} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => doGetAllReport(i.target.id)} serverMode />)}
       {/* end table */}

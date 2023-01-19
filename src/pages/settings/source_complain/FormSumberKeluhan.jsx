@@ -83,7 +83,7 @@ function FormSumberKeluhan({ stateModal, getInfo, detail, titleAction }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box mt-5  h-fit max-h-fit  max-w-lg">
-      <ButtonIconExit onClick={onBtnClose} />
+        <ButtonIconExit onClick={onBtnClose} />
 
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah Sumber' : titleAction === 'update' && 'Ubah Sumber'}
@@ -122,22 +122,22 @@ function FormSumberKeluhan({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.sumber && touched.sumber && <Required errors={errors.sumber}  />}
+                {errors.sumber && touched.sumber && <Required errors={errors.sumber} />}
               </div>
 
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (
-              <div className="modal-action justify-center">
-<Button type="button" onClick={() => onHandleReset(resetForm)} >Batal</Button>
-                <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onHandleReset(resetForm)} >Batal</Button>
+                  <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
 
-              </div>
+                </div>
               )}
               {titleAction === 'read' && (
-              <div className="modal-action justify-center">
-                <Button type="button" onClick={() => onHandleReset(resetForm)} >Kembali</Button>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onHandleReset(resetForm)} >Kembali</Button>
 
-              </div>
+                </div>
               )}
             </Form>
           )}

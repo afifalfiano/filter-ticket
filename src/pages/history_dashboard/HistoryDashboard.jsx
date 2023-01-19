@@ -10,7 +10,7 @@ import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import catchError from '../../services/catchError';
-import {DoShowRFOTrouble, Search, SelectPOP, Modal, Pagination, SkeletonTable ,LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime} from '../../components/index';
+import { DoShowRFOTrouble, Search, SelectPOP, Modal, Pagination, SkeletonTable, LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime } from '../../components/index';
 
 function HistoryDashboard() {
   const initColumns = [
@@ -193,67 +193,67 @@ function HistoryDashboard() {
       </Modal>
 
       {!isLoading && (
-      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <div className="form-control w-full md:w-52">
-          <SelectPOP dataPOP={dataPOP} handlePOP={() => handlePOP()} />
+        <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+          <div className="form-control w-full md:w-52">
+            <SelectPOP dataPOP={dataPOP} handlePOP={() => handlePOP()} />
+          </div>
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data riwayat keluhan...'} />
         </div>
-        <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data riwayat keluhan...'} />
-      </div>
       )}
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
       {/* start table */}
       {!isLoading && (
-      <>
-        <div className="overflow-x-auto mt-8">
-          <table className="table table-zebra w-full">
-            <thead>
-              <tr>
-                {columns.map((item, index) => (
-                  <th key={index} className="text-center">{item}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((item, index) => (
-                <tr key={index} className="text-center">
-                  <th>{index + 1}</th>
-                  <td className="text-left">
-                  <LabelStatusPOP status={item?.pop?.pop} />
-                  </td>
-                  <td className="text-left">{(item?.id_pelanggan)} - {(item?.nama_pelanggan)}</td>
-                  <td className="text-left">{item?.nama_pelapor} - {item?.nomor_pelapor}</td>
-                  <td className="text-left">
-                  <div dangerouslySetInnerHTML={{__html: item?.keluhan}} />
-                  </td>
-                  <td >
-                  <div dangerouslySetInnerHTML={{__html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan'}} className={`${item?.balasan.length === 0 ? 'text-center font-semibold badge bg-red-500 border-0 text-white' : ''}`}/>
-                  </td>
-                  <td className="text-left">
-                    <ProgressTime item={item} />
-                  </td>
-                  <td>
-                    <span className="badge badge-info text-white">
-                      {item.status}
-                    </span>
-                  </td>
-                  {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
-                  <td>
-                    <div className="flex flex-row gap-3 justify-center">
-                      <DoRollbackStatus onClick={() => rollbackStatus(item)} />
-                      <DoDetail onClick={() => detailData(item)} />
-                      {item.rfo_keluhan_id !== null && <DoShowRFOComplain onClick={() => RFOKeluhan(item)} />}
-                      {item.rfo_gangguan_id !== null && <DoShowRFOTrouble onClick={() => RFOMasalDetail(item)} />}
-                    </div>
-                  </td>
+        <>
+          <div className="overflow-x-auto mt-8">
+            <table className="table table-zebra w-full">
+              <thead>
+                <tr>
+                  {columns.map((item, index) => (
+                    <th key={index} className="text-center">{item}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllComplainHistory(i.target.id)} serverMode />)}
-      </>
+              </thead>
+              <tbody>
+                {rows.map((item, index) => (
+                  <tr key={index} className="text-center">
+                    <th>{index + 1}</th>
+                    <td className="text-left">
+                      <LabelStatusPOP status={item?.pop?.pop} />
+                    </td>
+                    <td className="text-left">{(item?.id_pelanggan)} - {(item?.nama_pelanggan)}</td>
+                    <td className="text-left">{item?.nama_pelapor} - {item?.nomor_pelapor}</td>
+                    <td className="text-left">
+                      <div dangerouslySetInnerHTML={{ __html: item?.keluhan }} />
+                    </td>
+                    <td >
+                      <div dangerouslySetInnerHTML={{ __html: item?.balasan.length > 0 ? item?.balasan[item.balasan.length - 1].balasan.slice(0, 100) : 'Belum ada tindakan' }} className={`${item?.balasan.length === 0 ? 'text-center font-semibold badge bg-red-500 border-0 text-white' : ''}`} />
+                    </td>
+                    <td className="text-left">
+                      <ProgressTime item={item} />
+                    </td>
+                    <td>
+                      <span className="badge badge-info text-white">
+                        {item.status}
+                      </span>
+                    </td>
+                    {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
+                    <td>
+                      <div className="flex flex-row gap-3 justify-center">
+                        <DoRollbackStatus onClick={() => rollbackStatus(item)} />
+                        <DoDetail onClick={() => detailData(item)} />
+                        {item.rfo_keluhan_id !== null && <DoShowRFOComplain onClick={() => RFOKeluhan(item)} />}
+                        {item.rfo_gangguan_id !== null && <DoShowRFOTrouble onClick={() => RFOMasalDetail(item)} />}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllComplainHistory(i.target.id)} serverMode />)}
+        </>
       )}
       {/* end table */}
     </div>

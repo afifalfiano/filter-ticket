@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { HiPencilAlt } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import FormUpdateProfile from './FormUpdateProfile';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
@@ -17,8 +16,8 @@ function Profile() {
   const [form, setForm] = useState(false);
   const [profile, setProfile] = useState(null);
 
-  const [,setCurrentRole] = useState(null);
-  const [,setCurrentPop] = useState(null);
+  const [, setCurrentRole] = useState(null);
+  const [, setCurrentPop] = useState(null);
 
   const { data: user } = useSelector(selectCurrentUser);
   const role = useSelector(selectAllTeam);

@@ -11,7 +11,7 @@ import { Suspense } from 'react';
 import loadable from '@loadable/component';
 
 
-const Navbar = loadable(() => import('../navbar/Navbar'));
+const Navbar = loadable(() => import('../Navbar/Navbar'));
 const Container = loadable(() => import('./Container'));
 
 function RequireAuth() {

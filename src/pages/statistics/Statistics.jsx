@@ -133,7 +133,7 @@ function Statistics() {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={300}>
-          <BarChart
+            <BarChart
               width={500}
               height={300}
               data={dataFilter}
@@ -271,7 +271,7 @@ function Statistics() {
         <div className="card p-0 pb-5 md:p-5 w-full md:w-1/2 h-auto">
           <p className="label font-semibold justify-center">Grafik Bulan Ini</p>
           <ResponsiveContainer width="100%" height={300}>
-          <BarChart
+            <BarChart
               width={500}
               height={300}
               data={dataGraph?.this_month}

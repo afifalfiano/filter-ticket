@@ -1,23 +1,17 @@
 /* eslint-disable no-undef */
 import { useState, useEffect } from 'react';
-import { HiDocumentText } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Formik, Form } from 'formik';
 import { useAddReplyMutation, useComplainByIdMutation, useLampiranFileBalasanMutation } from '../../../store/features/complain/complainApiSlice';
-import { selectDetailComplain, setComplainById } from '../../../store/features/complain/complainSlice';
+import { setComplainById } from '../../../store/features/complain/complainSlice';
 import { selectBreadcrumb, updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
-import UploadFile from '../../../components/common/forms/UploadFile';
-import TextEditor from '../../../components/common/forms/TextEditor';
 import { ReplySchema } from '../../../utils/schema_validation_form';
 import { usePostNotificationMutation, useReadAllNotificationComplainMutation, useStoreAllNotificationMutation } from '../../../store/features/notification/notificationApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import SectionInformation from '../../../components/DetailProgress/SectionInformation';
-import FirstComplain from '../../../components/DetailProgress/FirstComplain';
-import Progress from '../../../components/DetailProgress/Progress';
-import Button from '../../../components/Button/Button';
+import { Button, Progress, FirstComplain, SectionInformation, UploadFile, TextEditor } from '../../../components';
 
 function DashboardDetail({ rfoSingle, idComplain }) {
   const location = useLocation();

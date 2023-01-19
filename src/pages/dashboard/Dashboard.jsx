@@ -13,9 +13,9 @@ import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
 
-import {DoShowRFOTrouble, DoDelete, DoUpdate, LabelStatus, LoaderGetData, Search, Button, Modal, SelectStatusComplain, SelectPOP ,LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime}  from '../../components/index';
+import { DoShowRFOTrouble, DoDelete, DoUpdate, LabelStatus, LoaderGetData, Search, Button, Modal, SelectStatusComplain, SelectPOP, LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime } from '../../components/index';
 
-const DeleteModal = loadable(() => import('../../components/common/DeleteModal'));
+const DeleteModal = loadable(() => import('../../components/Common/DeleteModal'));
 const ComplainModalForm = loadable(() => import('./modal/ComplainModalForm'));
 const RFOMasalModal = loadable(() => import('./modal/RFOMasalModal'));
 const ReopenModal = loadable(() => import('../history_dashboard/ReopenModal'));

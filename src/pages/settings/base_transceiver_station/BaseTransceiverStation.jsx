@@ -3,18 +3,14 @@ import { useEffect, useState } from 'react';
 import { selectAllBTS, setBTS } from '../../../store/features/bts/btsSlice';
 import { useAllBtsMutation } from '../../../store/features/bts/btsApiSlice';
 import FormBTS from './FormBTS';
-import DeleteModal from '../../../components/common/DeleteModal';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
 import { setPOP } from '../../../store/features/pop/popSlice';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
 
-import SkeletonTable from '../../../components/common/table/SkeletonTable';
-import Pagination from '../../../components/common/table/Pagination';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
-import Modal from '../../../components/modal/Modal';
 import catchError from '../../../services/catchError';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
-import { DoDelete, SelectPOP, DoDetail, DoUpdate, LabelStatusPOP, Search, Button } from '../../../components';
+import { DoDelete, SelectPOP, DoDetail, DoUpdate, SkeletonTable, Modal, DeleteModal, Pagination, LabelStatusPOP, Search, Button } from '../../../components';
 
 const columns = [
   'No',

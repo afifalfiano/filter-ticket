@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import DropdownMenu from './DropdownMenu';
 import Menu from './Menu';
 import Notification from './Notification';
-import Breadcrumb from '../breadcrumb/Breadcrumb';
+import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import { selectBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import InfoUser from './InfoUser';
 import { Link } from 'react-router-dom';

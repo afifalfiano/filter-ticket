@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   useRequestOTPMutation,
   useResetPasswordMutation,
 } from '../../../store/features/auth/authApiSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import {Button} from '../../../components/index';
+import { Button } from '../../../components/index';
 
 function ForgetPassword() {
   const [email, setEmail] = useState('');
@@ -83,7 +83,7 @@ function ForgetPassword() {
       <div className="text-center">
         <h1 className="font-semibold text-2xl">Lupa Password</h1>
         <div className="w-full justify-center p-10">
-        <img src="/forget_password.svg" width={'100%'} height={'100%'} alt="https://storyset.com/people" className="w-auto items-center flex justify-center " />
+          <img src="/forget_password.svg" width={'100%'} height={'100%'} alt="https://storyset.com/people" className="w-auto items-center flex justify-center " />
         </div>
         <div className="my-1 flex justify-center">
           {!showOTP && (

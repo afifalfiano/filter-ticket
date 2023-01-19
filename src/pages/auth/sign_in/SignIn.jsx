@@ -7,9 +7,7 @@ import { setCredentials } from '../../../store/features/auth/authSlice';
 import { SignInSchema } from '../../../utils/schema_validation_form';
 import { encryptLocalStorage } from '../../../utils/helper';
 import catchError from '../../../services/catchError';
-import Button from '../../../components/Button/Button';
-import Wrapper from '../../../components/auth/Wrapper';
-import Required from '../../../components/common/forms/Required';
+import { Button, Wrapper, Required } from '../../../components';
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -23,7 +21,7 @@ function SignIn() {
         email: payload.email,
         password: payload.password,
       }
-      const userData = await login({...body}).unwrap();
+      const userData = await login({ ...body }).unwrap();
       if (userData.hasOwnProperty('bearer_token')) {
         dispatch(setCredentials({ ...userData }));
         encryptLocalStorage('user_encrypt', userData);
@@ -82,7 +80,7 @@ function SignIn() {
                   value={values.email}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.email && touched.email && <Required errors={errors.email}  />}
+                {errors.email && touched.email && <Required errors={errors.email} />}
               </div>
 
               <div className="form-control pt-4 ">
@@ -100,7 +98,7 @@ function SignIn() {
                   value={values.password}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.password && touched.password && <Required errors={errors.password}  />}
+                {errors.password && touched.password && <Required errors={errors.password} />}
               </div>
 
               <div className="label justify-end pt-4 font-semibold link-primary">
@@ -108,7 +106,7 @@ function SignIn() {
               </div>
 
               <div className="form-control mt-5">
-                <Button type="submit" style={{width: '100%'}} disabled={!isValid}>Masuk</Button>
+                <Button type="submit" style={{ width: '100%' }} disabled={!isValid}>Masuk</Button>
               </div>
 
               <div className="label justify-center pt-4">

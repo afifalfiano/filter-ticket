@@ -71,8 +71,8 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
   const doCreate = async (body, resetForm) => {
     const add = await addRFOGangguan({ ...body });
     if (add.data.status === 'success' || add.data.status === 'Success') {
-     handleResponse(add);
-     setTimeout(() => {
+      handleResponse(add);
+      setTimeout(() => {
         resetForm();
         onBtnClose();
         getInfo({ status: 'success' });
@@ -101,7 +101,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className={`modal-box h-fit max-h-fit ${styles['modal-box-custom']}`}>
-        <ButtonIconExit  onClick={onBtnClose} />
+        <ButtonIconExit onClick={onBtnClose} />
         <h3 className="text-lg font-bold">{detail === null ? ('Tambah Reason For Outage Gangguan') : ('Ubah Reason For Outage Gangguan')}</h3>
         <hr className="my-2" />
 
@@ -137,7 +137,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   onChange={handleChange}
                   className="textarea textarea-bordered h-10"
                 />
-                {errors.problem && touched.problem && <Required errors={errors.problem}  />}
+                {errors.problem && touched.problem && <Required errors={errors.problem} />}
               </div>
 
               <div className="form-control">
@@ -155,7 +155,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   onChange={handleChange}
                   className="textarea textarea-bordered h-10"
                 />
-                {errors.action && touched.action && <Required errors={errors.action}  />}
+                {errors.action && touched.action && <Required errors={errors.action} />}
               </div>
 
               <div className="form-control">
@@ -173,7 +173,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                   onChange={handleChange}
                   className="textarea textarea-bordered h-24"
                 />
-                {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi}  />}
+                {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi} />}
               </div>
 
               <div className="flex flex-col md:flex-row gap-3">
@@ -192,7 +192,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                   />
-                  {errors.mulai_gangguan && touched.mulai_gangguan && <Required errors={errors.mulai_gangguan}  />}
+                  {errors.mulai_gangguan && touched.mulai_gangguan && <Required errors={errors.mulai_gangguan} />}
 
                 </div>
 
@@ -211,7 +211,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
                   />
-                  {errors.selesai_gangguan && touched.selesai_gangguan && <Required errors={errors.selesai_gangguan}  />}
+                  {errors.selesai_gangguan && touched.selesai_gangguan && <Required errors={errors.selesai_gangguan} />}
                 </div>
               </div>
 
@@ -251,7 +251,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     <option value="open" label="Open">Open</option>
                     <option value="closed" label="Closed">Closed</option>
                   </Field>
-                  {errors.status && touched.status && <Required errors={errors.status}  />}
+                  {errors.status && touched.status && <Required errors={errors.status} />}
                 </div>
               </div>
 

@@ -95,7 +95,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
   return (
     <div className="fixed w-screen h-screen bg-opacity-80 bg-gray-700 top-0 left-0 bottom-0 right-0 z-50 flex justify-center">
       <div className="modal-box lg:h-fit h-auto max-h-fit max-w-xl">
-      <ButtonIconExit onClick={onBtnClose} />
+        <ButtonIconExit onClick={onBtnClose} />
 
         <h3 className="text-lg font-bold">
           {detail === null && titleAction === 'create' ? 'Tambah Base Transceiver Station' : titleAction === 'update' && 'Ubah Base Transceiver Station'}
@@ -136,7 +136,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.nama_bts && touched.nama_bts && <Required errors={errors.nama_bts}  />}
+                {errors.nama_bts && touched.nama_bts && <Required errors={errors.nama_bts} />}
               </div>
 
               <div className="flex flex-col md:flex-row gap-3">
@@ -154,7 +154,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                     placeholder="Nama PIC"
                     className="input input-md input-bordered max-w-full"
                   />
-                  {errors.nama_pic && touched.nama_pic && <Required errors={errors.nama_pic}  />}
+                  {errors.nama_pic && touched.nama_pic && <Required errors={errors.nama_pic} />}
                 </div>
 
                 <div className="form-control flex-1">
@@ -172,7 +172,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                     onChange={handleChange}
                     className="input input-md input-bordered max-w-full"
                   />
-                  {errors.nomor_pic && touched.nomor_pic && <Required errors={errors.nomor_pic}  />}
+                  {errors.nomor_pic && touched.nomor_pic && <Required errors={errors.nomor_pic} />}
                 </div>
               </div>
 
@@ -191,7 +191,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                     onChange={handleChange}
                     className="input input-md input-bordered max-w-full"
                   />
-                  {errors.lokasi && touched.lokasi && <Required errors={errors.lokasi}  />}
+                  {errors.lokasi && touched.lokasi && <Required errors={errors.lokasi} />}
                 </div>
                 <div className="form-control flex-1">
                   <label htmlFor="location" className="label">
@@ -215,7 +215,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                       </option>
                     ))}
                   </Field>
-                  {errors.pop_id && touched.pop_id && <Required errors={errors.pop_id}  />}
+                  {errors.pop_id && touched.pop_id && <Required errors={errors.pop_id} />}
                 </div>
               </div>
               <div className="form-control">
@@ -233,7 +233,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                   disabled={titleAction === 'read'}
                   className="input input-md input-bordered max-w-full"
                 />
-                {errors.kordinat && touched.kordinat && <Required errors={errors.kordinat}  />}
+                {errors.kordinat && touched.kordinat && <Required errors={errors.kordinat} />}
               </div>
               <div className="form-control">
                 <label htmlFor="deskripsi" className="label">
@@ -250,19 +250,19 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full h-28"
                 />
-                {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi}  />}
+                {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi} />}
               </div>
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (
-              <div className="modal-action justify-center">
-                <Button type="button" onClick={() => onBtnClose()} >Batal</Button>
-                <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
-              </div>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onBtnClose()} >Batal</Button>
+                  <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
+                </div>
               )}
               {titleAction === 'read' && (
-              <div className="modal-action justify-center">
-                <Button type="button" onClick={() => onBtnClose()} >Kembali</Button>
-              </div>
+                <div className="modal-action justify-center">
+                  <Button type="button" onClick={() => onBtnClose()} >Kembali</Button>
+                </div>
               )}
             </Form>
           )}

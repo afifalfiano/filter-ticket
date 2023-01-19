@@ -12,8 +12,7 @@ import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { RFOSingleSchema } from '../../../utils/schema_validation_form';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import SectionInformation from '../../../components/DetailProgress/SectionInformation';
-import Button from '../../../components/Button/Button';
+import {Button, SectionInformation, } from '../../../components';
 
 function DashboardRFOSingle() {
   const navigate = useNavigate();

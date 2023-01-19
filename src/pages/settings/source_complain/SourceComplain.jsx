@@ -1,17 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HiSearch, HiTrash, HiPencil } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
-import DeleteModal from '../../../components/common/DeleteModal';
-import SkeletonTable from '../../../components/common/table/SkeletonTable';
-import Pagination from '../../../components/common/table/Pagination';
 import { useAllSumberKeluhanMutation } from '../../../store/features/sumber_keluhan/sumberKeluhanApiSlice';
 import { selectAllSumberKeluhan, setSumberKeluhan } from '../../../store/features/sumber_keluhan/sumberKeluhanSlice';
 import FormSumberKeluhan from './FormSumberKeluhan';
-import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
-import { Button, DoDelete, DoUpdate, Search } from '../../../components';
+import { Button, DoDelete, DoUpdate, Search, DeleteModal, SkeletonTable, Pagination, Modal } from '../../../components';
 
 const columns = ['No', 'Nama', 'Aksi'];
 

@@ -41,7 +41,7 @@ function VerificationSuccess() {
           Verifikasi email telah berhasil dilakukan silahkan login ke aplikasi.
         </p>
         <div className="form-control mt-5 items-center mx-2">
-          <Button type="submit" style={{width: '100%'}} onClick={() => navigate('/sign_in')} >Masuk</Button>
+          <Button type="submit" style={{ width: '100%' }} onClick={() => navigate('/sign_in')} >Masuk</Button>
         </div>
       </div>
     </div>

@@ -83,7 +83,7 @@ function RFODetailMass() {
                     disabled
                     className="textarea textarea-bordered h-24"
                   />
-                  {errors.problem && touched.problem && <Required errors={errors.problem}  />}
+                  {errors.problem && touched.problem && <Required errors={errors.problem} />}
                 </div>
 
                 <div className="form-control">
@@ -102,7 +102,7 @@ function RFODetailMass() {
                     disabled
                     className="textarea textarea-bordered h-24"
                   />
-                  {errors.action && touched.action && <Required errors={errors.action}  />}
+                  {errors.action && touched.action && <Required errors={errors.action} />}
                 </div>
 
                 <div className="form-control">
@@ -121,7 +121,7 @@ function RFODetailMass() {
                     onChange={handleChange}
                     className="textarea textarea-bordered h-24"
                   />
-                  {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi}  />}
+                  {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi} />}
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-5">
@@ -141,13 +141,13 @@ function RFODetailMass() {
                       disabled
                       className="input input-md input-bordered  max-w-full"
                     />
-                    {errors.mulai_gangguan && touched.mulai_gangguan && <Required errors={errors.mulai_gangguan}  />}
+                    {errors.mulai_gangguan && touched.mulai_gangguan && <Required errors={errors.mulai_gangguan} />}
                   </div>
 
                   <div className="form-control flex-1">
                     <label htmlFor="selesai_gangguan" className="label">
                       <span className="label-text">
-                        
+
                         Waktu Selesai Keluhan
                       </span>
                     </label>
@@ -163,7 +163,7 @@ function RFODetailMass() {
                       disabled
                       className="input input-md input-bordered  max-w-full"
                     />
-                    {errors.selesai_gangguan && touched.selesai_gangguan && <Required errors={errors.selesai_gangguan}  />}
+                    {errors.selesai_gangguan && touched.selesai_gangguan && <Required errors={errors.selesai_gangguan} />}
                   </div>
                 </div>
               </div>
@@ -171,7 +171,7 @@ function RFODetailMass() {
                 <div className="form-control flex-1">
                   <label htmlFor="nomor_tiket" className="label">
                     <span className="label-text">
-                      
+
                       Tiket Pelaporan (Opsional)
                     </span>
                   </label>
@@ -210,9 +210,9 @@ function RFODetailMass() {
             <ComplainEffect key={index} item={item} />
           ))}
           {isSuccess && detailRFOMasal?.keluhan.length === 0 && (
-          <div className="border-2 border-gray-100 rounded-md mt-3 p-3 text-center">
-            <p>Tidak ada keluhan terdampak</p>
-          </div>
+            <div className="border-2 border-gray-100 rounded-md mt-3 p-3 text-center">
+              <p>Tidak ada keluhan terdampak</p>
+            </div>
           )}
         </div>
       </div>

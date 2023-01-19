@@ -8,9 +8,7 @@ import { useAllTeamPublicMutation } from '../../../store/features/team/teamApiSl
 import { SignUpSchema } from '../../../utils/schema_validation_form';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import Wrapper from '../../../components/auth/Wrapper';
-import Button from '../../../components/Button/Button';
-import Required from '../../../components/common/forms/Required';
+import { Button, Wrapper, Required } from '../../../components';
 
 function SignUp() {
   const navigate = useNavigate();
@@ -141,7 +139,7 @@ function SignUp() {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.name && touched.name && <Required errors={errors.name}  />}
+                {errors.name && touched.name && <Required errors={errors.name} />}
               </div>
 
               <div className="form-control">
@@ -159,7 +157,7 @@ function SignUp() {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.email && touched.email && <Required errors={errors.email}  />}
+                {errors.email && touched.email && <Required errors={errors.email} />}
               </div>
 
               <div className="form-control">
@@ -175,11 +173,11 @@ function SignUp() {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {optionTeam.map((item ,index) => (
+                  {optionTeam.map((item, index) => (
                     <option key={index} value={item.value} label={item.label}>{item.label}</option>
                   ))}
                 </Field>
-                {errors?.role_id && touched?.role_id && <Required errors={errors.role_id}  />}
+                {errors?.role_id && touched?.role_id && <Required errors={errors.role_id} />}
               </div>
 
               <div className="form-control">
@@ -200,7 +198,7 @@ function SignUp() {
                     <option key={index} value={item.value} label={item.label}>{item.label}</option>
                   ))}
                 </Field>
-                {errors.pop_id && touched.pop_id && <Required errors={errors.pop_id}  />}
+                {errors.pop_id && touched.pop_id && <Required errors={errors.pop_id} />}
               </div>
 
               <div className="form-control ">
@@ -217,7 +215,7 @@ function SignUp() {
                   value={values.password}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.password && touched.password && <Required errors={errors.password}  />}
+                {errors.password && touched.password && <Required errors={errors.password} />}
               </div>
 
               <div className="form-control ">
@@ -234,23 +232,23 @@ function SignUp() {
                   value={values.password_confirmation}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.password_confirmation && touched.password_confirmation && <Required errors={errors.password_confirmation}  /> }
+                {errors.password_confirmation && touched.password_confirmation && <Required errors={errors.password_confirmation} />}
               </div>
 
               <div className="form-control">
                 <label htmlFor="agreement" className="label flex justify-start items-center align-middle gap-2">
-                <Field
-                  type="checkbox"
-                  id="agreement"
-                  name="agreement"
-                />
-                <span className="label-text w-full">Saya setuju untuk membuat akun.</span>
+                  <Field
+                    type="checkbox"
+                    id="agreement"
+                    name="agreement"
+                  />
+                  <span className="label-text w-full">Saya setuju untuk membuat akun.</span>
                 </label>
-                {errors.agreement && touched.agreement && <Required errors={errors.agreement}  />}
+                {errors.agreement && touched.agreement && <Required errors={errors.agreement} />}
               </div>
 
               <div className="form-control mt-5">
-                <Button type="submit" style={{width: '100%'}} disabled={!isValid || values.agreement === false}>Daftar</Button>
+                <Button type="submit" style={{ width: '100%' }} disabled={!isValid || values.agreement === false}>Daftar</Button>
               </div>
               <div className="label justify-center pt-4">
                 <span>Sudah punya akun?</span>

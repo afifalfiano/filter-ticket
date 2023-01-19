@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import Pagination from '../../components/common/table/Pagination';
 import catchError from '../../services/catchError';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import {
@@ -11,8 +10,7 @@ import {
   selectAllRFO,
   setRFO,
 } from '../../store/features/rfo/rfoSlice';
-import SkeletonTable from '../../components/common/table/SkeletonTable';
-import { CategoryRFO, DoDetail, DoUpdate, Search } from '../../components';
+import { CategoryRFO, DoDetail, DoUpdate, Search, SkeletonTable, Pagination } from '../../components';
 
 const columns = [
   'No',

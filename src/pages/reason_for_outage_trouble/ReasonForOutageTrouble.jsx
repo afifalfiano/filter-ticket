@@ -1,17 +1,7 @@
 import { useEffect, useState } from 'react';
-import {
-  HiSearch,
-  HiPencil,
-  HiTrash,
-  HiEye,
-} from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, CategoryRFO, DoDelete, DoDetail, DoShowRFOTrouble, DoUpdate, LabelStatus, Search } from '../../components';
-import DeleteModal from '../../components/common/DeleteModal';
-import Pagination from '../../components/common/table/Pagination';
-import SkeletonTable from '../../components/common/table/SkeletonTable';
-import Modal from '../../components/modal/Modal';
+import { Button, CategoryRFO, DoDelete, DoDetail, DoUpdate, LabelStatus, Search, DeleteModal, Pagination, SkeletonTable, Modal } from '../../components';
 import catchError from '../../services/catchError';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
@@ -20,7 +10,6 @@ import {
 } from '../../store/features/rfo/rfoApiSlice';
 import {
   selectAllRFOMasal,
-  setRFO,
   setRFOMasal,
 } from '../../store/features/rfo/rfoSlice';
 import RFOModalForm from '../reason_of_outage/RFOModalForm';
@@ -137,7 +126,7 @@ function ReasonForOutageTrouble() {
     setDetail(item);
     openModal('update rfo gangguan')
   }
-  
+
   const detailData = (item) => {
     navigate(
       `/reason_of_outage/detail_masal/${item.id_rfo_gangguan}`

@@ -1,17 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HiSearch, HiPencil, HiCheckCircle, HiOutlineBan } from 'react-icons/hi';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
-import SkeletonTable from '../../../components/common/table/SkeletonTable';
-import Pagination from '../../../components/common/table/Pagination';
 import { selectAllUsers, setUsers } from '../../../store/features/users/usersSlice';
 import { useAllUsersMutation } from '../../../store/features/users/usersApiSlice';
 import FormUser from './FormUser';
-import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
-import DeleteModal from '../../../components/common/DeleteModal';
-import { DoActivate, DoDeactivate, DoUpdate, Search } from '../../../components';
+import { DoActivate, DoDeactivate, DoUpdate, Search, DeleteModal, Modal, Pagination, SkeletonTable } from '../../../components';
 
 
 const columns = ['No', 'Nama', 'Email', 'Role Id', 'Pop Id', 'Status', 'Aksi'];

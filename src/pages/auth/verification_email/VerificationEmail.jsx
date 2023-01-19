@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../components';
 
 function VerificationEmail() {
@@ -14,7 +14,7 @@ function VerificationEmail() {
           Silahkan cek inbox email anda untuk melakukan verifikasi email.
         </p>
         <div className="form-control mt-5 items-center mx-2">
-          <Button type="submit" style={{width: '100%'}} onClick={() => navigate('/sign_in')} >Masuk</Button>
+          <Button type="submit" style={{ width: '100%' }} onClick={() => navigate('/sign_in')} >Masuk</Button>
         </div>
       </div>
     </div>

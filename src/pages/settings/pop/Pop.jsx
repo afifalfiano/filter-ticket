@@ -1,16 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { updateBreadcrumb } from '../../../store/features/breadcrumb/breadcrumbSlice';
-import DeleteModal from '../../../components/common/DeleteModal';
-import SkeletonTable from '../../../components/common/table/SkeletonTable';
-import Pagination from '../../../components/common/table/Pagination';
 import { selectAllPOP, setPOP } from '../../../store/features/pop/popSlice';
 import { useAllPOPMutation } from '../../../store/features/pop/popApiSlice';
 import FormPOP from './FormPOP';
-import Modal from '../../../components/modal/Modal';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
-import { Button, DoDelete, DoUpdate, Search } from '../../../components';
+import { Button, DoDelete, DoUpdate, Search, Modal, SkeletonTable, Pagination, DeleteModal } from '../../../components';
 
 const columns = ['No', 'Nama', 'Aksi'];
 
