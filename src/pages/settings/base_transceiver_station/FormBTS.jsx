@@ -10,7 +10,7 @@ import { FormBTSSchema } from '../../../utils/schema_validation_form';
 import { setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import handleResponse from '../../../services/handleResponse';
-import { ButtonIconExit } from '../../../components';
+import { Button, ButtonIconExit, Required } from '../../../components';
 
 function FormBTS({ stateModal, getInfo, detail, titleAction }) {
   const [addData] = useAddBtsMutation();
@@ -136,9 +136,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full"
                 />
-                {errors.nama_bts && touched.nama_bts ? (
-                  <div className="label label-text text-red-500">{errors.nama_bts}</div>
-                ) : null}
+                {errors.nama_bts && touched.nama_bts && <Required errors={errors.nama_bts}  />}
               </div>
 
               <div className="flex flex-col md:flex-row gap-3">
@@ -156,9 +154,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                     placeholder="Nama PIC"
                     className="input input-md input-bordered max-w-full"
                   />
-                  {errors.nama_pic && touched.nama_pic ? (
-                    <div className="label label-text text-red-500">{errors.nama_pic}</div>
-                  ) : null}
+                  {errors.nama_pic && touched.nama_pic && <Required errors={errors.nama_pic}  />}
                 </div>
 
                 <div className="form-control flex-1">
@@ -176,9 +172,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                     onChange={handleChange}
                     className="input input-md input-bordered max-w-full"
                   />
-                  {errors.nomor_pic && touched.nomor_pic ? (
-                    <div className="label label-text text-red-500">{errors.nomor_pic}</div>
-                  ) : null}
+                  {errors.nomor_pic && touched.nomor_pic && <Required errors={errors.nomor_pic}  />}
                 </div>
               </div>
 
@@ -197,9 +191,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                     onChange={handleChange}
                     className="input input-md input-bordered max-w-full"
                   />
-                  {errors.lokasi && touched.lokasi ? (
-                    <div className="label label-text text-red-500">{errors.lokasi}</div>
-                  ) : null}
+                  {errors.lokasi && touched.lokasi && <Required errors={errors.lokasi}  />}
                 </div>
                 <div className="form-control flex-1">
                   <label htmlFor="location" className="label">
@@ -223,9 +215,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                       </option>
                     ))}
                   </Field>
-                  {errors.pop_id && touched.pop_id ? (
-                    <div className="label label-text text-red-500">{errors.pop_id}</div>
-                  ) : null}
+                  {errors.pop_id && touched.pop_id && <Required errors={errors.pop_id}  />}
                 </div>
               </div>
               <div className="form-control">
@@ -243,9 +233,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                   disabled={titleAction === 'read'}
                   className="input input-md input-bordered max-w-full"
                 />
-                {errors.kordinat && touched.kordinat ? (
-                  <div className="label label-text text-red-500">{errors.kordinat}</div>
-                ) : null}
+                {errors.kordinat && touched.kordinat && <Required errors={errors.kordinat}  />}
               </div>
               <div className="form-control">
                 <label htmlFor="deskripsi" className="label">
@@ -262,41 +250,18 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
                   onChange={handleChange}
                   className="input input-md input-bordered  max-w-full h-28"
                 />
-                {errors.deskripsi && touched.deskripsi ? (
-                  <div className="label label-text text-red-500">{errors.deskripsi}</div>
-                ) : null}
+                {errors.deskripsi && touched.deskripsi && <Required errors={errors.deskripsi}  />}
               </div>
               <hr className="my-2 mt-10" />
               {titleAction !== 'read' && (
               <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md  w-32"
-                  onClick={onBtnClose}
-                >
-                  Batal
-                </button>
-                <button
-                  disabled={!isValid}
-                  type="submit"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md  w-32 btn-success text-white"
-                >
-                  Simpan
-                </button>
+                <Button type="button" onClick={() => onBtnClose()} >Batal</Button>
+                <Button type="submit" className="btn-success" disabled={!isValid} >Simpan</Button>
               </div>
               )}
               {titleAction === 'read' && (
               <div className="modal-action justify-center">
-                <button
-                  type="button"
-                  htmlFor="my-modal-3"
-                  className="btn btn-md"
-                  onClick={onBtnClose}
-                >
-                  Kembali
-                </button>
+                <Button type="button" onClick={() => onBtnClose()} >Kembali</Button>
               </div>
               )}
             </Form>

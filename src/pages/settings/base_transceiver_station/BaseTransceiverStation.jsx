@@ -1,9 +1,3 @@
-import {
-  HiSearch,
-  HiTrash,
-  HiEye,
-  HiPencil,
-} from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { selectAllBTS, setBTS } from '../../../store/features/bts/btsSlice';
@@ -20,18 +14,20 @@ import { selectModalState, setModal } from '../../../store/features/modal/modalS
 import Modal from '../../../components/modal/Modal';
 import catchError from '../../../services/catchError';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
+import { DoDelete, SelectPOP, DoDetail, DoUpdate, LabelStatusPOP, Search, Button } from '../../../components';
+
+const columns = [
+  'No',
+  'POP',
+  'Nama',
+  'Penanggung Jawab',
+  'No Penanggung Jawab',
+  'Lokasi',
+  'Koordinat',
+  'Aksi',
+];
 
 function BaseTransceiverStation() {
-  const columns = [
-    'No',
-    'POP',
-    'Nama',
-    'Penanggung Jawab',
-    'No Penanggung Jawab',
-    'Lokasi',
-    'Koordinat',
-    'Aksi',
-  ];
 
   const [rows, setRows] = useState([]);
   const [dataPOP, setdataPOP] = useState([]);
@@ -40,7 +36,7 @@ function BaseTransceiverStation() {
   const dispatch = useDispatch();
   const [detail, setDetail] = useState(null);
   const [search, setSearch] = useState('');
-  const {data: user} = useSelector(selectCurrentUser);
+  const { data: user } = useSelector(selectCurrentUser);
 
   const [title, setTitle] = useState('update');
 
@@ -136,7 +132,7 @@ function BaseTransceiverStation() {
         setRows(result);
         setCurrentPage(data.data.current_page);
         setPerPage([data.data.per_page]);
-        
+
         const countPaginate = [];
         for (let i = 0; i < data.data.last_page; i++) {
           countPaginate.push(i + 1);
@@ -164,171 +160,96 @@ function BaseTransceiverStation() {
     }
   };
 
+
+  const addData = () => {
+    setDetail(null);
+    setTitle('create');
+    openModal('add bts');
+  }
+
+  const updateData = (item) => {
+    setDetail(item);
+    setTitle('update');
+    openModal('update bts');
+  }
+
+  const deleteData = (item) => {
+    setDetail(item);
+    openModal('delete bts');
+  }
+
+  const detailData = (item) => {
+    setDetail(item);
+    setTitle('read');
+    openModal('detail bts');
+  }
+
   return (
     <div>
       {user?.role_id === 0 && (
-      <div>
-        <button
-          className="btn btn-md sm:btn-md md:btn-md lg:btn-md  w-32"
-          onClick={() => {
-            setDetail(null);
-            setTitle('create');
-            openModal('add bts');
-          }}
-        >
-          Tambah
-        </button>
-      </div>
+        <div>
+          <Button type="button" onClick={() => addData()} >Tambah</Button>
+        </div>
       )}
 
       {!isLoading && (
-      <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <div className="form-control w-full md:w-52">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> POP</span>
-          </label>
-
-          <select
-            className="select w-full max-w-full input-bordered"
-            onChange={handlePOP}
-          >
-            <option value="all" label="Semua" defaultValue={'all'}>All</option>
-            {dataPOP?.map((item, index) => (
-              <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
-            ))}
-          </select>
-        </div>
-        <div className="form-control">
-          <label htmlFor="location" className="label font-semibold">
-            <span className="label-text"> Cari</span>
-          </label>
-          <div className="flex items-center">
-            <div className="relative w-full">
-              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-                <HiSearch />
-              </div>
-              <input
-                type="text"
-                id="voice-search"
-                className="input input-md input-bordered pl-10 p-2.5 w-full md:w-52 "
-                placeholder="Cari data BTS..."
-                value={search}
-                onChange={onHandleSearch}
-              />
-            </div>
+        <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
+          <div className="form-control w-full md:w-52">
+            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
           </div>
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data BTS...'} />
+
         </div>
-      </div>
       )}
 
       <Modal>
-        {stateModal?.bts?.showAddModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
-        {stateModal?.bts?.showUpdateModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.bts?.showAddModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
+        {stateModal?.bts?.showUpdateModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
         {stateModal?.bts?.showDeleteModalBts && <DeleteModal stateModal={stateModal} getInfo={getInfo} detail={detail} title="BTS" />}
-        {stateModal?.bts?.showDetailModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} /> }
+        {stateModal?.bts?.showDetailModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
       </Modal>
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
       {/* start table */}
       {!isLoading && (
-      <div className="overflow-x-auto mt-8">
-        <table className="table table-zebra w-full">
-          <thead>
-            <tr>
-              {columns.map((item, index) => (
-                <th key={index} className="text-center">{item}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            { rows.map((item, index) => (
-              <tr className="text-center" id={item.id} key={index}>
-                <td id={item.id}>{index + 1}</td>
-                <td>
-                  { item?.pop?.pop === 'Yogyakarta' ? (
-                    <span className="badge badge-success text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  ) : item?.pop?.pop === 'Solo' ? (
-                    <span className="badge badge-warning text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  ) : item?.pop?.pop === 'Purwokerto' ? (
-                    <span className="badge badge-info text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  ) : (
-                    <span className="badge text-white">
-                      {item?.pop?.pop}
-                    </span>
-                  )}
-                </td>
-                <td>{item.nama_bts}</td>
-                <td>{item.nama_pic}</td>
-                <td>{item.nomor_pic}</td>
-                <td>{item.lokasi}</td>
-                <td>{item.kordinat}</td>
-                <td>
-                {user?.role_id === 0 ? (
-                <div className="flex flex-row gap-3 justify-center">
-                  <div className="tooltip" data-tip="Edit">
-                    <HiPencil
-                      className="cursor-pointer"
-                      size={20}
-                      color="#D98200"
-                      onClick={() => {
-                        setDetail(item);
-                        setTitle('update');
-                        openModal('update bts');
-                      }}
-                    />
-                  </div>
-                  <div className="tooltip" data-tip="Hapus">
-                    <HiTrash
-                      size={20}
-                      color="#FF2E00"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setDetail(item);
-                        openModal('delete bts');
-                      }}
-                    />
-                  </div>
-                  <div className="tooltip" data-tip="Detail">
-                    <HiEye
-                      size={20}
-                      color="#0D68F1"
-                      className="cursor-pointer"
-                      onClick={() => {
-                        setDetail(item);
-                        setTitle('read');
-                        openModal('detail bts');
-                      }}
-                    />
-                  </div>
-                </div>
-                ) : (
-                  <div className="tooltip" data-tip="Detail">
-                  <HiEye
-                    size={20}
-                    color="#0D68F1"
-                    className="cursor-pointer"
-                    onClick={() => {
-                      setDetail(item);
-                      setTitle('read');
-                      openModal('detail bts');
-                    }}
-                  />
-                </div>
-                )}
-              </td>
-
+        <div className="overflow-x-auto mt-8">
+          <table className="table table-zebra w-full">
+            <thead>
+              <tr>
+                {columns.map((item, index) => (
+                  <th key={index} className="text-center">{item}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {rows.map((item, index) => (
+                <tr className="text-center" id={item.id} key={index}>
+                  <td id={item.id}>{index + 1}</td>
+                  <td>
+                    <LabelStatusPOP status={item?.pop?.pop} />
+                  </td>
+                  <td>{item.nama_bts}</td>
+                  <td>{item.nama_pic}</td>
+                  <td>{item.nomor_pic}</td>
+                  <td>{item.lokasi}</td>
+                  <td>{item.kordinat}</td>
+                  <td>
+                    {user?.role_id === 0 ? (
+                      <div className="flex flex-row gap-3 justify-center">
+                        <DoUpdate onClick={() => updateData(item)} />
+                        <DoDelete onClick={() => deleteData(item)} />
+                        <DoDetail onClick={() => detailData(item)} />
+                      </div>
+                    ) : <DoDetail onClick={() => detailData(item)} />
+                    }
+                  </td>
+
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
       {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllBTS(i.target.id)} serverMode />)}
       {/* end table */}
