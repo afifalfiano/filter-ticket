@@ -1,12 +1,14 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-unused-vars */
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useVerificationEmailMutation } from '../../../store/features/auth/authApiSlice';
 import handleResponse from '../../../services/handleResponse';
 import catchError from '../../../services/catchError';
+import { Button } from '../../../components';
 
 function VerificationSuccess() {
+  const navigate = useNavigate();
   const params = useLocation();
   const [verificationEmail] = useVerificationEmailMutation();
 
@@ -39,9 +41,7 @@ function VerificationSuccess() {
           Verifikasi email telah berhasil dilakukan silahkan login ke aplikasi.
         </p>
         <div className="form-control mt-5 items-center mx-2">
-          <Link className="btn btn-md btn-block" to="/sign_in">
-            Masuk
-          </Link>
+          <Button type="submit" style={{width: '100%'}} onClick={() => navigate('/sign_in')} >Masuk</Button>
         </div>
       </div>
     </div>
