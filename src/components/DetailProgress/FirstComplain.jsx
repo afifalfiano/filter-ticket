@@ -7,7 +7,7 @@ function FirstComplain({...props}) {
         <div className='w-1/12 hidden lg:flex items-center justify-center ml-2'>
           <div className="avatar">
             <div className={`w-16 rounded-full ring ${props.detailComplain?.user?.aktif ? 'ring-green-400' : 'ring-red-400'} ring-offset-base-100 ring-offset-2`}>
-              <img width={'100%'} height={'100%'} src={props.detailComplain?.user?.avatar} alt={props.detailComplain?.user?.name} />
+              <img fetchpriority="high" width={'100%'} height={'100%'} src={props.detailComplain?.user?.avatar} alt={props.detailComplain?.user?.name} />
             </div>
           </div>
         </div>

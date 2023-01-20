@@ -83,7 +83,7 @@ function ForgetPassword() {
       <div className="text-center">
         <h1 className="font-semibold text-2xl">Lupa Password</h1>
         <div className="w-full justify-center p-10">
-          <img src="/forget_password.svg" width={'100%'} height={'100%'} alt="https://storyset.com/people" className="w-auto items-center flex justify-center " />
+          <img fetchpriority="high" src="/forget_password.svg" width={'100%'} height={'100%'} alt="https://storyset.com/people" className="w-auto items-center flex justify-center " />
         </div>
         <div className="my-1 flex justify-center">
           {!showOTP && (

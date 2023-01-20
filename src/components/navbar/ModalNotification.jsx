@@ -92,10 +92,10 @@ const ModalNotification = ({totalCount, data}) => {
   const getAllNotification = async () => {
     try {
       const data = await getNotification().unwrap();
-      if (data.data.status !== 'Unauthenticated') {
+      if (data?.data?.status !== 'Unauthenticated') {
         setDataNotification(data.data);
         let total = 0;
-        data.data.forEach((item, i) => {
+        data?.data?.forEach((item, i) => {
           if (item.is_read === false) {
             total++;
           }

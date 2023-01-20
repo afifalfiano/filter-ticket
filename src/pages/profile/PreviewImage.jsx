@@ -60,7 +60,7 @@ function PreviewImage({ stateModal, getInfo }) {
         <div className="flex justify-center align-middle items-center  flex-col text-cennter">
           <ButtonUpload onChange={(e) => handleChange(e)} />
           <div className="border rounded-md mt-5 p-5">
-            {avatar && <img width={'100%'} height={'100%'} src={avatar} alt="avatar" className="image-full max-w-md" />}
+            {avatar && <img fetchpriority="high" width={'100%'} height={'100%'} src={avatar} alt="avatar" className="image-full max-w-md" />}
             {!avatar && <p>Belum ada gambar</p>}
           </div>
         </div>

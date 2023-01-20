@@ -27,7 +27,7 @@ function NotFound() {
         <h1 className="font-semibold text-2xl">Halaman Tidak Ditemukan</h1>
         <div className="my-5 flex justify-center">
           <div className="my-5 flex justify-center">
-            <img src="/not-found.svg" width={'100%'} height={'100%'} alt="https://storyset.com/work" className="w-72 items-center flex justify-center" />
+            <img fetchpriority="high" src="/not-found.svg" width={'100%'} height={'100%'} alt="https://storyset.com/work" className="w-72 items-center flex justify-center" />
           </div>
         </div>
         <div className="form-control mt-5 items-center mx-2">

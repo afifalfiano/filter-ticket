@@ -8,7 +8,7 @@ function VerificationEmail() {
       <div className="text-center">
         <h1 className="font-semibold text-2xl">Verifikasi Email</h1>
         <div className="my-5 flex justify-center">
-          <img src="/check_email.svg" width={'100%'} height={'100%'} alt="https://storyset.com/business" className="w-72 items-center flex justify-center" />
+          <img fetchpriority="high" src="/check_email.svg" width={'100%'} height={'100%'} alt="https://storyset.com/business" className="w-72 items-center flex justify-center" />
         </div>
         <p className="label w-72">
           Silahkan cek inbox email anda untuk melakukan verifikasi email.

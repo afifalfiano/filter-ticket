@@ -37,7 +37,7 @@ function TemplateReport({...props}) {
           </div>
           <div className="flex-1">
             <div className="flex flex-col items-end">
-              <img src="/report_logo.png" alt="Repor" width={157} className="image-full mt-4" />
+              <img fetchpriority="high" src="/report_logo.png" alt="Repor" width={157} className="image-full mt-4" />
             </div>
           </div>
         </div>

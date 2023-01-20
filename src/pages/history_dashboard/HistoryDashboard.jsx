@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAllComplainHistoryMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
 import { selectAllComplainHistory, setComplainHistory } from '../../store/features/complain_history/complainHistorySlice';
-import ReopenModal from './ReopenModal';
 import { useAllPOPMutation } from '../../store/features/pop/popApiSlice';
 import { setPOP } from '../../store/features/pop/popSlice';
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
@@ -11,6 +10,9 @@ import { selectModalState, setModal } from '../../store/features/modal/modalSlic
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import catchError from '../../services/catchError';
 import { DoShowRFOTrouble, Search, SelectPOP, Modal, Pagination, SkeletonTable, LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime } from '../../components/index';
+import loadable from '@loadable/component';
+
+const ReopenModal = loadable(() => import('./ReopenModal'));
 
 function HistoryDashboard() {
   const initColumns = [

@@ -8,7 +8,7 @@ function PreviewProfile({ ...props }) {
         <div className="avatar">
           <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
             <span className="text-3xl">
-              <img width={'100%'} height={'100%'} src={props.profile?.avatar} alt={props.profile?.name} />
+              <img fetchpriority="high" width={'100%'} height={'100%'} src={props.profile?.avatar} alt={props.profile?.name} />
             </span>
           </div>
         </div>
