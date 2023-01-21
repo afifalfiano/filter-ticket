@@ -26,7 +26,7 @@ function RFOMasalModal({ stateModal, getInfo, detail }) {
     dispatch(setModal(newState));
   };
   const doGetAllRFOMasal = async (page = 1) => {
-    const param = `?page=${page}`;
+    const param = `?page=${page}&status=open`;
     try {
       const data = await allRFOMasal(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
