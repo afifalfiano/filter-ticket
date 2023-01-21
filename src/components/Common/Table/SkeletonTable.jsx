@@ -19,7 +19,7 @@ function SkeletonTable({
 }) {
   return (
     <div className="mt-5">
-      {showFilter && (
+      {/* {showFilter && (
         <Skeleton
           count={totalFilter}
           inline
@@ -27,7 +27,7 @@ function SkeletonTable({
           height={40}
           wrapper={InlineWrapperWithMargin}
         />
-      )}
+      )} */}
       <table className="table table-zebra w-full my-5 py-5 px-5">
         <thead>
           <tr>

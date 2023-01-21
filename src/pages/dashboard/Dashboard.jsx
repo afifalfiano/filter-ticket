@@ -315,7 +315,7 @@ const Dashboard = () => {
 
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
         <div className="form-control w-full md:w-52">
-          <SelectStatusComplain handleStatus={handleStatus} />
+          <SelectStatusComplain handleStatus={handleStatus} all={false} />
         </div>
 
         <div className="form-control w-full md:w-52">

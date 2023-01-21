@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, CategoryRFO, DoDelete, DoDetail, DoUpdate, LabelStatus, Search, DeleteModal, Pagination, SkeletonTable, Modal } from '../../components';
+import { Button, CategoryRFO, DoDelete, DoDetail, DoUpdate, LabelStatus, Search, DeleteModal, Pagination, SkeletonTable, Modal, SelectStatusComplain } from '../../components';
 import catchError from '../../services/catchError';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
@@ -31,6 +31,7 @@ const columns = [
 
 function ReasonForOutageTrouble() {
   const navigate = useNavigate();
+  const [status, setStatus] = useState(null);
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
   const [allRFOMasal, { isLoading }] = useAllRFOMasalMutation();
@@ -55,8 +56,8 @@ function ReasonForOutageTrouble() {
     window.scrollTo(0, 0);
   }
 
-  const getAllRFOMasal = useCallback(debounce(async (keyword = '', page = 1) => {
-    const param = `?page=${page}&keyword=${keyword}`;
+  const getAllRFOMasal = useCallback(debounce(async (status = null, keyword = '', page = 1) => {
+    const param = `?page=${page}&keyword=${keyword}&status=${status}`;
     try {
       const data = await allRFOMasal(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -89,34 +90,18 @@ function ReasonForOutageTrouble() {
         { path: '/reason_of_outage_gangguan', title: 'Reason For Outage Gangguan' },
       ])
     );
-    getAllRFOMasal();
+    getAllRFOMasal(status, search, currentPage);
   }, []);
 
   const onHandleSearch = (event) => {
     setSearch(event.target.value);
-    console.log(event.target.value, 'ev')
-    getAllRFOMasal(event.target.value);
-
-    // if (event.target.value.length > 0) {
-    //   const regex = new RegExp(search, 'ig');
-    //   const searchResult = allData.filter((item) => {
-    //     if (item.problem.match(regex)) {
-    //       return item;
-    //     }
-    //   });
-    //   setRows(searchResult);
-    // } else {
-    //   const searchResult = allData.filter((item) => {
-    //     return item;
-    //   });
-    //   setRows(searchResult);
-    // }
+    getAllRFOMasal(status, event.target.value, currentPage);
   }
 
   const getInfo = ($event) => {
     if ($event.status === 'success') {
       setDetail(null);
-      getAllRFOMasal();
+      getAllRFOMasal(status, search, currentPage);
     }
   };
 
@@ -141,6 +126,11 @@ function ReasonForOutageTrouble() {
     openModal('delete rfo gangguan');
   }
 
+  const handleStatus = (event) => {
+    setStatus(event.target.value);
+    getAllRFOMasal(event.target.value, search, currentPage);
+  }
+
   return (
     <div>
       <div>
@@ -148,15 +138,14 @@ function ReasonForOutageTrouble() {
           <Button type="button" onClick={() => addData()}>Tambah</Button>
         </div>
       </div>
-      {!isLoading && (
+
         <div className="flex gap-5 flex-col md:flex md:flex-row">
           <div className="form-control w-full md:w-52">
-            <CategoryRFO defaultValue={'masal'} data={<option value="masal" label="RFO Gangguan">RFO Gangguan</option>} />
+            <SelectStatusComplain handleStatus={handleStatus} all={true} />
           </div>
 
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data RFO gangguan...'} />
         </div>
-      )}
 
       <Modal>
         {stateModal?.rfo?.showAddModalRFOTrouble && <RFOModalForm stateModal={stateModal} detail={detail} getInfo={getInfo} />}
@@ -214,7 +203,7 @@ function ReasonForOutageTrouble() {
         </div>
       )}
 
-      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllRFOMasal(i.target.id)} serverMode />)}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllRFOMasal(status, search, i.target.id)} serverMode />)}
       {/* end table */}
     </div>
   );

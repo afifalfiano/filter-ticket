@@ -12,6 +12,7 @@ function SelectStatusComplain({ ...props }) {
                 onChange={props.handleStatus}
                 defaultValue={'open'}
             >
+                {props.all && <option value="null" label="All">All</option>}
                 <option value="open" label="Open Case">Open Case</option>
                 <option value="closed" label="Closed Case">Closed Case</option>
             </select>

@@ -109,10 +109,6 @@ function ReasonOfOutage() {
     <div>
       {!isLoading && (
         <div className="flex gap-5 flex-col md:flex md:flex-row">
-          <div className="form-control w-full md:w-52">
-            <CategoryRFO defaultValue={statusData} data={<option value="sendiri" label="RFO Keluhan">RFO Keluhan</option>} />
-          </div>
-
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data RFO keluhan...'} />
         </div>
       )}
