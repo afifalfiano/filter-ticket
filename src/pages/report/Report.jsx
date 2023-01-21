@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlice';
@@ -11,6 +11,7 @@ import { selectModalState, setModal } from '../../store/features/modal/modalSlic
 import { useAllReportMutation } from '../../store/features/report/reportApiSlice';
 import catchError from '../../services/catchError';
 import { Button, Pagination, DoDelete, DeleteModal, SkeletonTable, Modal, DoDetail, DoPrint, LabelStatusPOP, Search, SelectPOP } from '../../components';
+import { debounce } from 'lodash';
 
 const columns = [
   'No',
@@ -124,7 +125,7 @@ function Report() {
     // }
   }
 
-  const doGetAllReport = async (pop = '', search = '', page = 1) => {
+  const doGetAllReport = useCallback(debounce(async (pop = '', search = '', page = 1) => {
     const param = `?page=${page}&pop_id=${pop}&keyword=${search}`;
     try {
       const data = await allReport(param).unwrap();
@@ -148,7 +149,7 @@ function Report() {
       setRows([]);
       catchError(error, true);
     }
-  }
+  }, 1000), []);
 
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/report', title: 'Laporan' }]));

@@ -7,6 +7,8 @@ import FormUser from './FormUser';
 import { selectModalState, setModal } from '../../../store/features/modal/modalSlice';
 import catchError from '../../../services/catchError';
 import { DoActivate, DoDeactivate, DoUpdate, Search, DeleteModal, Modal, Pagination, SkeletonTable } from '../../../components';
+import { debounce } from 'lodash';
+import { useCallback } from 'react';
 
 
 const columns = ['No', 'Nama', 'Email', 'Role Id', 'Pop Id', 'Status', 'Aksi'];
@@ -42,8 +44,8 @@ function Users() {
     window.scrollTo(0, 0);
   }
 
-  const getAllUsers = async (page = 1) => {
-    const param = `?page=${page}`;
+  const getAllUsers = useCallback(debounce(async (search = '', page = 1) => {
+    const param = `?page=${page}&keyword=${search}`;
     try {
       const data = await allUsers(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -66,23 +68,24 @@ function Users() {
       setRows([]);
       catchError(err, true);
     }
-  };
+  }, 1000), []);
 
   const onHandleSearch = (event) => {
     setSearch(event.target.value);
-    if (event.target.value.length > 0) {
-      const regex = new RegExp(search, 'ig');
-      const searchResult = dataRow.data.filter((item) => item.name.match(regex) || item.email.match(regex));
-      setRows(searchResult);
-    } else {
-      setRows(dataRow.data);
+    getAllUsers(event.target.value, currentPage);
+    // if (event.target.value.length > 0) {
+    //   const regex = new RegExp(search, 'ig');
+    //   const searchResult = dataRow.data.filter((item) => item.name.match(regex) || item.email.match(regex));
+    //   setRows(searchResult);
+    // } else {
+    //   setRows(dataRow.data);
 
-    }
+    // }
   };
 
   const getInfo = ($event) => {
     if ($event.status === 'success') {
-      getAllUsers();
+      getAllUsers(search, currentPage);
     }
   };
 
@@ -92,7 +95,7 @@ function Users() {
         { path: '/users', title: 'Pengaturan Pengguna' },
       ])
     );
-    getAllUsers();
+    getAllUsers(search, currentPage);
   }, []);
 
   const updateData = (item) => {
@@ -172,7 +175,7 @@ function Users() {
           </table>
         </div>
       )}
-      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllUsers(i.target.id)} serverMode />)}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllUsers(search, i.target.id)} serverMode />)}
       {/* end table */}
     </div>
   );

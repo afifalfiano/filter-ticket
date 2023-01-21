@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAllComplainHistoryMutation } from '../../store/features/complain_history/complainHistoryApiSlice';
@@ -11,6 +11,7 @@ import { updateBreadcrumb } from '../../store/features/breadcrumb/breadcrumbSlic
 import catchError from '../../services/catchError';
 import { DoShowRFOTrouble, Search, SelectPOP, Modal, Pagination, SkeletonTable, LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime } from '../../components/index';
 import loadable from '@loadable/component';
+import { debounce } from 'lodash';
 
 const ReopenModal = loadable(() => import('./ReopenModal'));
 
@@ -47,7 +48,7 @@ function HistoryDashboard() {
   }
   const { data: user } = useSelector(selectCurrentUser);
 
-  const getAllComplainHistory = async (pop = '', search = '', page = 1) => {
+  const getAllComplainHistory = useCallback(debounce(async (pop = '', search = '', page = 1) => {
     const param = `?page=${page}&pop_id=${pop}&keyword=${search}`;
     try {
       const data = await allComplainHistory(param).unwrap();
@@ -82,7 +83,7 @@ function HistoryDashboard() {
       setRows([]);
       catchError(err, true);
     }
-  };
+  }, 1000), []);
 
   const dataRow = useSelector(selectAllComplainHistory);
 
