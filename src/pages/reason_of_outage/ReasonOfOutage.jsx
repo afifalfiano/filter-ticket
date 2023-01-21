@@ -71,13 +71,13 @@ function ReasonOfOutage() {
         { path: '/reason_of_outage', title: 'Reason For Outage Keluhan' },
       ])
     );
-    getAllRFO(search);
+    getAllRFO(search, currentPage);
   }, []);
 
   const onHandleSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
-    getAllRFO(event.target.value);
+    getAllRFO(event.target.value, currentPage);
 
     // if (event.target.value.length > 0) {
     //   const regex = new RegExp(search, 'ig');

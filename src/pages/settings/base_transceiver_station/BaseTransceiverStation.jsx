@@ -63,7 +63,7 @@ function BaseTransceiverStation() {
   const onHandleSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
-    getAllBTS(pop, event.target.value);
+    getAllBTS(pop, event.target.value, currentPage);
 
     // if (event.target.value.length > 0) {
     //   const regex = new RegExp(search, 'ig');
@@ -94,7 +94,7 @@ function BaseTransceiverStation() {
 
   const handlePOP = (event) => {
     setPOPLocal(event.target.value);
-    getAllBTS(event.target.value, search);
+    getAllBTS(event.target.value, search, currentPage);
     // const dataChanged = dataRow.data.filter((item) => {
     //   if (+item.pop_id === +event.target.value) {
     //     return item;
@@ -158,7 +158,7 @@ function BaseTransceiverStation() {
 
   const getInfo = ($event) => {
     if ($event.status === 'success') {
-      getAllBTS();
+      getAllBTS(pop, search, currentPage);
     }
   };
 

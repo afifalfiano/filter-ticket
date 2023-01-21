@@ -31,7 +31,7 @@ function HistoryDashboard() {
   const [perPage, setPerPage] = useState([5]);
   const [countPage, setCountPage] = useState([1]);
 
-  const [pop, setPOPLocal] = useState('all');
+  const [pop, setPOPLocal] = useState('');
   const [dataPOP, setdataPOP] = useState([]);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
@@ -47,8 +47,8 @@ function HistoryDashboard() {
   }
   const { data: user } = useSelector(selectCurrentUser);
 
-  const getAllComplainHistory = async (page = 1) => {
-    const param = `?page=${page}`;
+  const getAllComplainHistory = async (pop = '', search = '', page = 1) => {
+    const param = `?page=${page}&pop_id=${pop}&keyword=${search}`;
     try {
       const data = await allComplainHistory(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -116,20 +116,21 @@ function HistoryDashboard() {
   const onHandleSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
+    getAllComplainHistory(pop, event.target.value, currentPage);
 
-    if (event.target.value.length > 0) {
-      const regex = new RegExp(search, 'ig');
-      const searchResult = rows.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
-      setRows(searchResult);
-    } else {
-      setRows(dataRow.data);
-    }
+    // if (event.target.value.length > 0) {
+    //   const regex = new RegExp(search, 'ig');
+    //   const searchResult = rows.filter((item) => item.id_pelanggan.match(regex) || item.nama_pelanggan.match(regex) || item.nama_pelapor.match(regex) || item.nomor_pelapor.match(regex));
+    //   setRows(searchResult);
+    // } else {
+    //   setRows(dataRow.data);
+    // }
   }
 
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/history_dashboard', title: 'Riwayat Dasbor' }]))
     getAllPOP()
-    getAllComplainHistory();
+    getAllComplainHistory(pop, search, currentPage);
     if (user?.role_id === 0) {
       setColumns([
         'No',
@@ -148,21 +149,22 @@ function HistoryDashboard() {
 
   const handlePOP = (event) => {
     setPOPLocal(event.target.value);
-    const dataChanged = dataRow.data.filter((item) => {
-      if (+item.pop_id === +event.target.value) {
-        return item;
-      }
-    })
-    if (event.target.value === 'all') {
-      setRows(dataRow.data);
-    } else {
-      setRows(dataChanged);
-    }
+    getAllComplainHistory(event.target.value, search, currentPage);
+    // const dataChanged = dataRow.data.filter((item) => {
+    //   if (+item.pop_id === +event.target.value) {
+    //     return item;
+    //   }
+    // })
+    // if (event.target.value === 'all') {
+    //   setRows(dataRow.data);
+    // } else {
+    //   setRows(dataChanged);
+    // }
   };
 
   const getInfo = ($event) => {
     if ($event.status === 'success') {
-      getAllComplainHistory();
+      getAllComplainHistory(pop, search, currentPage);
     }
   };
 
@@ -194,14 +196,12 @@ function HistoryDashboard() {
         {stateModal?.history_dashboard?.showRevertModalHistoryComplain && <ReopenModal stateModal={stateModal} getInfo={getInfo} detail={detail} />}
       </Modal>
 
-      {!isLoading && (
         <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
           <div className="form-control w-full md:w-52">
             <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
           </div>
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data riwayat keluhan...'} />
         </div>
-      )}
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
@@ -254,7 +254,7 @@ function HistoryDashboard() {
               </tbody>
             </table>
           </div>
-          {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllComplainHistory(i.target.id)} serverMode />)}
+          {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllComplainHistory(pop, search, i.target.id)} serverMode />)}
         </>
       )}
       {/* end table */}
