@@ -19,7 +19,7 @@ import debounce from 'lodash.debounce';
 
 const columns = [
   'No',
-  'Nomor RFO',
+  'Nomor RFO Gangguan',
   'Waktu Gangguan',
   'Durasi',
   'Masalah',
@@ -31,7 +31,7 @@ const columns = [
 
 function ReasonForOutageTrouble() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState('');
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
   const [allRFOMasal, { isLoading }] = useAllRFOMasalMutation();
@@ -181,7 +181,7 @@ function ReasonForOutageTrouble() {
                 <tr className="text-center" key={index}>
                   <th>{index + 1}</th>
                   <td>
-                    <p>{item?.nomor_rfo_gangguan}</p>
+                    <p>{item?.nomor_rfo_gangguan || '-'}</p>
                   </td>
                   <td className="text-left">
                     <p>

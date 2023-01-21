@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import catchError from '../../services/catchError';
@@ -11,10 +12,11 @@ import {
   setRFO,
 } from '../../store/features/rfo/rfoSlice';
 import { CategoryRFO, DoDetail, DoUpdate, Search, SkeletonTable, Pagination } from '../../components';
+import debounce from 'lodash.debounce';
 
 const columns = [
   'No',
-  'Pelanggan',
+  'Nomor RFO Keluhan',
   'Waktu Gangguan',
   'Durasi',
   'Masalah',
@@ -23,8 +25,8 @@ const columns = [
   'Aksi',
 ];
 
+
 function ReasonOfOutage() {
-  const [statusData, setStatusData] = useState('sendiri');
   const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const dispatch = useDispatch();
@@ -37,8 +39,13 @@ function ReasonOfOutage() {
   const [perPage, setPerPage] = useState([5]);
   const [countPage, setCountPage] = useState([1]);
 
-  const getAllRFO = async (page = 1) => {
-    const param = `?page=${page}`;
+  const getAllRFO = useCallback(debounce(async (search = '', page = 1) => {
+    let param;
+    if (search === '') {
+      param = `?page=${page}`;
+    } else {
+      param = `?keyword=${search}`;
+    }
     try {
       const data = await allRFO(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -61,7 +68,7 @@ function ReasonOfOutage() {
       setRows([]);
       catchError(err, true);
     }
-  };
+  }, 1000), []);
 
   useEffect(() => {
     dispatch(
@@ -69,28 +76,28 @@ function ReasonOfOutage() {
         { path: '/reason_of_outage', title: 'Reason For Outage Keluhan' },
       ])
     );
-    setStatusData('sendiri');
-    getAllRFO();
+    getAllRFO(search);
   }, []);
 
   const onHandleSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
+    getAllRFO(event.target.value);
 
-    if (event.target.value.length > 0) {
-      const regex = new RegExp(search, 'ig');
-      const searchResult = allData.filter((item) => {
-        if (item.problem.match(regex) || item?.keluhan?.nama_pelanggan.match(regex) || item?.keluhan?.id_pelanggan.match(regex)) {
-          return item;
-        }
-      });
-      setRows(searchResult);
-    } else {
-      const searchResult = allData.filter((item) => {
-        return item;
-      });
-      setRows(searchResult);
-    }
+    // if (event.target.value.length > 0) {
+    //   const regex = new RegExp(search, 'ig');
+    //   const searchResult = allData.filter((item) => {
+    //     if (item.problem.match(regex) || item?.keluhan?.nama_pelanggan.match(regex) || item?.keluhan?.id_pelanggan.match(regex)) {
+    //       return item;
+    //     }
+    //   });
+    //   setRows(searchResult);
+    // } else {
+    //   const searchResult = allData.filter((item) => {
+    //     return item;
+    //   });
+    //   setRows(searchResult);
+    // }
   }
 
   const detailData = (item) => {
@@ -130,8 +137,8 @@ function ReasonOfOutage() {
               {rows.map((item, index) => (
                 <tr className="text-center" key={index}>
                   <th>{index + 1}</th>
-                  <td>
-                    {item?.keluhan?.id_pelanggan} - {item?.keluhan?.nama_pelanggan}
+                  <td className="text-left">
+                    {item?.nomor_rfo_keluhan}
                   </td>
                   <td className="text-left">
                     <p>
@@ -164,7 +171,7 @@ function ReasonOfOutage() {
         </div>
       )}
 
-      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllRFO(i.target.id)} serverMode />)}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllRFO(search, i.target.id)} serverMode />)}
     </div>
   );
 }
