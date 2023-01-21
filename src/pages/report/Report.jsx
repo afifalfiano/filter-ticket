@@ -25,7 +25,7 @@ const columns = [
 
 function Report() {
 
-  const [pop, setPOPLocal] = useState('all');
+  const [pop, setPOPLocal] = useState('');
   const [dataPOP, setdataPOP] = useState([]);
   const [rows, setRows] = useState([]);
   const [detail, setDetail] = useState(null);
@@ -79,51 +79,53 @@ function Report() {
 
   const handlePOP = (event) => {
     setPOPLocal(event.target.value);
-    const dataChanged = dataRow.data.filter((item) => {
-      if (+item.pop_id === +event.target.value) {
-        return item;
-      }
-    })
-    if (event.target.value === 'all') {
-      setRows(dataRow.data)
-    } else {
-      setRows(dataChanged);
-    }
+    doGetAllReport(event.target.value, search, currentPage);
+    // const dataChanged = dataRow.data.filter((item) => {
+    //   if (+item.pop_id === +event.target.value) {
+    //     return item;
+    //   }
+    // })
+    // if (event.target.value === 'all') {
+    //   setRows(dataRow.data)
+    // } else {
+    //   setRows(dataChanged);
+    // }
   };
 
   const onHandleSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
+    doGetAllReport(pop, search, currentPage);
 
-    if (event.target.value.length > 0) {
-      const regex = new RegExp(search, 'ig');
-      const searchResult = dataRow.data.filter((item) => {
-        if (+item.pop.id_pop === +pop) {
-          if (item.nomor_laporan.match(regex) || item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
-            return item;
-          }
-        }
-        if (pop === 'all') {
-          if (item.nomor_laporan.match(regex) || item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
-            return item;
-          }
-        }
-      });
-      setRows(searchResult);
-    } else {
-      setRows(dataRow.data.filter((item) => {
-        if (+item.pop.id_pop === +pop) {
-          return item;
-        }
-        if (pop === 'all') {
-          return item;
-        }
-      }));
-    }
+    // if (event.target.value.length > 0) {
+    //   const regex = new RegExp(search, 'ig');
+    //   const searchResult = dataRow.data.filter((item) => {
+    //     if (+item.pop.id_pop === +pop) {
+    //       if (item.nomor_laporan.match(regex) || item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
+    //         return item;
+    //       }
+    //     }
+    //     if (pop === 'all') {
+    //       if (item.nomor_laporan.match(regex) || item.noc.match(regex) || item.helpdesk.match(regex) || item.pop.pop.match(regex)) {
+    //         return item;
+    //       }
+    //     }
+    //   });
+    //   setRows(searchResult);
+    // } else {
+    //   setRows(dataRow.data.filter((item) => {
+    //     if (+item.pop.id_pop === +pop) {
+    //       return item;
+    //     }
+    //     if (pop === 'all') {
+    //       return item;
+    //     }
+    //   }));
+    // }
   }
 
-  const doGetAllReport = async (page = 1) => {
-    const param = `?page=${page}`;
+  const doGetAllReport = async (pop = '', search = '', page = 1) => {
+    const param = `?page=${page}&pop_id=${pop}&keyword=${search}`;
     try {
       const data = await allReport(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -151,12 +153,12 @@ function Report() {
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/report', title: 'Laporan' }]));
     getAllPOP();
-    doGetAllReport();
+    doGetAllReport(pop, search, currentPage);
   }, [])
 
   const getInfo = ($event) => {
     if ($event.status === 'success') {
-      doGetAllReport();
+      doGetAllReport(pop, search, currentPage);
     }
   };
 
@@ -194,16 +196,14 @@ function Report() {
         {stateModal?.report?.showDetailModalReport && <ReportDetail stateModal={stateModal} detailData={detail} />}
       </Modal>
 
-      {!isLoading && (
         <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
           <div className="form-control w-full md:w-52">
-            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
+            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} server={true} />
           </div>
 
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data laporan...'} />
 
         </div>
-      )}
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
@@ -243,7 +243,7 @@ function Report() {
           </table>
         </div>
       )}
-      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => doGetAllReport(i.target.id)} serverMode />)}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => doGetAllReport(pop, search, i.target.id)} serverMode />)}
       {/* end table */}
     </div>
   )
