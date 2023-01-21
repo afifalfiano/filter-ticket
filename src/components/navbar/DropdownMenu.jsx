@@ -70,7 +70,7 @@ const DropdownMenu = () => {
         });
 
         const beamsClient = new PusherPushNotifications.Client({
-          instanceId: 'a81f4de8-8096-4cc9-a1d0-5c92138936f1',
+          instanceId: process.env?.REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
           });
         
           beamsClient.stop()
