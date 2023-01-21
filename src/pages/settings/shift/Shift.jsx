@@ -96,7 +96,7 @@ function Shift() {
     setSearch(event.target.value);
     if (event.target.value.length > 0) {
       const regex = new RegExp(search, 'ig');
-      const searchResult = dataRow.data.filter((item) => item.mulai.match(regex) || item.selesai.match(regex));
+      const searchResult = dataRow.data.filter((item) => item.shift.match(regex) || item.mulai.match(regex) || item.selesai.match(regex));
       setRows(searchResult);
       setPagination({
         currentPage: 1,
