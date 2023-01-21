@@ -18,7 +18,7 @@ import { clearShift } from "../../store/features/shift/shiftSlice";
 import { clearSumberKeluhan } from "../../store/features/sumber_keluhan/sumberKeluhanSlice";
 import { clearTeam } from "../../store/features/team/teamSlice";
 import { clearUsers } from "../../store/features/users/usersSlice";
-import * as PusherPushNotifications from '@pusher/push-notifications-web';
+import {usubscribeBeamAndLogout} from '../../utils/push_notification';
 
 const ModalNotification = ({totalCount, data}) => {
 
@@ -52,19 +52,7 @@ const ModalNotification = ({totalCount, data}) => {
           action(clearUsers());
         });
 
-        const beamsClient = new PusherPushNotifications.Client({
-          instanceId: process.env?.REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
-          });
-        
-          beamsClient.stop()
-          .then(() => console.log('Beams SDK has been stopped'))
-          .catch(e => console.error('Could not stop Beams SDK', e));
-
-          beamsClient.clearAllState()
-          .then(() => console.log('Beams state has been cleared'))
-          .catch(e => console.error('Could not clear Beams state', e));
-                  
-        localStorage.clear();
+        usubscribeBeamAndLogout()
         navigate('/sign_in', {replace: true});
       } else {
         catchError(userLogout, true);

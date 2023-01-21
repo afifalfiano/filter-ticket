@@ -10,6 +10,7 @@ import {
 } from '../../store/features/notification/notificationSlice';
 import NotificationSound from "../../notification-sound.mp3";
 import catchError from '../../services/catchError';
+import { startBeamClient } from '../../utils/push_notification';
 
 function Notification() {
   const getNotif = useSelector(selectAllNotification)
@@ -31,17 +32,7 @@ function Notification() {
     channel.bind('KeluhanEvent', (data) => {
       playAudio();
     });
-
-    const beamsClient = new PusherPushNotifications.Client({
-    instanceId: process.env?.REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
-    });
-
-    beamsClient.start()
-    .then((beamsClient) => beamsClient.getDeviceId())
-    .then((deviceId) => deviceId)
-    .then(() => beamsClient.addDeviceInterest("update"))
-    .then(() => beamsClient.getDeviceInterests())
-    .then((interests) => interests).catch(err => catchError(err, true));
+    startBeamClient()
   }, []);
 
   return (
