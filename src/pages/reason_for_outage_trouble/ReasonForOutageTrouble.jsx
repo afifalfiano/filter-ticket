@@ -57,12 +57,7 @@ function ReasonForOutageTrouble() {
   }
 
   const getAllRFOMasal = useCallback(debounce(async (status = '', keyword = '', page = 1) => {
-    let param = ``;
-    if (status === '' && keyword === '') {
-      param = `?page=${page}`;
-    } else {
-      param = `?keyword=${keyword}&status=${status}`;
-    }
+    const param = `?page=${page}&keyword=${keyword}&status=${status}`;
     try {
       const data = await allRFOMasal(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {

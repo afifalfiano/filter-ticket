@@ -40,12 +40,7 @@ function ReasonOfOutage() {
   const [countPage, setCountPage] = useState([1]);
 
   const getAllRFO = useCallback(debounce(async (search = '', page = 1) => {
-    let param;
-    if (search === '') {
-      param = `?page=${page}`;
-    } else {
-      param = `?keyword=${search}`;
-    }
+    const param = `?page=${page}&keyword=${search}`;
     try {
       const data = await allRFO(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {

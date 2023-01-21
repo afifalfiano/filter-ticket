@@ -11,7 +11,7 @@ function SelectPOP({ ...props }) {
                 className="select w-full max-w-full input-bordered"
                 onChange={props.handlePOP}
             >
-                <option value="all" label="Semua" defaultValue={'all'}>All</option>
+                <option value={props.server ? '' : 'all'} label="Semua" defaultValue={props.server ? '' : 'all'}>All</option>
                 {props.dataPOP?.map((item, index) => (
                     <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
                 ))}

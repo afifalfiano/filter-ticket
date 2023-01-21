@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { selectAllBTS, setBTS } from '../../../store/features/bts/btsSlice';
@@ -11,6 +12,8 @@ import { selectModalState, setModal } from '../../../store/features/modal/modalS
 import catchError from '../../../services/catchError';
 import { selectCurrentUser } from '../../../store/features/auth/authSlice';
 import { DoDelete, SelectPOP, DoDetail, DoUpdate, SkeletonTable, Modal, DeleteModal, Pagination, LabelStatusPOP, Search, Button } from '../../../components';
+import { debounce } from 'lodash';
+import { useCallback } from 'react';
 
 const columns = [
   'No',
@@ -27,7 +30,7 @@ function BaseTransceiverStation() {
 
   const [rows, setRows] = useState([]);
   const [dataPOP, setdataPOP] = useState([]);
-  const [pop, setPOPLocal] = useState('all');
+  const [pop, setPOPLocal] = useState('');
   const [allBts, { isLoading }] = useAllBtsMutation();
   const dispatch = useDispatch();
   const [detail, setDetail] = useState(null);
@@ -60,46 +63,48 @@ function BaseTransceiverStation() {
   const onHandleSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
+    getAllBTS(pop, event.target.value);
 
-    if (event.target.value.length > 0) {
-      const regex = new RegExp(search, 'ig');
-      const searchResult = dataRow.data.filter((item) => {
-        if (+item.pop.id_pop === +pop) {
-          if (item.nama_bts.match(regex) || item.nama_pic.match(regex)) {
-            return item;
-          }
-        }
-        if (pop === 'all') {
-          if (item.nama_bts.match(regex) || item.nama_pic.match(regex)) {
-            return item;
-          }
-        }
-      });
-      setRows(searchResult);
-    } else {
-      setRows(dataRow.data.filter((item) => {
-        if (+item.pop.id_pop === +pop) {
-          return item;
-        }
-        if (pop === 'all') {
-          return item;
-        }
-      }));
-    }
+    // if (event.target.value.length > 0) {
+    //   const regex = new RegExp(search, 'ig');
+    //   const searchResult = dataRow.data.filter((item) => {
+    //     if (+item.pop.id_pop === +pop) {
+    //       if (item.nama_bts.match(regex) || item.nama_pic.match(regex)) {
+    //         return item;
+    //       }
+    //     }
+    //     if (pop === 'all') {
+    //       if (item.nama_bts.match(regex) || item.nama_pic.match(regex)) {
+    //         return item;
+    //       }
+    //     }
+    //   });
+    //   setRows(searchResult);
+    // } else {
+    //   setRows(dataRow.data.filter((item) => {
+    //     if (+item.pop.id_pop === +pop) {
+    //       return item;
+    //     }
+    //     if (pop === 'all') {
+    //       return item;
+    //     }
+    //   }));
+    // }
   }
 
   const handlePOP = (event) => {
     setPOPLocal(event.target.value);
-    const dataChanged = dataRow.data.filter((item) => {
-      if (+item.pop_id === +event.target.value) {
-        return item;
-      }
-    })
-    if (event.target.value === 'all') {
-      setRows(dataRow.data)
-    } else {
-      setRows(dataChanged);
-    }
+    getAllBTS(event.target.value, search);
+    // const dataChanged = dataRow.data.filter((item) => {
+    //   if (+item.pop_id === +event.target.value) {
+    //     return item;
+    //   }
+    // })
+    // if (event.target.value === 'all') {
+    //   setRows(dataRow.data)
+    // } else {
+    //   setRows(dataChanged);
+    // }
   };
 
   const [allPOP] = useAllPOPMutation();
@@ -118,8 +123,9 @@ function BaseTransceiverStation() {
     }
   };
 
-  const getAllBTS = async (page = 1) => {
-    const param = `?page=${page}`;
+  const getAllBTS = useCallback(debounce(async (pop = '', search = '', page = 1) => {
+    const param = `?page=${page}&pop_id=${pop}&keyword=${search}`;
+
     try {
       const data = await allBts(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -142,12 +148,12 @@ function BaseTransceiverStation() {
       setRows([]);
       catchError(err, true);
     }
-  };
+  }, 1000), []);
 
   useEffect(() => {
     dispatch(updateBreadcrumb([{ path: '/base_transceiver_station', title: 'Base Transceiver Station' }]))
     getAllPOP()
-    getAllBTS();
+    getAllBTS(pop, search, currentPage);
   }, []);
 
   const getInfo = ($event) => {
@@ -188,15 +194,12 @@ function BaseTransceiverStation() {
         </div>
       )}
 
-      {!isLoading && (
         <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
           <div className="form-control w-full md:w-52">
-            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
+            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} server={true} />
           </div>
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data BTS...'} />
-
         </div>
-      )}
 
       <Modal>
         {stateModal?.bts?.showAddModalBts && <FormBTS stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
@@ -247,7 +250,7 @@ function BaseTransceiverStation() {
           </table>
         </div>
       )}
-      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllBTS(i.target.id)} serverMode />)}
+      {!isLoading && (<Pagination perPage={perPage} currentPage={currentPage} countPage={countPage} onClick={(i) => getAllBTS(pop, search, i.target.id)} serverMode />)}
       {/* end table */}
     </div>
   );
