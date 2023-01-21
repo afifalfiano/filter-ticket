@@ -56,8 +56,13 @@ function ReasonForOutageTrouble() {
     window.scrollTo(0, 0);
   }
 
-  const getAllRFOMasal = useCallback(debounce(async (status = null, keyword = '', page = 1) => {
-    const param = `?page=${page}&keyword=${keyword}&status=${status}`;
+  const getAllRFOMasal = useCallback(debounce(async (status = '', keyword = '', page = 1) => {
+    let param = ``;
+    if (status === '' && keyword === '') {
+      param = `?page=${page}`;
+    } else {
+      param = `?keyword=${keyword}&status=${status}`;
+    }
     try {
       const data = await allRFOMasal(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -94,7 +99,12 @@ function ReasonForOutageTrouble() {
   }, []);
 
   const onHandleSearch = (event) => {
-    setSearch(event.target.value);
+    if (event.target.value.length > 0) {
+      setSearch(event.target.value);
+    } else {
+      setSearch('');
+      event.target.value = '';
+    }
     getAllRFOMasal(status, event.target.value, currentPage);
   }
 

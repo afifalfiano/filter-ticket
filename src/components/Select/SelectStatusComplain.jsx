@@ -10,9 +10,9 @@ function SelectStatusComplain({ ...props }) {
             <select
                 className="select w-full max-w-full input-bordered"
                 onChange={props.handleStatus}
-                defaultValue={'open'}
+                defaultValue={ props.all ? '' : 'open'}
             >
-                {props.all && <option value="null" label="All">All</option>}
+                {props.all && <option value="" label="All">All</option>}
                 <option value="open" label="Open Case">Open Case</option>
                 <option value="closed" label="Closed Case">Closed Case</option>
             </select>
