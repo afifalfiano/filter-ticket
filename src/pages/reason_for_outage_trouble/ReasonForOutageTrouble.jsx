@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, CategoryRFO, DoDelete, DoDetail, DoUpdate, LabelStatus, Search, DeleteModal, Pagination, SkeletonTable, Modal } from '../../components';
@@ -13,11 +14,12 @@ import {
   setRFOMasal,
 } from '../../store/features/rfo/rfoSlice';
 import RFOModalForm from '../reason_of_outage/RFOModalForm';
+import debounce from 'lodash.debounce';
 
 
 const columns = [
   'No',
-  'Topik',
+  'Nomor RFO',
   'Waktu Gangguan',
   'Durasi',
   'Masalah',
@@ -53,8 +55,8 @@ function ReasonForOutageTrouble() {
     window.scrollTo(0, 0);
   }
 
-  const getAllRFOMasal = async (page = 1) => {
-    const param = `?page=${page}`;
+  const getAllRFOMasal = useCallback(debounce(async (keyword = '', page = 1) => {
+    const param = `?page=${page}&keyword=${keyword}`;
     try {
       const data = await allRFOMasal(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
@@ -77,7 +79,7 @@ function ReasonForOutageTrouble() {
       setRows([]);
       catchError(err, true);
     }
-  };
+  }, 1000), []);
 
 
 
@@ -91,23 +93,24 @@ function ReasonForOutageTrouble() {
   }, []);
 
   const onHandleSearch = (event) => {
-    event.preventDefault();
     setSearch(event.target.value);
+    console.log(event.target.value, 'ev')
+    getAllRFOMasal(event.target.value);
 
-    if (event.target.value.length > 0) {
-      const regex = new RegExp(search, 'ig');
-      const searchResult = allData.filter((item) => {
-        if (item.problem.match(regex)) {
-          return item;
-        }
-      });
-      setRows(searchResult);
-    } else {
-      const searchResult = allData.filter((item) => {
-        return item;
-      });
-      setRows(searchResult);
-    }
+    // if (event.target.value.length > 0) {
+    //   const regex = new RegExp(search, 'ig');
+    //   const searchResult = allData.filter((item) => {
+    //     if (item.problem.match(regex)) {
+    //       return item;
+    //     }
+    //   });
+    //   setRows(searchResult);
+    // } else {
+    //   const searchResult = allData.filter((item) => {
+    //     return item;
+    //   });
+    //   setRows(searchResult);
+    // }
   }
 
   const getInfo = ($event) => {
@@ -179,7 +182,7 @@ function ReasonForOutageTrouble() {
                 <tr className="text-center" key={index}>
                   <th>{index + 1}</th>
                   <td>
-                    <p>Gangguan Masal</p>
+                    <p>{item?.nomor_rfo_gangguan}</p>
                   </td>
                   <td className="text-left">
                     <p>
