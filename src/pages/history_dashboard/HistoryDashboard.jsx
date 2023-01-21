@@ -198,7 +198,7 @@ function HistoryDashboard() {
 
         <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
           <div className="form-control w-full md:w-52">
-            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
+            <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} server={true}/>
           </div>
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data riwayat keluhan...'} />
         </div>
