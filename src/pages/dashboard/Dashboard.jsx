@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable array-callback-return */
 import { useState, useEffect } from 'react';
-import loadable from '@loadable/component'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAllComplainMutation } from '../../store/features/complain/complainApiSlice';
@@ -12,13 +13,16 @@ import { setSumberKeluhan } from '../../store/features/sumber_keluhan/sumberKelu
 import { selectCurrentUser } from '../../store/features/auth/authSlice';
 import { selectModalState, setModal } from '../../store/features/modal/modalSlice';
 import catchError from '../../services/catchError';
+import ComplainModalForm from './modal/ComplainModalForm';
+import RFOMasalModal from './modal/RFOMasalModal';
+import ReopenModal from '../history_dashboard/ReopenModal';
 
-import { DoShowRFOTrouble, DoDelete, DoUpdate, LabelStatus, LoaderGetData, Search, Button, Modal, SelectStatusComplain, SelectPOP, LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime } from '../../components/index';
+import { DoShowRFOTrouble, DeleteModal,  DoDelete, DoUpdate, LabelStatus, LoaderGetData, Search, Button, Modal, SelectStatusComplain, SelectPOP, LabelStatusPOP, DoDetail, DoShowRFOComplain, DoRollbackStatus, ProgressTime } from '../../components/index';
 
-const DeleteModal = loadable(() => import('../../components/Common/DeleteModal'));
-const ComplainModalForm = loadable(() => import('./modal/ComplainModalForm'));
-const RFOMasalModal = loadable(() => import('./modal/RFOMasalModal'));
-const ReopenModal = loadable(() => import('../history_dashboard/ReopenModal'));
+// const DeleteModal = loadable(() => import('../../components/Common/DeleteModal'));
+// const ComplainModalForm = loadable(() => import('./modal/ComplainModalForm'));
+// const RFOMasalModal = loadable(() => import('./modal/RFOMasalModal'));
+// const ReopenModal = loadable(() => import('../history_dashboard/ReopenModal'));
 
 const initColumns = [
   'No',

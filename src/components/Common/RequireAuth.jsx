@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -8,11 +9,13 @@ import {
 } from '../../store/features/auth/authSlice';
 import { decryptLocalStorage } from '../../utils/helper';
 import { Suspense } from 'react';
-import loadable from '@loadable/component';
+import Navbar from '../Navbar/Navbar';
+import Container from './Container';
+// import loadable from '@loadable/component';
 
 
-const Navbar = loadable(() => import('../Navbar/Navbar'));
-const Container = loadable(() => import('./Container'));
+// const Navbar = loadable(() => import('../Navbar/Navbar'));
+// const Container = loadable(() => import('./Container'));
 
 function RequireAuth() {
   const dispatch = useDispatch();

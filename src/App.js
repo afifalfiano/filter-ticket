@@ -24,25 +24,45 @@ import { useState } from 'react';
 // end auth
 
 import Dashboard from './pages/dashboard/Dashboard';
+import DashboardDetail from './pages/dashboard/detail/DashboardDetail';
+import ReasonOfOutage from './pages/reason_of_outage/ReasonOfOutage';
+import Report from './pages/report/Report';
+import Profile from './pages/profile/Profile';
+import BaseTransceiverStation from './pages/settings/base_transceiver_station/BaseTransceiverStation';
+import HistoryDashboard from './pages/history_dashboard/HistoryDashboard';
+import RFODetailMass from './pages/reason_for_outage_trouble/detail_masal/RFODetailMass';
+import RFODetailSingle from './pages/reason_of_outage/detail_mandiri/RFODetailSingle';
+import DashboardRFOSingle from './pages/dashboard/rfo_single/DashboardRFOSingle';
+import Statistics from './pages/statistics/Statistics';
+import Users from './pages/settings/users/Users';
+import Pop from './pages/settings/pop/Pop';
+import SourceComplain from './pages/settings/source_complain/SourceComplain';
+import Role from './pages/settings/role/Role';
+import ReportCreate from './pages/report/create/ReportCreate';
+import ReportDetail from './pages/report/detail/ReportDetail';
+import Shift from './pages/settings/shift/Shift';
+import ReasonForOutageTrouble from './pages/reason_for_outage_trouble/ReasonForOutageTrouble';
+
+// lazy load component
 // const Dashboard = React.lazy(() => import ('./pages/dashboard/Dashboard'));
-const ReasonOfOutage = React.lazy(() => import('./pages/reason_of_outage/ReasonOfOutage'));
-const Report = React.lazy(() => import('./pages/report/Report'));
-const Profile = React.lazy(() => import('./pages/profile/Profile'));
-const BaseTransceiverStation = React.lazy(() => import('./pages/settings/base_transceiver_station/BaseTransceiverStation'));
-const HistoryDashboard = React.lazy(() => import('./pages/history_dashboard/HistoryDashboard'));
-const DashboardDetail = React.lazy(() => import('./pages/dashboard/detail/DashboardDetail'));
-const RFODetailMass = React.lazy(() => import('./pages/reason_for_outage_trouble/detail_masal/RFODetailMass'));
-const RFODetailSingle = React.lazy(() => import('./pages/reason_of_outage/detail_mandiri/RFODetailSingle'));
-const DashboardRFOSingle = React.lazy(() => import('./pages/dashboard/rfo_single/DashboardRFOSingle'));
-const Statistics = React.lazy(() => import('./pages/statistics/Statistics'));
-const Users = React.lazy(() => import('./pages/settings/users/Users'));
-const Pop = React.lazy(() => import('./pages/settings/pop/Pop'));
-const SourceComplain = React.lazy(() => import('./pages/settings/source_complain/SourceComplain'));
-const Role = React.lazy(() => import('./pages/settings/role/Role'));
-const ReportCreate = React.lazy(() => import('./pages/report/create/ReportCreate'));
-const ReportDetail = React.lazy(() => import('./pages/report/detail/ReportDetail'));
-const Shift = React.lazy(() => import('./pages/settings/shift/Shift'));
-const ReasonForOutageTrouble = React.lazy(() => import('./pages/reason_for_outage_trouble/ReasonForOutageTrouble'));
+// const ReasonOfOutage = React.lazy(() => import('./pages/reason_of_outage/ReasonOfOutage'));
+// const Report = React.lazy(() => import('./pages/report/Report'));
+// const Profile = React.lazy(() => import('./pages/profile/Profile'));
+// const BaseTransceiverStation = React.lazy(() => import('./pages/settings/base_transceiver_station/BaseTransceiverStation'));
+// const HistoryDashboard = React.lazy(() => import('./pages/history_dashboard/HistoryDashboard'));
+// const DashboardDetail = React.lazy(() => import('./pages/dashboard/detail/DashboardDetail'));
+// const RFODetailMass = React.lazy(() => import('./pages/reason_for_outage_trouble/detail_masal/RFODetailMass'));
+// const RFODetailSingle = React.lazy(() => import('./pages/reason_of_outage/detail_mandiri/RFODetailSingle'));
+// const DashboardRFOSingle = React.lazy(() => import('./pages/dashboard/rfo_single/DashboardRFOSingle'));
+// const Statistics = React.lazy(() => import('./pages/statistics/Statistics'));
+// const Users = React.lazy(() => import('./pages/settings/users/Users'));
+// const Pop = React.lazy(() => import('./pages/settings/pop/Pop'));
+// const SourceComplain = React.lazy(() => import('./pages/settings/source_complain/SourceComplain'));
+// const Role = React.lazy(() => import('./pages/settings/role/Role'));
+// const ReportCreate = React.lazy(() => import('./pages/report/create/ReportCreate'));
+// const ReportDetail = React.lazy(() => import('./pages/report/detail/ReportDetail'));
+// const Shift = React.lazy(() => import('./pages/settings/shift/Shift'));
+// const ReasonForOutageTrouble = React.lazy(() => import('./pages/reason_for_outage_trouble/ReasonForOutageTrouble'));
 
 function App() {
   const [render, setRender] = useState(true);
