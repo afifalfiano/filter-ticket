@@ -9,6 +9,7 @@ import {
   selectTotalCountNotification,
 } from '../../store/features/notification/notificationSlice';
 import NotificationSound from "../../notification-sound.mp3";
+import {REACT_APP_PUSHER_APP_KEY, REACT_APP_PUSHER_APP_CLUSTER} from '../../config';
 import catchError from '../../services/catchError';
 import { startBeamClient } from '../../utils/push_notification';
 
@@ -23,8 +24,8 @@ function Notification() {
 
 
   useEffect(() => {
-    const pusher = new Pusher(process.env?.REACT_APP_PUSHER_APP_KEY, {
-      cluster: process.env?.REACT_APP_PUSHER_APP_CLUSTER,
+    const pusher = new Pusher(REACT_APP_PUSHER_APP_KEY, {
+      cluster: REACT_APP_PUSHER_APP_CLUSTER,
       encrypted: true,
     });
     Pusher.logToConsole = false;

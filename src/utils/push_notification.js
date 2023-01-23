@@ -1,10 +1,11 @@
 
 import * as PusherPushNotifications from '@pusher/push-notifications-web';
+import { REACT_APP_PUSHER_APP_INSTANCEID_BEAM } from '../config';
 import catchError from '../services/catchError';
 
 function usubscribeBeamAndLogout() {
     const beamsClient = new PusherPushNotifications.Client({
-        instanceId: process.env?.REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
+        instanceId: REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
         });
       
         beamsClient.stop()
@@ -20,7 +21,7 @@ function usubscribeBeamAndLogout() {
 
 function startBeamClient() {
   const beamsClient = new PusherPushNotifications.Client({
-    instanceId: process.env?.REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
+    instanceId: REACT_APP_PUSHER_APP_INSTANCEID_BEAM,
     });
 
     beamsClient.start()
