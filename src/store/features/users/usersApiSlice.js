@@ -7,7 +7,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     allUsers: builder.mutation({
       query: (param) => ({
-        url: `/user/${param}`,
+        url: `/user${param}`,
         method: 'GET',
       }),
     }),
