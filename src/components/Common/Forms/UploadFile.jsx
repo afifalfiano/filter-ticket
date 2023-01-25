@@ -8,12 +8,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-shadow */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiOutlineCloudUpload } from 'react-icons/hi';
 import PropTypes from 'prop-types';
 import { formatBytes } from '../../../utils/helper';
 
-function UploadFile({ uploaded = false, getFile }) {
+function UploadFile({ uploaded = false, getFile, reset = false }) {
   const [file, setFile] = useState([]);
 
   const onHandleFileUpload = ($event) => {
@@ -21,6 +21,12 @@ function UploadFile({ uploaded = false, getFile }) {
     data.length > 0 ? setFile(data) : setFile([]);
     getFile(data);
   };
+
+  useEffect(() => {
+      setFile([]);
+  }, [reset]);
+
+
   return (
     <>
       {!uploaded && (
