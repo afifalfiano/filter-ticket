@@ -140,7 +140,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
 
       if (filesLocal.length > 0) {
         const formData = new FormData();
-        formData.append('keluhan_id', add?.data?.id_keluhan?.id_keluhan);
+        formData.append('keluhan_id', add?.data?.id_keluhan);
         for (let index = 0; index < filesLocal.length; index++) {
           formData.append(`path[${index}]`, filesLocal[index])
         }
