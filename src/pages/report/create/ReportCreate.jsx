@@ -338,7 +338,7 @@ function ReportCreate() {
           <span className="label-text"> User Pengguna</span>
         </label>
         <div className="flex gap-5">
-          {allUserLocal.map(({ name, role }, index) => (
+          {allUserLocal?.map(({ name, role }, index) => (
             <div key={index}>
               <div className="label">
                 <input

@@ -21,7 +21,7 @@ function TemplateReport({...props}) {
               </div>
               <div>
                 <p>{new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
-                <div className="">{props.allShiftLocal?.map((item, index) => {
+                <div className="">{props?.allShiftLocal?.map((item, index) => {
                   if (item.id_shift === +props.bodyKeluhan.shift) {
                     return (
                       <span key={index}>{`${item.shift} (${item.mulai})-(${item.selesai})`}</span>
@@ -47,7 +47,7 @@ function TemplateReport({...props}) {
         </div>
 
         <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
-          {props.keluhanLaporanLocal?.keluhan_open.map((item, index) => (
+          {props.keluhanLaporanLocal?.keluhan_open?.map((item, index) => (
             <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
               <div className="flex gap-5 w-full">
                 <div className="flex-1">
@@ -76,7 +76,7 @@ function TemplateReport({...props}) {
         </div>
 
         <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
-          {props.keluhanLaporanLocal?.keluhan_close.map((item, index) => (
+          {props.keluhanLaporanLocal?.keluhan_close?.map((item, index) => (
             <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
               <div className="flex gap-5 w-full">
                 <div className="flex-1">
@@ -105,7 +105,7 @@ function TemplateReport({...props}) {
         </div>
 
         <div className="flex mt-5 border-gray-300 rounded-lg flex-wrap">
-          {props.keluhanLaporanLocal?.rfo_gangguan.map((item, index) => (
+          {props.keluhanLaporanLocal?.rfo_gangguan?.map((item, index) => (
             <div key={index} className={`flex p-2 border border-gray-300 w-1/2 ${index % 2 === 0 ? 'rounded-l-lg' : 'rounded-r-lg'}`}>
               <div className="flex gap-5 w-full">
                 <div className="flex-1">

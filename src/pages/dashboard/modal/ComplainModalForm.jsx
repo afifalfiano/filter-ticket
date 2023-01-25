@@ -247,7 +247,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih POP">Pilih POP</option>
-                    {popData.data.map((item, index) => (
+                    {popData?.data?.map((item, index) => (
                       <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
                     ))}
                   </Field>
@@ -270,7 +270,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih Kategori Pelanggan">Pilih Kategori Pelanggan</option>
-                    {kategoriPelanggan.map((item, index) => (
+                    {kategoriPelanggan?.map((item, index) => (
                       <option key={index} value={item.value} label={item.label}>{item.label}</option>
                     ))}
                   </Field>
@@ -336,7 +336,7 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
                     className="select w-full max-w-full input-bordered"
                   >
                     <option value="" label="Pilih Sumber">Pilih Sumber</option>
-                    {dataSumber.data.map((item, index) => (
+                    {dataSumber?.data?.map((item, index) => (
                       <option key={index} value={item.id_sumber} label={item.sumber}>{item.sumber}</option>
                     ))}
                   </Field>

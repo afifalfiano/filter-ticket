@@ -209,7 +209,7 @@ function FormBTS({ stateModal, getInfo, detail, titleAction }) {
 
                   >
                     <option value="" label="Pilih POP" defaultValue={""}>Pilih POP</option>
-                    {dataPOP.data.map((item, index) => (
+                    {dataPOP?.data?.map((item, index) => (
                       <option key={index} id={item.id_pop} value={item.id_pop} label={item.pop}>
                         {item.pop}
                       </option>
