@@ -217,7 +217,6 @@ const Dashboard = () => {
         'Progress',
         'Waktu',
         'Status',
-        'Sentimen',
         'Aksi',
       ]);
     }
@@ -362,7 +361,6 @@ const Dashboard = () => {
                 <td>
                   <LabelStatus status={item?.status} />
                 </td>
-                {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                 <td>
                   <div className="flex flex-row gap-3 justify-center">
                     {statusData === 'open' ? (

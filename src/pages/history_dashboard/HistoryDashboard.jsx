@@ -143,7 +143,6 @@ function HistoryDashboard() {
         'Progress',
         'Waktu',
         'Status',
-        'Sentimen',
         'Aksi',
       ]);
     }
@@ -242,7 +241,6 @@ function HistoryDashboard() {
                         {item.status}
                       </span>
                     </td>
-                    {user?.role_id === 0 && <td>{item?.sentimen_analisis || '-'}</td>}
                     <td>
                       <div className="flex flex-row gap-3 justify-center">
                         <DoRollbackStatus onClick={() => rollbackStatus(item)} />

@@ -106,8 +106,8 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
     try {
       // create
       if (detail === null) {
-        const request = await testSentimentData(payload);
-        if (request.hasOwnProperty('sentiment')) {
+        // const request = await testSentimentData(payload);
+        // if (request.hasOwnProperty('sentiment')) {
           const body = {
             kategori_pelanggan: payload.kategori_pelanggan,
             id_pelanggan: payload.id_pelanggan,
@@ -120,11 +120,11 @@ function ComplainModalForm({ stateModal, getInfo, detail }) {
             status: 'open',
             pop_id: payload.pop_id,
             user_id: user.id_user,
-            sentimen_analisis: request.sentiment,
+            sentimen_analisis: '',
             lampiran: '',
           };
           doCreate(body, resetForm);
-        }
+        // }
       } else {
         doUpdateComplain(payload);
       }
