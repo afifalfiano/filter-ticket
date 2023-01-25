@@ -64,8 +64,13 @@ function RFODetailSingle() {
       ? detailRFO?.keluhan?.balasan[detailRFO?.keluhan?.balasan?.length - 1].created_at
       : detailRFO?.keluhan?.created_at;
     const end = new Date(endTime);
-    const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
-    const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
+    const timeStart = `${start.getHours().toString().length === 1 ? `0${start.getHours()}` : start.getHours()}:${start.getMinutes().toString().length === 1 ? `0${start.getMinutes()}` : start.getMinutes()}:${start.getSeconds().toString().length === 1 ? `0${start.getSeconds()}` : start.getSeconds()}.${start.getMilliseconds()}0`;
+    const timeEnd = `${end.getHours().toString().length === 1 ? `0${end.getHours()}` : end.getHours()}:${end.getMinutes().toString().length === 1 ? `0${end.getMinutes()}` : end.getMinutes()}:${end.getSeconds().toString().length === 1 ? `0${end.getSeconds()}` : end.getSeconds()}.${start.getMilliseconds()}0`;
+    const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} ${timeStart}`;
+    const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} ${timeEnd}`;
+
+    // const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
+    // const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
     const body = {
       nomor_tiket: payload.nomor_tiket,
       mulai_keluhan: formatStart,
