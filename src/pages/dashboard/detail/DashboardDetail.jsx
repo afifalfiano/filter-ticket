@@ -27,6 +27,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
   const [lampiranFileBalasan] = useLampiranFileBalasanMutation();
   const [storeAllNotification] = useStoreAllNotificationMutation();
   let [countRequest, setCountRequest] = useState(0);
+  const [resetFile, setResetFile] = useState(false);
 
   const navigasi = useSelector(selectBreadcrumb);
   const onHandleFileUpload = ($event) => {
@@ -147,9 +148,16 @@ function DashboardDetail({ rfoSingle, idComplain }) {
           if (dataPost?.status === 'Success' || dataPost?.status === 'success') {
             getComplainById();
             setResetTextEditor(false);
+            setFilesLocal([]);
+            setResetFile(true);
+            setTimeout(() => {
+              setResetFile(false);
+            }, 500);
           } else {
             catchError(dataPost, true);
-            setResetTextEditor(false);
+            setTimeout(() => {
+              setResetFile(false);
+            }, 500);
           }
         } else {
           setResetTextEditor(false);
@@ -209,7 +217,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
                     ) : null}
                   </div>
 
-                  <UploadFile getFile={onHandleFileUpload} />
+                  <UploadFile getFile={onHandleFileUpload}  reset={resetFile} />
                   <div className="text-center items-center justify-center mt-10">
                     <Button className={`mr-5`} onClick={() => navigate('/dashboard')}>Kembali</Button>
                     <Button type={"submit"} disabled={!isValid} className={`btn-success`}>Simpan</Button>
