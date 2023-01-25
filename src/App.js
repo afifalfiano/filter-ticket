@@ -78,18 +78,18 @@ function App() {
         <Route element={<Layout render={getConditionRender} />}>
           {/* public routes */}
           <Route index element={<SignIn />} />
-          <Route path="sign_in" element={render && <SignIn />} />
-          <Route path="sign_up" element={render && <SignUp />} />
+          <Route path="/sign_in" element={render && <SignIn />} />
+          <Route path="/sign_up" element={render && <SignUp />} />
           <Route
-            path="verification_email"
+            path="/verification_email"
             element={render && <VerificationEmail />}
           />
           <Route
-            path="verification"
+            path="/verification"
             element={render && <VerificationSuccess />}
           />
           <Route
-            path="forget_password"
+            path="/forget_password"
             element={render && <ForgetPassword />}
           />
         </Route>
@@ -97,51 +97,51 @@ function App() {
         {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="dashboard/detail/:id" element={<DashboardDetail />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/detail/:id" element={<DashboardDetail />} />
           <Route
-            path="dashboard/rfo_single/:id"
+            path="/dashboard/rfo_single/:id"
             element={<DashboardRFOSingle />}
           />
-          <Route path="reason_of_outage" element={<ReasonOfOutage />} />
-          <Route path="reason_of_outage_gangguan" element={<ReasonForOutageTrouble />} />
+          <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
+          <Route path="/reason_of_outage_gangguan" element={<ReasonForOutageTrouble />} />
           <Route
-            path="reason_of_outage/detail_masal/:id"
+            path="/reason_of_outage/detail_masal/:id"
             element={<RFODetailMass />}
           />
           <Route
-            path="reason_of_outage/detail_single/:id"
+            path="/reason_of_outage/detail_single/:id"
             element={<RFODetailSingle />}
           />
-          <Route path="report" element={<Report />} />
-          <Route path="report/create" element={<ReportCreate />} />
-          <Route path="report/detail/:id" element={<ReportDetail />} />
-          <Route path="history_dashboard" element={<HistoryDashboard />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/report/create" element={<ReportCreate />} />
+          <Route path="/report/detail/:id" element={<ReportDetail />} />
+          <Route path="/history_dashboard" element={<HistoryDashboard />} />
           <Route
-            path="history_dashboard/detail/:id"
+            path="/history_dashboard/detail/:id"
             element={<DashboardDetail />}
           />
           <Route
-            path="history_dashboard/rfo_single/:id"
+            path="/history_dashboard/rfo_single/:id"
             element={<DashboardRFOSingle />}
           />
           <Route
-            path="history_dashboard/rfo_masal/:id"
+            path="/history_dashboard/rfo_masal/:id"
             element={<RFODetailMass />}
           />
-          <Route path="profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
           <Route
-            path="base_transceiver_station"
+            path="/base_transceiver_station"
             element={<BaseTransceiverStation />}
           />
-          <Route path="statistics" element={<Statistics />} />
+          <Route path="/statistics" element={<Statistics />} />
 
           {/* for admin */}
-          <Route path="users" element={<Users />} />
-          <Route path="pop" element={<Pop />} />
-          <Route path="source_complain" element={<SourceComplain />} />
-          <Route path="role" element={<Role />} />
-          <Route path="shift" element={<Shift />} />
+          <Route path="/users" element={<Users />} />
+          <Route path="/pop" element={<Pop />} />
+          <Route path="/source_complain" element={<SourceComplain />} />
+          <Route path="/role" element={<Role />} />
+          <Route path="/shift" element={<Shift />} />
           {/* end admin */}
           <Route path="*" element={<NotFound />} />
         </Route>
