@@ -78,18 +78,18 @@ function App() {
         <Route element={<Layout render={getConditionRender} />}>
           {/* public routes */}
           <Route index element={<SignIn />} />
-          <Route path="sign_in" element={render && <SignIn />} />
-          <Route path="sign_up" element={render && <SignUp />} />
+          <Route path="/sign_in" element={render && <SignIn />} />
+          <Route path="/sign_up" element={render && <SignUp />} />
           <Route
-            path="verification_email"
+            path="/verification_email"
             element={render && <VerificationEmail />}
           />
           <Route
-            path="verification"
+            path="/verification"
             element={render && <VerificationSuccess />}
           />
           <Route
-            path="forget_password"
+            path="/forget_password"
             element={render && <ForgetPassword />}
           />
         </Route>
