@@ -32,7 +32,7 @@ function SignUp() {
     try {
       const data = await allPOP().unwrap();
       if (data.status === 'Success' || data.status === 'success') {
-        const mapPOP = data.data.map((item) => ({
+        const mapPOP = data?.data?.map((item) => ({
           label: item.pop,
           value: item.id_pop
         }))
@@ -52,7 +52,7 @@ function SignUp() {
     try {
       const data = await allTeamPublic().unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        const mapTeam = data.data.map((item) => ({
+        const mapTeam = data?.data?.map((item) => ({
           label: item.role,
           value: item.id_role
         }))
@@ -172,7 +172,7 @@ function SignUp() {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {optionTeam.map((item, index) => (
+                  {optionTeam?.map((item, index) => (
                     <option key={index} value={item.value} label={item.label}>{item.label}</option>
                   ))}
                 </Field>
@@ -193,7 +193,7 @@ function SignUp() {
                   onChange={handleChange}
                   className="select w-full max-w-full input-bordered"
                 >
-                  {optionPOP.map((item, index) => (
+                  {optionPOP?.map((item, index) => (
                     <option key={index} value={item.value} label={item.label}>{item.label}</option>
                   ))}
                 </Field>

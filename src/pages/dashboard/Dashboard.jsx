@@ -332,13 +332,13 @@ const Dashboard = () => {
         <table className="table table-zebra w-full">
           <thead>
             <tr>
-              {columns.map((item, index) => (
+              {columns?.map((item, index) => (
                 <th key={index} className="text-center">{item}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {rows.map((item, index) => (
+            {rows?.map((item, index) => (
               <tr key={index} className="text-center">
                 <th className="bg-opacity-100">{index + 1}</th>
                 <td className="text-left">

@@ -172,7 +172,7 @@ function DashboardDetail({ rfoSingle, idComplain }) {
         <hr />
 
         {
-          detailComplain?.balasan.length > 0 && detailComplain?.balasan.map((item, index) => (
+          detailComplain?.balasan?.length > 0 && detailComplain?.balasan?.map((item, index) => (
             <Progress item={item} key={index} />
           ))
         }

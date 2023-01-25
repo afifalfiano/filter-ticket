@@ -206,10 +206,10 @@ function RFODetailMass() {
         </h1>
 
         <div className="w-full overflow-auto mt-6" style={{ height: '35rem' }}>
-          {isSuccess && detailRFOMasal?.keluhan.map((item, index) => (
+          {isSuccess && detailRFOMasal?.keluhan?.map((item, index) => (
             <ComplainEffect key={index} item={item} />
           ))}
-          {isSuccess && detailRFOMasal?.keluhan.length === 0 && (
+          {isSuccess && detailRFOMasal?.keluhan?.length === 0 && (
             <div className="border-2 border-gray-100 rounded-md mt-3 p-3 text-center">
               <p>Tidak ada keluhan terdampak</p>
             </div>

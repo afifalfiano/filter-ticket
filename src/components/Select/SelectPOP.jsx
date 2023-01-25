@@ -12,7 +12,7 @@ function SelectPOP({ ...props }) {
                 onChange={props.handlePOP}
             >
                 <option value={props.server ? '' : 'all'} label="Semua" defaultValue={props.server ? '' : 'all'}>All</option>
-                {props.dataPOP?.map((item, index) => (
+                {props?.dataPOP?.map((item, index) => (
                     <option key={index} value={item.id_pop} label={item.pop}>{item.pop}</option>
                 ))}
             </select>
