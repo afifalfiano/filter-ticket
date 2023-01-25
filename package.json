@@ -2,7 +2,7 @@
   "name": "filter-ticket",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://cco.jogja.citra.net.id/",
   "dependencies": {
     "@loadable/component": "^5.15.2",
     "@pusher/push-notifications-web": "^1.1.0",
