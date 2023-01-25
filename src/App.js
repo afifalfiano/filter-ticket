@@ -100,7 +100,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/detail/:id" element={<DashboardDetail />} />
           <Route
-            path="dashboard/rfo_single/:id"
+            path="/dashboard/rfo_single/:id"
             element={<DashboardRFOSingle />}
           />
           <Route path="/reason_of_outage" element={<ReasonOfOutage />} />
