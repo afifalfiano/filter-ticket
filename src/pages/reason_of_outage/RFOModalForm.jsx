@@ -16,8 +16,8 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
     problem: detail?.problem || '',
     action: detail?.action || '',
     deskripsi: detail?.deskripsi || '',
-    mulai_gangguan: detail?.mulai_gangguan.split(' ')[0] || '',
-    selesai_gangguan: detail?.selesai_gangguan.split(' ')[0] || '',
+    mulai_gangguan: detail?.mulai_gangguan || '',
+    selesai_gangguan: detail?.selesai_gangguan || '',
     nomor_tiket: detail?.nomor_tiket || '',
     status: detail?.status || '',
     lampiran: '' || '',
@@ -42,8 +42,13 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
   const onSubmitData = async (payload, resetForm) => {
     const start = new Date(payload.mulai_gangguan);
     const end = new Date(payload.selesai_gangguan);
-    const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
-    const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
+    const timeStart = `${start.getHours().toString().length === 1 ? `0${start.getHours()}` : start.getHours()}:${start.getMinutes().toString().length === 1 ? `0${start.getMinutes()}` : start.getMinutes()}:${start.getSeconds().toString().length === 1 ? `0${start.getSeconds()}` : start.getSeconds()}.${start.getMilliseconds()}0`;
+    const timeEnd = `${end.getHours().toString().length === 1 ? `0${end.getHours()}` : end.getHours()}:${end.getMinutes().toString().length === 1 ? `0${end.getMinutes()}` : end.getMinutes()}:${end.getSeconds().toString().length === 1 ? `0${end.getSeconds()}` : end.getSeconds()}.${start.getMilliseconds()}0`;
+    const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} ${timeStart}`;
+    const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} ${timeEnd}`;
+
+    // const formatStart = `${start.getFullYear()}-${start.getMonth().toString().length === 1 ? `0${start.getMonth() + 1}` : start.getMonth() + 1}-${start.getDate().toString().length === 1 ? `0${start.getDate()}` : start.getDate()} 12:00:00.000`;
+    // const formatEnd = `${end.getFullYear()}-${end.getMonth().toString().length === 1 ? `0${end.getMonth() + 1}` : end.getMonth() + 1}-${end.getDate().toString().length === 1 ? `0${end.getDate()}` : end.getDate()} 12:00:00.000`;
     const body = {
       nomor_tiket: payload.nomor_tiket,
       mulai_gangguan: formatStart,
@@ -187,7 +192,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     name="mulai_gangguan"
                     placeholder=""
                     value={values.mulai_gangguan}
-                    type="date"
+                    type="datetime-local"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
@@ -206,7 +211,7 @@ function RFOModalForm({ stateModal, getInfo, detail }) {
                     name="selesai_gangguan"
                     placeholder=""
                     value={values.selesai_gangguan}
-                    type="date"
+                    type="datetime-local"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     className="input input-md input-bordered  max-w-full"
