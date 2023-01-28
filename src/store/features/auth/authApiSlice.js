@@ -43,7 +43,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     verificationEmail: builder.mutation({
       query: (token) => ({
-        url: `/verification/?token=${token}`,
+        url: `/verification?token=${token}`,
         method: 'GET',
       }),
     }),
