@@ -109,11 +109,9 @@ function ReasonOfOutage() {
 
   return (
     <div>
-      {!isLoading && (
         <div className="flex gap-5 flex-col md:flex md:flex-row">
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data RFO keluhan...'} />
         </div>
-      )}
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 

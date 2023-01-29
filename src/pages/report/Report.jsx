@@ -25,8 +25,8 @@ const columns = [
 ];
 
 function Report() {
-
-  const [pop, setPOPLocal] = useState('');
+  const { data: user } = useSelector(selectCurrentUser);
+  const [pop, setPOPLocal] = useState(user?.role_id === 2 ? user?.pop_id : '');
   const [dataPOP, setdataPOP] = useState([]);
   const [rows, setRows] = useState([]);
   const [detail, setDetail] = useState(null);
@@ -36,7 +36,6 @@ function Report() {
   const [allPOP] = useAllPOPMutation();
   const [search, setSearch] = useState('');
   const dispatch = useDispatch();
-  const { data: user } = useSelector(selectCurrentUser);
   const stateModal = useSelector(selectModalState);
 
   const openModal = (modal) => {
@@ -96,7 +95,7 @@ function Report() {
   const onHandleSearch = (event) => {
     event.preventDefault();
     setSearch(event.target.value);
-    doGetAllReport(pop, search, currentPage);
+    doGetAllReport(pop, event.target.value, currentPage);
 
     // if (event.target.value.length > 0) {
     //   const regex = new RegExp(search, 'ig');

@@ -19,6 +19,8 @@ import ReopenModal from './ReopenModal';
 // const ReopenModal = loadable(() => import('./ReopenModal'));
 
 function HistoryDashboard() {
+  const { data: user } = useSelector(selectCurrentUser);
+  console.log(user, 'usr')
   const initColumns = [
     'No',
     'POP',
@@ -35,7 +37,7 @@ function HistoryDashboard() {
   const [perPage, setPerPage] = useState([5]);
   const [countPage, setCountPage] = useState([1]);
 
-  const [pop, setPOPLocal] = useState('');
+  const [pop, setPOPLocal] = useState(user?.role_id === 2 ? user?.pop_id : '');
   const [dataPOP, setdataPOP] = useState([]);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
@@ -49,24 +51,12 @@ function HistoryDashboard() {
     dispatch(setModal(newState));
     window.scrollTo(0, 0);
   }
-  const { data: user } = useSelector(selectCurrentUser);
 
   const getAllComplainHistory = useCallback(debounce(async (pop = '', search = '', page = 1) => {
     const param = `?page=${page}&pop_id=${pop}&keyword=${search}`;
     try {
       const data = await allComplainHistory(param).unwrap();
       if (data.status === 'success' || data.status === 'Success') {
-        let dataFix;
-        if (user?.role_id === 2) {
-          const dataFilter = data.data.data.filter((item) => {
-            if (item.pop_id === user.pop_id) {
-              return item;
-            }
-          });
-          dataFix = dataFilter
-          dispatch(setComplainHistory({ data: dataFix }));
-          setRows(dataFix);
-        } else {
           dispatch(setComplainHistory({ ...data.data }));
           setRows(data.data.data);
           setCurrentPage(data.data.current_page);
@@ -77,7 +67,6 @@ function HistoryDashboard() {
             countPaginate.push(i + 1);
           }
           setCountPage(countPaginate);
-        }
       } else {
         setRows([]);
         catchError(data, true);

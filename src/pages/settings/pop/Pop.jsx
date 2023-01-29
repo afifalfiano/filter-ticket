@@ -148,11 +148,9 @@ function Pop() {
         <Button type="button" onClick={() => addData()} >Tambah</Button>
       </div>
 
-      {!isLoading && (
         <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
           <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data POP...'} />
         </div>
-      )}
 
       <Modal>
         {stateModal?.pop?.showAddModalPop && <FormPOP stateModal={stateModal} getInfo={getInfo} detail={detail} titleAction={title} />}
