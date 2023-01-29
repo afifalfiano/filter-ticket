@@ -198,7 +198,9 @@ function BaseTransceiverStation() {
           <div className="form-control w-full md:w-52">
             <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} server={true} />
           </div>
-          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data BTS...'} />
+          <div className="tooltip tooltip-right" data-tip="Cari berdasarkan nama_bts, lokasi">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan nama_bts, lokasi'} />
+          </div>
         </div>
 
       <Modal>
