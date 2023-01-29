@@ -153,7 +153,9 @@ function SourceComplain() {
       </div>
 
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data sumber keluhan...'} />
+      <div className="tooltip tooltip-right" data-tip="Cari berdasarkan sumber keluhan">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan sumber keluhan'} />
+        </div>
       </div>
 
       <Modal>

@@ -191,7 +191,9 @@ function HistoryDashboard() {
           <div className="form-control w-full md:w-52">
             <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} server={true}/>
           </div>
-          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data riwayat keluhan...'} />
+          <div className="tooltip tooltip-right" data-tip="Cari berdasarkan id_pelanggan, nama_pelanggan, nama_pelapor, nomor_pelapor, nomor_keluhan, keluhan">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan id_pelanggan, nama_pelanggan, nama_pelapor, nomor_pelapor, nomor_keluhan, keluhan'} />
+          </div>
         </div>
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}

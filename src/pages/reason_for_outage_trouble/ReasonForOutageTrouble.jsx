@@ -148,8 +148,9 @@ function ReasonForOutageTrouble() {
           <div className="form-control w-full md:w-52">
             <SelectStatusComplain handleStatus={handleStatus} all={true} />
           </div>
-
-          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data RFO gangguan...'} />
+          <div className="tooltip tooltip-right" data-tip="Cari berdasarkan nomor_rfo_keluhan, nomor_tiket, problem">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan nomor_rfo_keluhan, nomor_tiket, problem'} />
+          </div>
         </div>
 
       <Modal>

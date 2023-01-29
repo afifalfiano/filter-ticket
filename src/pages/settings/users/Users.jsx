@@ -119,7 +119,9 @@ function Users() {
   return (
     <div>
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data pengguna...'} />
+          <div className="tooltip tooltip-right" data-tip="Cari berdasarkan nama, email">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan nama, email'} />
+          </div>
       </div>
 
       <Modal>

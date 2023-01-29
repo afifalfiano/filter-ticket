@@ -147,7 +147,9 @@ function Role() {
       </div>
 
       <div className="gap-5 mt-5 flex flex-col md:flex md:flex-row">
-        <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data otoritas...'} />
+        <div className="tooltip tooltip-right" data-tip="Cari berdasarkan role">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan role'} />
+        </div>
       </div>
 
       <Modal>

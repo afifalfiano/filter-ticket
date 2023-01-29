@@ -325,8 +325,9 @@ const Dashboard = () => {
         <div className="form-control w-full md:w-52">
           <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} />
         </div>
-
-        <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data keluhan...'} />
+        <div className="tooltip tooltip-right" data-tip="Cari berdasarkan id_pelanggan, nama_pelanggan, nama_pelapor, nomor_pelapor">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan id_pelanggan, nama_pelanggan, nama_pelapor, nomor_pelapor'} />
+        </div>
       </div>
 
       <div className="overflow-x-auto mt-8">

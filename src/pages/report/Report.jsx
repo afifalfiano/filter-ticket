@@ -200,8 +200,9 @@ function Report() {
           <div className="form-control w-full md:w-52">
             <SelectPOP dataPOP={dataPOP} handlePOP={handlePOP} server={true} />
           </div>
-
-          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data laporan...'} />
+          <div className="tooltip tooltip-right" data-tip="Cari berdasarkan nomor_laporan, tanggal">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan nomor_laporan, tanggal'} />
+          </div>
 
         </div>
 

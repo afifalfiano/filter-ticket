@@ -110,8 +110,11 @@ function ReasonOfOutage() {
   return (
     <div>
         <div className="flex gap-5 flex-col md:flex md:flex-row">
-          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari data RFO keluhan...'} />
+          <div className="tooltip tooltip-right" data-tip="Cari berdasarkan nomor_rfo_keluhan, nomor_tiket, problem">
+          <Search search={search} onHandleSearch={onHandleSearch} placeholder={'Cari berdasarkan nomor_rfo_keluhan, nomor_tiket, problem'} />
+          </div>
         </div>
+
 
       {isLoading && <SkeletonTable countRows={8} countColumns={10} totalFilter={2} />}
 
