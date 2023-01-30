@@ -29,7 +29,7 @@ function startBeamClient() {
     .then((deviceId) => deviceId)
     .then(() => beamsClient.addDeviceInterest("update"))
     .then(() => beamsClient.getDeviceInterests())
-    .then((interests) => interests).catch(err => catchError(err, true));
+    .then((interests) => interests).catch(err => console.log(err));
 }
 
 
