@@ -15,7 +15,7 @@ import { clearTeam } from '../store/features/team/teamSlice';
 import { clearUsers } from '../store/features/users/usersSlice';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:8000/api',
+  baseUrl: 'https://cco.jogja.citra.net.id:8000/api',
   mode: 'cors',
   prepareHeaders: (headers, { getState, endpoint }) => {
     const token = getState().auth.data;
