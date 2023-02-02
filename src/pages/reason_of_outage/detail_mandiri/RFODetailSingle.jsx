@@ -284,7 +284,7 @@ function RFODetailSingle() {
             Riwayat Follow Up Keluhan
           </h1>
 
-          {isSuccess && (
+          {(isSuccess && detailRFO?.keluhan) && (
             <DashboardDetail rfoSingle idComplain={detailRFO?.keluhan?.id_keluhan} />
           )}
         </div>
