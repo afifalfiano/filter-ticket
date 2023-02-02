@@ -20,7 +20,6 @@ import ReopenModal from './ReopenModal';
 
 function HistoryDashboard() {
   const { data: user } = useSelector(selectCurrentUser);
-  console.log(user, 'usr')
   const initColumns = [
     'No',
     'POP',
