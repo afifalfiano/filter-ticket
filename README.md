@@ -66,9 +66,13 @@ npm run build
 
 ## Fitur
 1. Login
+
 2. Registrasi + Verifikasi Email
+
 3. Forget Password
+
 4. Keluhan (Auth JWT + Admin || Non Admin)
+
         a. Index Data Keluhan
         b. Filter + Pencarian
         b. Tambah (Lampiran atau tanpa lampiran)
@@ -80,35 +84,46 @@ npm run build
         h. Selesaikan Keluhan dengan RFO Gangguan
 
 5. Balasan (Progress Keluhan) (Auth JWT + Admin || Non Admin)
+
         a. Tambah (Lampiran atau tanpa lampiran)
+
 6. RFO Keluhan (Auth JWT + Admin || Non Admin)
+
         a. Index
         b. Filter + Pencarian
         c. Tambah
         d. Edit
         e. Detail
+
 7. RFO Gangguan (Auth JWT + Admin || Non Admin)
+
         a. Index
         b. Filter + Pencarian
         c. Tambah
         d. Edit
         e. Hapus
         f. Detail
+
 8. Laporan (Auth JWT + Admin || Non Admin)
+
         a. Index
         b. Filter + Pencarian
         c. Tambah
         d. Detail
         e. Cetak
         f. Hapus
+
 9. Riwayat Keluhan (Auth JWT + Admin || Non Admin)
+
         a. Index
         b. Filter + Pencarian
         c. Detail
         d. RFO Keluhan
         e. RFO Gangguan
         f. Rollback Status (dari selesai ke open)
+
 10. Statistik (Auth JWT + Admin || Non Admin)
+
         a. Grafik by filter tanggal
         b. Grafik Semua
         c. Grafik Hari ini
@@ -116,47 +131,65 @@ npm run build
         f. Grafik Seminggu Lalu
         g. Grafik Bulan Ini
         h. Grafik Tahun
+
 11. Notifikasi (Auth JWT + Admin || Non Admin)
+
         a. Push notifikasi keluhan dan balasan
+
 11. Profil (Auth JWT + Admin || Non Admin)
+
         a. Ganti password
         b. Ganti foto profil
+
 12. Menu BTS (Base Transceiver Station) (Auth JWT + Non Admin)
+
         a. Index
         b. Filter + Pencarian
+
 12. Pengaturan (Auth JWT + Admin)
     
     a. BTS (Base Transceiver Station)
+
         1. Index
         2. Filter + Pencarian
         2. Tambah
         3. Edit
         4. Hapus
         5. Detail
+
     b. Pengguna
+
         1. Index
         2. Pencarian
         3. Nonaktifkan Pengguna
         4. Aktifkan Pengguna
+
     c. POP (Area Operasional)
+
         1. Index
         2. Tambah
         3. Edit
         4. Hapus
         5. Pencarian
+
     d. Sumber Keluhan
+
         1. Index
         2. Pencarian
         3. Tambah
         4. Edit
         5. Hapus
+
     e. Otoritas
+
         1. Index
         2. Pencarian
         3. Tambah
         4. Edit
         5. Hapus
+
     f. Shift
+
         1. Index
         2. Pencarian
         3. Tambah
