@@ -1,70 +1,201 @@
-# Getting Started with Create React App
+# Frontend End Aplikasi CCO (Customer Care) ISP
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Deskripsi
 
-## Available Scripts Test
+Aplikasi ini dibangun menggunakan React Javascript sebagai framework frontend, DaisyUI sebagai framework CSS dan Redux Toolkit JS sebagai state management.
 
-In the project directory, you can run:
+Aplikasi yang diperuntukan perusahaan ISP untuk menghandle keluhan pelanggan supaya setiap keluhan pelanggan dapat tercatat dan terlihat progress penangannya. Dengan seperti ini management perusahaan ISP dapat melihat report secara realtime dan dari sisi pelanggan tidak merasa terabaikan. 
 
-### `npm start`
+## Status Project
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Aplikasi ini sudah dapat diakses secara publik atau bisa dikatakan sudah ada dilevel production. Tapi kedepannya masih ada improvement dari sisi fitur dengan menyesuaikan feedback dari users.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tanggapan Layar Aplikasi
 
-### `npm test`
+### Login
+![Login](view_application/image-1.png "Login")
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+### Keluhan
+![Keluhan](view_application/image-1.2.png "Keluhan")
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Balasan (Progress)
+![Balasan](view_application/image-3.png "Balasan")
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Statistik
+![Statistik](view_application/image-4.png "Statistik")
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Reason For Outage
+![RFO Keluhan](view_application/image-2.png "RFO Keluhan")
 
-### `npm run eject`
+### Push Notifikasi
+![Push Notifikasi](view_application/image-5.png "Push Notifikasi")
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Teknologi
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Berikut ini teknologi yang digunakan pada project ini
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    1. React Javascript (Framework Frontend)
+    2. DaisyUI / TailwindCSS (Framework CSS)
+    3. PusherJS (Library Realtime Notification)
+    4. Service Worker (Mendukung proses push notifikasi)
+    5. Redux Toolkit Js (State Management)
+    6. Formik (Library Form)
+    7. Authemtication (JWT Token)
 
-## Learn More
+## Cara Menjalankan Project
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Instal Nodejs dan NPM sebagai syarat untuk menjalankan ReactJS
+2. Kloning atau copy project sehingga dapat dijalankan dilocal.
+```
+git clone https://github.com/afifalfiano/filter-ticket.git
+```
+3. Setelah itu jalankan installasi project dengan perintah
+```
+npm install
+```
+4. Untuk menjalankan project dilocal dengan level development cukup jalankan perintah
+```
+npm run start
+```
+5. Untuk build project dilevel production cukup jalankan perintah
+```
+npm run build
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Fitur
+1. Login
 
-### Code Splitting
+2. Registrasi + Verifikasi Email
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+3. Forget Password
 
-### Analyzing the Bundle Size
+4. Keluhan (Auth JWT + Admin || Non Admin)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+        a. Index Data Keluhan
+        b. Filter + Pencarian
+        b. Tambah (Lampiran atau tanpa lampiran)
+        c. Edit
+        d. Hapus
+        e. Detail (Progress penyelesaian keluhan)
+        f. Rollback Status (dari selesai ke open)
+        g. Selsaikan Keluhan dengan RFO Keluhan
+        h. Selesaikan Keluhan dengan RFO Gangguan
 
-### Making a Progressive Web App
+5. Balasan (Progress Keluhan) (Auth JWT + Admin || Non Admin)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+        a. Tambah (Lampiran atau tanpa lampiran)
 
-### Advanced Configuration
+6. RFO Keluhan (Auth JWT + Admin || Non Admin)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+        a. Index
+        b. Filter + Pencarian
+        c. Tambah
+        d. Edit
+        e. Detail
 
-### Deployment
+7. RFO Gangguan (Auth JWT + Admin || Non Admin)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+        a. Index
+        b. Filter + Pencarian
+        c. Tambah
+        d. Edit
+        e. Hapus
+        f. Detail
 
-### `npm run build` fails to minify
+8. Laporan (Auth JWT + Admin || Non Admin)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+        a. Index
+        b. Filter + Pencarian
+        c. Tambah
+        d. Detail
+        e. Cetak
+        f. Hapus
+
+9. Riwayat Keluhan (Auth JWT + Admin || Non Admin)
+
+        a. Index
+        b. Filter + Pencarian
+        c. Detail
+        d. RFO Keluhan
+        e. RFO Gangguan
+        f. Rollback Status (dari selesai ke open)
+
+10. Statistik (Auth JWT + Admin || Non Admin)
+
+        a. Grafik by filter tanggal
+        b. Grafik Semua
+        c. Grafik Hari ini
+        d. Grafik Kemarin
+        f. Grafik Seminggu Lalu
+        g. Grafik Bulan Ini
+        h. Grafik Tahun
+
+11. Notifikasi (Auth JWT + Admin || Non Admin)
+
+        a. Push notifikasi keluhan dan balasan
+
+11. Profil (Auth JWT + Admin || Non Admin)
+
+        a. Ganti password
+        b. Ganti foto profil
+
+12. Menu BTS (Base Transceiver Station) (Auth JWT + Non Admin)
+
+        a. Index
+        b. Filter + Pencarian
+
+12. Pengaturan (Auth JWT + Admin)
+    
+    a. BTS (Base Transceiver Station)
+
+        1. Index
+        2. Filter + Pencarian
+        2. Tambah
+        3. Edit
+        4. Hapus
+        5. Detail
+
+    b. Pengguna
+
+        1. Index
+        2. Pencarian
+        3. Nonaktifkan Pengguna
+        4. Aktifkan Pengguna
+
+    c. POP (Area Operasional)
+
+        1. Index
+        2. Tambah
+        3. Edit
+        4. Hapus
+        5. Pencarian
+
+    d. Sumber Keluhan
+
+        1. Index
+        2. Pencarian
+        3. Tambah
+        4. Edit
+        5. Hapus
+
+    e. Otoritas
+
+        1. Index
+        2. Pencarian
+        3. Tambah
+        4. Edit
+        5. Hapus
+
+    f. Shift
+
+        1. Index
+        2. Pencarian
+        3. Tambah
+        4. Edit
+        5. Hapus
+
+## Integrasi Backend
+Untuk intergrasi dengan backend dan database dapat kunjungi link repository project disini ```https://github.com/FarhanKurnia/REST-API-CCO-LUMEN```
+
