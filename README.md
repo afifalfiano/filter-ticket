@@ -2,11 +2,7 @@
 
 ## Deskripsi
 
-<<<<<<< Updated upstream
-## Available Scripts
-=======
 Aplikasi ini dibangun menggunakan React Javascript sebagai framework frontend, DaisyUI sebagai framework CSS dan Redux Toolkit JS sebagai state management.
->>>>>>> Stashed changes
 
 Aplikasi yang diperuntukan perusahaan ISP untuk menghandle keluhan pelanggan supaya setiap keluhan pelanggan dapat tercatat dan terlihat progress penangannya. Dengan seperti ini management perusahaan ISP dapat melihat report secara realtime dan dari sisi pelanggan tidak merasa terabaikan. 
 
